@@ -1,3 +1,9 @@
 export 'splash/view/splash_view.dart';
-export 'splash/view/choose_view.dart';
+export 'splash/view/choose_user_view.dart';
 export 'splash/controller/splash_controller.dart';
+export 'splash/controller/choose_user_controller.dart';
+export 'user/onboarding/view/user_onboarding_view.dart';
+export 'user/onboarding/widget/user_onboarding_widget.dart';
+export 'user/onboarding/controller/user_onboarding_controller.dart';
+export 'vendor/onboarding/view/vendor_onboarding_view.dart';
+export 'planer/onboarding/view/planer_onboarding_view.dart';

@@ -9,7 +9,7 @@ class SplashController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Future.delayed(Duration(seconds: 3),() async {
-      Get.off(()=>ChooseView(),preventDuplicates: false);
+      Get.off(()=>ChooseUserView(),preventDuplicates: false);
     });
   }
 

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="marketplaceapp"
+        android:label="verifiedplugapp"
         android:name="${applicationName}"
         android:icon="@drawable/logo">
         <activity

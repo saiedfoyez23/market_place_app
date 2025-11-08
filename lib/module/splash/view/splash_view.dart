@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
-import 'package:marketplaceapp/utils/utils..dart';
+import 'package:marketplaceapp/utils/utils.dart';
 
 class SplashView extends StatelessWidget {
   SplashView({super.key});
@@ -24,15 +24,11 @@ class SplashView extends StatelessWidget {
             ),
           ),
           child: Center(
-            child: SizedBox(
-              height: 72.h(context),
-              width: 353.w(context),
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Image(
-                  image: AssetImage(ImageUtils.logoImage),
-                ),
-              ),
+            child: ImageHelperWidget.assetImageWidget(
+              context: context,
+              height: 72,
+              width: 353,
+              imageString: ImageUtils.logoImage,
             ),
           ),
         ),
