@@ -5,3 +5,6 @@ export 'package:marketplaceapp/utils/widget_utils/space_helper_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/image_helper_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/text_helper_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/button_helper_widget.dart';
+export 'package:marketplaceapp/utils/widget_utils/rich_text_helper_widget.dart';
+export 'package:marketplaceapp/utils/widget_utils/text_form_field_widget.dart';
+export 'package:marketplaceapp/utils/widget_utils/auth_appbar_helper_widget.dart';

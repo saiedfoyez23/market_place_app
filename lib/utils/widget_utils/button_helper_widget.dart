@@ -183,6 +183,140 @@ class ButtonHelperWidget {
   }
 
 
+  static Widget customIconButtonWidgetAdventPro({
+    required BuildContext context,
+    required VoidCallback onPressed,
+    required String iconPath,
+    required String text,
+    Widget? textWidget,
+    bool isIcon = true,
+    double height = 56,
+    double borderRadius = 10,
+    Color? borderColor,
+    double? borderWidth,
+    Color textColor = ColorUtils.black61,
+    double textSize = 18,
+    FontWeight fontWeight = FontWeight.w700,
+    double iconSize = 24,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return Container(
+      height: height.h(context),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.transparent,
+        border: Border.all(
+          color: borderColor ?? Colors.transparent,
+          width: borderWidth ?? 0,
+        ),
+        borderRadius: BorderRadius.circular(borderRadius.r(context)),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: padding ?? EdgeInsets.symmetric(
+            vertical: 14.5.vpm(context),
+            horizontal: 14.5.hpm(context),
+          ),
+          shadowColor: Colors.transparent,
+          overlayColor: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            isIcon == true ? ImageHelperWidget.assetImageWidget(
+              context: context,
+              height: iconSize,
+              width: iconSize,
+              imageString: iconPath,
+            ) : SizedBox.shrink(),
+
+            isIcon == true ? SpaceHelperWidget.h(10.w(context)) : SizedBox.shrink(),
+
+            textWidget ?? TextHelperClass.headingTextWithoutWidthAdventPro(
+              context: context,
+              alignment: Alignment.centerLeft,
+              fontSize: textSize,
+              fontWeight: fontWeight,
+              textColor: textColor,
+              text: text,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+  static Widget customIconButtonWidget({
+    required BuildContext context,
+    required VoidCallback onPressed,
+    required String iconPath,
+    required String text,
+    Widget? textWidget,
+    bool isIcon = true,
+    double height = 56,
+    double borderRadius = 10,
+    Color? borderColor,
+    double? borderWidth,
+    Color textColor = ColorUtils.black61,
+    double textSize = 18,
+    FontWeight fontWeight = FontWeight.w700,
+    double iconSize = 24,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return Container(
+      height: height.h(context),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.transparent,
+        border: Border.all(
+          color: borderColor ?? Colors.transparent,
+          width: borderWidth ?? 0,
+        ),
+        borderRadius: BorderRadius.circular(borderRadius.r(context)),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: padding ?? EdgeInsets.symmetric(
+            vertical: 14.5.vpm(context),
+            horizontal: 14.5.hpm(context),
+          ),
+          shadowColor: Colors.transparent,
+          overlayColor: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            isIcon == true ? ImageHelperWidget.assetImageWidget(
+              context: context,
+              height: iconSize,
+              width: iconSize,
+              imageString: iconPath,
+            ) : SizedBox.shrink(),
+
+            isIcon == true ? SpaceHelperWidget.h(10.w(context)) : SizedBox.shrink(),
+
+
+            textWidget ?? TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.centerLeft,
+              fontSize: textSize,
+              fontWeight: fontWeight,
+              textColor: textColor,
+              text: text,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
 
 
 
