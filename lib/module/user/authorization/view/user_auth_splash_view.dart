@@ -96,7 +96,7 @@ class UserAuthSplashView extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color: ColorUtils.blue96,
                           recognizer: TapGestureRecognizer()..onTap = () {
-
+                            Get.off(()=>PrivacyPolicyView(),preventDuplicates: false);
                           },
                         ).toTextSpan(),
                         CustomTextSpan(
@@ -110,7 +110,7 @@ class UserAuthSplashView extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color: ColorUtils.blue96,
                           recognizer: TapGestureRecognizer()..onTap = () {
-
+                            Get.off(()=>TermsAndConditionsView(),preventDuplicates: false);
                           },
                         ).toTextSpan(),
                       ],

@@ -13,4 +13,7 @@ class ImageUtils {
   static const String googleImage = "image/google_image.png";
   static const String checkboxIcon = "image/checkbox_icon.png";
   static const String uncheckboxIcon = "image/uncheckbox_icon.png";
+  static const String successfullImage = "image/successfull_image.png";
+  static const String blueCheckMarkImage = "image/blue_check_mark_image.png";
+
 }

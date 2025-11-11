@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 
@@ -315,6 +316,56 @@ class ButtonHelperWidget {
       ),
     );
   }
+
+
+  static Widget customRichTextButton({
+    required BuildContext context,
+    required String normalText,
+    required String highlightedText,
+    required VoidCallback? onPressed,
+    Alignment alignment = Alignment.center,
+    Color normalTextColor = ColorUtils.blue96,
+    Color highlightedTextColor = ColorUtils.blue196,
+    double fontSize = 17,
+    FontWeight normalTextWeight = FontWeight.w400,
+    FontWeight highlightedTextWeight = FontWeight.w700,
+    double lineHeight = 1.5,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return Align(
+      alignment: alignment,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: padding,
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        child: RichText(
+          text: TextSpan(
+            style: GoogleFonts.poppins(
+              fontSize: fontSize.sp(context),
+              fontWeight: normalTextWeight,
+              color: normalTextColor,
+              height: lineHeight,
+            ),
+            children: [
+              TextSpan(text: normalText),
+              TextSpan(
+                text: highlightedText,
+                style: GoogleFonts.poppins(
+                  fontSize: fontSize.sp(context),
+                  fontWeight: highlightedTextWeight,
+                  color: highlightedTextColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 
 
 

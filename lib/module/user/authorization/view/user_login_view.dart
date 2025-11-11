@@ -160,7 +160,7 @@ class UserLoginView extends StatelessWidget {
                           ButtonHelperWidget.customButtonWidget(
                             context: context,
                             onPressed: () async {
-
+                              Get.off(()=>ForgotPasswordView(),preventDuplicates: false);
                             },
                             text: "Forgot password?",
                             padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
