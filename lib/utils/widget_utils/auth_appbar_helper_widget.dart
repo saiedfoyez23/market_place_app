@@ -92,3 +92,66 @@ class AuthAppBarHelperWidget extends StatelessWidget {
     return null;
   }
 }
+
+
+
+class MainPageAppBarHelperWidget extends StatelessWidget {
+  final String? title;
+  final Color backgroundColor;
+  final Color titleColor;
+  final double expandedHeight;
+  final bool pinned;
+  final bool primary;
+  final bool floating;
+  final bool centerTitle;
+  final double titleFontSize;
+  final FontWeight titleFontWeight;
+  final List<Widget>? actions;
+  final Widget? customTitle;
+
+  const MainPageAppBarHelperWidget({
+    super.key,
+    this.title,
+    this.backgroundColor = const Color(0xFFFBFBFB),
+    this.titleColor = const Color(0xFF303030),
+    this.expandedHeight = 80,
+    this.pinned = true,
+    this.primary = true,
+    this.floating = false,
+    this.centerTitle = true,
+    this.titleFontSize = 32,
+    this.titleFontWeight = FontWeight.w600,
+    this.actions,
+    this.customTitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      pinned: pinned,
+      primary: primary,
+      floating: floating,
+      expandedHeight: expandedHeight.h(context),
+      backgroundColor: backgroundColor,
+      centerTitle: centerTitle,
+      title: _buildTitle(context),
+      actions: actions,
+    );
+  }
+
+  Widget? _buildTitle(BuildContext context) {
+    if (customTitle != null) return customTitle;
+    if (title != null) {
+      return TextHelperClass.headingTextWithoutWidth(
+        context: context,
+        alignment: Alignment.centerLeft,
+        textAlign: TextAlign.start,
+        fontSize: titleFontSize,
+        fontWeight: titleFontWeight,
+        textColor: titleColor,
+        text: title!,
+      );
+    }
+    return null;
+  }
+}

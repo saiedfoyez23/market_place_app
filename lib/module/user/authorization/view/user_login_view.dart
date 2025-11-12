@@ -179,7 +179,9 @@ class UserLoginView extends StatelessWidget {
 
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                        },
                         text: "Sign In",
                       ),
 

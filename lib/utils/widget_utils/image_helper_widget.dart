@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
@@ -19,6 +21,98 @@ class ImageHelperWidget {
           image: AssetImage(imageString),
         ),
       ),
+    );
+  }
+
+
+  static Widget circleImageHelperWidget({
+    double? width,
+    double? height,
+    double size = 150,
+    double radius = 75,
+    double padding = 4.5,
+    double? verticalPadding,
+    double? horizontalPadding,
+    Color backgroundColor = ColorUtils.orange213,
+    ImageProvider? image,
+    String? imageAsset,
+    String? imageUrl,
+    String? imageFile, // New parameter for file path
+    Widget? placeholder,
+    Widget? errorWidget,
+    BoxFit fit = BoxFit.cover,
+    bool showBorder = false,
+    Color borderColor = Colors.transparent,
+    double borderWidth = 2.0,
+    List<BoxShadow>? shadow,
+    Alignment imageAlignment = Alignment.center,
+    BorderRadius? borderRadius, // New parameter for optional border radius
+  }) {
+    final effectiveWidth = width ?? size;
+    final effectiveHeight = height ?? size;
+    final effectiveVerticalPadding = verticalPadding ?? padding;
+    final effectiveHorizontalPadding = horizontalPadding ?? padding;
+
+    ImageProvider? getImageProvider() {
+      if (image != null) return image;
+      if (imageAsset != null && imageAsset.isNotEmpty) {
+        return AssetImage(imageAsset);
+      }
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        return NetworkImage(imageUrl);
+      }
+      if (imageFile != null && imageFile.isNotEmpty) {
+        return FileImage(File(imageFile)); // Add import 'dart:io' at the top
+      }
+      return null;
+    }
+
+    Widget buildPlaceholder() {
+      if (errorWidget != null) return errorWidget;
+      if (placeholder != null) return placeholder;
+
+      return Icon(
+        Icons.person_outline,
+        size: radius * 0.8,
+        color: Colors.white54,
+      );
+    }
+
+    // Determine the shape and borderRadius
+    final bool isCircle = borderRadius == null;
+    final BoxShape containerShape = isCircle ? BoxShape.circle : BoxShape.rectangle;
+    Widget imageWidget;
+
+
+    imageWidget = CircleAvatar(
+      radius: radius,
+      backgroundImage: getImageProvider(),
+      backgroundColor: Colors.transparent,
+      onBackgroundImageError: (exception, stackTrace) {
+        debugPrint('Image load error: $exception');
+      },
+      child: getImageProvider() == null ? buildPlaceholder() : null,
+    );
+
+
+    return Container(
+      width: effectiveWidth,
+      height: effectiveHeight,
+      padding: EdgeInsets.symmetric(
+        vertical: effectiveVerticalPadding,
+        horizontal: effectiveHorizontalPadding,
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: containerShape,
+        borderRadius: isCircle ? null : borderRadius , // Only used when shape is rectangle
+        border: showBorder ? Border.all(
+          color: borderColor,
+          width: borderWidth,
+        ) : null,
+        boxShadow: shadow,
+      ),
+      child: imageWidget,
     );
   }
 
