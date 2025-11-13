@@ -81,7 +81,9 @@ class ProfileView extends StatelessWidget {
                       context: context,
                       title: "FAQ",
                       imagePath: ImageUtils.faqImage,
-                      onTap: () async {},
+                      onTap: () async {
+                        Get.off(()=>ProfileFaqView(),preventDuplicates: false);
+                      },
                     ),
 
 

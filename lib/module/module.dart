@@ -23,6 +23,8 @@ export 'user/profile/view/profile_view.dart';
 export 'user/profile/widget/profile_view_button.dart';
 export 'user/profile/view/profile_terms_and_condition_view.dart';
 export 'user/profile/view/profile_privacy_and_policy_view.dart';
+export 'user/profile/view/profile_faq_view.dart';
+export 'user/profile/controller/profile_faq_controller.dart';
 export 'vendor/onboarding/view/vendor_onboarding_view.dart';
 export 'vendor/onboarding/controller/vendor_onboarding_controller.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';

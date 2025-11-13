@@ -33,5 +33,7 @@ class ImageUtils {
   static const String notificationManageImage = "image/notification_manage_image.png";
   static const String privacyAndPolicyImage = "image/privacy_and_policy_image.png";
   static const String termsAndConditionImage = "image/terms_and_condition_image.png";
+  static const String downImage = "image/down_image.png";
+  static const String leftImage = "image/left_image.png";
 
 }
