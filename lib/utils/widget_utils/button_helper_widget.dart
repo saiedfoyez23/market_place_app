@@ -59,8 +59,8 @@ class ButtonHelperWidget {
           children: [
             ImageHelperWidget.assetImageWidget(
               context: context,
-              height: imageHeight,
-              width: imageWidth,
+              height: imageHeight.h(context),
+              width: imageWidth.w(context),
               imageString: imagePath,
             ),
 
@@ -74,7 +74,7 @@ class ButtonHelperWidget {
                   TextHelperClass.headingTextWithoutWidth(
                     context: context,
                     alignment: Alignment.centerLeft,
-                    fontSize: titleFontSize,
+                    fontSize: titleFontSize.sp(context),
                     fontWeight: titleFontWeight,
                     textColor: textColor,
                     text: title,
@@ -85,7 +85,7 @@ class ButtonHelperWidget {
                   TextHelperClass.headingTextWithoutWidth(
                     context: context,
                     alignment: Alignment.centerLeft,
-                    fontSize: descriptionFontSize,
+                    fontSize: descriptionFontSize.sp(context),
                     fontWeight: descriptionFontWeight,
                     textColor: textColor,
                     text: description,
@@ -132,7 +132,7 @@ class ButtonHelperWidget {
         child: TextHelperClass.headingTextWithoutWidthAdventPro(
           context: context,
           alignment: alignment ?? Alignment.center,
-          fontSize: fontSize ?? 20,
+          fontSize: fontSize?.sp(context) ?? 24.sp(context),
           fontWeight: fontWeight ?? FontWeight.w700,
           textColor: textColor ?? ColorUtils.white251,
           text: text,
@@ -174,7 +174,7 @@ class ButtonHelperWidget {
         child: TextHelperClass.headingTextWithoutWidth(
           context: context,
           alignment: alignment ?? Alignment.center,
-          fontSize: fontSize ?? 20,
+          fontSize: fontSize?.sp(context) ?? 20.sp(context),
           fontWeight: fontWeight ?? FontWeight.w700,
           textColor: textColor ?? ColorUtils.white251,
           text: text,
@@ -228,8 +228,8 @@ class ButtonHelperWidget {
           children: [
             isIcon == true ? ImageHelperWidget.assetImageWidget(
               context: context,
-              height: iconSize,
-              width: iconSize,
+              height: iconSize.h(context),
+              width: iconSize.w(context),
               imageString: iconPath,
             ) : SizedBox.shrink(),
 
@@ -238,7 +238,7 @@ class ButtonHelperWidget {
             textWidget ?? TextHelperClass.headingTextWithoutWidthAdventPro(
               context: context,
               alignment: Alignment.centerLeft,
-              fontSize: textSize,
+              fontSize: textSize.sp(context),
               fontWeight: fontWeight,
               textColor: textColor,
               text: text,

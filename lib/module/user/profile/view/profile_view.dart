@@ -50,7 +50,9 @@ class ProfileView extends StatelessWidget {
                       context: context,
                       title: "Edit Profile",
                       imagePath: ImageUtils.editProfileImage,
-                      onTap: () async {},
+                      onTap: () async {
+                        Get.off(()=>ProfileEditView(),preventDuplicates: false);
+                      },
                     ),
 
 
@@ -60,7 +62,9 @@ class ProfileView extends StatelessWidget {
                       context: context,
                       title: "Change Password",
                       imagePath: ImageUtils.changePasswordImage,
-                      onTap: () async {},
+                      onTap: () async {
+                        Get.off(()=>ProfileChangePasswordView(),preventDuplicates: false);
+                      },
                     ),
 
 
@@ -70,7 +74,9 @@ class ProfileView extends StatelessWidget {
                       context: context,
                       title: "Notification Manage",
                       imagePath: ImageUtils.notificationManageImage,
-                      onTap: () async {},
+                      onTap: () async {
+                        Get.off(()=>ProfileNotificationView(),preventDuplicates: false);
+                      },
                     ),
 
 
@@ -120,7 +126,9 @@ class ProfileView extends StatelessWidget {
                       context: context,
                       title: "Delete Profile",
                       imagePath: ImageUtils.deleteProfileImage,
-                      onTap: () async {},
+                      onTap: () async {
+                        ProfileDialogBoxWidget().deleteProfileDialog(context: context);
+                      },
                     ),
 
 
@@ -132,7 +140,7 @@ class ProfileView extends StatelessWidget {
                       title: "Log Out",
                       imagePath: ImageUtils.editProfileImage,
                       onTap: () async {
-                        Get.off(()=>UserLoginView(),preventDuplicates: false);
+                        ProfileDialogBoxWidget().logOutDialog(context: context);
                       },
                     ),
 

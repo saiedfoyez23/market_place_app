@@ -237,6 +237,7 @@ class UserLoginView extends StatelessWidget {
                         text: "Login with apple",
                         borderColor: ColorUtils.orange119,
                         borderWidth: 1,
+                        textSize: 24,
                       ),
 
 
@@ -249,6 +250,7 @@ class UserLoginView extends StatelessWidget {
                         text: "Login with Google",
                         borderColor: ColorUtils.orange119,
                         borderWidth: 1,
+                        textSize: 24
                       ),
 
 

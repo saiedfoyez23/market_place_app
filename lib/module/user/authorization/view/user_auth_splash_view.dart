@@ -68,6 +68,7 @@ class UserAuthSplashView extends StatelessWidget {
                       onPressed: () async {
                         Get.off(()=>UserLoginView(),preventDuplicates: false);
                       },
+                      textSize: 24,
                       iconPath: "",
                       text: "Sign In",
                       isIcon: false,

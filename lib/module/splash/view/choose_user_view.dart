@@ -65,6 +65,8 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
+                        descriptionFontSize: 20,
+                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Customer");
                         },
@@ -81,6 +83,8 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
+                        descriptionFontSize: 20,
+                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Planner");
                         },
@@ -97,6 +101,8 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
+                        descriptionFontSize: 20,
+                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Vendor");
                         },

@@ -33,11 +33,10 @@ class ProfileViewButton {
       child: TextButton(
         onPressed: onTap,
         style: TextButton.styleFrom(
-          padding: padding ??
-              EdgeInsets.symmetric(
-                vertical: 16.vpm(context),
-                horizontal: 16.hpm(context),
-              ),
+          padding: padding ?? EdgeInsets.symmetric(
+            vertical: 16.vpm(context),
+            horizontal: 16.hpm(context),
+          ),
           shadowColor: Colors.transparent,
           overlayColor: Colors.transparent,
         ),
@@ -59,7 +58,7 @@ class ProfileViewButton {
               child: TextHelperClass.headingTextWithoutWidth(
                 context: context,
                 alignment: Alignment.centerLeft,
-                fontSize: fontSize ?? 18,
+                fontSize: fontSize?.sp(context) ?? 20.sp(context),
                 fontWeight: fontWeight ?? FontWeight.w400,
                 textColor: textColor ?? ColorUtils.black64,
                 text: title,

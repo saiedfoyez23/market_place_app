@@ -25,7 +25,7 @@ class ImageUtils {
   static const String unselectMyBookingImage = "image/unselect_my_booking_image.png";
   static const String unselectProfileImage = "image/unselect_profile_image.png";
   static const String unselectWishlistImage = "image/unselect_wishlist_image.png";
-  static const String noImage = "image/no_image.jpg";
+  static const String noImage = "image/no_image.png";
   static const String changePasswordImage = "image/change_password_image.png";
   static const String deleteProfileImage = "image/delete_profile_image.png";
   static const String editProfileImage = "image/edit_profile_image.png";
@@ -35,5 +35,6 @@ class ImageUtils {
   static const String termsAndConditionImage = "image/terms_and_condition_image.png";
   static const String downImage = "image/down_image.png";
   static const String leftImage = "image/left_image.png";
+  static const String editImage = "image/edit_image.png";
 
 }

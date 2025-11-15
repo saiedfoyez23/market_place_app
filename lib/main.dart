@@ -18,6 +18,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent,),
+        switchTheme: SwitchThemeData(
+          trackColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return Colors.green;
+            } else {
+              return Colors.grey.shade300;
+            }
+          }),
+        ),
+        primarySwatch: Colors.blue,
       ),
       home: SplashView(),
     );
