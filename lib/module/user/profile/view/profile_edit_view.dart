@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 class ProfileEditView extends StatelessWidget {
@@ -50,7 +51,8 @@ class ProfileEditView extends StatelessWidget {
                             horizontalPadding: 2.vpm(context),
                             backgroundColor: ColorUtils.orange213,
                             radius: 75.r(context),
-                            imageAsset: ImageUtils.noImage,
+                            imageAsset: profileEditController.imageFile.value.path != "" ? null : ImageUtils.noImage,
+                            imageFile: profileEditController.imageFile.value.path == "" ? null : profileEditController.imageFile.value.path,
                           ),
 
 
@@ -61,7 +63,85 @@ class ProfileEditView extends StatelessWidget {
                             right: 12.w(context),
                             child: InkWell(
                               onTap: () async {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false, // user must tap a button
+                                  builder: (context) {
+                                    return Dialog(
+                                      insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.r(context)),
+                                      ),
+                                      child: IntrinsicHeight(
+                                        child: Container(
+                                          width: 428.w(context),
+                                          decoration: BoxDecoration(
+                                            color: ColorUtils.white238,
+                                            borderRadius: BorderRadius.circular(20.r(context)),
+                                          ),
+                                          padding: EdgeInsets.fromLTRB(
+                                            16.lpm(context),
+                                            20.tpm(context),
+                                            16.rpm(context),
+                                            20.bpm(context),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              /// ===== Title Text =====
 
+                                              TextHelperClass.headingTextWithoutWidth(
+                                                context: context,
+                                                alignment: Alignment.center,
+                                                textAlign: TextAlign.center,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.w600,
+                                                textColor: ColorUtils.black64,
+                                                text: "Add Picture",
+                                              ),
+
+
+                                              SpaceHelperWidget.v(32.h(context)),
+
+
+                                              ButtonHelperWidget.customButtonWidget(
+                                                context: context,
+                                                onPressed: () async {
+                                                  await profileEditController.pickImage(source: ImageSource.gallery, context: context);
+                                                },
+                                                text: "Choose Gallery",
+                                                borderRadius: 16,
+                                                backgroundColor: ColorUtils.white255,
+                                                fontWeight: FontWeight.w600,
+                                                textColor: ColorUtils.black48,
+                                                fontSize: 20,
+                                              ),
+
+
+                                              SpaceHelperWidget.v(10.h(context)),
+
+
+                                              ButtonHelperWidget.customButtonWidget(
+                                                context: context,
+                                                onPressed: () async {
+                                                  await profileEditController.pickImage(source: ImageSource.camera, context: context);
+                                                },
+                                                text: "Choose Camera",
+                                                borderRadius: 16,
+                                                backgroundColor: ColorUtils.white255,
+                                                fontWeight: FontWeight.w600,
+                                                textColor: ColorUtils.black48,
+                                                fontSize: 20,
+                                              ),
+
+
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               child: ImageHelperWidget.assetImageWidget(
                                 context: context,
