@@ -19,6 +19,10 @@ class ProfileDialogBoxWidget {
           child: IntrinsicHeight(
             child: Container(
               width: 428.w(context),
+              decoration: BoxDecoration(
+                color: ColorUtils.white255,
+                borderRadius: BorderRadius.circular(20.r(context)),
+              ),
               padding: EdgeInsets.fromLTRB(
                 16.lpm(context),
                 20.tpm(context),
@@ -111,6 +115,10 @@ class ProfileDialogBoxWidget {
           child: IntrinsicHeight(
             child: Container(
               width: 428.w(context),
+              decoration: BoxDecoration(
+                color: ColorUtils.white255,
+                borderRadius: BorderRadius.circular(20.r(context)),
+              ),
               padding: EdgeInsets.fromLTRB(
                 16.lpm(context),
                 20.tpm(context),
@@ -167,7 +175,7 @@ class ProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Get.off(()=>UserLoginView(),preventDuplicates: false);
+                            Get.offAll(()=>UserLoginView());
                           },
                           text: "Yes",
                           borderRadius: 40,

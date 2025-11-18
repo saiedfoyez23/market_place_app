@@ -162,7 +162,7 @@ class WishlistPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: const Center(
-        child: Text('🛒 Wishlist Page', style: TextStyle(fontSize: 24)),
+        child: Text('🛒 wishlist Page', style: TextStyle(fontSize: 24)),
       ),
     );
   }

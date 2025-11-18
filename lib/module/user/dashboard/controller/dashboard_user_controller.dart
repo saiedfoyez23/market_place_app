@@ -30,15 +30,15 @@ class DashboardUserController extends GetxController {
     {'unselected': ImageUtils.unselectHomeImage, 'select': ImageUtils.selectHomeImage, 'label': 'Home'},
     {'unselected': ImageUtils.unselectMyBookingImage, 'select': ImageUtils.selectMyBookingImage, 'label': 'My Booking'},
     {'unselected': ImageUtils.unselectMessageImage, 'select': ImageUtils.selectMessageImage, 'label': 'Message'},
-    {'unselected': ImageUtils.unselectWishlistImage, 'select': ImageUtils.selectWishlistImage, 'label': 'Wishlist'},
+    {'unselected': ImageUtils.unselectWishlistImage, 'select': ImageUtils.selectWishlistImage, 'label': 'wishlist'},
     {'unselected': ImageUtils.unselectProfileImage, 'select': ImageUtils.selectProfileImage, 'label': 'Profile'},
   ].obs;
 
   RxList<Widget> pages = [
     HomePage(),
     BookingPage(),
-    MessagePage(),
-    WishlistPage(),
+    MessageView(),
+    WishlistView(),
     ProfileView(),
   ].obs;
 

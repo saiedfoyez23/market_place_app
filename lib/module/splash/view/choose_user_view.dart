@@ -121,9 +121,11 @@ class ChooseUserView extends StatelessWidget {
                         context: context,
                         onPressed: () async {
                           if(chooseUserController.chooseUseRole.value == "Vendor") {
-                            Get.off(()=>VendorOnboardingView(),preventDuplicates: false);
+                            //Get.off(()=>VendorOnboardingView(),preventDuplicates: false);
+                            Get.off(()=>UserOnboardingView(),preventDuplicates: false);
                           } else if(chooseUserController.chooseUseRole.value == "Planner") {
-                            Get.off(()=>PlanerOnboardingView(),preventDuplicates: false);
+                            //Get.off(()=>PlanerOnboardingView(),preventDuplicates: false);
+                            Get.off(()=>UserOnboardingView(),preventDuplicates: false);
                           } else if(chooseUserController.chooseUseRole.value == "Customer") {
                             Get.off(()=>UserOnboardingView(),preventDuplicates: false);
                           }

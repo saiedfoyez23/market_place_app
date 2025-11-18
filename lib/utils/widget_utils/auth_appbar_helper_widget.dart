@@ -131,6 +131,7 @@ class MainPageAppBarHelperWidget extends StatelessWidget {
       pinned: pinned,
       primary: primary,
       floating: floating,
+      automaticallyImplyLeading: false,
       expandedHeight: expandedHeight.h(context),
       backgroundColor: backgroundColor,
       centerTitle: centerTitle,

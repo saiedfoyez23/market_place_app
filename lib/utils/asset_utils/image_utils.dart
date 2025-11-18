@@ -36,5 +36,11 @@ class ImageUtils {
   static const String downImage = "image/down_image.png";
   static const String leftImage = "image/left_image.png";
   static const String editImage = "image/edit_image.png";
+  static const String wishlistImage = "image/wishlist_image.png";
+  static const String notificationBellImage = "image/notification_bell_image.png";
+  static const String searchImage = "image/search_image.png";
+  static const String chatDocumentImage = "image/chat_document_image.png";
+  static const String chatEmojiImage = "image/chat_emoji_image.png";
+  static const String chatIconImage = "image/chat_icon_image.png";
 
 }

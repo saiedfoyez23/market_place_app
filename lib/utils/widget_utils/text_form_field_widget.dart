@@ -82,7 +82,7 @@ class TextFormFieldWidget {
     Color? borderColor,
     Color fillColor = ColorUtils.white243,
     double borderRadius = 10,
-    double fontSize = 16,
+    double fontSize = 18,
     int? maxLines = 1,
     int? minLines,
     FontWeight fontWeight = FontWeight.w400,
