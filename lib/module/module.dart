@@ -44,3 +44,6 @@ export 'vendor/onboarding/controller/vendor_onboarding_controller.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';
 export 'planer/onboarding/controller/planer_onboarding_controller.dart';
 export 'planer/onboarding/widget/planer_onboarding_widget.dart';
+export 'planer/authorization/view/planner_auth_splash_view.dart';
+export 'planer/authorization/view/planner_terms_and_conditions_view.dart';
+export 'planer/authorization/view/planner_privacy_policy_view.dart';

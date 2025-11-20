@@ -127,6 +127,12 @@ class PlanerOnboardingView extends StatelessWidget {
                           context: context,
                           onPressed: () async {
                             planerOnboardingController.pageController.value.jumpToPage((planerOnboardingController.index.value + 1));
+                            if(planerOnboardingController.index.value == 2) {
+                              planerOnboardingController.index.value = (planerOnboardingController.index.value + 1);
+                              if(planerOnboardingController.index.value > 2) {
+                                Get.off(()=>PlannerAuthSplashView(),preventDuplicates: false);
+                              }
+                            }
                           },
                           text: "Next",
                         ),
