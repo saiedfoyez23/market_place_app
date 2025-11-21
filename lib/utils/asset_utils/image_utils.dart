@@ -42,5 +42,18 @@ class ImageUtils {
   static const String chatDocumentImage = "image/chat_document_image.png";
   static const String chatEmojiImage = "image/chat_emoji_image.png";
   static const String chatIconImage = "image/chat_icon_image.png";
+  static const String selectPlannerAnalyticsImage = "image/planner_image/select_analytics_image.png";
+  static const String selectPlannerDashboardImage = "image/planner_image/select_dashboard_image.png";
+  static const String selectPlannerMessageImage = "image/planner_image/select_message_image.png";
+  static const String selectPlannerProfileImage = "image/planner_image/select_profile_image.png";
+  static const String selectPlannerProjectImage = "image/planner_image/select_project_image.png";
+  static const String selectPlannerVendorImage = "image/planner_image/select_vendor_image.png";
+  static const String unselectPlannerAnalyticsImage = "image/planner_image/unselect_analytics_image.png";
+  static const String unselectPlannerDashboardImage = "image/planner_image/unselect_dashboard_image.png";
+  static const String unselectPlannerMessageImage = "image/planner_image/unselect_message_image.png";
+  static const String unselectPlannerProfileImage = "image/planner_image/unselect_profile_image.png";
+  static const String unselectPlannerProjectImage = "image/planner_image/unselect_project_image.png";
+  static const String unselectPlannerVendorImage = "image/planner_image/unselect_vendor_image.png";
+
 
 }

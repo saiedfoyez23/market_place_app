@@ -66,7 +66,7 @@ class PlannerAuthSplashView extends StatelessWidget {
                     ButtonHelperWidget.customIconButtonWidgetAdventPro(
                       context: context,
                       onPressed: () async {
-                        //Get.off(()=>UserLoginView(),preventDuplicates: false);
+                        Get.off(()=>PlannerLoginView(),preventDuplicates: false);
                       },
                       textSize: 24,
                       iconPath: "",

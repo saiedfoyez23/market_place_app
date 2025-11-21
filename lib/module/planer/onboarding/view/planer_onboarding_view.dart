@@ -36,7 +36,9 @@ class PlanerOnboardingView extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                             child: ButtonHelperWidget.customButtonWidget(
                               context: context,
-                              onPressed: () async {},
+                              onPressed: () async {
+                                Get.off(()=>PlannerAuthSplashView(),preventDuplicates: false);
+                              },
                               text: "Skip",
                               padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
                               alignment: Alignment.centerRight,

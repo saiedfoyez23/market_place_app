@@ -92,6 +92,7 @@ class DashboardUserView extends StatelessWidget {
 
                   SpaceHelperWidget.v(4.h(context)),
 
+                  isSelected ?
                   TextHelperClass.headingTextWithoutWidth(
                     context: context,
                     alignment: Alignment.centerLeft,
@@ -99,7 +100,8 @@ class DashboardUserView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     textColor: isSelected ? ColorUtils.orange119 : ColorUtils.black64,
                     text: item['label'],
-                  ),
+                  ) :
+                  SizedBox.shrink(),
 
                   SpaceHelperWidget.v(8.h(context)),
 
