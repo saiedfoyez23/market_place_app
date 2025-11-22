@@ -54,6 +54,16 @@ class ImageUtils {
   static const String unselectPlannerProfileImage = "image/planner_image/unselect_profile_image.png";
   static const String unselectPlannerProjectImage = "image/planner_image/unselect_project_image.png";
   static const String unselectPlannerVendorImage = "image/planner_image/unselect_vendor_image.png";
-
-
+  static const String plannerChangePasswordImage = "image/planner_profile_image/change_password_image.png";
+  static const String plannerDeleteProfileImage = "image/planner_profile_image/delete_profile_image.png";
+  static const String plannerEditProfileImage = "image/planner_profile_image/edit_profile_image.png";
+  static const String plannerFaqImage = "image/planner_profile_image/faq_image.png";
+  static const String plannerLogOutImage = "image/planner_profile_image/log_out_image.png";
+  static const String plannerManageSubscriptionImage = "image/planner_profile_image/manage_subscription_image.png";
+  static const String plannerNotificationManageImage = "image/planner_profile_image/notification_manage_image.png";
+  static const String plannerPortfolioImage = "image/planner_profile_image/portfolio_image.png";
+  static const String plannerPrivacyAndPolicyImage = "image/planner_profile_image/privacy_and_policy_image.png";
+  static const String plannerServicesImage = "image/planner_profile_image/services_image.png";
+  static const String plannerTermsAndConditionImage = "image/planner_profile_image/terms_and_condition_image.png";
+  static const String coverImage = "image/cover_image.png";
 }

@@ -25,6 +25,31 @@ class ImageHelperWidget {
   }
 
 
+  static Widget styledAssetImage({
+    required BuildContext context,
+    required String imageString,
+    required double height,
+    required double width,
+    BoxFit fit = BoxFit.cover,
+    Color containerColor = ColorUtils.white217,
+    double borderRadius = 10,
+  }) {
+    return Container(
+      height: height.h(context),
+      width: width.w(context),
+      decoration: BoxDecoration(
+        color: containerColor,
+        borderRadius: BorderRadius.circular(borderRadius.r(context)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Image.asset(
+        imageString,
+        fit: fit,
+      ),
+    );
+  }
+
+
   static Widget circleImageHelperWidget({
     double? width,
     double? height,

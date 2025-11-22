@@ -20,7 +20,6 @@ class DashboardPlannerController extends GetxController {
   }
 
 
-
   Future<void> changeIndex({required int index}) async {
     selectedIndex.value = index;
   }
@@ -41,7 +40,7 @@ class DashboardPlannerController extends GetxController {
     PlannerVendorPage(),
     PlannerMessageView(),
     PlannerAnalyticsPage(),
-    PlannerProfilePage(),
+    PlannerProfileView(),
   ].obs;
 
 

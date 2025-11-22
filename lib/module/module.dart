@@ -63,3 +63,5 @@ export 'planer/message/controller/planner_message_controller.dart';
 export 'planer/message/view/planner_chat_view.dart';
 export 'planer/message/controller/planner_chat_controller.dart';
 export 'planer/message/widget/planner_chat_widget.dart';
+export 'planer/profile/view/planner_profile_view.dart';
+export 'planer/profile/widget/planner_profile_view_button.dart';
