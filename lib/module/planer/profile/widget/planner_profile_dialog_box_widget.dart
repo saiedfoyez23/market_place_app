@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/planer/authorization/view/planner_login_view.dart';
 import 'package:marketplaceapp/utils/utils.dart';
-import 'package:marketplaceapp/module/module.dart';
 
+class PlannerProfileDialogBoxWidget {
 
-class ProfileDialogBoxWidget {
-
-  void deleteProfileDialog({required BuildContext context}) {
+  void plannerDeleteProfileDialog({required BuildContext context}) {
     showDialog(
       context: context,
       barrierDismissible: false, // user must tap a button
@@ -46,9 +45,6 @@ class ProfileDialogBoxWidget {
 
 
                   SpaceHelperWidget.v(32.h(context)),
-
-
-
 
 
                   /// ===== Buttons Row =====
@@ -102,7 +98,7 @@ class ProfileDialogBoxWidget {
   }
 
 
-  void logOutDialog({required BuildContext context}) {
+  void plannerLogOutDialog({required BuildContext context}) {
     showDialog(
       context: context,
       barrierDismissible: false, // user must tap a button
@@ -175,7 +171,7 @@ class ProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Get.offAll(()=>UserLoginView());
+                            Get.offAll(()=>PlannerLoginView());
                           },
                           text: "Yes",
                           borderRadius: 40,
@@ -196,5 +192,6 @@ class ProfileDialogBoxWidget {
       },
     );
   }
+
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
@@ -78,7 +79,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Change Password",
                         imagePath: ImageUtils.plannerChangePasswordImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileChangePasswordView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -155,7 +158,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Privacy & Policy",
                         imagePath: ImageUtils.plannerPrivacyAndPolicyImage,
-                        onTap: () async {},
+                        onTap: () async {
+
+                        },
                       ),
         
         
@@ -166,7 +171,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Delete Profile",
                         imagePath: ImageUtils.plannerDeleteProfileImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(context: context);
+                        },
                       ),
         
         
@@ -177,7 +184,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Log Out",
                         imagePath: ImageUtils.plannerLogOutImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          PlannerProfileDialogBoxWidget().plannerLogOutDialog(context: context);
+                        },
                       ),
         
         
