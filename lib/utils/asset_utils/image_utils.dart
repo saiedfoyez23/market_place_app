@@ -66,4 +66,10 @@ class ImageUtils {
   static const String plannerServicesImage = "image/planner_profile_image/services_image.png";
   static const String plannerTermsAndConditionImage = "image/planner_profile_image/terms_and_condition_image.png";
   static const String coverImage = "image/cover_image.png";
+  static const String portfolioImage1 = "image/planner_portfolio_image/portfolio_image_1.png";
+  static const String portfolioImage2 = "image/planner_portfolio_image/portfolio_image_2.png";
+  static const String portfolioImage3 = "image/planner_portfolio_image/portfolio_image_3.png";
+  static const String portfolioImage4 = "image/planner_portfolio_image/portfolio_image_4.png";
+  static const String portfolioImage5 = "image/planner_portfolio_image/portfolio_image_5.png";
+  static const String uploadIconImage = "image/upload_icon_image.png";
 }

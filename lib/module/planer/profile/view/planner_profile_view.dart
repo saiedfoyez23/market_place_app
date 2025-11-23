@@ -103,7 +103,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Portfolio",
                         imagePath: ImageUtils.plannerPortfolioImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfilePortfolioView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -125,7 +127,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "FAQ",
                         imagePath: ImageUtils.plannerFaqImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileFaqView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -136,7 +140,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Notification Manage",
                         imagePath: ImageUtils.plannerNotificationManageImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileNotificationView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -147,7 +153,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Terms & Condition",
                         imagePath: ImageUtils.plannerTermsAndConditionImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileTermsAndConditionView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -159,7 +167,7 @@ class PlannerProfileView extends StatelessWidget {
                         title: "Privacy & Policy",
                         imagePath: ImageUtils.plannerPrivacyAndPolicyImage,
                         onTap: () async {
-
+                          Get.off(()=>PlannerProfilePrivacyAndPolicyView(),preventDuplicates: false);
                         },
                       ),
         

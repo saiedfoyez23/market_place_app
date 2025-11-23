@@ -35,6 +35,7 @@ dependencies:
   google_fonts: ^6.3.2
   pinput: ^5.0.2
   image_picker: ^1.2.1
+  file_picker: ^10.3.7
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,7 @@ flutter:
     - image/
     - image/planner_image/
     - image/planner_profile_image/
+    - image/planner_portfolio_image/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
