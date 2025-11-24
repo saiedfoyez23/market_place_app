@@ -72,4 +72,6 @@ class ImageUtils {
   static const String portfolioImage4 = "image/planner_portfolio_image/portfolio_image_4.png";
   static const String portfolioImage5 = "image/planner_portfolio_image/portfolio_image_5.png";
   static const String uploadIconImage = "image/upload_icon_image.png";
+  static const String imageUploadIconImage = "image/image_upload_icon_image.png";
+  static const String editProfileWhiteImage = "image/edit_profile_white_image.png";
 }

@@ -125,7 +125,10 @@ class ButtonHelperWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          padding: padding ?? EdgeInsets.all(14.5.r(context)),
+          padding: padding ?? EdgeInsets.symmetric(
+            vertical: 14.5.vpm(context),
+            horizontal: 14.5.hpm(context),
+          ),
           shadowColor: Colors.transparent,
           overlayColor: Colors.transparent,
         ),
@@ -167,7 +170,10 @@ class ButtonHelperWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          padding: padding ?? EdgeInsets.all(14.5.r(context)),
+          padding: padding ?? EdgeInsets.symmetric(
+            vertical: 14.5.vpm(context),
+            horizontal: 14.5.hpm(context),
+          ),
           shadowColor: Colors.transparent,
           overlayColor: Colors.transparent,
         ),
@@ -255,10 +261,12 @@ class ButtonHelperWidget {
     required BuildContext context,
     required VoidCallback onPressed,
     required String iconPath,
-    required String text,
+    String? text,
     Widget? textWidget,
     bool isIcon = true,
     double height = 56,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
     double borderRadius = 10,
     Color? borderColor,
     double? borderWidth,
@@ -290,8 +298,8 @@ class ButtonHelperWidget {
           overlayColor: Colors.transparent,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
           children: [
             isIcon == true ? ImageHelperWidget.assetImageWidget(
               context: context,
@@ -309,7 +317,7 @@ class ButtonHelperWidget {
               fontSize: textSize,
               fontWeight: fontWeight,
               textColor: textColor,
-              text: text,
+              text: text!,
             ),
           ],
         ),

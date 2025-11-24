@@ -9,3 +9,4 @@ export 'package:marketplaceapp/utils/widget_utils/rich_text_helper_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/text_form_field_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/auth_appbar_helper_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/custom_helper_toggle_switch.dart';
+export 'package:marketplaceapp/utils/widget_utils/dropdown_helper_widget.dart';

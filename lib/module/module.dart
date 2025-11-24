@@ -56,6 +56,14 @@ export 'planer/authorization/controller/planner_forgot_password_otp_controller.d
 export 'planer/authorization/view/planner_create_new_password_view.dart';
 export 'planer/authorization/controller/planner_create_new_password_controller.dart';
 export 'planer/authorization/view/planner_create_new_password_success_view.dart';
+export 'planer/authorization/view/planner_create_account_view.dart';
+export 'planer/authorization/controller/planner_create_account_controller.dart';
+export 'planer/authorization/view/planner_create_account_terms_and_conditions_view.dart';
+export 'planer/authorization/view/planner_create_account_set_up_profile_view.dart';
+export 'planer/authorization/view/planner_create_account_kyc_verification_view.dart';
+export 'planer/authorization/view/planner_create_account_pick_image_view.dart';
+export 'planer/authorization/view/planner_create_account_otp_view.dart';
+export 'planer/authorization/controller/planner_create_account_otp_controller.dart';
 export 'planer/dashboard/view/dashboard_planner_view.dart';
 export 'planer/dashboard/controller/dashboard_planner_controller.dart';
 export 'planer/message/view/planner_message_view.dart';

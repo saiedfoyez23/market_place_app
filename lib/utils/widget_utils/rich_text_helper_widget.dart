@@ -61,6 +61,59 @@ class RichTextHelperWidget {
 
 
 
+  static Widget headingWithoutWidthRichText({
+    required BuildContext context,
+    required List<TextSpan> textSpans,
+    Alignment alignment = Alignment.centerLeft,
+    Color containerColor = Colors.transparent,
+    TextAlign textAlign = TextAlign.start,
+    double fontSize = 24,
+    Color defaultTextColor = ColorUtils.black48,
+    FontWeight defaultFontWeight = FontWeight.w700,
+    FontStyle defaultFontStyle = FontStyle.normal,
+    TextDirection? textDirection,
+    bool softWrap = true,
+  }) {
+    return Container(
+      alignment: alignment,
+      decoration: BoxDecoration(
+        color: containerColor,
+      ),
+      child: RichText(
+        textAlign: textAlign,
+        textDirection: textDirection,
+        softWrap: softWrap,
+        text: TextSpan(
+          children: textSpans.map((span) {
+            final TextStyle? existingStyle = span.style;
+            return TextSpan(
+              text: span.text,
+              style: GoogleFonts.poppins(
+                fontSize: (existingStyle?.fontSize ?? fontSize).sp(context),
+                color: existingStyle?.color ?? defaultTextColor,
+                fontWeight: existingStyle?.fontWeight ?? defaultFontWeight,
+                fontStyle: existingStyle?.fontStyle ?? defaultFontStyle,
+                height: existingStyle?.height,
+                letterSpacing: existingStyle?.letterSpacing,
+                wordSpacing: existingStyle?.wordSpacing,
+                decoration: existingStyle?.decoration,
+                decorationColor: existingStyle?.decorationColor,
+                decorationStyle: existingStyle?.decorationStyle,
+                decorationThickness: existingStyle?.decorationThickness,
+                backgroundColor: existingStyle?.backgroundColor,
+              ),
+              recognizer: span.recognizer,
+              children: span.children,
+              semanticsLabel: span.semanticsLabel,
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+
+
 
 }
 

@@ -25,27 +25,39 @@ class ImageHelperWidget {
   }
 
 
-  static Widget styledAssetImage({
+  static Widget styledImage({
     required BuildContext context,
-    required String imageString,
-    required double height,
-    required double width,
+    double? height,
+    double? width,
     BoxFit fit = BoxFit.cover,
     Color containerColor = ColorUtils.white217,
     double borderRadius = 10,
+    String? imageAsset,
+    String? imageUrl,
+    String? imageFile,
   }) {
+    ImageProvider? provider;
+
+    if (imageFile != null && imageFile.isNotEmpty) {
+      provider = FileImage(File(imageFile));
+    } else if (imageUrl != null && imageUrl.isNotEmpty) {
+      provider = NetworkImage(imageUrl);
+    } else if (imageAsset != null && imageAsset.isNotEmpty) {
+      provider = AssetImage(imageAsset);
+    }
+
     return Container(
-      height: height.h(context),
-      width: width.w(context),
+      height: height?.h(context),
+      width: width?.w(context),
       decoration: BoxDecoration(
         color: containerColor,
         borderRadius: BorderRadius.circular(borderRadius.r(context)),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Image.asset(
-        imageString,
+      child: provider != null ? Image(
+        image: provider,
         fit: fit,
-      ),
+      ) : const SizedBox(), // Empty placeholder if no image
     );
   }
 

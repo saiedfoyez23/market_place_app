@@ -36,9 +36,9 @@ class PlannerProfileView extends StatelessWidget {
                           children: [
 
 
-                            ImageHelperWidget.styledAssetImage(
+                            ImageHelperWidget.styledImage(
                               context: context,
-                              imageString: ImageUtils.coverImage,
+                              imageAsset: ImageUtils.coverImage,
                               height: 250.h(context),
                               width: 428.w(context),
                             ),

@@ -55,7 +55,9 @@ class PlannerAuthSplashView extends StatelessWidget {
 
                     ButtonHelperWidget.customButtonWidgetAdventPro(
                       context: context,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Get.off(()=>PlannerCreateAccountView(),preventDuplicates: false);
+                      },
                       text: "Sign Up",
                     ),
 
