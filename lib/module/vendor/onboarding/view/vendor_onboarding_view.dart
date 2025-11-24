@@ -36,7 +36,9 @@ class VendorOnboardingView extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                             child: ButtonHelperWidget.customButtonWidget(
                               context: context,
-                              onPressed: () async {},
+                              onPressed: () async {
+                                Get.off(()=>VendorAuthSplashView(),preventDuplicates: false);
+                              },
                               text: "Skip",
                               padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
                               alignment: Alignment.centerRight,
@@ -127,6 +129,12 @@ class VendorOnboardingView extends StatelessWidget {
                           context: context,
                           onPressed: () async {
                             vendorOnboardingController.pageController.value.jumpToPage((vendorOnboardingController.index.value + 1));
+                            if(vendorOnboardingController.index.value == 2) {
+                              vendorOnboardingController.index.value = (vendorOnboardingController.index.value + 1);
+                              if(vendorOnboardingController.index.value > 2) {
+                                Get.off(()=>VendorAuthSplashView(),preventDuplicates: false);
+                              }
+                            }
                           },
                           text: "Next",
                         ),
