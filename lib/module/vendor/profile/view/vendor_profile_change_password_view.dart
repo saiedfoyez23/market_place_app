@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 
+class VendorProfileChangePasswordView extends StatelessWidget {
+  VendorProfileChangePasswordView({super.key});
 
-class ProfileChangePasswordView extends StatelessWidget {
-  ProfileChangePasswordView({super.key});
-
-  final ProfileChangePasswordController profileChangePasswordController = Get.put(ProfileChangePasswordController());
+  final VendorProfileChangePasswordController vendorProfileChangePasswordController = Get.put(VendorProfileChangePasswordController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class ProfileChangePasswordView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>DashboardUserView(index: 4,),preventDuplicates: false);
+                  Get.off(()=>DashboardVendorView(index: 5),preventDuplicates: false);
                 },
                 title: "Change Password",
               ),
@@ -55,19 +54,19 @@ class ProfileChangePasswordView extends StatelessWidget {
                       TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter old password",
-                          obscureText: profileChangePasswordController.isOldObscure.value,
-                          controller: profileChangePasswordController.oldPasswordController.value,
+                          obscureText: vendorProfileChangePasswordController.isOldObscure.value,
+                          controller: vendorProfileChangePasswordController.oldPasswordController.value,
                           keyboardType: TextInputType.emailAddress,
                           suffixIcon: InkWell(
                             onTap: () async {
-                              if(profileChangePasswordController.isOldObscure.value == true) {
-                                profileChangePasswordController.isOldObscure.value = false;
+                              if(vendorProfileChangePasswordController.isOldObscure.value == true) {
+                                vendorProfileChangePasswordController.isOldObscure.value = false;
                               } else {
-                                profileChangePasswordController.isOldObscure.value = true;
+                                vendorProfileChangePasswordController.isOldObscure.value = true;
                               }
                             },
                             child: Icon(
-                              profileChangePasswordController.isOldObscure.value == true ? Icons.visibility_off : Icons.visibility,
+                              vendorProfileChangePasswordController.isOldObscure.value == true ? Icons.visibility_off : Icons.visibility,
                               size: 24.r(context),
                               color: ColorUtils.black96,
                             ),
@@ -94,19 +93,19 @@ class ProfileChangePasswordView extends StatelessWidget {
                       TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter new password",
-                          obscureText: profileChangePasswordController.isObscure.value,
-                          controller: profileChangePasswordController.passwordController.value,
+                          obscureText: vendorProfileChangePasswordController.isObscure.value,
+                          controller: vendorProfileChangePasswordController.passwordController.value,
                           keyboardType: TextInputType.emailAddress,
                           suffixIcon: InkWell(
                             onTap: () async {
-                              if(profileChangePasswordController.isObscure.value == true) {
-                                profileChangePasswordController.isObscure.value = false;
+                              if(vendorProfileChangePasswordController.isObscure.value == true) {
+                                vendorProfileChangePasswordController.isObscure.value = false;
                               } else {
-                                profileChangePasswordController.isObscure.value = true;
+                                vendorProfileChangePasswordController.isObscure.value = true;
                               }
                             },
                             child: Icon(
-                              profileChangePasswordController.isObscure.value == true ? Icons.visibility_off : Icons.visibility,
+                              vendorProfileChangePasswordController.isObscure.value == true ? Icons.visibility_off : Icons.visibility,
                               size: 24.r(context),
                               color: ColorUtils.black96,
                             ),
@@ -133,19 +132,19 @@ class ProfileChangePasswordView extends StatelessWidget {
                       TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter confirm password",
-                          obscureText: profileChangePasswordController.isConfirmObscure.value,
-                          controller: profileChangePasswordController.confirmPasswordController.value,
+                          obscureText: vendorProfileChangePasswordController.isConfirmObscure.value,
+                          controller: vendorProfileChangePasswordController.confirmPasswordController.value,
                           keyboardType: TextInputType.emailAddress,
                           suffixIcon: InkWell(
                             onTap: () async {
-                              if(profileChangePasswordController.isConfirmObscure.value == true) {
-                                profileChangePasswordController.isConfirmObscure.value = false;
+                              if(vendorProfileChangePasswordController.isConfirmObscure.value == true) {
+                                vendorProfileChangePasswordController.isConfirmObscure.value = false;
                               } else {
-                                profileChangePasswordController.isConfirmObscure.value = true;
+                                vendorProfileChangePasswordController.isConfirmObscure.value = true;
                               }
                             },
                             child: Icon(
-                              profileChangePasswordController.isConfirmObscure.value == true ? Icons.visibility_off : Icons.visibility,
+                              vendorProfileChangePasswordController.isConfirmObscure.value == true ? Icons.visibility_off : Icons.visibility,
                               size: 24.r(context),
                               color: ColorUtils.black96,
                             ),

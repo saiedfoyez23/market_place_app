@@ -11,7 +11,7 @@ class PlannerProfileChangePasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Obx(()=>SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
@@ -158,9 +158,7 @@ class PlannerProfileChangePasswordView extends StatelessWidget {
 
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
-                        onPressed: () async {
-                          Get.off(()=>CreateNewPasswordSuccessView(),preventDuplicates: false);
-                        },
+                        onPressed: () async {},
                         text: "Update",
                       ),
 
@@ -180,7 +178,7 @@ class PlannerProfileChangePasswordView extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

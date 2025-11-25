@@ -216,7 +216,7 @@ class ProfileEditView extends StatelessWidget {
 
                       TextFormFieldWidget.build(
                         context: context,
-                        hintText: "Enter your email",
+                        hintText: "Enter your phone number",
                         controller: profileEditController.phoneNumberController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),

@@ -3,11 +3,10 @@ import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
+class VendorProfileNotificationView extends StatelessWidget {
+  VendorProfileNotificationView({super.key});
 
-class PlannerProfileNotificationView extends StatelessWidget {
-  PlannerProfileNotificationView({super.key});
-
-  final PlannerProfileNotificationController plannerProfileNotificationController = Get.put(PlannerProfileNotificationController());
+  final VendorProfileNotificationController vendorProfileNotificationController = Get.put(VendorProfileNotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class PlannerProfileNotificationView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+                  Get.off(()=>DashboardVendorView(index: 5),preventDuplicates: false);
                 },
                 title: "Notification",
               ),
@@ -42,9 +41,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                       ProfileNotificationWidget.buildSettingRow(
                         title: "New Bookings",
                         subtitle: "Notify me about new booking requests.",
-                        value: plannerProfileNotificationController.newBookings.value,
+                        value: vendorProfileNotificationController.newBookings.value,
                         onChanged: (v) {
-                          plannerProfileNotificationController.newBookings.value = v;
+                          vendorProfileNotificationController.newBookings.value = v;
                         },
                         context: context,
                       ),
@@ -52,9 +51,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                       ProfileNotificationWidget.buildSettingRow(
                         title: "New Messages",
                         subtitle: "Notify me when I receive a new message.",
-                        value: plannerProfileNotificationController.newMessages.value,
+                        value: vendorProfileNotificationController.newMessages.value,
                         onChanged: (v) {
-                          plannerProfileNotificationController.newMessages.value = v;
+                          vendorProfileNotificationController.newMessages.value = v;
                         },
                         context: context,
                       ),
@@ -62,9 +61,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                       ProfileNotificationWidget.buildSettingRow(
                         title: "Booking Status Changes",
                         subtitle: "Notify me of confirmations or cancellations.",
-                        value: plannerProfileNotificationController.bookingStatus.value,
+                        value: vendorProfileNotificationController.bookingStatus.value,
                         onChanged: (v) {
-                          plannerProfileNotificationController.bookingStatus.value = v;
+                          vendorProfileNotificationController.bookingStatus.value = v;
                         },
                         context: context,
                       ),
@@ -72,9 +71,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                       ProfileNotificationWidget.buildSettingRow(
                         title: "New Reviews",
                         subtitle: "Notify me when a client leaves a review.",
-                        value: plannerProfileNotificationController.newReviews.value,
+                        value: vendorProfileNotificationController.newReviews.value,
                         onChanged: (v) {
-                          plannerProfileNotificationController.newReviews.value = v;
+                          vendorProfileNotificationController.newReviews.value = v;
                         },
                         context: context,
                       ),

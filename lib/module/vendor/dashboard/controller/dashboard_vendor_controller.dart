@@ -38,7 +38,7 @@ class DashboardVendorController extends GetxController {
     VendorBookingPage(),
     VendorMessageView(),
     VendorAnalyticsPage(),
-    VendorProfilePage(),
+    VendorProfileView(),
   ].obs;
 
 
