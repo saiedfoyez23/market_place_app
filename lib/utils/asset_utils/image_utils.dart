@@ -74,4 +74,21 @@ class ImageUtils {
   static const String uploadIconImage = "image/upload_icon_image.png";
   static const String imageUploadIconImage = "image/image_upload_icon_image.png";
   static const String editProfileWhiteImage = "image/edit_profile_white_image.png";
+  static const String pickFileImage = "image/pick_file_image.png";
+  static const String locationImage = "image/location_image.png";
+  static const String addImage = "image/add_image.png";
+  static const String serviceLoveImage = "image/service_love_image.png";
+  static const String blackRigthSignImage = "image/black_rigth_sign_image.png";
+  static const String selectVendorAnalyticsImage = "image/vendor_image/select_vendor_analytics_image.png";
+  static const String selectVendorBookingImage = "image/vendor_image/select_vendor_booking_image.png";
+  static const String selectVendorDashboardImage = "image/vendor_image/select_vendor_dashboard_image.png";
+  static const String selectVendorMessageImage = "image/vendor_image/select_vendor_message_image.png";
+  static const String selectVendorProfileImage = "image/vendor_image/select_vendor_profile_image.png";
+  static const String selectVendorServiceImage = "image/vendor_image/select_vendor_service_image.png";
+  static const String unselectVendorAnalyticsImage = "image/vendor_image/unselect_vendor_analytics_image.png";
+  static const String unselectVendorBookingImage = "image/vendor_image/unselect_vendor_booking_image.png";
+  static const String unselectVendorDashboardImage = "image/vendor_image/unselect_vendor_dashboard_image.png";
+  static const String unselectVendorMessageImage = "image/vendor_image/unselect_vendor_message_image.png";
+  static const String unselectVendorProfileImage = "image/vendor_image/unselect_vendor_profile_image.png";
+  static const String unselectVendorServiceImage = "image/vendor_image/unselect_vendor_service_image.png";
 }

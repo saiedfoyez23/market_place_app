@@ -3,7 +3,6 @@ import 'package:marketplaceapp/module/module.dart';
 
 class SplashController extends GetxController {
 
-
   @override
   void onInit() {
     // TODO: implement onInit

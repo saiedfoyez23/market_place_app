@@ -55,7 +55,9 @@ class UserAuthSplashView extends StatelessWidget {
 
                     ButtonHelperWidget.customButtonWidgetAdventPro(
                       context: context,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Get.off(()=>UserCreateAccountView(),preventDuplicates: false);
+                      },
                       text: "Sign Up",
                     ),
 

@@ -68,7 +68,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Edit Profile",
                         imagePath: ImageUtils.plannerEditProfileImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileEditView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -92,7 +94,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Services",
                         imagePath: ImageUtils.plannerServicesImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+                        },
                       ),
         
         
@@ -116,7 +120,9 @@ class PlannerProfileView extends StatelessWidget {
                         context: context,
                         title: "Manage Subscription",
                         imagePath: ImageUtils.plannerManageSubscriptionImage,
-                        onTap: () async {},
+                        onTap: () async {
+                          Get.off(()=>PlannerProfileManageSubscriptionView(),preventDuplicates: false);
+                        },
                       ),
         
         

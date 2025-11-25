@@ -272,7 +272,7 @@ class UserLoginView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: ColorUtils.blue96,
                             recognizer: TapGestureRecognizer()..onTap = () {
-
+                              Get.off(()=>UserCreateAccountView(),preventDuplicates: false);
                             },
                           ).toTextSpan(),
                         ],
