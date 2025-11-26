@@ -33,7 +33,7 @@ class DashboardVendorController extends GetxController {
   ].obs;
 
   RxList<Widget> pages = [
-    VendorDashboardPage(),
+    VendorHomeDashboardView(),
     VendorServicesView(),
     VendorBookingPage(),
     VendorMessageView(),

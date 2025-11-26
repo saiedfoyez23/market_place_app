@@ -91,4 +91,28 @@ class ImageUtils {
   static const String unselectVendorMessageImage = "image/vendor_image/unselect_vendor_message_image.png";
   static const String unselectVendorProfileImage = "image/vendor_image/unselect_vendor_profile_image.png";
   static const String unselectVendorServiceImage = "image/vendor_image/unselect_vendor_service_image.png";
+  static const String activeBookingsImage = "image/vendor_dashboard_image/active_bookings_image.png";
+  static const String confirmedImage = "image/vendor_dashboard_image/confirmed_image.png";
+  static const String monthlyRevenueImage = "image/vendor_dashboard_image/monthly_revenue_image.png";
+  static const String totalBookingImage = "image/vendor_dashboard_image/total_booking_image.png";
+  static const String totalEarningsImage = "image/vendor_dashboard_image/total_earnings_image.png";
+  static const String upcomingBookingImage = "image/vendor_dashboard_image/upcoming_booking_image.png";
+  static const String whiteNotificationDeleteImage = "image/white_notification_delete_image.png";
+  static const String readNotificationImage = "image/read_notification_image.png";
+  static const String unreadNotificationImage = "image/unread_notification_image.png";
+  static const String plannerActiveProjectImage = "image/planner_dashboard_image/active_project_image.png";
+  static const String plannerNewLeadsImage = "image/planner_dashboard_image/new_leads_image.png";
+  static const String plannerTotalEarningsImage = "image/planner_dashboard_image/total_earnings_image.png";
+  static const String plannerUpcomingEventImage = "image/planner_dashboard_image/upcoming_event_image.png";
+  static const String recentActivitiesImage1 = "image/planner_dashboard_image/recent_activities_image_1.png";
+  static const String recentActivitiesImage2 = "image/planner_dashboard_image/recent_activities_image_2.png";
+  static const String recentActivitiesImage3 = "image/planner_dashboard_image/recent_activities_image_3.png";
+  static const String categoryImage1 = "image/user_dashboard_image/category_image_1.png";
+  static const String categoryImage2 = "image/user_dashboard_image/category_image_2.png";
+  static const String categoryImage3 = "image/user_dashboard_image/category_image_3.png";
+  static const String categoryImage4 = "image/user_dashboard_image/category_image_4.png";
+  static const String filterSearchImage = "image/user_dashboard_image/filter_search_image.png";
+  static const String recomendedImage = "image/user_dashboard_image/recomended_image.png";
+  static const String userDashboardImage = "image/user_dashboard_image/user_dashboard_image.png";
+
 }
