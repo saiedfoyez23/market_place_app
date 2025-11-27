@@ -114,5 +114,18 @@ class ImageUtils {
   static const String filterSearchImage = "image/user_dashboard_image/filter_search_image.png";
   static const String recomendedImage = "image/user_dashboard_image/recomended_image.png";
   static const String userDashboardImage = "image/user_dashboard_image/user_dashboard_image.png";
+  static const String grayRightSignImage = "image/gray_right_sign_image.png";
+  static const String feedbackSuccessImage = "image/feedback_image/feedback_success_image.png";
+  static const String greateQuality = "image/feedback_image/greate_quality.png";
+  static const String helpfulSupportImage = "image/feedback_image/helpful_support_image.png";
+  static const String likeIt = "image/feedback_image/like_it.png";
+  static const String lovedTheBehaveImage = "image/feedback_image/loved_the_behave_image.png";
+  static const String minorIssueNoUnhappyImage = "image/feedback_image/minor_issue_no_unhappy_image.png";
+  static const String unsatisfiedImage = "image/feedback_image/unsatisfied.png";
+  static const String wouldExchangeAgainImage = "image/feedback_image/would_exchange_again.png";
+  static const String offerImage = "image/offer_image.png";
+  static const String vendorLocationImage = "image/vendor_location_image.png";
+  static const String verifyImage = "image/verify_image.png";
 
 }
+

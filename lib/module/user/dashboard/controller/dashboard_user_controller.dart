@@ -36,7 +36,7 @@ class DashboardUserController extends GetxController {
 
   RxList<Widget> pages = [
     UserHomeDashboardView(),
-    BookingPage(),
+    UserBookingView(),
     MessageView(),
     WishlistView(),
     ProfileView(),
