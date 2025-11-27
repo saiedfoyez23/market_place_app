@@ -103,7 +103,7 @@ class PlannerVendorView extends StatelessWidget {
 
                   InkWell(
                     onTap: () async {
-                      //Get.off(()=>UserNotificationView(),preventDuplicates: false);
+                      Get.off(()=>PlannerOfferView(),preventDuplicates: false);
                     },
                     child: ImageHelperWidget.assetImageWidget(
                       context: context,
