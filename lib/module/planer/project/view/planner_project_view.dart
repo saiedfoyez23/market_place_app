@@ -307,11 +307,11 @@ class PlannerProjectView extends StatelessWidget {
           SpaceHelperWidget.v(15.h(context)),
 
 
-          ButtonHelperWidget.customButtonWidgetAdventPro(
-            context: context,
-            onPressed: () async {},
-            text: "Open Project",
-          ),
+          // ButtonHelperWidget.customButtonWidgetAdventPro(
+          //   context: context,
+          //   onPressed: () async {},
+          //   text: "Open Project",
+          // ),
 
         ],
       ),
