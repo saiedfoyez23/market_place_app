@@ -36,10 +36,10 @@ class DashboardPlannerController extends GetxController {
 
   RxList<Widget> pages = [
     PlannerHomeDashboardView(),
-    PlannerProjectPage(),
+    PlannerProjectView(),
     PlannerVendorView(),
     PlannerMessageView(),
-    PlannerAnalyticsPage(),
+    PlannerAnalyticsView(),
     PlannerProfileView(),
   ].obs;
 
