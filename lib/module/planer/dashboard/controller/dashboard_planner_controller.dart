@@ -24,14 +24,13 @@ class DashboardPlannerController extends GetxController {
     selectedIndex.value = index;
   }
 
-
   RxList<Map<String, dynamic>> items = [
     {'unselected': ImageUtils.unselectPlannerDashboardImage, 'select': ImageUtils.selectPlannerDashboardImage, 'label': 'Dashboard'},
     {'unselected': ImageUtils.unselectPlannerProjectImage, 'select': ImageUtils.selectPlannerProjectImage, 'label': 'Project'},
     {'unselected': ImageUtils.unselectPlannerVendorImage, 'select': ImageUtils.selectPlannerVendorImage, 'label': 'Vendor'},
     {'unselected': ImageUtils.unselectPlannerMessageImage, 'select': ImageUtils.selectPlannerMessageImage, 'label': 'Message'},
     {'unselected': ImageUtils.unselectPlannerAnalyticsImage, 'select': ImageUtils.selectPlannerAnalyticsImage, 'label': 'Analytics'},
-    {'unselected': ImageUtils.unselectPlannerProfileImage, 'select': ImageUtils.selectPlannerProjectImage, 'label': 'Profile'},
+    {'unselected': ImageUtils.unselectPlannerProfileImage, 'select': ImageUtils.selectPlannerProfileImage, 'label': 'Profile'},
   ].obs;
 
   RxList<Widget> pages = [
