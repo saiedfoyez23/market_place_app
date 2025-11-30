@@ -462,7 +462,7 @@ class PlannerVendorView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+                Get.off(()=>PlannerServiceDetailsView(),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,

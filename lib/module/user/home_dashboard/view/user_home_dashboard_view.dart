@@ -564,7 +564,9 @@ class UserHomeDashboardView extends StatelessWidget {
             height: 45.h(context),
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
-            onPressed: () async {},
+            onPressed: () async {
+              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+            },
             text:'View Details',
           ),
 
@@ -740,7 +742,9 @@ class UserHomeDashboardView extends StatelessWidget {
             height: 45.h(context),
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
-            onPressed: () async {},
+            onPressed: () async {
+              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+            },
             text:'View Details',
           ),
 
@@ -823,7 +827,9 @@ class UserHomeDashboardView extends StatelessWidget {
             height: 45.h(context),
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
-            onPressed: () async {},
+            onPressed: () async {
+              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+            },
             text:'View Details',
           ),
 
