@@ -196,3 +196,7 @@ export 'planer/project/controller/planner_create_new_project_controller.dart';
 export 'planer/project/view/planner_create_new_project_view.dart';
 export 'planer/vendor/view/planner_vendor_profile_view.dart';
 export 'planer/vendor/controller/planner_vendor_profile_controller.dart';
+export 'planer/project/controller/planner_project_details_controller.dart';
+export 'planer/project/view/planner_project_details_view.dart';
+export 'planer/project/widget/over_view_page.dart';
+export 'planer/project/widget/vendor_information_show_page.dart';

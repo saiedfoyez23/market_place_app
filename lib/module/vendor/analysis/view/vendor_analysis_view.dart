@@ -301,7 +301,7 @@ class VendorAnalysisView extends StatelessWidget {
     ));
   }
 
-  // ------------- Widget Builders ---------------
+  // ------------- widget Builders ---------------
   FlTitlesData defaultTitles() => FlTitlesData(
     rightTitles: const AxisTitles(
       sideTitles: SideTitles(showTitles: false),
