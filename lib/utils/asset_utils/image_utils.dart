@@ -126,6 +126,13 @@ class ImageUtils {
   static const String offerImage = "image/offer_image.png";
   static const String vendorLocationImage = "image/vendor_location_image.png";
   static const String verifyImage = "image/verify_image.png";
-
+  static const String fileDeleteImage = "image/file_delete_image.png";
+  static const String fileDownloadImage = "image/file_download_image.png";
+  static const String fileTypeImage = "image/file_type_image.png";
+  static const String pendingPaymentsImage = "image/planner_image/pending_payments_image.png";
+  static const String totalReceivedImage = "image/planner_image/total_received_image.png";
+  static const String totalSavedImage = "image/planner_image/total_saved_image.png";
+  static const String vendorPaymentsImage = "image/planner_image/vendor_payments_image.png";
+  static const String closeIconImage = "image/planner_image/close_icon_image.png";
 }
 

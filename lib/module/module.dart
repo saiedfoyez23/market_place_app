@@ -200,3 +200,6 @@ export 'planer/project/controller/planner_project_details_controller.dart';
 export 'planer/project/view/planner_project_details_view.dart';
 export 'planer/project/widget/over_view_page.dart';
 export 'planer/project/widget/vendor_information_show_page.dart';
+export 'planer/project/widget/files_page.dart';
+export 'planer/project/widget/payment_page.dart';
+export 'planer/project/widget/tasks_page.dart';

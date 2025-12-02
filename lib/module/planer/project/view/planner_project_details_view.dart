@@ -72,6 +72,36 @@ class PlannerProjectDetailsView extends StatelessWidget {
                           plannerProjectDetailsController: plannerProjectDetailsController,
                         ),
                       ) :
+                      SizedBox.shrink(),
+
+                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.tasks ?
+                      Expanded(
+                        child: TasksPage.tasksPage(
+                          context: context,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        ),
+                      ) :
+                      SizedBox.shrink(),
+
+
+
+                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.files ?
+                      Expanded(
+                        child: FilesPage.filesPage(
+                          context: context,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        ),
+                      ) :
+                      SizedBox.shrink(),
+
+
+                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.payments ?
+                      Expanded(
+                        child: PaymentPage.paymentPage(
+                          context: context,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        ),
+                      ) :
                       SizedBox.shrink()
 
 
@@ -204,8 +234,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
               controller: _tabController,
               children: [
                 TasksTab(),
-                FilesTab(),
-                PaymentsTab(),
               ],
             ),
           ),
@@ -283,186 +311,6 @@ class TasksTab extends StatelessWidget {
           ),
         ),
       ],
-    ));
-  }
-}
-
-// Files Tab
-class FilesTab extends StatelessWidget {
-  final PlannerProjectDetailsController plannerProjectDetailsController = Get.put(PlannerProjectDetailsController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Project Files', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.upload_file),
-                    onPressed: () {},
-                  ),
-                  SizedBox(width: 8),
-                  Text('Upload File'),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            itemCount: plannerProjectDetailsController.files.length,
-            itemBuilder: (context, index) {
-              final file = plannerProjectDetailsController.files[index];
-              return ListTile(
-                leading: Icon(Icons.insert_drive_file, color: Colors.blue),
-                title: Text(file.name),
-                subtitle: Text('${DateFormat('dd MMM yyyy').format(file.uploadDate)} • ${file.size}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.download),
-                  onPressed: () {},
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    ));
-  }
-}
-
-// Payments Tab
-class PaymentsTab extends StatelessWidget {
-  final PlannerProjectDetailsController plannerProjectDetailsController = Get.put(PlannerProjectDetailsController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => SingleChildScrollView(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          // Summary Cards
-          Row(
-            children: [
-              Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Total Received', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text('\$${plannerProjectDetailsController.totalReceived.toStringAsFixed(0)}', style: TextStyle(fontSize: 24, color: Colors.green)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Pending Payments', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text('\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}', style: TextStyle(fontSize: 24, color: Colors.orange)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Vendor Payments', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text('\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}', style: TextStyle(fontSize: 24, color: Colors.green)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Total Saved', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text('\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}', style: TextStyle(fontSize: 24, color: Colors.green)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          // Payment List
-          ...plannerProjectDetailsController.payments.map((payment) => Card(
-            margin: EdgeInsets.only(bottom: 16),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(payment.source, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: payment.status == 'Paid' ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(payment.status, style: TextStyle(color: payment.status == 'Paid' ? Colors.green : Colors.orange)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Text('Description:', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                  Text(payment.description),
-                  Text('Date:', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                  Text(DateFormat('dd MMM yyyy').format(payment.date)),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Amount:', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                      Text('\$${payment.amount.toStringAsFixed(2)}'),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[50]),
-                      child: Text('Make Payment', style: TextStyle(color: Colors.blue)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )),
-        ],
-      ),
     ));
   }
 }

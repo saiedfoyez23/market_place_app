@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 
 class PlannerProjectDetailsController extends GetxController {
@@ -105,6 +108,26 @@ class PlannerProjectDetailsController extends GetxController {
       isCompleted: true,
     ),
     PlannerTaskModel(
+      title: "Confirm venue booking",
+      date: DateTime(2025, 10, 20),
+      isCompleted: true,
+    ),
+    PlannerTaskModel(
+      title: "Confirm venue booking",
+      date: DateTime(2025, 10, 20),
+      isCompleted: true,
+    ),
+    PlannerTaskModel(
+      title: "Confirm venue booking",
+      date: DateTime(2025, 10, 20),
+      isCompleted: true,
+    ),
+    PlannerTaskModel(
+      title: "Confirm venue booking",
+      date: DateTime(2025, 10, 20),
+      isCompleted: true,
+    ),
+    PlannerTaskModel(
       title: "Menu finalization with caterer",
       date: DateTime(2025, 10, 20),
       isCompleted: false,
@@ -112,6 +135,16 @@ class PlannerProjectDetailsController extends GetxController {
   ].obs;
 
   final RxList<PlannerFileItemModel> files = [
+    PlannerFileItemModel(
+      name: "venue-floorplan.pdf",
+      uploadDate: DateTime(2025, 10, 15),
+      size: "12 MB",
+    ),
+    PlannerFileItemModel(
+      name: "venue-floorplan.pdf",
+      uploadDate: DateTime(2025, 10, 15),
+      size: "12 MB",
+    ),
     PlannerFileItemModel(
       name: "venue-floorplan.pdf",
       uploadDate: DateTime(2025, 10, 15),
@@ -164,6 +197,21 @@ class PlannerProjectDetailsController extends GetxController {
       amount: 150.00,
     ),
   ].obs;
+
+  Rx<File> selectedFile = File("").obs;
+
+
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'tiff', 'bmp', 'heic'],
+      withData: false,
+    );
+
+    if (result != null && result.files.single.path != null) {
+      selectedFile.value = File(result.files.single.path!);
+    }
+  }
 
   // Total received and pending calculations (dynamic)
   double get totalReceived => payments.where((p) => p.status == 'Paid').fold(0.0, (sum, p) => sum + p.amount);

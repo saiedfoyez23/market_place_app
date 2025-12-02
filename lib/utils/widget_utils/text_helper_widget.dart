@@ -21,6 +21,7 @@ class TextHelperClass {
     // Container styling parameters
     BorderRadiusGeometry? borderRadius,
     EdgeInsetsGeometry? padding,
+    TextDecoration? textDecoration,
     // Shape parameters
     BoxShape boxShape = BoxShape.rectangle,
     double? circleDiameter,
@@ -79,6 +80,7 @@ class TextHelperClass {
             color: textColor,
             fontWeight: fontWeight,
             fontStyle: fontStyle,
+            decoration: textDecoration ?? TextDecoration.none,
           ),
         ),
       ) :
@@ -91,6 +93,7 @@ class TextHelperClass {
           color: textColor,
           fontWeight: fontWeight,
           fontStyle: fontStyle,
+          decoration: textDecoration ?? TextDecoration.none,
         ),
       ),
     );
@@ -114,6 +117,7 @@ class TextHelperClass {
     // Shape parameters
     BoxShape boxShape = BoxShape.rectangle,
     double? circleDiameter,
+    TextDecoration? textDecoration,
     // Border parameters
     bool hasBorder = false,
     Color borderColor = Colors.black,
@@ -162,6 +166,7 @@ class TextHelperClass {
             color: textColor,
             fontWeight: fontWeight,
             fontStyle: fontStyle,
+            decoration: textDecoration ?? TextDecoration.none,
           ),
         ),
       ) :
@@ -174,6 +179,7 @@ class TextHelperClass {
           color: textColor,
           fontWeight: fontWeight,
           fontStyle: fontStyle,
+          decoration: textDecoration ?? TextDecoration.none,
         ),
       ),
     );
@@ -194,6 +200,7 @@ class TextHelperClass {
     // Container styling parameters
     BorderRadiusGeometry? borderRadius,
     EdgeInsetsGeometry? padding,
+    TextDecoration? textDecoration,
     // Shape parameters
     BoxShape boxShape = BoxShape.rectangle,
     double? circleDiameter,
@@ -245,6 +252,7 @@ class TextHelperClass {
             color: textColor,
             fontWeight: fontWeight,
             fontStyle: fontStyle,
+            decoration: textDecoration ?? TextDecoration.none,
           ),
         ),
       ) :
@@ -257,6 +265,7 @@ class TextHelperClass {
           color: textColor,
           fontWeight: fontWeight,
           fontStyle: fontStyle,
+          decoration: textDecoration ?? TextDecoration.none,
         ),
       ),
     );
