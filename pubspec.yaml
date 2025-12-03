@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.20.2
   fl_chart: ^1.1.1
   flutter_quill: ^11.5.0
+  dio: ^5.9.0
 
 
 dev_dependencies:

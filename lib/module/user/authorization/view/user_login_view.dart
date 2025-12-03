@@ -180,7 +180,13 @@ class UserLoginView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                          if(userLoginController.emailController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
+                          } else if(userLoginController.passwordController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
+                          } else {
+                            Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                          }
                         },
                         text: "Sign In",
                       ),

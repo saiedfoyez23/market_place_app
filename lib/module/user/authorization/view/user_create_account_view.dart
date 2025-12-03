@@ -237,7 +237,23 @@ class UserCreateAccountView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>UserCreateAccountPickImageView(),preventDuplicates: false);
+                          if(userCreateAccountController.userNameController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your user name");
+                          } else if(userCreateAccountController.emailController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email");
+                          } else if(userCreateAccountController.passwordController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your password");
+                          } else if(userCreateAccountController.passwordController.value.text.length < 8 ) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please enter 8 character password");
+                          } else if(userCreateAccountController.confirmPasswordController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your confirm password");
+                          } else if(userCreateAccountController.confirmPasswordController.value.text != userCreateAccountController.passwordController.value.text) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Password is not match");
+                          } else if( userCreateAccountController.isCheck.value == false) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "If you not agree with terms and conditions. You can not sign up");
+                          } else {
+                            Get.to(()=>UserCreateAccountPickImageView());
+                          }
                         },
                         text: "Sign Up",
                       ),
