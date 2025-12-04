@@ -13,9 +13,10 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  await LocalStorageUtils.init();
   runApp(const MyApp());
 }
 

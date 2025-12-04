@@ -1,12 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
+
 
 class UserCreateAccountOtpController extends GetxController {
 
   RxInt timeCounter = 120.obs;
   RxString otp = "".obs;
   RxBool isResendOtpSend = false.obs;
+  RxBool isSubmit = false.obs;
   Rx<TextEditingController> pinController = TextEditingController().obs;
+  Rx<UserCreateAccountResponseModel> userCreateAccountResponseModel = UserCreateAccountResponseModel().obs;
 
   @override
   void onInit() {
@@ -14,7 +20,14 @@ class UserCreateAccountOtpController extends GetxController {
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
       await otpTimer();
+      await userCreateAccountResponseController();
     });
+  }
+
+  Future<void> userCreateAccountResponseController() async {
+    print(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!);
+    userCreateAccountResponseModel.value = UserCreateAccountResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!));
+    print(userCreateAccountResponseModel.value.data?.otpToken?.token);
   }
 
 
@@ -28,6 +41,76 @@ class UserCreateAccountOtpController extends GetxController {
         timeCounter.value = 0;
       }
     });
+  }
+
+
+
+  Future<void> resendOtpCodeController({
+    required BuildContext context,
+    required String email,
+  }) async {
+
+    isResendOtpSend.value = true;
+
+    Map<String,dynamic> data = {
+      "email": email,
+    };
+
+    print(data);
+
+    BaseApiUtils.postApiResponse(
+      apiString: ApiUtils.userRegistrationResendOtp,
+      authorization: "",
+      data: data,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        await resetVariable();
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isResendOtpSend.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isResendOtpSend.value = false;
+      },
+    );
+
+  }
+
+
+  Future<void> verifyOtpCodeController({
+    required BuildContext context,
+    required String otp,
+  }) async {
+
+    isSubmit.value = true;
+
+    Map<String,dynamic> data = {
+      "otp": otp,
+    };
+
+    print(data);
+
+    BaseApiUtils.postApiResponse(
+      apiString: ApiUtils.userRegistrationVerifyOtp,
+      authorization: userCreateAccountResponseModel.value.data?.otpToken?.token,
+      data: data,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+        Get.off(()=>UserLoginView(),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+    );
+
   }
 
 

@@ -5,6 +5,7 @@ export 'splash/controller/choose_user_controller.dart';
 export 'user/onboarding/view/user_onboarding_view.dart';
 export 'user/onboarding/widget/user_onboarding_widget.dart';
 export 'user/onboarding/controller/user_onboarding_controller.dart';
+export 'user/authorization/model/user_create_account_response_model.dart';
 export 'user/authorization/view/user_login_view.dart';
 export 'user/authorization/controller/user_login_controller.dart';
 export 'user/authorization/view/user_auth_splash_view.dart';

@@ -21,7 +21,7 @@ class UserCreateAccountTermsAndConditionsView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>UserCreateAccountView(),preventDuplicates: false);
+                  Get.to(()=>UserCreateAccountView());
                 },
                 title: "Terms & Conditions",
               ),

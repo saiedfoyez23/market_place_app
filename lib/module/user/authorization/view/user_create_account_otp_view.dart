@@ -45,7 +45,7 @@ class UserCreateAccountOtpView extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                         textColor: ColorUtils.black96,
-                        text: "To confirm your account, enter the 6-digit code we sent to shahidhasn@gmail.com",
+                        text: "To confirm your account, enter the 6-digit code we sent to ${userCreateAccountOtpController.userCreateAccountResponseModel.value.data?.user?.email}",
                       ),
 
 
@@ -89,10 +89,10 @@ class UserCreateAccountOtpView extends StatelessWidget {
                       ) : ButtonHelperWidget.customButtonWidget(
                         context: context,
                         onPressed: () async {
-                          userCreateAccountOtpController.isResendOtpSend.value = true;
-                          Future.delayed(Duration(seconds: 1),() async {
-                            await userCreateAccountOtpController.resetVariable();
-                          });
+                          await userCreateAccountOtpController.resendOtpCodeController(
+                            context: context,
+                            email: userCreateAccountOtpController.userCreateAccountResponseModel.value.data?.user?.email,
+                          );
                         },
                         text: "send code again",
                         padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
@@ -106,11 +106,19 @@ class UserCreateAccountOtpView extends StatelessWidget {
 
                       SpaceHelperWidget.v(24.h(context)),
 
-
+                      userCreateAccountOtpController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>UserLoginView(),preventDuplicates: false);
+                          if(userCreateAccountOtpController.pinController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter Otp Code");
+                          } else {
+                            await userCreateAccountOtpController.verifyOtpCodeController(
+                              context: context,
+                              otp: userCreateAccountOtpController.pinController.value.text,
+                            );
+                          }
                         },
                         text: "Submit",
                       ),
