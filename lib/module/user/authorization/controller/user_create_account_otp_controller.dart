@@ -58,9 +58,8 @@ class UserCreateAccountOtpController extends GetxController {
 
     print(data);
 
-    BaseApiUtils.postApiResponse(
-      apiString: ApiUtils.userRegistrationResendOtp,
-      authorization: "",
+    BaseApiUtils.post(
+      url: ApiUtils.userRegistrationResendOtp,
       data: data,
       onSuccess: (e,data) async {
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
@@ -92,8 +91,8 @@ class UserCreateAccountOtpController extends GetxController {
 
     print(data);
 
-    BaseApiUtils.postApiResponse(
-      apiString: ApiUtils.userRegistrationVerifyOtp,
+    BaseApiUtils.post(
+      url: ApiUtils.userRegistrationVerifyOtp,
       authorization: userCreateAccountResponseModel.value.data?.otpToken?.token,
       data: data,
       onSuccess: (e,data) async {

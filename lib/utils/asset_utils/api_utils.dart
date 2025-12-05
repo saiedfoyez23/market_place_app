@@ -7,6 +7,6 @@ class ApiUtils {
   static const String userRegistration = "$baseUrl/users/register"; //done
   static const String userRegistrationResendOtp = "$baseUrl/otp/resend-otp"; //done
   static const String userRegistrationVerifyOtp = "$baseUrl/otp/verify-otp"; //done
-
+  static const String userForgetPassword = "$baseUrl/auth/forget-password"; //done
 
 }

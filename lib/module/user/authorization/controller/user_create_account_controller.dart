@@ -63,9 +63,8 @@ class UserCreateAccountController extends GetxController {
         "data": jsonEncode(jsonData),  // important → JSON encoded string!
       });
 
-      await BaseApiUtils.multipartFormDataApiResponse(
-        apiString: ApiUtils.userRegistration,
-        authorization: "",
+      await BaseApiUtils.post(
+        url: ApiUtils.userRegistration,
         formData: formData,
         onSuccess: (e,data) async {
           await LocalStorageUtils.setString(AppConstantUtils.crateUserResponse, jsonEncode(data));
@@ -83,6 +82,7 @@ class UserCreateAccountController extends GetxController {
           isLoading.value = false;
         },
       );
+
     } else {
 
       print("hello");
@@ -90,9 +90,8 @@ class UserCreateAccountController extends GetxController {
       dio.FormData formData = dio.FormData.fromMap({
         "data": jsonEncode(jsonData),  // important → JSON encoded string!
       });
-      await BaseApiUtils.multipartFormDataApiResponse(
-        apiString: ApiUtils.userRegistration,
-        authorization: "",
+      await BaseApiUtils.post(
+        url: ApiUtils.userRegistration,
         formData: formData,
         onSuccess: (e,data) async {
           await LocalStorageUtils.setString(AppConstantUtils.crateUserResponse, jsonEncode(data));
