@@ -4,8 +4,8 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class CreateNewPasswordView extends StatelessWidget {
-  CreateNewPasswordView({super.key});
-
+  CreateNewPasswordView({super.key,required this.email});
+  final String email;
   final CreateNewPasswordController createNewPasswordController = Get.put(CreateNewPasswordController());
 
 
@@ -131,11 +131,17 @@ class CreateNewPasswordView extends StatelessWidget {
 
                       SpaceHelperWidget.v(24.h(context)),
 
-
+                      createNewPasswordController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>CreateNewPasswordSuccessView(),preventDuplicates: false);
+                          await createNewPasswordController.createNewPasswordController(
+                            context: context,
+                            email: email,
+                            newPassword: createNewPasswordController.passwordController.value.text,
+                            confirmPassword: createNewPasswordController.confirmPasswordController.value.text,
+                          );
                         },
                         text: "Update",
                       ),

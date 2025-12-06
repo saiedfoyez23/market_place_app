@@ -4,8 +4,8 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class ForgotPasswordOtpView extends StatelessWidget {
-  ForgotPasswordOtpView({super.key});
-
+  ForgotPasswordOtpView({super.key,required this.email});
+  final String email;
   final ForgotPasswordOtpController forgotPasswordOtpController = Get.put(ForgotPasswordOtpController());
 
 
@@ -46,7 +46,7 @@ class ForgotPasswordOtpView extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                         textColor: ColorUtils.black96,
-                        text: "To confirm your account, enter the 6-digit code we sent to shahidhasn@gmail.com",
+                        text: "To confirm your account, enter the 6-digit code we sent to ${email}",
                       ),
 
 
@@ -90,10 +90,10 @@ class ForgotPasswordOtpView extends StatelessWidget {
                       ) : ButtonHelperWidget.customButtonWidget(
                         context: context,
                         onPressed: () async {
-                          forgotPasswordOtpController.isResendOtpSend.value = true;
-                          Future.delayed(Duration(seconds: 1),() async {
-                            await forgotPasswordOtpController.resetVariable();
-                          });
+                          await forgotPasswordOtpController.resendOtpCodeController(
+                            context: context,
+                            email: email,
+                          );
                         },
                         text: "send code again",
                         padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
@@ -108,10 +108,20 @@ class ForgotPasswordOtpView extends StatelessWidget {
                       SpaceHelperWidget.v(24.h(context)),
 
 
+                      forgotPasswordOtpController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>CreateNewPasswordView(),preventDuplicates: false);
+                          if(forgotPasswordOtpController.pinController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter Otp Code");
+                          } else {
+                            await forgotPasswordOtpController.verifyOtpCodeController(
+                              context: context,
+                              otp: forgotPasswordOtpController.pinController.value.text,
+                              email: email,
+                            );
+                          }
                         },
                         text: "Next",
                       ),

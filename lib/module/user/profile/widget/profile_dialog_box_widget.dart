@@ -175,6 +175,7 @@ class ProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
+                            await LocalStorageUtils.remove(AppConstantUtils.userLoginResponse);
                             Get.offAll(()=>UserLoginView());
                           },
                           text: "Yes",

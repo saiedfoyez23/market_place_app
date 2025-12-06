@@ -144,7 +144,7 @@ class UserLoginView extends StatelessWidget {
                               if(userLoginController.isCheck.value == true) {
                                 userLoginController.isCheck.value = false;
                               } else {
-                                userLoginController.isCheck.value = true;
+                                await userLoginController.removeRememberMe();
                               }
                             },
                             iconPath: userLoginController.isCheck.value == true ? ImageUtils.checkboxIcon : ImageUtils.uncheckboxIcon,
@@ -176,7 +176,8 @@ class UserLoginView extends StatelessWidget {
 
                       SpaceHelperWidget.v(20.h(context)),
 
-
+                      userLoginController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
@@ -185,7 +186,20 @@ class UserLoginView extends StatelessWidget {
                           } else if(userLoginController.passwordController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
                           } else {
-                            Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                            if(userLoginController.isCheck.value == false) {
+                              await userLoginController.userLoginController(
+                                context: context,
+                                password: userLoginController.passwordController.value.text,
+                                email: userLoginController.emailController.value.text,
+                              );
+                            } else {
+                              await userLoginController.rememberMe();
+                              await userLoginController.userLoginController(
+                                context: context,
+                                password: userLoginController.passwordController.value.text,
+                                email: userLoginController.emailController.value.text,
+                              );
+                            }
                           }
                         },
                         text: "Sign In",
