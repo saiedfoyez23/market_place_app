@@ -12,5 +12,6 @@ class ApiUtils {
   static const String userForgetPassword = "$baseUrl/auth/forget-password"; //done
   static const String userResetPassword = "$baseUrl/auth/reset-password"; //done
   static const String userLogin = "$baseUrl/auth/login"; //done
+  static const String userProfileDetails = "$baseUrl/users/my-profile"; //done
 
 }
