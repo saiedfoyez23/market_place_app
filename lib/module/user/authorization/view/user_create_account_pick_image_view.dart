@@ -206,19 +206,19 @@ class UserCreateAccountPickImageView extends StatelessWidget {
 
                           SpaceHelperWidget.v(16.h(context)),
 
-                          userCreateAccountController.isLoading.value == true ?
-                          LoadingHelperWidget.loadingHelperWidget(context: context) :
+                          // userCreateAccountController.isLoading.value == true ?
+                          // LoadingHelperWidget.loadingHelperWidget(context: context) :
                           ButtonHelperWidget.customIconButtonWidgetAdventPro(
                             context: context,
                             onPressed: () async {
-                              await userCreateAccountController.createUserAccountController(
-                                context: context,
-                                userName: userCreateAccountController.userNameController.value.text,
-                                email: userCreateAccountController.emailController.value.text,
-                                password: userCreateAccountController.passwordController.value.text,
-                                confirmPassword: userCreateAccountController.confirmPasswordController.value.text,
-                                imageFile: userCreateAccountController.profileImageFile.value,
-                              );
+                              // await userCreateAccountController.createUserAccountController(
+                              //   context: context,
+                              //   userName: userCreateAccountController.userNameController.value.text,
+                              //   email: userCreateAccountController.emailController.value.text,
+                              //   password: userCreateAccountController.passwordController.value.text,
+                              //   confirmPassword: userCreateAccountController.confirmPasswordController.value.text,
+                              //   imageFile: userCreateAccountController.profileImageFile.value,
+                              // );
                             },
                             textSize: 24,
                             iconPath: "",
@@ -236,19 +236,19 @@ class UserCreateAccountPickImageView extends StatelessWidget {
                       Column(
                         children: [
 
-                          userCreateAccountController.isLoading.value == true ?
-                          LoadingHelperWidget.loadingHelperWidget(context: context) :
+                          // userCreateAccountController.isLoading.value == true ?
+                          // LoadingHelperWidget.loadingHelperWidget(context: context) :
                           ButtonHelperWidget.customButtonWidgetAdventPro(
                             context: context,
                             onPressed: () async {
-                              await userCreateAccountController.createUserAccountController(
-                                context: context,
-                                userName: userCreateAccountController.userNameController.value.text,
-                                email: userCreateAccountController.emailController.value.text,
-                                password: userCreateAccountController.passwordController.value.text,
-                                confirmPassword: userCreateAccountController.confirmPasswordController.value.text,
-                                imageFile: userCreateAccountController.profileImageFile.value,
-                              );
+                              // await userCreateAccountController.createUserAccountController(
+                              //   context: context,
+                              //   userName: userCreateAccountController.userNameController.value.text,
+                              //   email: userCreateAccountController.emailController.value.text,
+                              //   password: userCreateAccountController.passwordController.value.text,
+                              //   confirmPassword: userCreateAccountController.confirmPasswordController.value.text,
+                              //   imageFile: userCreateAccountController.profileImageFile.value,
+                              // );
                             },
                             text: "Done",
                           ),

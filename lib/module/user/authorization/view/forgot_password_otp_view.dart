@@ -90,10 +90,11 @@ class ForgotPasswordOtpView extends StatelessWidget {
                       ) : ButtonHelperWidget.customButtonWidget(
                         context: context,
                         onPressed: () async {
-                          await forgotPasswordOtpController.resendOtpCodeController(
-                            context: context,
-                            email: email,
-                          );
+                          await forgotPasswordOtpController.resetVariable();
+                          // await forgotPasswordOtpController.resendOtpCodeController(
+                          //   context: context,
+                          //   email: email,
+                          // );
                         },
                         text: "send code again",
                         padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),

@@ -181,26 +181,27 @@ class UserLoginView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          if(userLoginController.emailController.value.text == "") {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
-                          } else if(userLoginController.passwordController.value.text == "") {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
-                          } else {
-                            if(userLoginController.isCheck.value == false) {
-                              await userLoginController.userLoginController(
-                                context: context,
-                                password: userLoginController.passwordController.value.text,
-                                email: userLoginController.emailController.value.text,
-                              );
-                            } else {
-                              await userLoginController.rememberMe();
-                              await userLoginController.userLoginController(
-                                context: context,
-                                password: userLoginController.passwordController.value.text,
-                                email: userLoginController.emailController.value.text,
-                              );
-                            }
-                          }
+                          Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                          // if(userLoginController.emailController.value.text == "") {
+                          //   MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
+                          // } else if(userLoginController.passwordController.value.text == "") {
+                          //   MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
+                          // } else {
+                          //   if(userLoginController.isCheck.value == false) {
+                          //     await userLoginController.userLoginController(
+                          //       context: context,
+                          //       password: userLoginController.passwordController.value.text,
+                          //       email: userLoginController.emailController.value.text,
+                          //     );
+                          //   } else {
+                          //     await userLoginController.rememberMe();
+                          //     await userLoginController.userLoginController(
+                          //       context: context,
+                          //       password: userLoginController.passwordController.value.text,
+                          //       email: userLoginController.emailController.value.text,
+                          //     );
+                          //   }
+                          // }
                         },
                         text: "Sign In",
                       ),

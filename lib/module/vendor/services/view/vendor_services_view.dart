@@ -30,7 +30,7 @@ class VendorServicesView extends StatelessWidget {
                 ButtonHelperWidget.customIconButtonWidgetAdventPro(
                   context: context,
                   backgroundColor: ColorUtils.blue96,
-                  textSize: 20,
+                  textSize: 24,
                   iconSize: 20,
                   height: 40,
                   padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
@@ -41,7 +41,7 @@ class VendorServicesView extends StatelessWidget {
                     Get.off(()=>VendorCreateNewServiceView(),preventDuplicates: false);
                   },
                   iconPath: ImageUtils.addImage,
-                  text: "Add Service",
+                  text: "Add",
                 ),
 
                 SpaceHelperWidget.h(15.w(context))

@@ -48,13 +48,14 @@ class PlannerProfileServiceView extends StatelessWidget {
               onBackPressed: () async {
                 Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
               },
+              centerTitle: false,
               title: "My Service",
               actions: [
 
                 ButtonHelperWidget.customIconButtonWidgetAdventPro(
                   context: context,
                   backgroundColor: ColorUtils.blue96,
-                  textSize: 20,
+                  textSize: 24,
                   iconSize: 20,
                   height: 40,
                   padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
@@ -65,7 +66,7 @@ class PlannerProfileServiceView extends StatelessWidget {
                     Get.off(()=>PlannerProfileCreateNewServiceView(),preventDuplicates: false);
                   },
                   iconPath: ImageUtils.addImage,
-                  text: "Add Service",
+                  text: "Add",
                 ),
 
                 SpaceHelperWidget.h(15.w(context))

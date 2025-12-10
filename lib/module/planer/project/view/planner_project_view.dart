@@ -26,7 +26,6 @@ class PlannerProjectView extends StatelessWidget {
                 title: "Project",
                 actions: [
 
-
                   ButtonHelperWidget.customIconButtonWidgetAdventPro(
                     context: context,
                     backgroundColor: ColorUtils.blue96,

@@ -26,7 +26,7 @@ class DashboardVendorController extends GetxController {
   RxList<Map<String, dynamic>> items = [
     {'unselected': ImageUtils.unselectVendorDashboardImage, 'select': ImageUtils.selectVendorDashboardImage, 'label': 'Dashboard'},
     {'unselected': ImageUtils.unselectVendorServiceImage, 'select': ImageUtils.selectVendorServiceImage, 'label': 'Services'},
-    {'unselected': ImageUtils.unselectVendorBookingImage, 'select': ImageUtils.selectVendorBookingImage, 'label': 'Booking'},
+    {'unselected': ImageUtils.unselectVendorBookingImage, 'select': ImageUtils.selectVendorBookingImage, 'label': 'Bookings'},
     {'unselected': ImageUtils.unselectVendorMessageImage, 'select': ImageUtils.selectVendorMessageImage, 'label': 'Message'},
     {'unselected': ImageUtils.unselectVendorAnalyticsImage, 'select': ImageUtils.selectVendorAnalyticsImage, 'label': 'Analytics'},
     {'unselected': ImageUtils.unselectVendorProfileImage, 'select': ImageUtils.selectVendorProfileImage, 'label': 'Profile'},

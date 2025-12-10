@@ -73,16 +73,16 @@ class ForgotPasswordView extends StatelessWidget {
 
                       SpaceHelperWidget.v(24.h(context)),
 
-                      forgotPasswordController.isSubmit.value == true ?
-                      LoadingHelperWidget.loadingHelperWidget(context: context) :
+                      // forgotPasswordController.isSubmit.value == true ?
+                      // LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          if(forgotPasswordController.emailController.value.text == "") {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email name");
-                          } else {
-                            await forgotPasswordController.forgotPasswordController(context: context, email: forgotPasswordController.emailController.value.text);
-                          }
+                          // if(forgotPasswordController.emailController.value.text == "") {
+                          //   MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email name");
+                          // } else {
+                          //   await forgotPasswordController.forgotPasswordController(context: context, email: forgotPasswordController.emailController.value.text);
+                          // }
                         },
                         text: "Next",
                       ),

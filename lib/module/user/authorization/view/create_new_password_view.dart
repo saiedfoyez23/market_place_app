@@ -131,17 +131,17 @@ class CreateNewPasswordView extends StatelessWidget {
 
                       SpaceHelperWidget.v(24.h(context)),
 
-                      createNewPasswordController.isSubmit.value == true ?
-                      LoadingHelperWidget.loadingHelperWidget(context: context) :
+                      // createNewPasswordController.isSubmit.value == true ?
+                      // LoadingHelperWidget.loadingHelperWidget(context: context) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          await createNewPasswordController.createNewPasswordController(
-                            context: context,
-                            email: email,
-                            newPassword: createNewPasswordController.passwordController.value.text,
-                            confirmPassword: createNewPasswordController.confirmPasswordController.value.text,
-                          );
+                          // await createNewPasswordController.createNewPasswordController(
+                          //   context: context,
+                          //   email: email,
+                          //   newPassword: createNewPasswordController.passwordController.value.text,
+                          //   confirmPassword: createNewPasswordController.confirmPasswordController.value.text,
+                          // );
                         },
                         text: "Update",
                       ),
