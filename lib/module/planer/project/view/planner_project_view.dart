@@ -44,7 +44,7 @@ class PlannerProjectView extends StatelessWidget {
                     text: "Create Project",
                   ),
 
-                  SpaceHelperWidget.h(15.w(context))
+                  SpaceHelperWidget.h(15.w(context)),
 
 
                 ],
@@ -137,7 +137,6 @@ class PlannerProjectView extends StatelessWidget {
   // ---------------- PROJECT CARD -------------------
 
   Widget projectCard({required BuildContext context, required ProjectModel projectModel}) {
-
     Color badgeColor = Colors.grey;
     Color textColor = Colors.white;
     String text = "";
