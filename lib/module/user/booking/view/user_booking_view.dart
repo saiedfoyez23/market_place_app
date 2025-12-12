@@ -24,7 +24,7 @@ class UserBookingView extends StatelessWidget {
 
               MainPageAppBarHelperWidget(
                 centerTitle: false,
-                title: "My Booking",
+                title: "My Bookings",
               ),
 
 

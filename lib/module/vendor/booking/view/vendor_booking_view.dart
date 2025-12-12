@@ -24,7 +24,7 @@ class VendorBookingView extends StatelessWidget {
 
               MainPageAppBarHelperWidget(
                 centerTitle: false,
-                title: "Booking",
+                title: "Bookings",
                 actions: [
 
 

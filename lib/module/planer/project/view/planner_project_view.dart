@@ -23,7 +23,7 @@ class PlannerProjectView extends StatelessWidget {
 
               MainPageAppBarHelperWidget(
                 centerTitle: false,
-                title: "Project",
+                title: "Projects",
                 actions: [
 
                   ButtonHelperWidget.customIconButtonWidgetAdventPro(

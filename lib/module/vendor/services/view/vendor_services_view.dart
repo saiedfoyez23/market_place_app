@@ -23,7 +23,7 @@ class VendorServicesView extends StatelessWidget {
 
             MainPageAppBarHelperWidget(
               centerTitle: false,
-              title: "My Service",
+              title: "My Services",
               actions: [
 
 
