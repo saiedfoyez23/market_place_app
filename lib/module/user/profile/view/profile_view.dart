@@ -25,7 +25,6 @@ class ProfileView extends StatelessWidget {
           slivers: [
 
 
-
             MainPageAppBarHelperWidget(
               centerTitle: false,
               title: "Profile",
