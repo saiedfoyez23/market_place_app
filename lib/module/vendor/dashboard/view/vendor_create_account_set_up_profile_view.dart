@@ -24,7 +24,7 @@ class VendorCreateAccountSetUpProfileView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>VendorCreateAccountView(),preventDuplicates: false);
+                  VendorProfileDialogBoxWidget().vendorLogOutDialog(context: context);
                 },
                 title: "Set-up Profile",
               ),

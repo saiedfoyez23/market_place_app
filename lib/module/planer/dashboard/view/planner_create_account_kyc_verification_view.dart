@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
-class VendorCreateAccountKycVerificationView extends StatelessWidget {
-  VendorCreateAccountKycVerificationView({super.key});
 
-  final VendorCreateAccountController vendorCreateAccountController = Get.put(VendorCreateAccountController());
+class PlannerCreateAccountKycVerificationView extends StatelessWidget {
+  PlannerCreateAccountKycVerificationView({super.key});
+
+  final PlannerCreateAccountController plannerCreateAccountController = Get.put(PlannerCreateAccountController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+                  Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);
                 },
                 title: "KYC Verification",
               ),
@@ -75,7 +76,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your full name",
-                              controller: vendorCreateAccountController.fullNameController.value,
+                              controller:  plannerCreateAccountController.fullNameController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -106,10 +107,10 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                           fillColor: ColorUtils.white255,
                                           hintText: "DD/MM/YY",
                                           readOnly: true,
-                                          controller: vendorCreateAccountController.dateController.value,
+                                          controller:  plannerCreateAccountController.dateController.value,
                                           keyboardType: TextInputType.emailAddress,
                                           onTap: () async {
-                                            await vendorCreateAccountController.dateTimeController(context: context);
+                                            await plannerCreateAccountController.dateTimeController(context: context);
                                           }
                                       ),
 
@@ -138,10 +139,10 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
 
 
                                       CustomDropdownHelperClass(
-                                        value: vendorCreateAccountController.selectGender.value == "" ? null : vendorCreateAccountController.selectGender.value,
+                                        value: plannerCreateAccountController.selectGender.value == "" ? null : plannerCreateAccountController.selectGender.value,
                                         items: ["Male","Female","Other"],
                                         onChanged: (value) {
-                                          vendorCreateAccountController.selectGender.value = value!;
+                                          plannerCreateAccountController.selectGender.value = value!;
                                         },
                                       ),
 
@@ -204,7 +205,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your permanent address",
-                              controller: vendorCreateAccountController.permanentAddressController.value,
+                              controller:  plannerCreateAccountController.permanentAddressController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -228,7 +229,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your current address",
-                              controller: vendorCreateAccountController.currentAddressController.value,
+                              controller:  plannerCreateAccountController.currentAddressController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -259,7 +260,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                         context: context,
                                         fillColor: ColorUtils.white255,
                                         hintText: "City",
-                                        controller: vendorCreateAccountController.cityController.value,
+                                        controller:  plannerCreateAccountController.cityController.value,
                                         keyboardType: TextInputType.emailAddress,
                                       ),
 
@@ -291,7 +292,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                         context: context,
                                         fillColor: ColorUtils.white255,
                                         hintText: "Postal Code",
-                                        controller: vendorCreateAccountController.postalCodeController.value,
+                                        controller:  plannerCreateAccountController.postalCodeController.value,
                                         keyboardType: TextInputType.emailAddress,
                                       ),
 
@@ -351,10 +352,10 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
 
 
                             CustomDropdownHelperClass(
-                              value: vendorCreateAccountController.selectIdType.value == "" ? null : vendorCreateAccountController.selectIdType.value,
+                              value: plannerCreateAccountController.selectIdType.value == "" ? null : plannerCreateAccountController.selectIdType.value,
                               items: ["NID","Driving License","Working Permit","TIN Certificate"],
                               onChanged: (value) {
-                                vendorCreateAccountController.selectIdType.value = value!;
+                                plannerCreateAccountController.selectIdType.value = value!;
                               },
                               hintText: "Select ID Type",
                             ),
@@ -381,7 +382,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your nid number",
-                              controller: vendorCreateAccountController.nidNumberController.value,
+                              controller:  plannerCreateAccountController.nidNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -416,7 +417,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                         ),
                                         child: InkWell(
                                           onTap: () async {
-                                            await vendorCreateAccountController.pickUploadFrontSideFile();
+                                            await plannerCreateAccountController.pickUploadFrontSideFile();
                                           },
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -430,7 +431,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   textColor: ColorUtils.black96,
-                                                  text: vendorCreateAccountController.selectedUploadFrontSideFile.value.path == "" ? "JPG/PNG" : vendorCreateAccountController.selectedUploadFrontSideFile.value.path,
+                                                  text: plannerCreateAccountController.selectedUploadFrontSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountController.selectedUploadFrontSideFile.value.path,
                                                 ),
                                               ),
 
@@ -481,7 +482,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                         ),
                                         child: InkWell(
                                           onTap: () async {
-                                            await vendorCreateAccountController.pickUploadBackSideFile();
+                                            await plannerCreateAccountController.pickUploadBackSideFile();
                                           },
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -495,7 +496,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   textColor: ColorUtils.black96,
-                                                  text: vendorCreateAccountController.selectedUploadBackSideFile.value.path == "" ? "JPG/PNG" : vendorCreateAccountController.selectedUploadBackSideFile.value.path,
+                                                  text: plannerCreateAccountController.selectedUploadBackSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountController.selectedUploadBackSideFile.value.path,
                                                 ),
                                               ),
 
@@ -572,7 +573,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your bank name",
-                              controller: vendorCreateAccountController.bankNameController.value,
+                              controller:  plannerCreateAccountController.bankNameController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -596,7 +597,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your account number",
-                              controller: vendorCreateAccountController.accountNumberController.value,
+                              controller:  plannerCreateAccountController.accountNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -620,7 +621,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your TIN/NID number",
-                              controller: vendorCreateAccountController.businessNameController.value,
+                              controller:  plannerCreateAccountController.businessNameController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -638,7 +639,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>VendorCreateAccountPickImageView(),preventDuplicates: false);
+                          Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
                         },
                         text: "Next",
                       ),

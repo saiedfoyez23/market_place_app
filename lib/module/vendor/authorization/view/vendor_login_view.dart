@@ -180,7 +180,7 @@ class VendorLoginView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
+                          Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
                         },
                         text: "Sign In",
                       ),

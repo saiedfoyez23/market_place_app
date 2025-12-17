@@ -236,7 +236,7 @@ class VendorCreateAccountView extends StatelessWidget {
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+                          Get.off(()=>VendorCreateAccountPickImageView(),preventDuplicates: false);
                         },
                         text: "Sign Up",
                       ),

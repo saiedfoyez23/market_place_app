@@ -26,7 +26,7 @@ class VendorCreateAccountPickImageView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>VendorCreateAccountKycVerificationView(),preventDuplicates: false);
+                  Get.to(()=>VendorCreateAccountView());
                 },
                 title: "Add Profile picture",
               ),

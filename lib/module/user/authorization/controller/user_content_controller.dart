@@ -6,7 +6,7 @@ import '../../../../utils/utils.dart';
 
 class UserContentController extends GetxController {
 
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
   Rx<UserContentResponseModel> userContentResponseModel = UserContentResponseModel().obs;
   BuildContext context;
   UserContentController({required this.context});
@@ -15,6 +15,7 @@ class UserContentController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
       await getContentController();
     });

@@ -23,7 +23,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>PlannerCreateAccountView(),preventDuplicates: false);
+                  PlannerProfileDialogBoxWidget().plannerLogOutDialog(context: context);
                 },
                 title: "Set-up Profile",
               ),
