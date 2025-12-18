@@ -210,3 +210,5 @@ export 'planer/project/widget/vendor_information_show_page.dart';
 export 'planer/project/widget/files_page.dart';
 export 'planer/project/widget/payment_page.dart';
 export 'planer/project/widget/tasks_page.dart';
+export 'planer/dashboard/controller/planner_create_account_set_up_profile_controller.dart';
+export 'planer/dashboard/model/category_response_model.dart';

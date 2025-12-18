@@ -236,11 +236,20 @@ class PlannerCreateAccountPickImageView extends StatelessWidget {
 
                             SpaceHelperWidget.v(16.h(context)),
 
-
+                            plannerCreateAccountController.isLoading.value == true ?
+                            LoadingHelperWidget.loadingHelperWidget(context: context) :
                             ButtonHelperWidget.customIconButtonWidgetAdventPro(
                               context: context,
                               onPressed: () async {
-                                Get.off(()=>PlannerCreateAccountOtpView(),preventDuplicates: false);
+                                await plannerCreateAccountController.createUserAccountController(
+                                  context: context,
+                                  userName: plannerCreateAccountController.userNameController.value.text,
+                                  email: plannerCreateAccountController.emailController.value.text,
+                                  password: plannerCreateAccountController.passwordController.value.text,
+                                  confirmPassword: plannerCreateAccountController.confirmPasswordController.value.text,
+                                  imageFile: plannerCreateAccountController.profileImageFile.value,
+                                  coverImageFile: plannerCreateAccountController.coverImageFile.value,
+                                );
                               },
                               textSize: 24,
                               iconPath: "",
@@ -258,11 +267,20 @@ class PlannerCreateAccountPickImageView extends StatelessWidget {
                         Column(
                           children: [
 
-
+                            plannerCreateAccountController.isLoading.value == true ?
+                            LoadingHelperWidget.loadingHelperWidget(context: context) :
                             ButtonHelperWidget.customButtonWidgetAdventPro(
                               context: context,
                               onPressed: () async {
-                                Get.off(()=>PlannerCreateAccountOtpView(),preventDuplicates: false);
+                                await plannerCreateAccountController.createUserAccountController(
+                                  context: context,
+                                  userName: plannerCreateAccountController.userNameController.value.text,
+                                  email: plannerCreateAccountController.emailController.value.text,
+                                  password: plannerCreateAccountController.passwordController.value.text,
+                                  confirmPassword: plannerCreateAccountController.confirmPasswordController.value.text,
+                                  imageFile: plannerCreateAccountController.profileImageFile.value,
+                                  coverImageFile: plannerCreateAccountController.coverImageFile.value,
+                                );
                               },
                               text: "Done",
                             ),

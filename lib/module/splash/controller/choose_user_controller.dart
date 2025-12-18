@@ -26,5 +26,22 @@ class ChooseUserController extends GetxController {
     }
   }
 
+  Future<void> plannerLoginRedirection() async {
+    if(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse) != null) {
+      userLoginResponseModel.value = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!));
+      if(userLoginResponseModel.value.data != null) {
+        if(userLoginResponseModel.value.data?.user?.isKYCSubmit == true) {
+          Get.off(()=>DashboardPlannerView(index: 0,),preventDuplicates: false);
+        } else {
+          Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);
+        }
+      } else {
+        Get.off(()=>PlanerOnboardingView(),preventDuplicates: false);
+      }
+    } else {
+      Get.off(()=>PlanerOnboardingView(),preventDuplicates: false);
+    }
+  }
+
 
 }

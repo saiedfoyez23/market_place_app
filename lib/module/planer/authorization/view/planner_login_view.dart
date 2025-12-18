@@ -148,7 +148,7 @@ class PlannerLoginView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 if(plannerLoginController.isCheck.value == true) {
-                                  plannerLoginController.isCheck.value = false;
+                                  await plannerLoginController.removeRememberMe();
                                 } else {
                                   plannerLoginController.isCheck.value = true;
                                 }
@@ -182,11 +182,31 @@ class PlannerLoginView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
+                        plannerLoginController.isSubmit.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);
+                            if(plannerLoginController.emailController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
+                            } else if(plannerLoginController.passwordController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
+                            } else {
+                              if(plannerLoginController.isCheck.value == false) {
+                                await plannerLoginController.userLoginController(
+                                  context: context,
+                                  password: plannerLoginController.passwordController.value.text,
+                                  email: plannerLoginController.emailController.value.text,
+                                );
+                              } else {
+                                await plannerLoginController.rememberMe();
+                                await plannerLoginController.userLoginController(
+                                  context: context,
+                                  password: plannerLoginController.passwordController.value.text,
+                                  email: plannerLoginController.emailController.value.text,
+                                );
+                              }
+                            }
                           },
                           text: "Sign In",
                         ),

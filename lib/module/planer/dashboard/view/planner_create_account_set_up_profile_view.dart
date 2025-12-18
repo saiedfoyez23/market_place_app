@@ -4,12 +4,11 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
-  PlannerCreateAccountSetUpProfileView({super.key});
-
-  final PlannerCreateAccountController plannerCreateAccountController = Get.put(PlannerCreateAccountController());
+  const PlannerCreateAccountSetUpProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PlannerCreateAccountSetUpProfileController plannerCreateAccountSetUpProfileController = Get.put(PlannerCreateAccountSetUpProfileController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,7 +17,12 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: CustomScrollView(
+          child: plannerCreateAccountSetUpProfileController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
 
               AuthAppBarHelperWidget(
@@ -53,45 +57,67 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                       TextFormFieldWidget.build(
                         context: context,
                         hintText: "Enter your business name",
-                        controller:  plannerCreateAccountController.businessNameController.value,
+                        controller: plannerCreateAccountSetUpProfileController.businessNameController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 
 
-                      SpaceHelperWidget.v(20.h(context)),
+
+                      plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data != null ?
+                      Column(
+                        children: [
+
+                          SpaceHelperWidget.v(20.h(context)),
 
 
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.centerLeft,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black96,
-                        text: "Category",
-                      ),
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            textColor: ColorUtils.black96,
+                            text: "Category",
+                          ),
 
-                      SpaceHelperWidget.v(6.h(context)),
+                          SpaceHelperWidget.v(6.h(context)),
 
-                      Wrap(
-                        runSpacing: 10.h(context),
-                        spacing: 10.w(context),
-                        children: List.generate(plannerCreateAccountController.categoryList.length, (index) {
-                          return Obx(()=>IntrinsicWidth(
-                            child: ButtonHelperWidget.customButtonWidget(
-                              context: context,
-                              height: 56.h(context),
-                              padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                              backgroundColor: plannerCreateAccountController.selectCategory.value == plannerCreateAccountController.categoryList[index] ? ColorUtils.orange119 : ColorUtils.white243,
-                              textColor:  plannerCreateAccountController.selectCategory.value == plannerCreateAccountController.categoryList[index] ? ColorUtils.white255 : ColorUtils.black89,
-                              fontWeight: FontWeight.w500,
-                              onPressed: () async {
-                                plannerCreateAccountController.selectCategory.value = plannerCreateAccountController.categoryList[index];
-                              },
-                              text: plannerCreateAccountController.categoryList[index],
-                            ),
-                          ));
-                        }),
-                      ),
+                          Wrap(
+                            runSpacing: 10.h(context),
+                            spacing: 10.w(context),
+                            children: List.generate(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data!.length, (index) {
+                              return Obx(()=>IntrinsicWidth(
+                                child: ButtonHelperWidget.customButtonWidget(
+                                  context: context,
+                                  height: 56.h(context),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
+                                  backgroundColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                  ColorUtils.white243 :
+                                  plannerCreateAccountSetUpProfileController.selectCategory.where((value)=> value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                  ColorUtils.orange119 :
+                                  ColorUtils.white243,
+                                  textColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                  ColorUtils.black89 :
+                                  plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                  ColorUtils.white255 :
+                                  ColorUtils.black89,
+                                  fontWeight: FontWeight.w500,
+                                  onPressed: () async {
+                                    if(plannerCreateAccountSetUpProfileController.selectCategory.contains(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]) == true) {
+                                      plannerCreateAccountSetUpProfileController.selectCategory.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                    } else {
+                                      plannerCreateAccountSetUpProfileController.selectCategory.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                    }
+                                  },
+                                  text: plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data?[index].title ?? "",
+                                ),
+                              ));
+                            }),
+                          ),
+
+                        ],
+                      ) :
+                      SizedBox.shrink(),
+
 
 
                       SpaceHelperWidget.v(20.h(context)),
@@ -112,7 +138,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                         context: context,
                         maxLines: 5,
                         hintText: "Write something ...",
-                        controller:  plannerCreateAccountController.aboutYouController.value,
+                        controller: plannerCreateAccountSetUpProfileController.aboutYouController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 
@@ -135,7 +161,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                       TextFormFieldWidget.build(
                         context: context,
                         hintText: "Enter your location",
-                        controller:  plannerCreateAccountController.locationController.value,
+                        controller: plannerCreateAccountSetUpProfileController.locationController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 
@@ -158,7 +184,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                       TextFormFieldWidget.build(
                         context: context,
                         hintText: "Enter your instagram link",
-                        controller:  plannerCreateAccountController.addInstagramController.value,
+                        controller: plannerCreateAccountSetUpProfileController.addInstagramController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 
@@ -180,7 +206,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                       TextFormFieldWidget.build(
                         context: context,
                         hintText: "Enter your linkedin link",
-                        controller:  plannerCreateAccountController.addLinkedInController.value,
+                        controller: plannerCreateAccountSetUpProfileController.addLinkedInController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 
@@ -202,7 +228,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                       TextFormFieldWidget.build(
                         context: context,
                         hintText: "Enter your website link",
-                        controller:  plannerCreateAccountController.addWebsiteController.value,
+                        controller: plannerCreateAccountSetUpProfileController.addWebsiteController.value,
                         keyboardType: TextInputType.emailAddress,
                       ),
 

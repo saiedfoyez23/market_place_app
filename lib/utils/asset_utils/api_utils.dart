@@ -16,5 +16,6 @@ class ApiUtils {
   static const String userProfileDetails = "$baseUrl/users/my-profile"; //done
   static const String userContent = "$baseUrl/contents"; //done
   static const String userChangePassword = "$baseUrl/auth/change-password"; //done
+  static const String categoryResponse = "$baseUrl/categories?limit=1000000000"; //done
 
 }
