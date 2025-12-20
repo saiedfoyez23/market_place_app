@@ -18,11 +18,13 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   Rx<TextEditingController> addLinkedInController = TextEditingController().obs;
   Rx<TextEditingController> addWebsiteController = TextEditingController().obs;
   RxList<CategoryResponseData> selectCategory = <CategoryResponseData>[].obs;
+  RxList<String> selectCategoryString = <String>[].obs;
 
 
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxBool isLoading = false.obs;
+  RxBool isSubmit = false.obs;
 
   BuildContext context;
   PlannerCreateAccountSetUpProfileController({required this.context});
@@ -71,7 +73,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
       longitude.value = position.longitude;
       List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks.first;
-      locationController.value.text = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+      locationController.value.text = "${place.street} ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
     });
   }
 
@@ -100,21 +102,17 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   }
 
 
-  Future<void> createUserAccountController({
+  Future<void> updateUserAccountController({
     required BuildContext context,
-    required String userName,
-    required String email,
-    required String password,
-    required String confirmPassword,
   }) async {
-    isLoading.value = true;
+    isSubmit.value = true;
 
     final Map<String, dynamic> jsonData = {
       "longitude": longitude.value,
       "latitude": latitude.value,
       "address": locationController.value.text,
       "bio": aboutYouController.value.text,
-      "categories": selectCategory,
+      "categories": selectCategoryString,
       "socialProfiles": {
         "instagram": addInstagramController.value.text,
         "linkedin": addLinkedInController.value.text,
@@ -127,23 +125,22 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
       "data": jsonEncode(jsonData),  // important → JSON encoded string!
     });
 
-    await BaseApiUtils.post(
-      url: ApiUtils.userRegistration,
+    await BaseApiUtils.put(
+      url: ApiUtils.userUpdateMyProfile,
       formData: formData,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        await LocalStorageUtils.setString(AppConstantUtils.crateUserResponse, jsonEncode(data));
-        isLoading.value = false;
+        isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        Get.delete<PlannerCreateAccountController>();
-        Get.off(()=>PlannerCreateAccountOtpView(),preventDuplicates: false);
+        Get.off(()=>PlannerCreateAccountKycVerificationView(),preventDuplicates: false);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
+        isSubmit.value = false;
       },
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
+        isSubmit.value = false;
       },
     );
   }

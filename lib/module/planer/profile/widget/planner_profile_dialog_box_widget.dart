@@ -141,8 +141,6 @@ class PlannerProfileDialogBoxWidget {
 
 
 
-
-
                   /// ===== Buttons Row =====
                   Row(
                     children: [
@@ -171,6 +169,7 @@ class PlannerProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
+                            await LocalStorageUtils.remove(AppConstantUtils.plannerLoginResponse);
                             Get.offAll(()=>PlannerLoginView());
                           },
                           text: "Yes",

@@ -212,3 +212,5 @@ export 'planer/project/widget/payment_page.dart';
 export 'planer/project/widget/tasks_page.dart';
 export 'planer/dashboard/controller/planner_create_account_set_up_profile_controller.dart';
 export 'planer/dashboard/model/category_response_model.dart';
+export 'planer/dashboard/controller/planner_create_account_kyc_verification_controller.dart';
+export 'planer/profile/model/planner_FAQ_response_model.dart';

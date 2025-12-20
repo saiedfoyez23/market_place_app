@@ -104,8 +104,10 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                                   onPressed: () async {
                                     if(plannerCreateAccountSetUpProfileController.selectCategory.contains(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]) == true) {
                                       plannerCreateAccountSetUpProfileController.selectCategory.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                      plannerCreateAccountSetUpProfileController.selectCategoryString.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
                                     } else {
                                       plannerCreateAccountSetUpProfileController.selectCategory.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                      plannerCreateAccountSetUpProfileController.selectCategoryString.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
                                     }
                                   },
                                   text: plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data?[index].title ?? "",
@@ -234,10 +236,24 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
 
                       SpaceHelperWidget.v(32.h(context)),
 
+                      plannerCreateAccountSetUpProfileController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(
+                        context: context,
+                      ) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>PlannerCreateAccountKycVerificationView(),preventDuplicates: false);
+                          if(plannerCreateAccountSetUpProfileController.businessNameController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your business name");
+                          } else if(plannerCreateAccountSetUpProfileController.selectCategory.isEmpty == true) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select minimum one category");
+                          } else if(plannerCreateAccountSetUpProfileController.latitude.value == 0.0 && plannerCreateAccountSetUpProfileController.latitude.value == 0.0) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                          } else if(plannerCreateAccountSetUpProfileController.locationController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                          } else {
+                            await plannerCreateAccountSetUpProfileController.updateUserAccountController(context: context);
+                          }
                         },
                         text: "Next",
                       ),

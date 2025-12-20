@@ -7,7 +7,7 @@ import 'package:marketplaceapp/module/module.dart';
 class PlannerCreateAccountKycVerificationView extends StatelessWidget {
   PlannerCreateAccountKycVerificationView({super.key});
 
-  final PlannerCreateAccountController plannerCreateAccountController = Get.put(PlannerCreateAccountController());
+  final PlannerCreateAccountKycVerificationController plannerCreateAccountKycVerificationController = Get.put(PlannerCreateAccountKycVerificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your full name",
-                              controller:  plannerCreateAccountController.fullNameController.value,
+                              controller: plannerCreateAccountKycVerificationController.fullNameController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -107,10 +107,10 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                           fillColor: ColorUtils.white255,
                                           hintText: "DD/MM/YY",
                                           readOnly: true,
-                                          controller:  plannerCreateAccountController.dateController.value,
+                                          controller: plannerCreateAccountKycVerificationController.dateController.value,
                                           keyboardType: TextInputType.emailAddress,
                                           onTap: () async {
-                                            await plannerCreateAccountController.dateTimeController(context: context);
+                                            await plannerCreateAccountKycVerificationController.dateTimeController(context: context);
                                           }
                                       ),
 
@@ -139,10 +139,10 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
 
 
                                       CustomDropdownHelperClass(
-                                        value: plannerCreateAccountController.selectGender.value == "" ? null : plannerCreateAccountController.selectGender.value,
+                                        value: plannerCreateAccountKycVerificationController.selectGender.value == "" ? null : plannerCreateAccountKycVerificationController.selectGender.value,
                                         items: ["Male","Female","Other"],
                                         onChanged: (value) {
-                                          plannerCreateAccountController.selectGender.value = value!;
+                                          plannerCreateAccountKycVerificationController.selectGender.value = value!;
                                         },
                                       ),
 
@@ -205,7 +205,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your permanent address",
-                              controller:  plannerCreateAccountController.permanentAddressController.value,
+                              controller: plannerCreateAccountKycVerificationController.permanentAddressController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -229,7 +229,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your current address",
-                              controller:  plannerCreateAccountController.currentAddressController.value,
+                              controller: plannerCreateAccountKycVerificationController.currentAddressController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -260,7 +260,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                         context: context,
                                         fillColor: ColorUtils.white255,
                                         hintText: "City",
-                                        controller:  plannerCreateAccountController.cityController.value,
+                                        controller: plannerCreateAccountKycVerificationController.cityController.value,
                                         keyboardType: TextInputType.emailAddress,
                                       ),
 
@@ -292,7 +292,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                         context: context,
                                         fillColor: ColorUtils.white255,
                                         hintText: "Postal Code",
-                                        controller:  plannerCreateAccountController.postalCodeController.value,
+                                        controller: plannerCreateAccountKycVerificationController.postalCodeController.value,
                                         keyboardType: TextInputType.emailAddress,
                                       ),
 
@@ -352,10 +352,10 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
 
 
                             CustomDropdownHelperClass(
-                              value: plannerCreateAccountController.selectIdType.value == "" ? null : plannerCreateAccountController.selectIdType.value,
+                              value: plannerCreateAccountKycVerificationController.selectIdType.value == "" ? null : plannerCreateAccountKycVerificationController.selectIdType.value,
                               items: ["NID","Driving License","Working Permit","TIN Certificate"],
                               onChanged: (value) {
-                                plannerCreateAccountController.selectIdType.value = value!;
+                                plannerCreateAccountKycVerificationController.selectIdType.value = value!;
                               },
                               hintText: "Select ID Type",
                             ),
@@ -372,7 +372,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               textColor: ColorUtils.black96,
-                              text: "NID Number",
+                              text: "ID Number",
                             ),
 
                             SpaceHelperWidget.v(6.h(context)),
@@ -382,7 +382,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your nid number",
-                              controller:  plannerCreateAccountController.nidNumberController.value,
+                              controller: plannerCreateAccountKycVerificationController.nidNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -417,7 +417,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                         ),
                                         child: InkWell(
                                           onTap: () async {
-                                            await plannerCreateAccountController.pickUploadFrontSideFile();
+                                            await plannerCreateAccountKycVerificationController.pickUploadFrontSideFile();
                                           },
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -431,7 +431,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   textColor: ColorUtils.black96,
-                                                  text: plannerCreateAccountController.selectedUploadFrontSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountController.selectedUploadFrontSideFile.value.path,
+                                                  text: plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path,
                                                 ),
                                               ),
 
@@ -482,7 +482,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                         ),
                                         child: InkWell(
                                           onTap: () async {
-                                            await plannerCreateAccountController.pickUploadBackSideFile();
+                                            await plannerCreateAccountKycVerificationController.pickUploadBackSideFile();
                                           },
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -496,7 +496,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   textColor: ColorUtils.black96,
-                                                  text: plannerCreateAccountController.selectedUploadBackSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountController.selectedUploadBackSideFile.value.path,
+                                                  text: plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "" ? "JPG/PNG" : plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path,
                                                 ),
                                               ),
 
@@ -573,7 +573,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your bank name",
-                              controller:  plannerCreateAccountController.bankNameController.value,
+                              controller: plannerCreateAccountKycVerificationController.bankNameController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -597,7 +597,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your account number",
-                              controller:  plannerCreateAccountController.accountNumberController.value,
+                              controller: plannerCreateAccountKycVerificationController.accountNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -621,7 +621,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               context: context,
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your TIN/NID number",
-                              controller:  plannerCreateAccountController.businessNameController.value,
+                              controller: plannerCreateAccountKycVerificationController.tinNidNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
 
@@ -636,10 +636,45 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
 
                       SpaceHelperWidget.v(32.h(context)),
 
+
+                      plannerCreateAccountKycVerificationController.isSubmit.value == true ?
+                      LoadingHelperWidget.loadingHelperWidget(
+                        context: context,
+                      ) :
                       ButtonHelperWidget.customButtonWidgetAdventPro(
                         context: context,
                         onPressed: () async {
-                          Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
+                          if(plannerCreateAccountKycVerificationController.fullNameController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your full name");
+                          } else if(plannerCreateAccountKycVerificationController.dateController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your date");
+                          } else if(plannerCreateAccountKycVerificationController.selectGender.value == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select your gender");
+                          } else if(plannerCreateAccountKycVerificationController.currentAddressController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your current address");
+                          } else if(plannerCreateAccountKycVerificationController.permanentAddressController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your permanent address");
+                          } else if(plannerCreateAccountKycVerificationController.cityController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your city");
+                          } else if(plannerCreateAccountKycVerificationController.postalCodeController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your postal code");
+                          } else if(plannerCreateAccountKycVerificationController.selectIdType.value == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select your id");
+                          } else if(plannerCreateAccountKycVerificationController.nidNumberController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your id number");
+                          } else if(plannerCreateAccountKycVerificationController.bankNameController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank name");
+                          } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
+                          } else if(plannerCreateAccountKycVerificationController.tinNidNumberController.value.text == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your TIN/NID number");
+                          } else if(plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");
+                          } else if(plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload back side iD image");
+                          } else {
+                            await plannerCreateAccountKycVerificationController.userKycVerificationController(context: context);
+                          }
                         },
                         text: "Next",
                       ),
