@@ -129,6 +129,8 @@ export 'vendor/booking/view/vendor_create_new_order_view.dart';
 export 'vendor/booking/controller/vendor_create_new_order_controller.dart';
 export 'vendor/analysis/view/vendor_analysis_view.dart';
 export 'vendor/analysis/controller/vendor_analysis_controller.dart';
+export 'vendor/dashboard/controller/vendor_create_account_set_up_profile_controller.dart';
+export 'vendor/dashboard/controller/vendor_create_account_kyc_verification_controller.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';
 export 'planer/onboarding/controller/planer_onboarding_controller.dart';
 export 'planer/onboarding/widget/planer_onboarding_widget.dart';

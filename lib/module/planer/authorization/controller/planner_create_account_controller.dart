@@ -65,7 +65,7 @@ class PlannerCreateAccountController extends GetxController {
   }
 
 
-  Future<void> createUserAccountController({
+  Future<void> createPlannerAccountController({
     required BuildContext context,
     required String userName,
     required String email,

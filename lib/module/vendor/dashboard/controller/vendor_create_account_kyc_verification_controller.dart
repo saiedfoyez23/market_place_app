@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart'as dio;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
-import '../../../../utils/utils.dart';
 
-class PlannerCreateAccountKycVerificationController extends GetxController {
+class VendorCreateAccountKycVerificationController extends GetxController {
+
 
   Rx<TextEditingController> fullNameController = TextEditingController().obs;
   Rx<TextEditingController> dateController = TextEditingController().obs;
@@ -20,12 +21,11 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> postalCodeController = TextEditingController().obs;
   Rx<TextEditingController> nidNumberController = TextEditingController().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   RxString selectIdType = "".obs;
   RxString selectGender = "".obs;
   RxBool isSubmit = false.obs;
   Rx<DateTime> dateOfBirth = DateTime.now().obs;
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
-
 
 
   Future<void> dateTimeController({required BuildContext context}) async {
@@ -73,8 +73,7 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
     }
   }
 
-
-  Future<void> plannerKycVerificationController({
+  Future<void> vendorKycVerificationController({
     required BuildContext context,
   }) async {
     isSubmit.value = true;
@@ -142,8 +141,8 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await LocalStorageUtils.remove(AppConstantUtils.plannerLoginResponse);
-        Get.offAll(()=>PlannerLoginView());
+        await LocalStorageUtils.remove(AppConstantUtils.vendorLoginResponse);
+        Get.offAll(()=>VendorLoginView());
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

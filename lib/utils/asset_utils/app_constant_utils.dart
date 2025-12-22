@@ -6,6 +6,8 @@ class AppConstantUtils {
   static const String rememberMeData = 'rememberMeData';
   static const String plannerRememberMeData = 'plannerRememberMeData';
   static const String plannerLoginResponse = 'plannerLoginResponse';
+  static const String vendorRememberMeData = 'vendorRememberMeData';
+  static const String vendorLoginResponse = 'vendorLoginResponse';
 
 
 }

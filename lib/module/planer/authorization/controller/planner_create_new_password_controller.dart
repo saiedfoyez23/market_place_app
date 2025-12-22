@@ -22,19 +22,19 @@ class PlannerCreateNewPasswordController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
-      await userForgotPasswordResponseController();
+      await plannerForgotPasswordResponseController();
     });
   }
 
 
-  Future<void> userForgotPasswordResponseController() async {
-    print(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!);
+  Future<void> plannerForgotPasswordResponseController() async {
+    print(LocalStorageUtils.getString(AppConstantUtils.forgotPasswordUserResponse)!);
     userForgotPasswordResponseModel.value = UserForgotPasswordResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.forgotPasswordUserResponse)!));
     print(userForgotPasswordResponseModel.value.data?.verifyToken);
   }
 
 
-  Future<void> createNewPasswordController({
+  Future<void> plannerCreateNewPasswordController({
     required BuildContext context,
     required String email,
     required String newPassword,

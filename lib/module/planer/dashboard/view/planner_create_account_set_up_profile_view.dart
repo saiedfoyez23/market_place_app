@@ -252,7 +252,7 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                           } else if(plannerCreateAccountSetUpProfileController.locationController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
                           } else {
-                            await plannerCreateAccountSetUpProfileController.updateUserAccountController(context: context);
+                            await plannerCreateAccountSetUpProfileController.plannerUpdateUserAccountController(context: context);
                           }
                         },
                         text: "Next",

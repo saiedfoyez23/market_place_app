@@ -11,7 +11,7 @@ class PlannerForgotPasswordController extends GetxController {
   Rx<TextEditingController> emailController = TextEditingController().obs;
 
 
-  Future<void> forgotPasswordController({
+  Future<void> plannerForgotPasswordController({
     required BuildContext context,
     required String email,
   }) async {

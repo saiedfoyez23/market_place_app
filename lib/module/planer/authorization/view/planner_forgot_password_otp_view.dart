@@ -94,7 +94,7 @@ class PlannerForgotPasswordOtpView extends StatelessWidget {
                         ) : ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            await plannerForgotPasswordOtpController.resendOtpCodeController(
+                            await plannerForgotPasswordOtpController.plannerResendOtpCodeController(
                               context: context,
                               email: email,
                             );
@@ -119,7 +119,7 @@ class PlannerForgotPasswordOtpView extends StatelessWidget {
                             if(plannerForgotPasswordOtpController.pinController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter Otp Code");
                             } else {
-                              await plannerForgotPasswordOtpController.verifyOtpCodeController(
+                              await plannerForgotPasswordOtpController.plannerVerifyOtpCodeController(
                                 context: context,
                                 otp: plannerForgotPasswordOtpController.pinController.value.text,
                                 email: email,

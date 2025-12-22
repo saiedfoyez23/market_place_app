@@ -172,6 +172,7 @@ class VendorProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
+                            await LocalStorageUtils.remove(AppConstantUtils.vendorLoginResponse);
                             Get.offAll(()=>VendorLoginView());
                           },
                           text: "Yes",

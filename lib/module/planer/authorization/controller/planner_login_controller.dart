@@ -20,11 +20,11 @@ class PlannerLoginController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
-      await getRememberMe();
+      await plannerGetRememberMe();
     });
   }
 
-  Future<void> rememberMe() async {
+  Future<void> plannerRememberMe() async {
     Map<String,dynamic> data = {
       "email" : emailController.value.text,
       "password" : passwordController.value.text,
@@ -32,7 +32,7 @@ class PlannerLoginController extends GetxController {
     await LocalStorageUtils.setString(AppConstantUtils.plannerRememberMeData, jsonEncode(data));
   }
 
-  Future<void> getRememberMe() async {
+  Future<void> plannerGetRememberMe() async {
     if(LocalStorageUtils.getString(AppConstantUtils.plannerRememberMeData) != null) {
       isCheck.value = true;
       emailController.value.text = jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerRememberMeData)!)["email"];
@@ -40,7 +40,7 @@ class PlannerLoginController extends GetxController {
     }
   }
 
-  Future<void> removeRememberMe() async {
+  Future<void> plannerRemoveRememberMe() async {
     isCheck.value = false;
     emailController.value.clear();
     passwordController.value.clear();
@@ -48,7 +48,7 @@ class PlannerLoginController extends GetxController {
   }
 
 
-  Future<void> userLoginController({
+  Future<void> plannerUserLoginController({
     required BuildContext context,
     required String password,
     required String email,

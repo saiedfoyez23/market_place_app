@@ -95,7 +95,7 @@ class PlannerCreateAccountOtpView extends StatelessWidget {
                         ) : ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            await plannerCreateAccountOtpController.resendOtpCodeController(
+                            await plannerCreateAccountOtpController.plannerResendOtpCodeController(
                               context: context,
                               email: plannerCreateAccountOtpController.userCreateAccountResponseModel.value.data?.user?.email,
                             );
@@ -120,7 +120,7 @@ class PlannerCreateAccountOtpView extends StatelessWidget {
                             if(plannerCreateAccountOtpController.pinController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter Otp Code");
                             } else {
-                              await plannerCreateAccountOtpController.verifyOtpCodeController(
+                              await plannerCreateAccountOtpController.plannerVerifyOtpCodeController(
                                 context: context,
                                 otp: plannerCreateAccountOtpController.pinController.value.text,
                               );

@@ -85,7 +85,7 @@ class PlannerForgotPasswordView extends StatelessWidget {
                           if(plannerForgotPasswordController.emailController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email name");
                           } else {
-                            await plannerForgotPasswordController.forgotPasswordController(context: context, email:  plannerForgotPasswordController.emailController.value.text);
+                            await plannerForgotPasswordController.plannerForgotPasswordController(context: context, email:  plannerForgotPasswordController.emailController.value.text);
                           }
                         },
                         text: "Next",

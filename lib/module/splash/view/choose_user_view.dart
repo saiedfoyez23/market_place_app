@@ -121,7 +121,7 @@ class ChooseUserView extends StatelessWidget {
                         context: context,
                         onPressed: () async {
                           if(chooseUserController.chooseUseRole.value == "Vendor") {
-                            Get.off(()=>VendorOnboardingView(),preventDuplicates: false);
+                            await chooseUserController.vendorLoginRedirection();
                           } else if(chooseUserController.chooseUseRole.value == "Planner") {
                             await chooseUserController.plannerLoginRedirection();
                           } else if(chooseUserController.chooseUseRole.value == "Customer") {

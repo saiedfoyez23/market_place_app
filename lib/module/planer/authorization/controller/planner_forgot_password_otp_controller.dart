@@ -21,12 +21,12 @@ class PlannerForgotPasswordOtpController extends GetxController {
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
       await otpTimer();
-      await userForgotPasswordResponseController();
+      await plannerForgotPasswordResponseController();
     });
   }
 
-  Future<void> userForgotPasswordResponseController() async {
-    print(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!);
+  Future<void> plannerForgotPasswordResponseController() async {
+    print(LocalStorageUtils.getString(AppConstantUtils.forgotPasswordUserResponse)!);
     userForgotPasswordResponseModel.value = UserForgotPasswordResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.forgotPasswordUserResponse)!));
     print(userForgotPasswordResponseModel.value.data?.verifyToken);
   }
@@ -51,7 +51,7 @@ class PlannerForgotPasswordOtpController extends GetxController {
     isResendOtpSend.value = false;
   }
 
-  Future<void> resendOtpCodeController({
+  Future<void> plannerResendOtpCodeController({
     required BuildContext context,
     required String email,
   }) async {
@@ -84,7 +84,7 @@ class PlannerForgotPasswordOtpController extends GetxController {
   }
 
 
-  Future<void> verifyOtpCodeController({
+  Future<void> plannerVerifyOtpCodeController({
     required BuildContext context,
     required String otp,
     required String email,

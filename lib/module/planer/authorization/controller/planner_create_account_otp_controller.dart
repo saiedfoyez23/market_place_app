@@ -21,11 +21,11 @@ class PlannerCreateAccountOtpController extends GetxController {
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
       await otpTimer();
-      await userCreateAccountResponseController();
+      await plannerCreateAccountResponseController();
     });
   }
 
-  Future<void> userCreateAccountResponseController() async {
+  Future<void> plannerCreateAccountResponseController() async {
     print(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!);
     userCreateAccountResponseModel.value = UserCreateAccountResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.crateUserResponse)!));
     print(userCreateAccountResponseModel.value.data?.otpToken?.token);
@@ -44,7 +44,7 @@ class PlannerCreateAccountOtpController extends GetxController {
     });
   }
 
-  Future<void> resendOtpCodeController({
+  Future<void> plannerResendOtpCodeController({
     required BuildContext context,
     required String email,
   }) async {
@@ -77,7 +77,7 @@ class PlannerCreateAccountOtpController extends GetxController {
   }
 
 
-  Future<void> verifyOtpCodeController({
+  Future<void> plannerVerifyOtpCodeController({
     required BuildContext context,
     required String otp,
   }) async {

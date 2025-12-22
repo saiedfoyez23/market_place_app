@@ -673,7 +673,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload back side iD image");
                           } else {
-                            await plannerCreateAccountKycVerificationController.userKycVerificationController(context: context);
+                            await plannerCreateAccountKycVerificationController.plannerKycVerificationController(context: context);
                           }
                         },
                         text: "Next",

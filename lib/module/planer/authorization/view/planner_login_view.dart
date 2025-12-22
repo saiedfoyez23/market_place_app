@@ -148,7 +148,7 @@ class PlannerLoginView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 if(plannerLoginController.isCheck.value == true) {
-                                  await plannerLoginController.removeRememberMe();
+                                  await plannerLoginController.plannerRemoveRememberMe();
                                 } else {
                                   plannerLoginController.isCheck.value = true;
                                 }
@@ -193,14 +193,14 @@ class PlannerLoginView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
                             } else {
                               if(plannerLoginController.isCheck.value == false) {
-                                await plannerLoginController.userLoginController(
+                                await plannerLoginController.plannerUserLoginController(
                                   context: context,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,
                                 );
                               } else {
-                                await plannerLoginController.rememberMe();
-                                await plannerLoginController.userLoginController(
+                                await plannerLoginController.plannerRememberMe();
+                                await plannerLoginController.plannerUserLoginController(
                                   context: context,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,

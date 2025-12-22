@@ -149,7 +149,7 @@ class PlannerCreateNewPasswordView extends StatelessWidget {
                             } else if(plannerCreateNewPasswordController.confirmPasswordController.value.text != plannerCreateNewPasswordController.passwordController.value.text) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Password is not match");
                             } else {
-                              await plannerCreateNewPasswordController.createNewPasswordController(
+                              await plannerCreateNewPasswordController.plannerCreateNewPasswordController(
                                 context: context,
                                 email: email,
                                 newPassword: plannerCreateNewPasswordController.passwordController.value.text,

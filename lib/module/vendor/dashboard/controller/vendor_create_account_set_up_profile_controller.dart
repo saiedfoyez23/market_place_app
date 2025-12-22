@@ -4,22 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
-import '../../../../utils/utils.dart';
 
-class PlannerCreateAccountSetUpProfileController extends GetxController {
+class VendorCreateAccountSetUpProfileController extends GetxController {
 
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
-  Rx<CategoryResponseModel> categoryResponseModel = CategoryResponseModel().obs;
   Rx<TextEditingController> businessNameController = TextEditingController().obs;
   Rx<TextEditingController> aboutYouController = TextEditingController().obs;
   Rx<TextEditingController> locationController = TextEditingController().obs;
-  Rx<TextEditingController> addInstagramController = TextEditingController().obs;
-  Rx<TextEditingController> addLinkedInController = TextEditingController().obs;
-  Rx<TextEditingController> addWebsiteController = TextEditingController().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   RxList<CategoryResponseData> selectCategory = <CategoryResponseData>[].obs;
   RxList<String> selectCategoryString = <String>[].obs;
-
+  Rx<CategoryResponseModel> categoryResponseModel = CategoryResponseModel().obs;
 
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
@@ -27,7 +23,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   RxBool isSubmit = false.obs;
 
   BuildContext context;
-  PlannerCreateAccountSetUpProfileController({required this.context});
+  VendorCreateAccountSetUpProfileController({required this.context});
 
   @override
   void onInit() {
@@ -35,10 +31,11 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await plannerGetAddressFromLatLng();
-      await plannerGetCategoryController(context: context);
+      await vendorGetAddressFromLatLng();
+      await vendorGetCategoryController(context: context);
     });
   }
+
 
   /// Check & request permission
   static Future<void> _handlePermission() async {
@@ -67,7 +64,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   }
 
   /// Get address from latitude & longitude
-  Future<void> plannerGetAddressFromLatLng() async {
+  Future<void> vendorGetAddressFromLatLng() async {
     await getCurrentPosition().then((position) async {
       latitude.value = position.latitude;
       longitude.value = position.longitude;
@@ -78,7 +75,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   }
 
 
-  Future<void> plannerGetCategoryController({
+  Future<void> vendorGetCategoryController({
     required BuildContext context,
   }) async {
     BaseApiUtils.get(
@@ -101,7 +98,8 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   }
 
 
-  Future<void> plannerUpdateUserAccountController({
+
+  Future<void> vendorUpdateUserAccountController({
     required BuildContext context,
   }) async {
     isSubmit.value = true;
@@ -112,11 +110,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
       "address": locationController.value.text,
       "bio": aboutYouController.value.text,
       "categories": selectCategoryString,
-      "socialProfiles": {
-        "instagram": addInstagramController.value.text,
-        "linkedin": addLinkedInController.value.text,
-        "website": addWebsiteController.value.text,
-      },
+      "role": "vendor",
     };
     print(jsonData);
 
@@ -131,7 +125,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        Get.off(()=>PlannerCreateAccountKycVerificationView(),preventDuplicates: false);
+        Get.off(()=>VendorCreateAccountKycVerificationView(),preventDuplicates: false);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -143,9 +137,5 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
       },
     );
   }
-
-
-
-
 
 }

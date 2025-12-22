@@ -241,7 +241,7 @@ class PlannerCreateAccountPickImageView extends StatelessWidget {
                             ButtonHelperWidget.customIconButtonWidgetAdventPro(
                               context: context,
                               onPressed: () async {
-                                await plannerCreateAccountController.createUserAccountController(
+                                await plannerCreateAccountController.createPlannerAccountController(
                                   context: context,
                                   userName: plannerCreateAccountController.userNameController.value.text,
                                   email: plannerCreateAccountController.emailController.value.text,
@@ -272,7 +272,7 @@ class PlannerCreateAccountPickImageView extends StatelessWidget {
                             ButtonHelperWidget.customButtonWidgetAdventPro(
                               context: context,
                               onPressed: () async {
-                                await plannerCreateAccountController.createUserAccountController(
+                                await plannerCreateAccountController.createPlannerAccountController(
                                   context: context,
                                   userName: plannerCreateAccountController.userNameController.value.text,
                                   email: plannerCreateAccountController.emailController.value.text,
