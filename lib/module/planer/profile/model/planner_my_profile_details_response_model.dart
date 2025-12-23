@@ -28,6 +28,7 @@ class PlannerMyProfileDetailsResponseModel {
 
 class PlannerMyProfileDetailsResponse {
   PlannerMyProfileDetailsLocation? location;
+  PlannerMyProfileDetailsNotifySettings? notifySettings;
   var sId;
   var name;
   var email;
@@ -36,6 +37,7 @@ class PlannerMyProfileDetailsResponse {
   var contractNumber;
   var address;
   var bio;
+  List<String>? categories;
   var locationUrl;
   PlannerMyProfileDetailsSocialProfiles? socialProfiles;
   var role;
@@ -48,6 +50,7 @@ class PlannerMyProfileDetailsResponse {
 
   PlannerMyProfileDetailsResponse({
     this.location,
+    this.notifySettings,
     this.sId,
     this.name,
     this.email,
@@ -56,6 +59,7 @@ class PlannerMyProfileDetailsResponse {
     this.contractNumber,
     this.address,
     this.bio,
+    this.categories,
     this.locationUrl,
     this.socialProfiles,
     this.role,
@@ -71,6 +75,9 @@ class PlannerMyProfileDetailsResponse {
     location = json['location'] != null
         ? new PlannerMyProfileDetailsLocation.fromJson(json['location'])
         : null;
+    notifySettings = json['notifySettings'] != null
+        ? new PlannerMyProfileDetailsNotifySettings.fromJson(json['notifySettings'])
+        : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -79,6 +86,7 @@ class PlannerMyProfileDetailsResponse {
     contractNumber = json['contractNumber'];
     address = json['address'];
     bio = json['bio'];
+    categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
     socialProfiles = json['socialProfiles'] != null
         ? new PlannerMyProfileDetailsSocialProfiles.fromJson(json['socialProfiles'])
@@ -97,6 +105,9 @@ class PlannerMyProfileDetailsResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
+    if (this.notifySettings != null) {
+      data['notifySettings'] = this.notifySettings!.toJson();
+    }
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -105,6 +116,7 @@ class PlannerMyProfileDetailsResponse {
     data['contractNumber'] = this.contractNumber;
     data['address'] = this.address;
     data['bio'] = this.bio;
+    data['categories'] = this.categories;
     data['locationUrl'] = this.locationUrl;
     if (this.socialProfiles != null) {
       data['socialProfiles'] = this.socialProfiles!.toJson();
@@ -121,20 +133,58 @@ class PlannerMyProfileDetailsResponse {
 }
 
 class PlannerMyProfileDetailsLocation {
-  String? type;
-  List<int>? coordinates;
+  var type;
+  List<double>? coordinates;
 
   PlannerMyProfileDetailsLocation({this.type, this.coordinates});
 
   PlannerMyProfileDetailsLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<int>();
+    coordinates = json['coordinates'].cast<double>();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
     data['coordinates'] = this.coordinates;
+    return data;
+  }
+}
+
+class PlannerMyProfileDetailsNotifySettings {
+  var all;
+  var profile;
+  var service;
+  var bookings;
+  var subscription;
+  var payment;
+
+  PlannerMyProfileDetailsNotifySettings({
+    this.all,
+    this.profile,
+    this.service,
+    this.bookings,
+    this.subscription,
+    this.payment,
+  });
+
+  PlannerMyProfileDetailsNotifySettings.fromJson(Map<String, dynamic> json) {
+    all = json['all'];
+    profile = json['profile'];
+    service = json['service'];
+    bookings = json['bookings'];
+    subscription = json['subscription'];
+    payment = json['payment'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['all'] = this.all;
+    data['profile'] = this.profile;
+    data['service'] = this.service;
+    data['bookings'] = this.bookings;
+    data['subscription'] = this.subscription;
+    data['payment'] = this.payment;
     return data;
   }
 }

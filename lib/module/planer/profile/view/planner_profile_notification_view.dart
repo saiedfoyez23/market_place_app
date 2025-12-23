@@ -7,88 +7,110 @@ import 'package:marketplaceapp/module/module.dart';
 class PlannerProfileNotificationView extends StatelessWidget {
   PlannerProfileNotificationView({super.key});
 
-  final PlannerProfileNotificationController plannerProfileNotificationController = Get.put(PlannerProfileNotificationController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white251,
-          ),
-          child: CustomScrollView(
-            slivers: [
+    final PlannerProfileNotificationController plannerProfileNotificationController = Get.put(PlannerProfileNotificationController(context: context));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white251,
+            ),
+            child: plannerProfileNotificationController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
+              slivers: [
 
-              AuthAppBarHelperWidget(
-                onBackPressed: () async {
-                  Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
-                },
-                title: "Notification",
-              ),
-
-
-
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      ProfileNotificationWidget.buildSettingRow(
-                        title: "New Bookings",
-                        subtitle: "Notify me about new booking requests.",
-                        value: plannerProfileNotificationController.newBookings.value,
-                        onChanged: (v) {
-                          plannerProfileNotificationController.newBookings.value = v;
-                        },
-                        context: context,
-                      ),
-
-                      ProfileNotificationWidget.buildSettingRow(
-                        title: "New Messages",
-                        subtitle: "Notify me when I receive a new message.",
-                        value: plannerProfileNotificationController.newMessages.value,
-                        onChanged: (v) {
-                          plannerProfileNotificationController.newMessages.value = v;
-                        },
-                        context: context,
-                      ),
-
-                      ProfileNotificationWidget.buildSettingRow(
-                        title: "Booking Status Changes",
-                        subtitle: "Notify me of confirmations or cancellations.",
-                        value: plannerProfileNotificationController.bookingStatus.value,
-                        onChanged: (v) {
-                          plannerProfileNotificationController.bookingStatus.value = v;
-                        },
-                        context: context,
-                      ),
-
-                      ProfileNotificationWidget.buildSettingRow(
-                        title: "New Reviews",
-                        subtitle: "Notify me when a client leaves a review.",
-                        value: plannerProfileNotificationController.newReviews.value,
-                        onChanged: (v) {
-                          plannerProfileNotificationController.newReviews.value = v;
-                        },
-                        context: context,
-                      ),
+                AuthAppBarHelperWidget(
+                  onBackPressed: () async {
+                    Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+                  },
+                  title: "Notification",
+                ),
 
 
 
-                    ],
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
+
+                        SpaceHelperWidget.v(32.h(context)),
+
+                        ProfileNotificationWidget.buildSettingRow(
+                          title: "New Bookings",
+                          subtitle: "Notify me about new booking requests.",
+                          value: plannerProfileNotificationController.newBookings.value,
+                          onChanged: (v) {
+                            plannerProfileNotificationController.newBookings.value = v;
+                          },
+                          context: context,
+                        ),
+
+                        ProfileNotificationWidget.buildSettingRow(
+                          title: "New Service",
+                          subtitle: "Notify me when I receive a new service.",
+                          value: plannerProfileNotificationController.newService.value,
+                          onChanged: (v) {
+                            plannerProfileNotificationController.newService.value = v;
+                          },
+                          context: context,
+                        ),
+
+                        ProfileNotificationWidget.buildSettingRow(
+                          title: "Profile",
+                          subtitle: "Notify me of any profile related notification.",
+                          value: plannerProfileNotificationController.newProfile.value,
+                          onChanged: (v) {
+                            plannerProfileNotificationController.newProfile.value = v;
+                          },
+                          context: context,
+                        ),
+
+                        ProfileNotificationWidget.buildSettingRow(
+                          title: "New Subscription",
+                          subtitle: "Notify me when when I receive a new subscription.",
+                          value: plannerProfileNotificationController.newSubscription.value,
+                          onChanged: (v) {
+                            plannerProfileNotificationController.newSubscription.value = v;
+                          },
+                          context: context,
+                        ),
+
+
+                        ProfileNotificationWidget.buildSettingRow(
+                          title: "New payment",
+                          subtitle: "Notify me when when I receive a new payment.",
+                          value: plannerProfileNotificationController.newPayment.value,
+                          onChanged: (v) {
+                            plannerProfileNotificationController.newPayment.value = v;
+                          },
+                          context: context,
+                        ),
+
+
+
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }

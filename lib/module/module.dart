@@ -216,3 +216,6 @@ export 'planer/dashboard/controller/planner_create_account_set_up_profile_contro
 export 'planer/dashboard/model/category_response_model.dart';
 export 'planer/dashboard/controller/planner_create_account_kyc_verification_controller.dart';
 export 'planer/profile/model/planner_FAQ_response_model.dart';
+export 'planer/profile/controller/planner_profile_view_controller.dart';
+export 'planer/profile/model/planner_my_profile_details_response_model.dart';
+export 'planer/profile/model/planner_user_wise_portfolio_model.dart';
