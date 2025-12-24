@@ -116,13 +116,13 @@ class PlannerProfileEditView extends StatelessWidget {
                                         horizontalPadding: 2.vpm(context),
                                         backgroundColor: ColorUtils.orange213,
                                         radius: 75.r(context),
-                                        imageFile: plannerProfileEditController.profileImageFile.value.path == "" ?
-                                        null : plannerProfileEditController.profileImageFile.value.path,
+                                        imageFile: plannerProfileEditController.profileImageFile.value.path != "" ?
+                                        plannerProfileEditController.profileImageFile.value.path :  null,
                                         imageUrl: plannerProfileEditController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl != null && plannerProfileEditController.profileImageFile.value.path == "" ?
                                         plannerProfileEditController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl :
                                         null,
-                                        imageAsset: plannerProfileEditController.profileImageFile.value.path == "" || plannerProfileEditController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl != null ?
-                                        null : ImageUtils.noImage,
+                                        imageAsset: plannerProfileEditController.profileImageFile.value.path == "" && plannerProfileEditController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ?
+                                        ImageUtils.noImage : null,
                                       ),
 
 

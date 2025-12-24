@@ -69,7 +69,6 @@ class VendorCreateAccountSetUpProfileView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
                         vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data != null ?
                         Column(
                           children: [
@@ -97,23 +96,21 @@ class VendorCreateAccountSetUpProfileView extends StatelessWidget {
                                     context: context,
                                     height: 56.h(context),
                                     padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                    backgroundColor: vendorCreateAccountSetUpProfileController.selectCategory.where((value)=>value == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                    backgroundColor: vendorCreateAccountSetUpProfileController.selectCategoryString.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title) == false ?
                                     ColorUtils.white243 :
-                                    vendorCreateAccountSetUpProfileController.selectCategory.where((value)=> value == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                    vendorCreateAccountSetUpProfileController.selectCategoryString.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title) == true ?
                                     ColorUtils.orange119 :
                                     ColorUtils.white243,
-                                    textColor: vendorCreateAccountSetUpProfileController.selectCategory.where((value)=>value == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                    textColor: vendorCreateAccountSetUpProfileController.selectCategoryString.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title) == false ?
                                     ColorUtils.black89 :
-                                    vendorCreateAccountSetUpProfileController.selectCategory.where((value)=>value == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                    vendorCreateAccountSetUpProfileController.selectCategoryString.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title) == true ?
                                     ColorUtils.white255 :
                                     ColorUtils.black89,
                                     fontWeight: FontWeight.w500,
                                     onPressed: () async {
-                                      if(vendorCreateAccountSetUpProfileController.selectCategory.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]) == true) {
-                                        vendorCreateAccountSetUpProfileController.selectCategory.remove(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                      if(vendorCreateAccountSetUpProfileController.selectCategoryString.contains(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title) == true) {
                                         vendorCreateAccountSetUpProfileController.selectCategoryString.remove(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
                                       } else {
-                                        vendorCreateAccountSetUpProfileController.selectCategory.add(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
                                         vendorCreateAccountSetUpProfileController.selectCategoryString.add(vendorCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
                                       }
                                     },
@@ -126,6 +123,7 @@ class VendorCreateAccountSetUpProfileView extends StatelessWidget {
                           ],
                         ) :
                         SizedBox.shrink(),
+
 
 
 
@@ -185,7 +183,7 @@ class VendorCreateAccountSetUpProfileView extends StatelessWidget {
                           onPressed: () async {
                             if(vendorCreateAccountSetUpProfileController.businessNameController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your business name");
-                            } else if(vendorCreateAccountSetUpProfileController.selectCategory.isEmpty == true) {
+                            } else if(vendorCreateAccountSetUpProfileController.selectCategoryString.isEmpty == true) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select minimum one category");
                             } else if(vendorCreateAccountSetUpProfileController.latitude.value == 0.0 && vendorCreateAccountSetUpProfileController.latitude.value == 0.0) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");

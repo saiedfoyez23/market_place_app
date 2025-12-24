@@ -35,8 +35,9 @@ class PlannerProfilePortfolioController extends GetxController {
       });
       selectedFile.refresh();
       print(selectedFile.length);
+      isSubmit.value = true;
       Future.delayed(Duration(seconds: 1),() async {
-        await createPortfolioController(context: context);
+        await createPlannerPortfolioController(context: context);
       });
     }
   }
@@ -47,12 +48,12 @@ class PlannerProfilePortfolioController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllPortfolioController(context: context);
+      await getPlannerAllPortfolioController(context: context);
     });
   }
 
 
-  Future<void> getAllPortfolioController({
+  Future<void> getPlannerAllPortfolioController({
     required BuildContext context,
   }) async {
     BaseApiUtils.get(
@@ -74,7 +75,7 @@ class PlannerProfilePortfolioController extends GetxController {
     );
   }
 
-  Future<void> deletePortfolioController({
+  Future<void> deletePlannerPortfolioController({
     required BuildContext context,
     required String id,
   }) async {
@@ -87,7 +88,7 @@ class PlannerProfilePortfolioController extends GetxController {
         isDelete.value = false;
         Get.back();
         isLoading.value = true;
-        await getAllPortfolioController(context: context);
+        await getPlannerAllPortfolioController(context: context);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -100,10 +101,9 @@ class PlannerProfilePortfolioController extends GetxController {
     );
   }
 
-  Future<void> createPortfolioController({
+  Future<void> createPlannerPortfolioController({
     required BuildContext context,
   }) async {
-    isSubmit.value = true;
     // Clear old files
     filesList.clear();
 

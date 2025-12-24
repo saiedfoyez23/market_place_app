@@ -202,7 +202,7 @@ class PlannerProfilePortfolioView extends StatelessWidget {
                                                           ButtonHelperWidget.customButtonWidget(
                                                             context: context,
                                                             onPressed: () async {
-                                                              await plannerProfilePortfolioController.deletePortfolioController(context: context, id: plannerProfilePortfolioController.plannerUserWisePortfolioModel.value.data?[index].sId ?? "");
+                                                              await plannerProfilePortfolioController.deletePlannerPortfolioController(context: context, id: plannerProfilePortfolioController.plannerUserWisePortfolioModel.value.data?[index].sId ?? "");
                                                             },
                                                             text: "Delete",
                                                             borderRadius: 40,

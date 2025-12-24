@@ -59,4 +59,41 @@ class PlannerProfileNotificationController extends GetxController {
   }
 
 
+  Future<void> updatePlannerChangeNotifyController({
+    required BuildContext context,
+  }) async {
+
+    print(userLoginResponseModel.value.data?.accessToken);
+
+    Map<String,dynamic> data = {
+      "all": false,
+      "profile": newProfile.value,
+      "service": newService.value,
+      "bookings": newBookings.value,
+      "subscription": newSubscription.value,
+      "payment": newPayment.value,
+    };
+
+    print(data);
+
+    BaseApiUtils.put(
+      url: ApiUtils.userChangeNotify,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: data,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        await getPlannerProfileDetailsController(context: context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+
 }

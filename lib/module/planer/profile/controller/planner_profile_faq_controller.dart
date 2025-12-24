@@ -19,11 +19,11 @@ class PlannerProfileFaqController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllFaqController(context: context);
+      await getPlannerAllFaqController(context: context);
     });
   }
 
-  Future<void> getAllFaqController({
+  Future<void> getPlannerAllFaqController({
     required BuildContext context,
   }) async {
     BaseApiUtils.get(

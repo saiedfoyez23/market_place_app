@@ -9,15 +9,21 @@ class VendorProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VendorProfileViewController vendorProfileViewController = Get.put(VendorProfileViewController(context: context));
     return Scaffold(
-      body: SafeArea(
+      body: Obx(()=>SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: CustomScrollView(
+          child: vendorProfileViewController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
 
 
@@ -38,10 +44,12 @@ class VendorProfileView extends StatelessWidget {
 
                             ImageHelperWidget.styledImage(
                               context: context,
-                              imageAsset: ImageUtils.coverImage,
                               height: 250.h(context),
                               width: 428.w(context),
+                              fit: BoxFit.cover,
+                              imageUrl: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.coverPhoto,
                             ),
+
 
                             // Profile Image
                             Padding(
@@ -53,9 +61,11 @@ class VendorProfileView extends StatelessWidget {
                                 horizontalPadding: 4.5.vpm(context),
                                 backgroundColor: ColorUtils.orange213,
                                 radius: 75.r(context),
-                                imageAsset: ImageUtils.noImage,
+                                imageUrl: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl,
+                                imageAsset: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
                               ),
                             ),
+
                           ],
                         ),
                       ),
@@ -160,7 +170,7 @@ class VendorProfileView extends StatelessWidget {
                         title: "Privacy & Policy",
                         imagePath: ImageUtils.plannerPrivacyAndPolicyImage,
                         onTap: () async {
-                         Get.off(()=>VendorProfilePrivacyAndPolicyView(),preventDuplicates: false);
+                          Get.off(()=>VendorProfilePrivacyAndPolicyView(),preventDuplicates: false);
                         },
                       ),
 
@@ -204,7 +214,7 @@ class VendorProfileView extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
@@ -29,6 +31,16 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Verified Plug App',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        FlutterQuillLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('bn'), // Bangla
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent,),
         switchTheme: SwitchThemeData(

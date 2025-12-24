@@ -53,8 +53,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                           title: "New Bookings",
                           subtitle: "Notify me about new booking requests.",
                           value: plannerProfileNotificationController.newBookings.value,
-                          onChanged: (v) {
+                          onChanged: (v) async {
                             plannerProfileNotificationController.newBookings.value = v;
+                            await plannerProfileNotificationController.updatePlannerChangeNotifyController(context: context);
                           },
                           context: context,
                         ),
@@ -63,8 +64,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                           title: "New Service",
                           subtitle: "Notify me when I receive a new service.",
                           value: plannerProfileNotificationController.newService.value,
-                          onChanged: (v) {
+                          onChanged: (v) async {
                             plannerProfileNotificationController.newService.value = v;
+                            await plannerProfileNotificationController.updatePlannerChangeNotifyController(context: context);
                           },
                           context: context,
                         ),
@@ -73,8 +75,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                           title: "Profile",
                           subtitle: "Notify me of any profile related notification.",
                           value: plannerProfileNotificationController.newProfile.value,
-                          onChanged: (v) {
+                          onChanged: (v) async {
                             plannerProfileNotificationController.newProfile.value = v;
+                            await plannerProfileNotificationController.updatePlannerChangeNotifyController(context: context);
                           },
                           context: context,
                         ),
@@ -83,8 +86,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                           title: "New Subscription",
                           subtitle: "Notify me when when I receive a new subscription.",
                           value: plannerProfileNotificationController.newSubscription.value,
-                          onChanged: (v) {
+                          onChanged: (v) async {
                             plannerProfileNotificationController.newSubscription.value = v;
+                            await plannerProfileNotificationController.updatePlannerChangeNotifyController(context: context);
                           },
                           context: context,
                         ),
@@ -94,8 +98,9 @@ class PlannerProfileNotificationView extends StatelessWidget {
                           title: "New payment",
                           subtitle: "Notify me when when I receive a new payment.",
                           value: plannerProfileNotificationController.newPayment.value,
-                          onChanged: (v) {
+                          onChanged: (v) async {
                             plannerProfileNotificationController.newPayment.value = v;
+                            await plannerProfileNotificationController.updatePlannerChangeNotifyController(context: context);
                           },
                           context: context,
                         ),

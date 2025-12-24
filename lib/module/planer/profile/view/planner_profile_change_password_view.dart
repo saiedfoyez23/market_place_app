@@ -180,7 +180,7 @@ class PlannerProfileChangePasswordView extends StatelessWidget {
                             } else if(plannerProfileChangePasswordController.confirmPasswordController.value.text != plannerProfileChangePasswordController.passwordController.value.text) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Password is not match");
                             } else {
-                              await plannerProfileChangePasswordController.changePasswordController(context: context);
+                              await plannerProfileChangePasswordController.plannerChangePasswordController(context: context);
                             }
                           },
                           text: "Update",

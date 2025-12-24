@@ -17,7 +17,7 @@ class PlannerProfileChangePasswordController extends GetxController {
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
 
 
-  Future<void> changePasswordController({
+  Future<void> plannerChangePasswordController({
     required BuildContext context,
   }) async {
     print(userLoginResponseModel.value.data?.accessToken);
