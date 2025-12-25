@@ -8,7 +8,7 @@ import '../../../../utils/utils.dart';
 
 class ProfileDetailsController extends GetxController {
 
-  Rx<UserProfileResponseModel> userProfileResponseModel = UserProfileResponseModel().obs;
+  Rx<UserMyProfileDetailsResponseModel> userMyProfileDetailsResponseModel = UserMyProfileDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
 
   RxBool isLoading = false.obs;
@@ -34,7 +34,7 @@ class ProfileDetailsController extends GetxController {
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = false;
-        userProfileResponseModel.value = UserProfileResponseModel.fromJson(data);
+        userMyProfileDetailsResponseModel.value = UserMyProfileDetailsResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

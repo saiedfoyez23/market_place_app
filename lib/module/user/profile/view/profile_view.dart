@@ -46,8 +46,10 @@ class ProfileView extends StatelessWidget {
                       horizontalPadding: 4.5.vpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 75.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageUrl: profileDetailsController.userMyProfileDetailsResponseModel.value.data?.photoUrl,
+                      imageAsset: profileDetailsController.userMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
                     ),
+
 
                     SpaceHelperWidget.v(32.h(context)),
 

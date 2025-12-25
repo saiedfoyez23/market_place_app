@@ -2,9 +2,9 @@ class ApiUtils {
 
 
   //static const baseUrl = "http://206.162.244.133:5020/api/v1";
-  static const baseUrl = "http://72.244.153.29:5020/api/v1";
-  static const socketUrl = "http://72.244.153.29:4020/";
-  //static const baseUrl = "http://10.10.10.16:5020/api/v1";
+  //static const baseUrl = "http://72.244.153.29:5020/api/v1";
+  //static const socketUrl = "http://72.244.153.29:4020/";
+  static const baseUrl = "http://10.10.10.16:5020/api/v1";
 
 
   //user
@@ -23,6 +23,7 @@ class ApiUtils {
   static const String userKycVerification = "$baseUrl/verifications"; //done
   static const String userPlannerFAQ = "$baseUrl/faq?audience=planer&limit=10000000000"; //done
   static const String userVendorFAQ = "$baseUrl/faq?audience=vendor&limit=10000000000"; //done
+  static const String userCustomerFAQ = "$baseUrl/faq?audience=user&limit=10000000000"; //done
   static const String createPortfolio = "$baseUrl/portfolio"; //done
   static const String userWisePortfolio = "$baseUrl/portfolio?limit=1000000000"; //done
   static const String deletePortfolio = "$baseUrl/portfolio/"; //done

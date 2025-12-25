@@ -78,63 +78,14 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
                         SpaceHelperWidget.v(6.h(context)),
 
-                        Container(
-                          height: 750.h(context),
-                          width: 428.w(context),
-                          decoration: BoxDecoration(
-                            color: ColorUtils.white230,
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 13.hpm(context)),
-                          child: Column(
-                            children: [
-                              /// Toolbar
-                              QuillSimpleToolbar(
-                                controller: plannerProfileCreateNewServiceController.eventQuillController,
-                                config: const QuillSimpleToolbarConfig(
-                                  showBoldButton: true,
-                                  showItalicButton: true,
-                                  showUnderLineButton: true,
-                                  showListBullets: true,
-                                  showListNumbers: true,
-                                  showStrikeThrough: true,
-                                  showInlineCode: false,
-                                  showCodeBlock: false,
-                                  showQuote: false,
-                                  showSubscript: false,
-                                  showSuperscript: false,
-                                  showClearFormat: false,
-                                  showAlignmentButtons: false,
-                                  showIndent: false,
-                                  showColorButton: false,
-                                  showBackgroundColorButton: false,
-                                  showLink: false,
-                                  showSearchButton: false,
-                                  showUndo: false,
-                                  showRedo: false,
-                                ),
-                              ),
 
-
-                              /// Editor
-                              Expanded(
-                                child: QuillEditor.basic(
-                                  controller: plannerProfileCreateNewServiceController.eventQuillController,
-                                  config: const QuillEditorConfig(),
-                                ),
-                              )
-
-                            ],
-                          ),
+                        TextFormFieldWidget.textFiledWithMaxLineBuild(
+                          context: context,
+                          maxLines: 5,
+                          hintText: "Write something ...",
+                          controller: plannerProfileCreateNewServiceController.eventDetailsController.value,
+                          keyboardType: TextInputType.emailAddress,
                         ),
-
-
-                        // TextFormFieldWidget.textFiledWithMaxLineBuild(
-                        //   context: context,
-                        //   maxLines: 5,
-                        //   hintText: "Write something ...",
-                        //   controller: plannerProfileCreateNewServiceController.eventDetailsController.value,
-                        //   keyboardType: TextInputType.emailAddress,
-                        // ),
 
                         SpaceHelperWidget.v(20.h(context)),
 
@@ -261,6 +212,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           width: 428.w(context),
                           decoration: BoxDecoration(
                             color: ColorUtils.white230,
+                            borderRadius: BorderRadius.circular(12.r(context))
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 13.hpm(context)),
                           child: Column(
@@ -269,12 +221,13 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                               QuillSimpleToolbar(
                                 controller: plannerProfileCreateNewServiceController.serviceQuillController,
                                 config: const QuillSimpleToolbarConfig(
+                                  showFontFamily: false,
                                   showBoldButton: true,
                                   showItalicButton: true,
                                   showUnderLineButton: true,
                                   showListBullets: true,
                                   showListNumbers: true,
-                                  showStrikeThrough: true,
+                                  showStrikeThrough: false,
                                   showInlineCode: false,
                                   showCodeBlock: false,
                                   showQuote: false,
