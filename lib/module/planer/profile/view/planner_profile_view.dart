@@ -194,7 +194,10 @@ class PlannerProfileView extends StatelessWidget {
                         title: "Delete Profile",
                         imagePath: ImageUtils.plannerDeleteProfileImage,
                         onTap: () async {
-                          PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(context: context);
+                          PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(
+                            context: context,
+                            plannerProfileViewController: plannerProfileViewController,
+                          );
                         },
                       ),
 

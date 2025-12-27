@@ -183,7 +183,7 @@ class VendorProfileView extends StatelessWidget {
                         title: "Delete Profile",
                         imagePath: ImageUtils.plannerDeleteProfileImage,
                         onTap: () async {
-                          VendorProfileDialogBoxWidget().vendorDeleteProfileDialog(context: context);
+                          VendorProfileDialogBoxWidget().vendorDeleteProfileDialog(context: context,vendorProfileViewController: vendorProfileViewController);
                         },
                       ),
 

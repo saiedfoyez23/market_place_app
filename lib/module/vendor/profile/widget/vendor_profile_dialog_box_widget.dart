@@ -6,12 +6,15 @@ import 'package:marketplaceapp/module/module.dart';
 
 class VendorProfileDialogBoxWidget {
 
-  void vendorDeleteProfileDialog({required BuildContext context}) {
+  void vendorDeleteProfileDialog({
+    required BuildContext context,
+    required VendorProfileViewController vendorProfileViewController,
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false, // user must tap a button
       builder: (context) {
-        return Dialog(
+        return Obx(()=>Dialog(
           insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r(context)),
@@ -57,7 +60,7 @@ class VendorProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,
@@ -73,10 +76,14 @@ class VendorProfileDialogBoxWidget {
 
 
                       Expanded(
-                        child: ButtonHelperWidget.customButtonWidget(
+                        child: vendorProfileViewController.isDelete.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(
+                          context: context,
+                        ) :
+                        ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            await vendorProfileViewController.getVendorProfileDeleteController(context: context);
                           },
                           text: "Delete",
                           borderRadius: 40,
@@ -93,7 +100,7 @@ class VendorProfileDialogBoxWidget {
               ),
             ),
           ),
-        );
+        ));
       },
     );
   }
@@ -153,7 +160,7 @@ class VendorProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,

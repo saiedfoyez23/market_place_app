@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/module/planer/authorization/view/planner_login_view.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
 class PlannerProfileDialogBoxWidget {
 
-  void plannerDeleteProfileDialog({required BuildContext context}) {
+  void plannerDeleteProfileDialog({
+    required BuildContext context,
+    required PlannerProfileViewController plannerProfileViewController,
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false, // user must tap a button
       builder: (context) {
-        return Dialog(
+        return Obx(()=>Dialog(
           insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r(context)),
@@ -56,7 +59,7 @@ class PlannerProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,
@@ -72,10 +75,14 @@ class PlannerProfileDialogBoxWidget {
 
 
                       Expanded(
-                        child: ButtonHelperWidget.customButtonWidget(
+                        child: plannerProfileViewController.isDelete.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(
+                          context: context,
+                        ) :
+                        ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            await plannerProfileViewController.getPlannerProfileDeleteController(context: context);
                           },
                           text: "Delete",
                           borderRadius: 40,
@@ -92,7 +99,7 @@ class PlannerProfileDialogBoxWidget {
               ),
             ),
           ),
-        );
+        ));
       },
     );
   }
@@ -150,7 +157,7 @@ class PlannerProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,

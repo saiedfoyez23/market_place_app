@@ -10,7 +10,7 @@ class ProfileDetailsController extends GetxController {
 
   Rx<UserMyProfileDetailsResponseModel> userMyProfileDetailsResponseModel = UserMyProfileDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
-
+  RxBool isDelete = false.obs;
   RxBool isLoading = false.obs;
 
   BuildContext context;
@@ -43,6 +43,35 @@ class ProfileDetailsController extends GetxController {
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
+      },
+    );
+
+  }
+
+
+  Future<void> getProfileDeleteController({
+    required BuildContext context,
+  }) async {
+
+    isDelete.value = true;
+
+    BaseApiUtils.delete(
+      url: ApiUtils.userDeleteProfile,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isDelete.value = false;
+        await LocalStorageUtils.remove(AppConstantUtils.userLoginResponse);
+        Get.offAll(()=>UserLoginView());
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+        Get.back();
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+        Get.back();
       },
     );
 

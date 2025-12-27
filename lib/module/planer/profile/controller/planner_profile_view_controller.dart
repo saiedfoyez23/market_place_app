@@ -7,6 +7,7 @@ import 'package:marketplaceapp/module/module.dart';
 class PlannerProfileViewController extends GetxController {
 
   RxBool isLoading = false.obs;
+  RxBool isDelete = false.obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
   BuildContext context;
@@ -43,6 +44,35 @@ class PlannerProfileViewController extends GetxController {
         isLoading.value = false;
       },
     );
+  }
+
+
+  Future<void> getPlannerProfileDeleteController({
+    required BuildContext context,
+  }) async {
+
+    isDelete.value = true;
+
+    BaseApiUtils.delete(
+      url: ApiUtils.userDeleteProfile,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isDelete.value = false;
+        await LocalStorageUtils.remove(AppConstantUtils.plannerLoginResponse);
+        Get.offAll(()=>PlannerLoginView());
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+        Get.back();
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+        Get.back();
+      },
+    );
+
   }
 
 

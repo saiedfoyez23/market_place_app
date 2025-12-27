@@ -134,7 +134,10 @@ class ProfileView extends StatelessWidget {
                       title: "Delete Profile",
                       imagePath: ImageUtils.deleteProfileImage,
                       onTap: () async {
-                        ProfileDialogBoxWidget().deleteProfileDialog(context: context);
+                        ProfileDialogBoxWidget().deleteProfileDialog(
+                          context: context,
+                          profileDetailsController: profileDetailsController,
+                        );
                       },
                     ),
 
