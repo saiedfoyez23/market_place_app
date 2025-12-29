@@ -38,7 +38,8 @@ class VendorServicesView extends StatelessWidget {
                   textColor: ColorUtils.white255,
                   fontWeight: FontWeight.w700,
                   onPressed: () async {
-                    Get.off(()=>VendorCreateNewServiceView(),preventDuplicates: false);
+                    Get.off(()=>VendorPickLocationPlaceView(),preventDuplicates: false);
+                    //Get.off(()=>VendorCreateNewServiceView(),preventDuplicates: false);
                   },
                   iconPath: ImageUtils.addImage,
                   text: "Add Service",

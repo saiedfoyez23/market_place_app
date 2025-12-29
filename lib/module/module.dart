@@ -136,6 +136,8 @@ export 'vendor/profile/model/vendor_myprofile_details_response_model.dart';
 export 'vendor/profile/controller/vendor_profile_view_controller.dart';
 export 'vendor/profile/model/vendor_FAQ_response_model.dart';
 export 'vendor/profile/model/vendor_user_wise_portfolio_model.dart';
+export 'vendor/services/controller/vendor_pick_location_place_controller.dart';
+export 'vendor/services/view/vendor_pick_location_place_view.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';
 export 'planer/onboarding/controller/planer_onboarding_controller.dart';
 export 'planer/onboarding/widget/planer_onboarding_widget.dart';
