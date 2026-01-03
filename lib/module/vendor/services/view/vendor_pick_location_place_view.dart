@@ -31,6 +31,7 @@ class VendorPickLocationPlaceView extends StatelessWidget {
               height: 930.h(context),
             ) :
             CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
               slivers: [
 
                 AuthAppBarHelperWidget(
@@ -68,8 +69,7 @@ class VendorPickLocationPlaceView extends StatelessWidget {
                             }
                           },
                           itemClick: (prediction) {
-                            vendorPickLocationPlaceController.searchController.value.text =
-                            prediction.description!;
+                            vendorPickLocationPlaceController.searchController.value.text = prediction.description!;
                             vendorPickLocationPlaceController.searchController.value.selection =
                                 TextSelection.fromPosition(
                                   TextPosition(
@@ -78,6 +78,8 @@ class VendorPickLocationPlaceView extends StatelessWidget {
                                 );
                           },
                         ),
+
+                        SpaceHelperWidget.v(12.h(context)),
 
                         Expanded(
                           child: Obx(() => GoogleMap(
@@ -92,6 +94,31 @@ class VendorPickLocationPlaceView extends StatelessWidget {
                             ),
                           ),
                         ),
+
+                        SpaceHelperWidget.v(12.h(context)),
+
+
+                        ButtonHelperWidget.customButtonWidgetAdventPro(
+                          context: context,
+                          onPressed: () async {
+                            if(vendorPickLocationPlaceController.searchController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
+                            } else {
+                              print(vendorPickLocationPlaceController.longitude.value);
+                              print(vendorPickLocationPlaceController.latitude.value);
+                              print(vendorPickLocationPlaceController.searchController.value.text);
+                              Get.off(()=> VendorCreateNewServiceView(
+                                long: vendorPickLocationPlaceController.longitude.value,
+                                lat: vendorPickLocationPlaceController.latitude.value,
+                                address: vendorPickLocationPlaceController.searchController.value.text,),
+                                preventDuplicates: false,
+                              );
+                            }
+                          },
+                          text: "Pick Address",
+                        ),
+
+                        SpaceHelperWidget.v(12.h(context)),
 
 
 

@@ -47,16 +47,19 @@ class ImageHelperWidget {
     }
 
     return Container(
-      height: height?.h(context),
-      width: width?.w(context),
       decoration: BoxDecoration(
         color: containerColor,
         borderRadius: BorderRadius.circular(borderRadius.r(context)),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: provider != null ? Image(
-        image: provider,
-        fit: fit,
+      child: provider != null ? ClipRRect(
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.circular(borderRadius.r(context)),
+        child: Image(
+          height: height?.h(context),
+          width: width?.w(context),
+          image: provider,
+          fit: fit,
+        ),
       ) : const SizedBox(), // Empty placeholder if no image
     );
   }

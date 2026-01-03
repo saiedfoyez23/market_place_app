@@ -36,7 +36,8 @@ class VendorPickLocationPlaceController extends GetxController {
     required String title,
   }) async {
     final position = LatLng(lat, lng);
-
+    latitude.value = lat;
+    longitude.value = lng;
     mapController?.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: position, zoom: 15),
@@ -89,6 +90,20 @@ class VendorPickLocationPlaceController extends GetxController {
       searchController.value.text = "${place.street} ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
       initialPosition.value = LatLng(latitude.value, longitude.value);
       isLoading.value = false;
+      mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: initialPosition.value, zoom: 15),
+        ),
+      );
+
+      markers.clear();
+      markers.add(
+        Marker(
+          markerId: const MarkerId("selected_place"),
+          position: initialPosition.value,
+          infoWindow: InfoWindow(title: searchController.value.text),
+        ),
+      );
     });
   }
 

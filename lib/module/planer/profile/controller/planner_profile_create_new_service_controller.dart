@@ -89,6 +89,7 @@ class PlannerProfileCreateNewServiceController extends GetxController {
 
   @override
   void onClose() {
+    print("call");
     eventQuillController.dispose();
     serviceQuillController.dispose();
     super.onClose();

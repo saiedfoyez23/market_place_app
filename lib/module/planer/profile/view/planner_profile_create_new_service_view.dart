@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PlannerProfileCreateNewServiceView extends StatelessWidget {
   PlannerProfileCreateNewServiceView({super.key});
@@ -217,31 +221,40 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 13.hpm(context)),
                           child: Column(
                             children: [
+
                               /// Toolbar
                               QuillSimpleToolbar(
                                 controller: plannerProfileCreateNewServiceController.serviceQuillController,
-                                config: const QuillSimpleToolbarConfig(
-                                  showFontFamily: false,
-                                  showBoldButton: true,
-                                  showItalicButton: true,
-                                  showUnderLineButton: true,
-                                  showListBullets: true,
-                                  showListNumbers: true,
-                                  showStrikeThrough: false,
-                                  showInlineCode: false,
+                                config: QuillSimpleToolbarConfig(
+                                  showAlignmentButtons: false,
+                                  showBackgroundColorButton: false,
+                                  showCenterAlignment: false,
                                   showCodeBlock: false,
+                                  showColorButton: false,
+                                  showDirection: false,
+                                  showDividers: false,
+                                  showFontFamily: false,
+                                  showHeaderStyle: false,
+                                  showIndent: false,
+                                  showInlineCode: false,
+                                  showJustifyAlignment: false,
+                                  showLeftAlignment: false,
+                                  showLink: false,
+                                  showListCheck: true,        // ✅ checklist
+                                  showListBullets: true,      // ✅ bullet
+                                  showListNumbers: false,
                                   showQuote: false,
+                                  showRedo: false,
+                                  showRightAlignment: false,
+                                  showSearchButton: false,
+                                  showStrikeThrough: false,
                                   showSubscript: false,
                                   showSuperscript: false,
-                                  showClearFormat: false,
-                                  showAlignmentButtons: false,
-                                  showIndent: false,
-                                  showColorButton: false,
-                                  showBackgroundColorButton: false,
-                                  showLink: false,
-                                  showSearchButton: false,
                                   showUndo: false,
-                                  showRedo: false,
+                                  showUnderLineButton: true,  // ✅ underline
+                                  showBoldButton: true,       // ✅ bold
+                                  showItalicButton: true,     // ✅ italic
+                                  showFontSize: true,
                                 ),
                               ),
 
