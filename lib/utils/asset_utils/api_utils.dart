@@ -28,6 +28,9 @@ class ApiUtils {
   static const String createPortfolio = "$baseUrl/portfolio"; //done
   static const String userWisePortfolio = "$baseUrl/portfolio?limit=1000000000"; //done
   static const String deletePortfolio = "$baseUrl/portfolio/"; //done
+  static const String createService = "$baseUrl/services"; //done
+  static const String myAllService = "$baseUrl/services/author/my-services?limit=100000000000"; //done
+
 
 
 }
