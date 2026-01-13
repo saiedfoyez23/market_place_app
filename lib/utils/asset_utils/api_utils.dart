@@ -30,7 +30,9 @@ class ApiUtils {
   static const String deletePortfolio = "$baseUrl/portfolio/"; //done
   static const String createService = "$baseUrl/services"; //done
   static const String myAllService = "$baseUrl/services/author/my-services?limit=100000000000"; //done
-
+  static const String serviceDetails = "$baseUrl/services/"; //done
+  static const String editService = "$baseUrl/services/"; //done
+  static const String deleteService = "$baseUrl/services/"; //done
 
 
 }

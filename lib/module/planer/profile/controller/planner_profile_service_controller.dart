@@ -8,34 +8,11 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerProfileServiceController extends GetxController {
 
   RxBool isLoading = false.obs;
+  RxBool isDelete = false.obs;
   Rx<PlannerGetAllServiceModelResponse> plannerGetAllServiceModelResponse = PlannerGetAllServiceModelResponse().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   BuildContext context;
   PlannerProfileServiceController({required this.context});
-
-  final List<Map<String, dynamic>> serviceList = [
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-  ];
 
   @override
   void onInit() {
@@ -65,6 +42,30 @@ class PlannerProfileServiceController extends GetxController {
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> deletePlannerServiceController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.delete(
+      url: "${ApiUtils.deleteService}/${serviceId}",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
+        isDelete.value = false;
+        Navigator.pop(context);
+        await getPlannerAllServiceController(context: context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
       },
     );
   }

@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-class PlannerProfileCreateNewServiceView extends StatelessWidget {
-  const PlannerProfileCreateNewServiceView({super.key,required this.long,required this.lat,required this.address});
+class PlannerProfileServiceEditView extends StatelessWidget {
+  const PlannerProfileServiceEditView({super.key,required this.serviceId,required this.address,required this.long,required this.lat});
   final double long;
   final double lat;
   final String address;
-  
+  final String serviceId;
   @override
   Widget build(BuildContext context) {
-    final PlannerProfileCreateNewServiceController plannerProfileCreateNewServiceController = Get.put(
-        PlannerProfileCreateNewServiceController(context: context,long: long,lat: lat,address: address));
+    final PlannerProfileServiceEditController plannerProfileServiceEditController = Get.put(
+        PlannerProfileServiceEditController(context: context, serviceId: serviceId,lat: lat,long: long,address: address));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -27,7 +27,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white251,
             ),
-            child: plannerProfileCreateNewServiceController.isLoading.value == true ?
+            child: plannerProfileServiceEditController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
@@ -40,7 +40,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                   onBackPressed: () async {
                     Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
                   },
-                  title: "Create New Service",
+                  title: "Edit Service",
                 ),
 
 
@@ -67,7 +67,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                         TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter title",
-                          controller: plannerProfileCreateNewServiceController.titleController.value,
+                          controller: plannerProfileServiceEditController.titleController.value,
                           keyboardType: TextInputType.emailAddress,
                         ),
 
@@ -91,7 +91,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           context: context,
                           maxLines: 5,
                           hintText: "Write something ...",
-                          controller: plannerProfileCreateNewServiceController.eventDetailsController.value,
+                          controller: plannerProfileServiceEditController.eventDetailsController.value,
                           keyboardType: TextInputType.emailAddress,
                         ),
 
@@ -111,10 +111,10 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
 
                         CustomDropdownHelperClass<PlannerServiceDropdownModel>(
-                          value: plannerProfileCreateNewServiceController.selectServicePaymentModel.value.value == null ? null : plannerProfileCreateNewServiceController.selectServicePaymentModel.value,
-                          items: plannerProfileCreateNewServiceController.servicePaymentList,
+                          value: plannerProfileServiceEditController.selectServicePaymentModel.value.value == null ? null : plannerProfileServiceEditController.selectServicePaymentModel.value,
+                          items: plannerProfileServiceEditController.servicePaymentList,
                           onChanged: (value) {
-                            plannerProfileCreateNewServiceController.selectServicePaymentModel.value = value!;
+                            plannerProfileServiceEditController.selectServicePaymentModel.value = value!;
                           },
                           fillColor: ColorUtils.white243,
                           itemBuilder: (PlannerServiceDropdownModel value) {
@@ -147,7 +147,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                         TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter Price",
-                          controller: plannerProfileCreateNewServiceController.priceController.value,
+                          controller: plannerProfileServiceEditController.priceController.value,
                           keyboardType: TextInputType.number,
                         ),
 
@@ -170,12 +170,12 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                         TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter Address",
-                          controller: plannerProfileCreateNewServiceController.addressController.value,
+                          controller: plannerProfileServiceEditController.addressController.value,
                           keyboardType: TextInputType.emailAddress,
                         ),
 
 
-                        plannerProfileCreateNewServiceController.categoryResponseModel.value.data != null ?
+                        plannerProfileServiceEditController.categoryResponseModel.value.data != null ?
                         Column(
                           children: [
 
@@ -196,23 +196,23 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                             Wrap(
                               runSpacing: 10.h(context),
                               spacing: 10.w(context),
-                              children: List.generate(plannerProfileCreateNewServiceController.categoryResponseModel.value.data!.length, (index) {
+                              children: List.generate(plannerProfileServiceEditController.categoryResponseModel.value.data!.length, (index) {
                                 return Obx(()=>IntrinsicWidth(
                                   child: ButtonHelperWidget.customButtonWidget(
                                     context: context,
                                     height: 56.h(context),
                                     padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                    backgroundColor: plannerProfileCreateNewServiceController.selectCategory.value == plannerProfileCreateNewServiceController.categoryResponseModel.value.data![index] ?
+                                    backgroundColor: plannerProfileServiceEditController.selectCategory.value == plannerProfileServiceEditController.categoryResponseModel.value.data![index] ?
                                     ColorUtils.orange119 :
                                     ColorUtils.white243,
-                                    textColor: plannerProfileCreateNewServiceController.selectCategory.value == plannerProfileCreateNewServiceController.categoryResponseModel.value.data![index] ?
+                                    textColor: plannerProfileServiceEditController.selectCategory.value == plannerProfileServiceEditController.categoryResponseModel.value.data![index] ?
                                     ColorUtils.white255 :
                                     ColorUtils.black89,
                                     fontWeight: FontWeight.w500,
                                     onPressed: () async {
-                                      plannerProfileCreateNewServiceController.selectCategory.value = plannerProfileCreateNewServiceController.categoryResponseModel.value.data![index];
+                                      plannerProfileServiceEditController.selectCategory.value = plannerProfileServiceEditController.categoryResponseModel.value.data![index];
                                     },
-                                    text: plannerProfileCreateNewServiceController.categoryResponseModel.value.data?[index].title ?? "",
+                                    text: plannerProfileServiceEditController.categoryResponseModel.value.data?[index].title ?? "",
                                   ),
                                 ));
                               }),
@@ -239,7 +239,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
                         Container(
                           width: 428.w(context),
-                          padding: plannerProfileCreateNewServiceController.uploadFile.value.path == "" ?
+                          padding: plannerProfileServiceEditController.uploadFile.value.path == "" ?
                           EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)) :
                           EdgeInsets.zero,
                           decoration: BoxDecoration(
@@ -249,9 +249,10 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              await plannerProfileCreateNewServiceController.pickUploadFrontSideFile();
+                              await plannerProfileServiceEditController.pickUploadFrontSideFile();
                             },
-                            child: plannerProfileCreateNewServiceController.uploadFile.value.path == "" ?
+                            child: plannerProfileServiceEditController.uploadFile.value.path == "" &&
+                                plannerProfileServiceEditController.plannerGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -297,7 +298,10 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                               width: 428,
                               borderRadius: 10,
                               fit: BoxFit.fill,
-                              imageFile: plannerProfileCreateNewServiceController.uploadFile.value.path,
+                              imageFile: plannerProfileServiceEditController.uploadFile.value.path == "" ? null : plannerProfileServiceEditController.uploadFile.value.path,
+                              imageUrl: plannerProfileServiceEditController.plannerGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ? null :
+                              plannerProfileServiceEditController.plannerGetServiceDetailsResponseModel.value.data?.images?.first
+
                             ),
                           ),
                         ),
@@ -320,8 +324,8 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           height: 750.h(context),
                           width: 428.w(context),
                           decoration: BoxDecoration(
-                            color: ColorUtils.white230,
-                            borderRadius: BorderRadius.circular(12.r(context))
+                              color: ColorUtils.white230,
+                              borderRadius: BorderRadius.circular(12.r(context))
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 13.hpm(context)),
                           child: Column(
@@ -329,7 +333,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
                               /// Toolbar
                               QuillSimpleToolbar(
-                                controller: plannerProfileCreateNewServiceController.serviceQuillController,
+                                controller: plannerProfileServiceEditController.serviceQuillController,
                                 config: QuillSimpleToolbarConfig(
                                   showAlignmentButtons: false,
                                   showBackgroundColorButton: false,
@@ -367,7 +371,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                               /// Editor
                               Expanded(
                                 child: QuillEditor.basic(
-                                  controller: plannerProfileCreateNewServiceController.serviceQuillController,
+                                  controller: plannerProfileServiceEditController.serviceQuillController,
                                   config: const QuillEditorConfig(),
                                 ),
                               )
@@ -406,45 +410,34 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                             SpaceHelperWidget.h(16.w(context)),
 
                             Expanded(
-                              child: plannerProfileCreateNewServiceController.isSubmit.value == true ?
+                              child: plannerProfileServiceEditController.isSubmit.value == true ?
                               LoadingHelperWidget.loadingHelperWidget(
                                 context: context,
                               ) :
                               ButtonHelperWidget.customButtonWidgetAdventPro(
                                 context: context,
                                 onPressed: () async {
-                                  plannerProfileCreateNewServiceController.saveServiceContent();
-                                  if(plannerProfileCreateNewServiceController.titleController.value.text == "") {
+                                  plannerProfileServiceEditController.saveServiceContent();
+                                  if(plannerProfileServiceEditController.titleController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service title");
-                                  } else if(plannerProfileCreateNewServiceController.eventDetailsController.value.text == "") {
+                                  } else if(plannerProfileServiceEditController.eventDetailsController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your event details");
-                                  } else if(plannerProfileCreateNewServiceController.selectServicePaymentModel.value.key == null) {
+                                  } else if(plannerProfileServiceEditController.selectServicePaymentModel.value.key == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select price type");
-                                  } else if(plannerProfileCreateNewServiceController.priceController.value.text == "") {
+                                  } else if(plannerProfileServiceEditController.priceController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service price");
-                                  } else if(plannerProfileCreateNewServiceController.selectCategory.value.title == null) {
+                                  } else if(plannerProfileServiceEditController.selectCategory.value.title == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select a category");
-                                  } else if(plannerProfileCreateNewServiceController.uploadFile.value.path == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service image");
-                                  } else if(plannerProfileCreateNewServiceController.serviceQuillJson.value == "") {
+                                  } else if(plannerProfileServiceEditController.serviceQuillJson.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service details");
                                   } else {
-                                    await plannerProfileCreateNewServiceController.createPlannerServiceController(context: context);
-                                    Map<String,dynamic> data = {
-                                      "category": plannerProfileCreateNewServiceController.selectCategory.value.sId,
-                                      "title": plannerProfileCreateNewServiceController.titleController.value.text,
-                                      "subtitle": plannerProfileCreateNewServiceController.eventDetailsController.value.text,
-                                      "description": plannerProfileCreateNewServiceController.serviceQuillJson.value,
-                                      "longitude": plannerProfileCreateNewServiceController.submitLong.value,
-                                      "latitude": plannerProfileCreateNewServiceController.submitLat.value,
-                                      "address": plannerProfileCreateNewServiceController.addressController.value.text,
-                                      "price": plannerProfileCreateNewServiceController.priceController.value.text,
-                                      "priceType": plannerProfileCreateNewServiceController.selectServicePaymentModel.value.value
-                                    };
-                                    print(data);
+                                    await plannerProfileServiceEditController.editPlannerServiceController(
+                                      context: context,
+                                      serviceId: serviceId,
+                                    );
                                   }
                                 },
-                                text: "Upload",
+                                text: "Edit",
                               ),
                             ),
 

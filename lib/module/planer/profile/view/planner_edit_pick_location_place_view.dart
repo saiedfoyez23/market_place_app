@@ -5,13 +5,14 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-class PlannerPickLocationPlaceView extends StatelessWidget {
-  PlannerPickLocationPlaceView({super.key});
+class PlannerEditPickLocationPlaceView extends StatelessWidget {
+  const PlannerEditPickLocationPlaceView({super.key,required this.serviceId});
 
-  final PlannerPickLocationPlaceController plannerPickLocationPlaceController = Get.put(PlannerPickLocationPlaceController());
+  final String serviceId;
 
   @override
   Widget build(BuildContext context) {
+    final PlannerEditPickLocationPlaceController plannerEditPickLocationPlaceController = Get.put(PlannerEditPickLocationPlaceController(serviceId: serviceId, context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -25,7 +26,7 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white251,
             ),
-            child: plannerPickLocationPlaceController.isLoading.value == true ?
+            child: plannerEditPickLocationPlaceController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
@@ -49,7 +50,7 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                       children: [
 
                         GooglePlaceAutoCompleteTextField(
-                          textEditingController: plannerPickLocationPlaceController.searchController.value,
+                          textEditingController: plannerEditPickLocationPlaceController.searchController.value,
                           googleAPIKey: "AIzaSyB_3nOokGz9jksH5jN_f05YNEJeZqWizYM",
                           debounceTime: 800,
                           countries: const ["bd"],
@@ -62,7 +63,7 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                             if (prediction.lat != null &&
                                 prediction.lng != null) {
                               FocusScope.of(context).unfocus();
-                              plannerPickLocationPlaceController.moveToLocation(
+                              plannerEditPickLocationPlaceController.moveToLocation(
                                 lat: double.parse(prediction.lat!),
                                 lng: double.parse(prediction.lng!),
                                 title: prediction.description ?? "",
@@ -70,8 +71,8 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                             }
                           },
                           itemClick: (prediction) {
-                            plannerPickLocationPlaceController.searchController.value.text = prediction.description!;
-                            plannerPickLocationPlaceController.searchController.value.selection = TextSelection.fromPosition(
+                            plannerEditPickLocationPlaceController.searchController.value.text = prediction.description!;
+                            plannerEditPickLocationPlaceController.searchController.value.selection = TextSelection.fromPosition(
                               TextPosition(
                                 offset: prediction.description!.length,
                               ),
@@ -85,11 +86,11 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                         Expanded(
                           child: Obx(() => GoogleMap(
                             initialCameraPosition: CameraPosition(
-                              target: plannerPickLocationPlaceController.initialPosition.value,
+                              target: plannerEditPickLocationPlaceController.initialPosition.value,
                               zoom: 15,
                             ),
-                            onMapCreated: plannerPickLocationPlaceController.onMapCreated,
-                            markers: plannerPickLocationPlaceController.markers,
+                            onMapCreated: plannerEditPickLocationPlaceController.onMapCreated,
+                            markers: plannerEditPickLocationPlaceController.markers,
                             myLocationEnabled: true,
                             myLocationButtonEnabled: true,
                           ),
@@ -102,17 +103,18 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            if(plannerPickLocationPlaceController.searchController.value.text == "") {
+                            if(plannerEditPickLocationPlaceController.searchController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
                             } else {
                               FocusScope.of(context).unfocus();
-                              print(plannerPickLocationPlaceController.longitude.value);
-                              print(plannerPickLocationPlaceController.latitude.value);
-                              print(plannerPickLocationPlaceController.searchController.value.text);
-                              Get.off(()=> PlannerProfileCreateNewServiceView(
-                                long: plannerPickLocationPlaceController.longitude.value,
-                                lat: plannerPickLocationPlaceController.latitude.value,
-                                address: plannerPickLocationPlaceController.searchController.value.text,),
+                              print(plannerEditPickLocationPlaceController.longitude.value);
+                              print(plannerEditPickLocationPlaceController.latitude.value);
+                              print(plannerEditPickLocationPlaceController.searchController.value.text);
+                              Get.off(()=> PlannerProfileServiceEditView(
+                                serviceId: serviceId,
+                                long: plannerEditPickLocationPlaceController.longitude.value,
+                                lat: plannerEditPickLocationPlaceController.latitude.value,
+                                address: plannerEditPickLocationPlaceController.searchController.value.text,),
                                 preventDuplicates: false,
                               );
                             }
