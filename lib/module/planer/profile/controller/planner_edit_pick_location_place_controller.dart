@@ -55,8 +55,6 @@ class PlannerEditPickLocationPlaceController extends GetxController {
       url: "${ApiUtils.serviceDetails}/${serviceId}",
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        print(data);
-        isLoading.value = false;
         plannerGetServiceDetailsResponseModel.value = PlannerGetServiceDetailsResponseModel.fromJson(data);
         onCompleted();
       },

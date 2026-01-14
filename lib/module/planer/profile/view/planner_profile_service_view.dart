@@ -111,16 +111,16 @@ class PlannerProfileServiceView extends StatelessWidget {
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                        Positioned(
-                                          top: 12.h(context),
-                                          right: 12.w(context),
-                                          child: ImageHelperWidget.assetImageWidget(
-                                            context: context,
-                                            height: 26.h(context),
-                                            width: 26.w(context),
-                                            imageString: ImageUtils.serviceLoveImage,
-                                          ),
-                                        ),
+                                        // Positioned(
+                                        //   top: 12.h(context),
+                                        //   right: 12.w(context),
+                                        //   child: ImageHelperWidget.assetImageWidget(
+                                        //     context: context,
+                                        //     height: 26.h(context),
+                                        //     width: 26.w(context),
+                                        //     imageString: ImageUtils.serviceLoveImage,
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
 

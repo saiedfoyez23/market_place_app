@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-class PlannerProfileServiceDetailsView extends StatelessWidget {
-  PlannerProfileServiceDetailsView({super.key,required this.serviceId});
+class VendorServiceDetailsView extends StatelessWidget {
+  const VendorServiceDetailsView({super.key,required this.serviceId});
 
   final String serviceId;
 
   @override
   Widget build(BuildContext context) {
-    final PlannerProfileServiceDetailsController plannerProfileServiceDetailsController = Get.put(PlannerProfileServiceDetailsController(context: context, serviceId: serviceId));
+    final VendorServiceDetailsController vendorServiceDetailsController = Get.put(VendorServiceDetailsController(context: context,serviceId: serviceId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+        Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
       },
       child: Scaffold(
         body: SafeArea(
@@ -27,7 +26,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: plannerProfileServiceDetailsController.isLoading.value == true ?
+            child: vendorServiceDetailsController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
@@ -37,7 +36,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+                    Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
                   },
                   title: "Service Details",
                 ),
@@ -61,22 +60,22 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                             children: [
                               header(
                                 context: context,
-                                imageUrl: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
-                                "" : plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data!.images!.first,
+                                imageUrl: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
+                                "" : vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.images!.first,
                               ),
                               SpaceHelperWidget.v(12.h(context)),
                               title(
-                                title: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.title ?? "",
+                                title: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.title ?? "",
                                 context: context,
                               ),
                               SpaceHelperWidget.v(12.h(context)),
                               description(
-                                text: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.subtitle ?? "",
+                                text: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.subtitle ?? "",
                                 context: context,
                               ),
                               SpaceHelperWidget.v(20.h(context)),
                               buildSections(
-                                description: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.description ?? "",
+                                description: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.description ?? "",
                                 context: context,
                               ),
                               SpaceHelperWidget.v(20.h(context)),
@@ -110,23 +109,23 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
 
                               rowItem(
                                 title: "Category: ",
-                                value: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.category?.title ?? "",
+                                value: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.category?.title ?? "",
                                 context: context,
                               ),
                               rowItem(
                                 title: "Price: ",
-                                value: "${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.price} / ${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.priceType}" ,
+                                value: "${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.price} / ${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.priceType}" ,
                                 context: context,
                               ),
                               InkWell(
                                 onTap: () async {
-                                  if (await canLaunchUrl(Uri.parse(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.locationUrl))) {
-                                    await launchUrl(Uri.parse(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.locationUrl), mode: LaunchMode.externalApplication);
+                                  if (await canLaunchUrl(Uri.parse(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.locationUrl))) {
+                                    await launchUrl(Uri.parse(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.locationUrl), mode: LaunchMode.externalApplication);
                                   }
                                 },
                                 child: rowItem(
                                   title: "Location: ",
-                                  value: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.address ?? "",
+                                  value: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.address ?? "",
                                   context: context,
                                 ),
                               ),
@@ -135,7 +134,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                         ),
 
 
-                        reviews(context: context, reviews: plannerProfileServiceDetailsController.service.value.reviews,),
+                        reviews(context: context, reviews: vendorServiceDetailsController.service.value.reviews,),
 
                         SpaceHelperWidget.v(32.h(context)),
 
@@ -443,6 +442,4 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
       ],
     );
   }
-
-
 }

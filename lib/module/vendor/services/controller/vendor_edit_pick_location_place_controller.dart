@@ -1,13 +1,18 @@
-import 'package:geocoding/geocoding.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 
-class VendorPickLocationPlaceController extends GetxController {
+class VendorEditPickLocationPlaceController extends GetxController {
 
   RxBool isLoading = false.obs;
   Rx<TextEditingController> searchController = TextEditingController().obs;
+  Rx<VendorGetServiceDetailsResponseModel> vendorGetServiceDetailsResponseModel = VendorGetServiceDetailsResponseModel().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
 
   GoogleMapController? mapController;
   RxDouble latitude = 0.0.obs;
@@ -21,14 +26,48 @@ class VendorPickLocationPlaceController extends GetxController {
     mapController = controller;
   }
 
+  BuildContext context;
+  String serviceId;
+  VendorEditPickLocationPlaceController({required this.serviceId,required this.context});
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(microseconds: 120),() async {
-      await vendorPickLocationPlaceLatLng();
+      await getVendorDetailsServiceController(
+        context: context,
+        serviceId: serviceId,
+        onCompleted: () async {
+          await plannerPickLocationPlaceLatLng();
+        },
+      );
     });
+  }
+
+
+  Future<void> getVendorDetailsServiceController({
+    required BuildContext context,
+    required String serviceId,
+    required Function onCompleted,
+  }) async {
+    BaseApiUtils.get(
+      url: "${ApiUtils.serviceDetails}/${serviceId}",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        vendorGetServiceDetailsResponseModel.value = VendorGetServiceDetailsResponseModel.fromJson(data);
+        onCompleted();
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
   Future<void> moveToLocation({
@@ -78,18 +117,15 @@ class VendorPickLocationPlaceController extends GetxController {
   /// Get current position
   static Future<Position> getCurrentPosition() async {
     await _handlePermission();
-    return await Geolocator.getCurrentPosition(
-        locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
+    return await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
   }
 
   /// Get address from latitude & longitude
-  Future<void> vendorPickLocationPlaceLatLng() async {
+  Future<void> plannerPickLocationPlaceLatLng() async {
     await getCurrentPosition().then((position) async {
-      latitude.value = position.latitude;
-      longitude.value = position.longitude;
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-      Placemark place = placemarks.first;
-      searchController.value.text = "${place.street} ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+      latitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.last ?? 0.0;
+      longitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.first ?? 0.0;
+      searchController.value.text = vendorGetServiceDetailsResponseModel.value.data?.address ?? "";
       initialPosition.value = LatLng(latitude.value, longitude.value);
       isLoading.value = false;
       mapController?.animateCamera(
@@ -108,6 +144,5 @@ class VendorPickLocationPlaceController extends GetxController {
       );
     });
   }
-
 
 }
