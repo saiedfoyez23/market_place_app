@@ -28,17 +28,6 @@ class PlannerCreateAccountController extends GetxController {
   Rx<TextEditingController> addWebsiteController = TextEditingController().obs;
   RxString selectCategory = "".obs;
 
-  RxList<String> categoryList = <String>[
-    "All",
-    "Furniture",
-    "Clothing",
-    "Electronics",
-    "Food",
-    "Cycling",
-    "Others",
-  ].obs;
-
-
   Rx<File> profileImageFile = File("").obs;
   Rx<File> coverImageFile = File("").obs;
 

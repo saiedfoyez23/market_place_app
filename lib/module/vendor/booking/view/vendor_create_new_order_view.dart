@@ -7,19 +7,23 @@ import 'package:marketplaceapp/module/module.dart';
 class VendorCreateNewOrderView extends StatelessWidget {
   VendorCreateNewOrderView({super.key});
 
-  final VendorCreateNewOrderController vendorCreateNewOrderController = Get.put(VendorCreateNewOrderController());
-
   @override
   Widget build(BuildContext context) {
+    final VendorCreateNewOrderController vendorCreateNewOrderController = Get.put(VendorCreateNewOrderController(context: context));
     return Scaffold(
-      body: SafeArea(
+      body: Obx(()=>SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: CustomScrollView(
+          child: vendorCreateNewOrderController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
 
               AuthAppBarHelperWidget(
@@ -268,18 +272,33 @@ class VendorCreateNewOrderView extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               textColor: ColorUtils.black96,
-                              text: "Name",
+                              text: "Search Name",
                             ),
 
                             SpaceHelperWidget.v(6.h(context)),
 
-
-                            TextFormFieldWidget.build(
-                              context: context,
-                              fillColor: ColorUtils.white255,
-                              hintText: "Enter planner name",
-                              controller: vendorCreateNewOrderController.plannerNameController.value,
-                              keyboardType: TextInputType.emailAddress,
+                            SearchableDropdownOverlay<GetAllPlannerResponse>(
+                              width: (428 - 68).w(context),
+                              value: vendorCreateNewOrderController.selectUser.value,
+                              items: vendorCreateNewOrderController.getAllPlannerResponseModel.value.data!,
+                              hintText: "Select planner",
+                              itemToString: (v) {
+                                return v.name ?? "Select Planner" ;
+                              },
+                              itemBuilder: (v) {
+                                return TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.centerLeft,
+                                  fontSize: 18,
+                                  textColor: ColorUtils.black48,
+                                  fontWeight: FontWeight.w700,
+                                  text: v.name,
+                                );
+                              },
+                              controller: vendorCreateNewOrderController.dropdownController,
+                              onChanged: (value) {
+                                vendorCreateNewOrderController.selectUser.value = value!;
+                              },
                             ),
 
 
@@ -406,7 +425,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

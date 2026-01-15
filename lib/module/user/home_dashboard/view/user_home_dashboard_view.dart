@@ -375,7 +375,7 @@ class UserHomeDashboardView extends StatelessWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               textColor: ColorUtils.black48,
-                              text: 'Top Vendor',
+                              text: 'Top Planner',
                             ),
                           ),
 

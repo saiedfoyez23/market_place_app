@@ -33,6 +33,6 @@ class ApiUtils {
   static const String serviceDetails = "$baseUrl/services/"; //done
   static const String editService = "$baseUrl/services/"; //done
   static const String deleteService = "$baseUrl/services/"; //done
-
+  static const String getAllPlanner = "$baseUrl/users?role=planer&limit=1000000000"; //done
 
 }

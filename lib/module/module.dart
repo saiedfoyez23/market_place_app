@@ -146,6 +146,7 @@ export 'vendor/services/controller/vendor_edit_pick_location_place_controller.da
 export 'vendor/services/view/vendor_edit_pick_location_place_view.dart';
 export 'vendor/services/view/vendor_edit_service_view.dart';
 export 'vendor/services/controller/vendor_edit_service_controller.dart';
+export 'vendor/booking/model/get_all_planner_response_model.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';
 export 'planer/onboarding/controller/planer_onboarding_controller.dart';
 export 'planer/onboarding/widget/planer_onboarding_widget.dart';
