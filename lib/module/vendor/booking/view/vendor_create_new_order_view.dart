@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
@@ -65,6 +66,30 @@ class VendorCreateNewOrderView extends StatelessWidget {
 
                       SpaceHelperWidget.v(20.h(context)),
 
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        textColor: ColorUtils.black96,
+                        text: "Event Type",
+                      ),
+
+                      SpaceHelperWidget.v(6.h(context)),
+
+
+                      CustomDropdownHelperClass(
+                        fillColor: ColorUtils.white243,
+                        value: vendorCreateNewOrderController.selectEventType.value == "" ? null : vendorCreateNewOrderController.selectEventType.value,
+                        items: vendorCreateNewOrderController.eventType,
+                        onChanged: (value) {
+                          vendorCreateNewOrderController.selectEventType.value = value!;
+                        },
+                      ),
+
+
+                      SpaceHelperWidget.v(20.h(context)),
+
 
                       TextHelperClass.headingTextWithoutWidth(
                         context: context,
@@ -101,13 +126,38 @@ class VendorCreateNewOrderView extends StatelessWidget {
                       SpaceHelperWidget.v(6.h(context)),
 
 
-                      TextFormFieldWidget.textFiledWithMaxLineBuild(
-                        context: context,
-                        maxLines: 5,
-                        hintText: "Write something ...",
-                        controller: vendorCreateNewOrderController.eventDetailsController.value,
-                        keyboardType: TextInputType.emailAddress,
+                      Container(
+                        width: 428.w(context),
+                        decoration: BoxDecoration(
+                            color: ColorUtils.white230,
+                            borderRadius: BorderRadius.circular(12.r(context))
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 13.hpm(context)),
+                        child: Column(
+                          children: [
+
+                            HtmlEditor(
+                              controller: vendorCreateNewOrderController.serviceDetailsController.value,
+                              htmlEditorOptions: const HtmlEditorOptions(
+                                hint: "Write something...",
+                                autoAdjustHeight: true,
+                              ),
+                              htmlToolbarOptions: const HtmlToolbarOptions(
+                                toolbarPosition: ToolbarPosition.aboveEditor,
+                                defaultToolbarButtons: [
+                                  FontButtons(),
+                                  ColorButtons(),
+                                  ListButtons(),
+                                  ParagraphButtons(),
+                                  InsertButtons(),
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
                       ),
+
 
                       SpaceHelperWidget.v(20.h(context)),
 
@@ -183,32 +233,32 @@ class VendorCreateNewOrderView extends StatelessWidget {
                             ),
 
 
-                            SpaceHelperWidget.v(20.h(context)),
-
-
-                            TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              textColor: ColorUtils.black96,
-                              text: "Program End Date",
-                            ),
-
-                            SpaceHelperWidget.v(6.h(context)),
-
-
-                            TextFormFieldWidget.build(
-                              context: context,
-                              fillColor: ColorUtils.white255,
-                              hintText: "Pick program end date",
-                              readOnly: true,
-                              controller: vendorCreateNewOrderController.programEndDateController.value,
-                              onTap: () async {
-                                await vendorCreateNewOrderController.pickProgramEndDate(context: context);
-                              },
-                              keyboardType: TextInputType.emailAddress,
-                            ),
+                            // SpaceHelperWidget.v(20.h(context)),
+                            //
+                            //
+                            // TextHelperClass.headingTextWithoutWidth(
+                            //   context: context,
+                            //   alignment: Alignment.centerLeft,
+                            //   fontSize: 18,
+                            //   fontWeight: FontWeight.w500,
+                            //   textColor: ColorUtils.black96,
+                            //   text: "Program End Date",
+                            // ),
+                            //
+                            // SpaceHelperWidget.v(6.h(context)),
+                            //
+                            //
+                            // TextFormFieldWidget.build(
+                            //   context: context,
+                            //   fillColor: ColorUtils.white255,
+                            //   hintText: "Pick program end date",
+                            //   readOnly: true,
+                            //   controller: vendorCreateNewOrderController.programEndDateController.value,
+                            //   onTap: () async {
+                            //     await vendorCreateNewOrderController.pickProgramEndDate(context: context);
+                            //   },
+                            //   keyboardType: TextInputType.emailAddress,
+                            // ),
 
                             SpaceHelperWidget.v(20.h(context)),
 
@@ -278,7 +328,8 @@ class VendorCreateNewOrderView extends StatelessWidget {
                             SpaceHelperWidget.v(6.h(context)),
 
                             SearchableDropdownOverlay<GetAllPlannerResponse>(
-                              width: (428 - 68).w(context),
+                              width: MediaQuery.of(context).orientation == Orientation.portrait ?
+                              (428 - 68).w(context) : (930 - 68).w(context),
                               value: vendorCreateNewOrderController.selectUser.value,
                               items: vendorCreateNewOrderController.getAllPlannerResponseModel.value.data!,
                               hintText: "Select planner",
@@ -289,7 +340,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 return TextHelperClass.headingTextWithoutWidth(
                                   context: context,
                                   alignment: Alignment.centerLeft,
-                                  fontSize: 18,
+                                  fontSize: 18.sp(context),
                                   textColor: ColorUtils.black48,
                                   fontWeight: FontWeight.w700,
                                   text: v.name,
@@ -298,7 +349,12 @@ class VendorCreateNewOrderView extends StatelessWidget {
                               controller: vendorCreateNewOrderController.dropdownController,
                               onChanged: (value) {
                                 vendorCreateNewOrderController.selectUser.value = value!;
+                                FocusScope.of(context).unfocus();
+                                vendorCreateNewOrderController.searchController.value.text = vendorCreateNewOrderController.selectUser.value.name ?? "";
+                                vendorCreateNewOrderController.plannerEmailController.value.text = vendorCreateNewOrderController.selectUser.value.email ?? "";
+                                vendorCreateNewOrderController.plannerPhoneController.value.text = vendorCreateNewOrderController.selectUser.value.contractNumber ?? "";
                               },
+                              searchController: vendorCreateNewOrderController.searchController.value,
                             ),
 
 
@@ -404,7 +460,10 @@ class VendorCreateNewOrderView extends StatelessWidget {
                           Expanded(
                             child: ButtonHelperWidget.customButtonWidgetAdventPro(
                               context: context,
-                              onPressed: () async {},
+                              onPressed: () async {
+                                String html = await vendorCreateNewOrderController.serviceDetailsController.value.getText();
+                                print(html);
+                              },
                               text: "Send Offer",
                             ),
                           ),

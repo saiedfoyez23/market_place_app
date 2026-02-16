@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
 class VendorCreateNewOrderController extends GetxController {
   final dropdownController = Get.put(SearchableDropdownController<GetAllPlannerResponse>());
+  Rx<TextEditingController> searchController = TextEditingController().obs;
   Rx<TextEditingController> titleController = TextEditingController().obs;
   Rx<TextEditingController> eventDetailsController = TextEditingController().obs;
-  Rx<TextEditingController> serviceDetailsController = TextEditingController().obs;
+  Rx<HtmlEditorController> serviceDetailsController = HtmlEditorController().obs;
+  //Rx<TextEditingController> serviceDetailsController = TextEditingController().obs;
   Rx<TextEditingController> deadlineController = TextEditingController().obs;
   Rx<TextEditingController> programStartDateController = TextEditingController().obs;
   Rx<TextEditingController> programEndDateController = TextEditingController().obs;
@@ -22,6 +25,21 @@ class VendorCreateNewOrderController extends GetxController {
   RxBool isLoading = false.obs;
   Rx<DateTime> programStartDate = DateTime.now().obs;
   Rx<DateTime> programEndDate = DateTime.now().obs;
+
+  RxList<String> eventType = <String>[
+    "Corporate Event",
+    "Music Festivals",
+    "Weddings and Anniversaries",
+    "Outdoor / sporting events",
+    "Educational Conferences",
+    "Bar & Bat Mitzvahs",
+    "Product Launches",
+    "Gala Fundraisers",
+    "Trade Shows",
+    "Social Gatherings",
+  ].obs;
+
+  RxString selectEventType = "".obs;
 
   Rx<GetAllPlannerResponse> selectUser = GetAllPlannerResponse().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;

@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 class SearchableDropdownController<T> extends GetxController {
   final OverlayPortalController overlayController = OverlayPortalController();
   final LayerLink layerLink = LayerLink();
-  final TextEditingController searchController = TextEditingController();
-
   final RxList<T> filteredItems = <T>[].obs;
   final RxBool isOpen = false.obs;
 
@@ -28,21 +26,22 @@ class SearchableDropdownController<T> extends GetxController {
 
   void close() {
     isOpen.value = false;
+    filteredItems.clear();
     overlayController.hide();
   }
 
-  void filter(String value) {
+  void filter(String? value) {
     filteredItems.assignAll(
       items.where((e) =>
           (itemToString?.call(e) ?? e.toString())
               .toLowerCase()
-              .contains(value.toLowerCase())),
+              .contains(value!.toLowerCase())),
     );
+    filteredItems.refresh();
   }
 
   @override
   void onClose() {
-    searchController.dispose();
     super.onClose();
   }
 }

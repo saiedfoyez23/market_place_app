@@ -66,7 +66,9 @@ class GetAllPlannerResponse {
   var name;
   var email;
   var photoUrl;
+  var contractNumber;
   var address;
+  List<String>? categories;
   var role;
   var status;
   var id;
@@ -77,7 +79,9 @@ class GetAllPlannerResponse {
     this.name,
     this.email,
     this.photoUrl,
+    this.contractNumber,
     this.address,
+    this.categories,
     this.role,
     this.status,
     this.id,
@@ -89,7 +93,9 @@ class GetAllPlannerResponse {
     name = json['name'];
     email = json['email'];
     photoUrl = json['photoUrl'];
+    contractNumber = json['contractNumber'];
     address = json['address'];
+    categories = json['categories'].cast<String>();
     role = json['role'];
     status = json['status'];
     id = json['id'];
@@ -102,7 +108,9 @@ class GetAllPlannerResponse {
     data['name'] = this.name;
     data['email'] = this.email;
     data['photoUrl'] = this.photoUrl;
+    data['contractNumber'] = this.contractNumber;
     data['address'] = this.address;
+    data['categories'] = this.categories;
     data['role'] = this.role;
     data['status'] = this.status;
     data['id'] = this.id;
@@ -110,3 +118,4 @@ class GetAllPlannerResponse {
     return data;
   }
 }
+
