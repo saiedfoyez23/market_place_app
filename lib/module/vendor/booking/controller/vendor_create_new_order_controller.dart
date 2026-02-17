@@ -23,8 +23,18 @@ class VendorCreateNewOrderController extends GetxController {
   Rx<TextEditingController> plannerPhoneController = TextEditingController().obs;
   Rx<TextEditingController> plannerOrderLocationController = TextEditingController().obs;
   RxBool isLoading = false.obs;
+  RxBool isSubmit = false.obs;
   Rx<DateTime> programStartDate = DateTime.now().obs;
   Rx<DateTime> programEndDate = DateTime.now().obs;
+
+  double long;
+  double lat;
+  String address;
+
+  RxDouble latitude = 0.0.obs;
+  RxDouble longitude = 0.0.obs;
+
+  VendorCreateNewOrderController({required this.long,required this.lat,required this.address,required this.context});
 
   RxList<String> eventType = <String>[
     "Corporate Event",
@@ -37,6 +47,7 @@ class VendorCreateNewOrderController extends GetxController {
     "Gala Fundraisers",
     "Trade Shows",
     "Social Gatherings",
+    "Others"
   ].obs;
 
   RxString selectEventType = "".obs;
@@ -44,29 +55,37 @@ class VendorCreateNewOrderController extends GetxController {
   Rx<GetAllPlannerResponse> selectUser = GetAllPlannerResponse().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   Rx<GetAllPlannerResponseModel> getAllPlannerResponseModel = GetAllPlannerResponseModel().obs;
-  VendorCreateNewOrderController({required this.context});
   BuildContext context;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     isLoading.value = true;
+    print(address);
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllPlannerController(context: context);
+      await getAllPlannerController(
+        context: context,
+        onComplete: () {
+          plannerOrderLocationController.value.text = address;
+          latitude.value = lat;
+          longitude.value = long;
+        },
+      );
     });
   }
 
 
   Future<void> getAllPlannerController({
     required BuildContext context,
+    required Function onComplete,
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.getAllPlanner,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        print(data);
         isLoading.value = false;
         getAllPlannerResponseModel.value = GetAllPlannerResponseModel.fromJson(data);
+        onComplete();
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -91,26 +110,55 @@ class VendorCreateNewOrderController extends GetxController {
 
     if (pick != null) {
       programStartDate.value = pick;
-      programStartDateController.value.text = DateFormat("dd-MM-yyyy").format(programEndDate.value.toLocal());
+      programStartDateController.value.text = DateFormat("yyyy-MM-dd").format(programStartDate.value.toLocal());
     } // user canceled
   }
 
 
-  Future<void> pickProgramEndDate({required BuildContext context}) async {
-    // Pick Date
-    final DateTime? pick = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2100),
+  Future<void> createNewOrderController({
+    required BuildContext context,
+    required Map<String,dynamic> data
+  }) async {
+
+    isSubmit.value = true;
+
+    BaseApiUtils.post(
+      url: ApiUtils.vendorCreateOrder,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: data,
+      onSuccess: (e,data) async {
+        print(data);
+        isSubmit.value = false;
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
     );
-
-    if (pick != null) {
-      programEndDate.value = pick;
-      programEndDateController.value.text = DateFormat("dd-MM-yyyy").format(programEndDate.value.toLocal());
-    } // user canceled
   }
 
+
+  // Future<void> pickProgramEndDate({required BuildContext context}) async {
+  //   // Pick Date
+  //   final DateTime? pick = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(1950),
+  //     lastDate: DateTime(2100),
+  //   );
+  //
+  //   if (pick != null) {
+  //     programEndDate.value = pick;
+  //     programEndDateController.value.text = DateFormat("dd-MM-yyyy").format(programEndDate.value.toLocal());
+  //   } // user canceled
+  // }
 
 
 }
