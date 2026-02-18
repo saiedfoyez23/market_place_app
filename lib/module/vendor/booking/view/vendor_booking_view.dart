@@ -263,7 +263,7 @@ class VendorBookingView extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>VendorOrderDetailsView(),preventDuplicates: false);
+              Get.off(()=>VendorOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
             },
             text: "View Details",
           ),

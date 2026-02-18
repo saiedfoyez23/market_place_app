@@ -84,6 +84,7 @@ class VendorBookingController extends GetxController {
         vendorGetAllOrderResponseModel.value.data?.forEach((value) {
           allBookings.add(
             VendorBookingModel(
+              sid: value.sId ?? "",
               plannerName: value.receiver?.name ?? "",
               serviceName: value.title ?? "",
               days: "${value.duration} Days",
@@ -132,6 +133,7 @@ enum VendorBookingStatus { all, active, complete, pending, cancelled }
 
 
 class VendorBookingModel {
+  final String sid;
   final String coverImage;
   final String plannerName;
   final String serviceName;
@@ -142,6 +144,7 @@ class VendorBookingModel {
   final VendorBookingStatus status;
 
   VendorBookingModel({
+    required this.sid,
     required this.coverImage,
     required this.plannerName,
     required this.serviceName,
