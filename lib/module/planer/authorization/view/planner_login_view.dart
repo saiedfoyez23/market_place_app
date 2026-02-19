@@ -270,13 +270,13 @@ class PlannerLoginView extends StatelessWidget {
                         SpaceHelperWidget.v(16.h(context)),
 
                         ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                            context: context,
-                            onPressed: () async {},
-                            iconPath: ImageUtils.googleImage,
-                            text: "Login with Google",
-                            borderColor: ColorUtils.orange119,
-                            borderWidth: 1,
-                            textSize: 24
+                          context: context,
+                          onPressed: () async {},
+                          iconPath: ImageUtils.googleImage,
+                          text: "Login with Google",
+                          borderColor: ColorUtils.orange119,
+                          borderWidth: 1,
+                          textSize: 24,
                         ),
 
 

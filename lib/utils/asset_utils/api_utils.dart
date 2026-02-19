@@ -37,6 +37,7 @@ class ApiUtils {
   static const String vendorCreateOrder = "$baseUrl/orders"; //done
   static const String getAllVendorOrder = "$baseUrl/orders/author/my-vendor-orders?limit=1000000000000"; //done
   static const String getVendorOrderDetails = "$baseUrl/orders"; //done
+  static const String vendorOrderCancel = "$baseUrl/orders/canceled"; //done
 
 
 }

@@ -147,7 +147,21 @@ class VendorOrderDetailsView extends StatelessWidget {
                           buildPlannerCard(context: context,vendorOrderDetailsController: vendorOrderDetailsController),
 
 
+                          SpaceHelperWidget.v(20.h(context)),
+
+                          ButtonHelperWidget.customButtonWidgetAdventPro(
+                            context: context,
+                            onPressed: () async {
+                              Get.off(()=>VendorCancelOfferView(orderID: orderID),preventDuplicates: false);
+                            },
+                            text: "Cancel Offer",
+                            textColor: ColorUtils.red202,
+                            backgroundColor: ColorUtils.red9,
+                          ),
+
                           SpaceHelperWidget.v(40.h(context)),
+
+
                         ],
                       ),
                     )
