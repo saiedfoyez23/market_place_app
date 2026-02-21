@@ -6,10 +6,9 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerProjectView extends StatelessWidget {
   PlannerProjectView({super.key});
 
-  final PlannerProjectController plannerProjectController = Get.put(PlannerProjectController());
-
   @override
   Widget build(BuildContext context) {
+    final PlannerProjectController plannerProjectController = Get.put(PlannerProjectController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,67 +17,81 @@ class PlannerProjectView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
-            slivers: [
+          child: plannerProjectController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          RefreshIndicator(
+            onRefresh: () async {
+              plannerProjectController.allProjects.clear();
+              plannerProjectController.isLoading.value = true;
+              Future.delayed(Duration(seconds: 1),() async {
+                await plannerProjectController.getAllClientOrderController(context: context);
+              });
+            },
+            child: CustomScrollView(
+              slivers: [
 
-              MainPageAppBarHelperWidget(
-                centerTitle: false,
-                title: "Project",
-                actions: [
-
-
-                  ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                    context: context,
-                    backgroundColor: ColorUtils.blue96,
-                    textSize: 20,
-                    iconSize: 20,
-                    height: 40,
-                    padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
-                    borderRadius: 8,
-                    textColor: ColorUtils.white255,
-                    fontWeight: FontWeight.w700,
-                    onPressed: () async {
-                      Get.off(()=>PlannerCreateNewProjectView(),preventDuplicates: false);
-                    },
-                    iconPath: ImageUtils.addImage,
-                    text: "Create Project",
-                  ),
-
-                  SpaceHelperWidget.h(15.w(context)),
+                MainPageAppBarHelperWidget(
+                  centerTitle: false,
+                  title: "Project",
+                  actions: [
 
 
-                ],
-              ),
+                    ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                      context: context,
+                      backgroundColor: ColorUtils.blue96,
+                      textSize: 20,
+                      iconSize: 20,
+                      height: 40,
+                      padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
+                      borderRadius: 8,
+                      textColor: ColorUtils.white255,
+                      fontWeight: FontWeight.w700,
+                      onPressed: () async {
+                        Get.off(()=>PlannerCreateNewProjectPickLocationPlaceView(),preventDuplicates: false);
+                      },
+                      iconPath: ImageUtils.addImage,
+                      text: "Create Project",
+                    ),
+
+                    SpaceHelperWidget.h(15.w(context)),
 
 
-              SliverFillRemaining(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SpaceHelperWidget.v(16.h(context)),
+                  ],
+                ),
 
-                      buildTabs(context: context),
 
-                      SpaceHelperWidget.v(26.h(context)),
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.r(context)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SpaceHelperWidget.v(16.h(context)),
 
-                      /// PROJECT LIST
-                      Expanded(
-                        child: Obx(() {
-                          return ListView.builder(
-                            itemCount: plannerProjectController.filterProjects.length,
-                            itemBuilder: (context, i) {
-                              return projectCard(context: context,projectModel: plannerProjectController.filterProjects[i]);
-                            },
-                          );
-                        }),
-                      )
-                    ],
+                        buildTabs(context: context,plannerProjectController: plannerProjectController),
+
+                        SpaceHelperWidget.v(26.h(context)),
+
+                        /// PROJECT LIST
+                        Expanded(
+                          child: Obx(() {
+                            return ListView.builder(
+                              itemCount: plannerProjectController.filterProjects.length,
+                              itemBuilder: (context, i) {
+                                return projectCard(context: context,projectModel: plannerProjectController.filterProjects[i]);
+                              },
+                            );
+                          }),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       )),
@@ -90,20 +103,28 @@ class PlannerProjectView extends StatelessWidget {
   /// ------------------------------
   /// TAB BAR
   /// ------------------------------
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerProjectController plannerProjectController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(status: PlannerProjectStatus.all,title: "All",context: context),
-        tabItem(status: PlannerProjectStatus.active,title: "Active",context: context),
-        tabItem(status: PlannerProjectStatus.complete,title: "Complete",context: context),
-        tabItem(status: PlannerProjectStatus.pending,title: "Pending",context: context),
-        tabItem(status: PlannerProjectStatus.cancelled,title: "Cancelled",context: context),
+        tabItem(status: PlannerProjectStatus.all,title: "All",context: context,plannerProjectController: plannerProjectController),
+        tabItem(status: PlannerProjectStatus.active,title: "Active",context: context,plannerProjectController: plannerProjectController),
+        tabItem(status: PlannerProjectStatus.complete,title: "Complete",context: context,plannerProjectController: plannerProjectController),
+        tabItem(status: PlannerProjectStatus.pending,title: "Pending",context: context,plannerProjectController: plannerProjectController),
+        tabItem(status: PlannerProjectStatus.cancelled,title: "Cancelled",context: context,plannerProjectController: plannerProjectController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerProjectStatus status,required BuildContext context}) {
+  Widget tabItem({
+    required String title,
+    required PlannerProjectStatus status,
+    required BuildContext context,
+    required PlannerProjectController plannerProjectController,
+  }) {
     bool isSelected = plannerProjectController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -193,19 +214,22 @@ class PlannerProjectView extends StatelessWidget {
                       horizontalPadding: 1.hpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageAsset: projectModel.userImage == "" ? ImageUtils.noImage : null,
+                      imageUrl: projectModel.userImage == "" ? null : projectModel.userImage,
                     ),
 
                     SpaceHelperWidget.h(12.w(context)),
 
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textAlign: TextAlign.start,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      textColor: ColorUtils.black48,
-                      text: "Party Perfect",
+                    Expanded(
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        textColor: ColorUtils.black48,
+                        text: projectModel.clientName,
+                      ),
                     ),
 
                   ],
@@ -244,7 +268,7 @@ class PlannerProjectView extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.w600,
             textColor: ColorUtils.black48,
-            text: projectModel.title,
+            text: projectModel.serviceName,
           ),
 
 
@@ -257,51 +281,51 @@ class PlannerProjectView extends StatelessWidget {
           rowItem(title: "Budget", value: "\$${projectModel.budgetUsed.toInt()} / \$${projectModel.budgetTotal.toInt()}",context: context),
 
 
-          Row(
-            children: [
-              Expanded(
-                child: TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  textAlign: TextAlign.start,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  textColor: ColorUtils.black48,
-                  text: "Progress",
-                ),
-              ),
-
-              SpaceHelperWidget.h(10.w(context)),
-
-              Expanded(
-                child: TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerRight,
-                  textAlign: TextAlign.start,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  textColor: ColorUtils.black48,
-                  text: "${projectModel.progress}%",
-                ),
-              ),
-            ],
-          ),
-
-
-
-          SpaceHelperWidget.v(7.h(context)),
-
-
-          ClipRRect(
-            borderRadius: BorderRadius.circular(2.r(context)),
-            child: LinearProgressIndicator(
-              value: projectModel.progress / 100,
-              backgroundColor: ColorUtils.white217,
-              minHeight: 8.h(context),
-              valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),
-            ),
-          ),
-
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: TextHelperClass.headingTextWithoutWidth(
+          //         context: context,
+          //         alignment: Alignment.centerLeft,
+          //         textAlign: TextAlign.start,
+          //         fontSize: 17,
+          //         fontWeight: FontWeight.w400,
+          //         textColor: ColorUtils.black48,
+          //         text: "Progress",
+          //       ),
+          //     ),
+          //
+          //     SpaceHelperWidget.h(10.w(context)),
+          //
+          //     Expanded(
+          //       child: TextHelperClass.headingTextWithoutWidth(
+          //         context: context,
+          //         alignment: Alignment.centerRight,
+          //         textAlign: TextAlign.start,
+          //         fontSize: 17,
+          //         fontWeight: FontWeight.w400,
+          //         textColor: ColorUtils.black48,
+          //         text: "${projectModel.progress}%",
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          //
+          //
+          //
+          // SpaceHelperWidget.v(7.h(context)),
+          //
+          //
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(2.r(context)),
+          //   child: LinearProgressIndicator(
+          //     value: projectModel.progress / 100,
+          //     backgroundColor: ColorUtils.white217,
+          //     minHeight: 8.h(context),
+          //     valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),
+          //   ),
+          // ),
+          //
 
           SpaceHelperWidget.v(15.h(context)),
 

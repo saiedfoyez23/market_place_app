@@ -133,7 +133,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Service Details",
+                          text: "Event Details",
                         ),
 
                         SpaceHelperWidget.v(6.h(context)),

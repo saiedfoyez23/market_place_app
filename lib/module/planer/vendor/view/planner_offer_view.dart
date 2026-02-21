@@ -6,102 +6,133 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerOfferView extends StatelessWidget {
   PlannerOfferView({super.key});
 
-  final PlannerOfferController plannerOfferController = Get.put(PlannerOfferController());
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: CustomScrollView(
-            slivers : [
+    final PlannerOfferController plannerOfferController = Get.put(PlannerOfferController(context: context));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: plannerOfferController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            RefreshIndicator(
+              onRefresh: () async {
+                plannerOfferController.isLoading.value = true;
+                plannerOfferController.allBookings.clear();
+                Future.delayed(Duration(seconds: 1),() async {
+                  plannerOfferController.getAllVendorOrderController(context: context);
+                });
+              },
+              child: CustomScrollView(
+                slivers : [
 
 
-              AuthAppBarHelperWidget(
-                onBackPressed: () async {
-                  Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
-                },
-                title: "All Offers",
-              ),
-
-
-
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-                      TextFormFieldWidget.build(
-                        context: context,
-                        hintText: "Search Planner...",
-                        controller: plannerOfferController.searchController.value,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            20.lpm(context),
-                            14.5.tpm(context),
-                            5.rpm(context),
-                            14.5.bpm(context),
-                          ),
-                          child: ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 20.h(context),
-                            width: 20.w(context),
-                            imageString: ImageUtils.searchImage,
-                          ),
-                        ),
-                      ),
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-
-                      buildTabs(context: context),
-
-                      SpaceHelperWidget.v(26.h(context)),
-
-                      Expanded(
-                          child: ListView.builder(
-                            itemCount: plannerOfferController.filteredBookings.length,
-                            itemBuilder: (context, index) {
-                              return bookingCard(booking: plannerOfferController.filteredBookings[index],context: context);
-                            },
-                          )
-                      ),
-                    ],
+                  AuthAppBarHelperWidget(
+                    onBackPressed: () async {
+                      Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+                    },
+                    title: "All Offers",
                   ),
-                ),
+
+
+
+                  SliverFillRemaining(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: Column(
+                        children: [
+
+                          SpaceHelperWidget.v(16.h(context)),
+
+                          TextFormFieldWidget.build(
+                            context: context,
+                            hintText: "Search Planner...",
+                            controller: plannerOfferController.searchController.value,
+                            keyboardType: TextInputType.emailAddress,
+                            onChanged: (value) async {
+                              plannerOfferController.allBookings.clear();
+                              await plannerOfferController.getAllVendorOrderSearchController(context: context, searchTerm: value!);
+                            },
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                20.lpm(context),
+                                14.5.tpm(context),
+                                5.rpm(context),
+                                14.5.bpm(context),
+                              ),
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 20.h(context),
+                                width: 20.w(context),
+                                imageString: ImageUtils.searchImage,
+                              ),
+                            ),
+                          ),
+
+                          SpaceHelperWidget.v(16.h(context)),
+
+
+                          buildTabs(context: context,plannerOfferController: plannerOfferController),
+
+                          SpaceHelperWidget.v(26.h(context)),
+
+                          Expanded(
+                              child: ListView.builder(
+                                itemCount: plannerOfferController.filteredBookings.length,
+                                itemBuilder: (context, index) {
+                                  return bookingCard(booking: plannerOfferController.filteredBookings[index],context: context);
+                                },
+                              )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 
   /// ------------------------------
   /// TAB BAR
   /// ------------------------------
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerOfferController plannerOfferController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(status: PlannerBookingStatus.all,title: "All",context: context),
-        tabItem(status: PlannerBookingStatus.complete,title: "Complete",context: context),
-        tabItem(status: PlannerBookingStatus.inProcess,title: "In-Process",context: context),
-        tabItem(status: PlannerBookingStatus.pending,title: "Pending",context: context),
+        tabItem(status: PlannerBookingStatus.all,title: "All",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.complete,title: "Complete",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.inProcess,title: "In-Process",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.pending,title: "Pending",context: context,plannerOfferController: plannerOfferController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerBookingStatus status,required BuildContext context}) {
+  Widget tabItem({
+    required PlannerOfferController plannerOfferController,
+    required String title,
+    required PlannerBookingStatus status,
+    required BuildContext context,
+  }) {
     bool isSelected = plannerOfferController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -184,17 +215,22 @@ class PlannerOfferView extends StatelessWidget {
                       horizontalPadding: 1.hpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageAsset: booking.coverImage == "" ? ImageUtils.noImage : null,
+                      imageUrl: booking.coverImage == "" ? null : booking.coverImage,
                     ),
+
                     SpaceHelperWidget.h(10.w(context)),
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textAlign: TextAlign.start,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      textColor: ColorUtils.black48,
-                      text: booking.vendorName,
+
+                    Expanded(
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: booking.vendorName,
+                      ),
                     ),
                   ],
                 ),

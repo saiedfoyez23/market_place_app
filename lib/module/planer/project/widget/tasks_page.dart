@@ -104,7 +104,7 @@ class TasksPage {
                     onPressed: () async {
                       await plannerProjectDetailsController.pickFile();
                     },
-                    iconPath: ImageUtils.uploadIconImage,
+                    iconPath: ImageUtils.addImage,
                     text: "Add Task",
                   ),
 

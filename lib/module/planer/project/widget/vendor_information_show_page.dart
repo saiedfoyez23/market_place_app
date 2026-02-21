@@ -27,7 +27,7 @@ class VendorInformationShowPage {
                     child: ButtonHelperWidget.customButtonWidgetAdventPro(
                       context: context,
                       onPressed: () async {},
-                      text: "Complete Order",
+                      text: "Compare Qouotes",
                       backgroundColor: ColorUtils.blue173,
                       textColor: ColorUtils.blue96,
                     ),
@@ -51,7 +51,7 @@ class VendorInformationShowPage {
 
                       },
                       iconPath: ImageUtils.addImage,
-                      text: "Create Project",
+                      text: "Add Vendor",
                     ),
                   ),
 

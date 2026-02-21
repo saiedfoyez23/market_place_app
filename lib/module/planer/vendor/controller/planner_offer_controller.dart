@@ -1,47 +1,153 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:marketplaceapp/module/module.dart';
+
+import '../../../../utils/utils.dart';
 
 class PlannerOfferController extends GetxController {
 
   Rx<PlannerBookingStatus> selectedTab = PlannerBookingStatus.all.obs;
   Rx<TextEditingController> searchController = TextEditingController().obs;
+  RxBool isLoading = false.obs;
+  Rx<PlannerGetAllVendorOrderResponseModel> plannerGetAllVendorOrderResponseModel = PlannerGetAllVendorOrderResponseModel().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  BuildContext context;
+
+  PlannerOfferController({required this.context});
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      getAllVendorOrderController(context: context);
+    });
+  }
+
+
+  Future<void> getAllVendorOrderController({
+    required BuildContext context,
+  }) async {
+
+    BaseApiUtils.get(
+      url: ApiUtils.getAllVendorOrder,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        plannerGetAllVendorOrderResponseModel.value = PlannerGetAllVendorOrderResponseModel.fromJson(data);
+        plannerGetAllVendorOrderResponseModel.value.data?.forEach((value) {
+          allBookings.add(
+            PlannerBookingModel(
+              sid: value.sId ?? "",
+              vendorName: value.receiver?.name ?? "",
+              serviceName: value.title ?? "",
+              days: "${value.duration} Days",
+              price: "${value.totalAmount}",
+              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
+              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              status: value.status == "complete" ? PlannerBookingStatus.complete :
+              value.status == "pending" ? PlannerBookingStatus.pending :
+              PlannerBookingStatus.inProcess,
+              coverImage: value.receiver?.photoUrl ?? "",
+            ),
+          );
+        });
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getAllVendorOrderSearchController({
+    required BuildContext context,
+    required String searchTerm,
+  }) async {
+
+    BaseApiUtils.get(
+      url: "${ApiUtils.getAllVendorOrder}&searchTerm=${searchTerm}",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        plannerGetAllVendorOrderResponseModel.value = PlannerGetAllVendorOrderResponseModel.fromJson(data);
+        plannerGetAllVendorOrderResponseModel.value.data?.forEach((value) {
+          allBookings.add(
+            PlannerBookingModel(
+              sid: value.sId ?? "",
+              vendorName: value.receiver?.name ?? "",
+              serviceName: value.title ?? "",
+              days: "${value.duration} Days",
+              price: "${value.totalAmount}",
+              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
+              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              status: value.status == "complete" ? PlannerBookingStatus.complete :
+              value.status == "pending" ? PlannerBookingStatus.pending :
+              PlannerBookingStatus.inProcess,
+              coverImage: value.receiver?.photoUrl ?? "",
+            ),
+          );
+        });
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+
   RxList<PlannerBookingModel> allBookings = <PlannerBookingModel>[
-    PlannerBookingModel(
-      vendorName: "Party Perfect",
-      serviceName: "Kids Birthday Party Extravaganza",
-      days: "5 Days",
-      price: "300",
-      startDate: "28 Oct 2025",
-      endDate: "02 Nov 2025",
-      status: PlannerBookingStatus.complete,
-    ),
-    PlannerBookingModel(
-      vendorName: "Party Perfect",
-      serviceName: "Kids Birthday Party Extravaganza",
-      days: "5 Days",
-      price: "300",
-      startDate: "28 Oct 2025",
-      endDate: "02 Nov 2025",
-      status: PlannerBookingStatus.inProcess,
-    ),
-    PlannerBookingModel(
-      vendorName: "Party Perfect",
-      serviceName: "Kids Birthday Party Extravaganza",
-      days: "5 Days",
-      price: "300",
-      startDate: "28 Oct 2025",
-      endDate: "02 Nov 2025",
-      status: PlannerBookingStatus.pending,
-    ),
-    PlannerBookingModel(
-      vendorName: "Party Perfect",
-      serviceName: "Kids Birthday Party Extravaganza",
-      days: "5 Days",
-      price: "300",
-      startDate: "28 Oct 2025",
-      endDate: "02 Nov 2025",
-      status: PlannerBookingStatus.inProcess,
-    ),
+    // PlannerBookingModel(
+    //   vendorName: "Party Perfect",
+    //   serviceName: "Kids Birthday Party Extravaganza",
+    //   days: "5 Days",
+    //   price: "300",
+    //   startDate: "28 Oct 2025",
+    //   endDate: "02 Nov 2025",
+    //   status: PlannerBookingStatus.complete,
+    // ),
+    // PlannerBookingModel(
+    //   vendorName: "Party Perfect",
+    //   serviceName: "Kids Birthday Party Extravaganza",
+    //   days: "5 Days",
+    //   price: "300",
+    //   startDate: "28 Oct 2025",
+    //   endDate: "02 Nov 2025",
+    //   status: PlannerBookingStatus.inProcess,
+    // ),
+    // PlannerBookingModel(
+    //   vendorName: "Party Perfect",
+    //   serviceName: "Kids Birthday Party Extravaganza",
+    //   days: "5 Days",
+    //   price: "300",
+    //   startDate: "28 Oct 2025",
+    //   endDate: "02 Nov 2025",
+    //   status: PlannerBookingStatus.pending,
+    // ),
+    // PlannerBookingModel(
+    //   vendorName: "Party Perfect",
+    //   serviceName: "Kids Birthday Party Extravaganza",
+    //   days: "5 Days",
+    //   price: "300",
+    //   startDate: "28 Oct 2025",
+    //   endDate: "02 Nov 2025",
+    //   status: PlannerBookingStatus.inProcess,
+    // ),
   ].obs;
 
   RxList<PlannerBookingModel> get filteredBookings {
@@ -66,6 +172,8 @@ enum PlannerBookingStatus { all, complete, pending, inProcess }
 
 
 class PlannerBookingModel {
+  final String sid;
+  final String coverImage;
   final String vendorName;
   final String serviceName;
   final String days;
@@ -75,6 +183,8 @@ class PlannerBookingModel {
   final PlannerBookingStatus status;
 
   PlannerBookingModel({
+    required this.sid,
+    required this.coverImage,
     required this.vendorName,
     required this.serviceName,
     required this.days,

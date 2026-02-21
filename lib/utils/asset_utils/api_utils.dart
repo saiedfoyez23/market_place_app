@@ -34,10 +34,13 @@ class ApiUtils {
   static const String editService = "$baseUrl/services/"; //done
   static const String deleteService = "$baseUrl/services/"; //done
   static const String getAllPlanner = "$baseUrl/users?role=planer&limit=1000000000"; //done
+  static const String getAllUsers = "$baseUrl/users?role=user&limit=1000000000"; //done
   static const String vendorCreateOrder = "$baseUrl/orders"; //done
   static const String getAllVendorOrder = "$baseUrl/orders/author/my-vendor-orders?limit=1000000000000"; //done
   static const String getVendorOrderDetails = "$baseUrl/orders"; //done
   static const String vendorOrderCancel = "$baseUrl/orders/canceled"; //done
+  static const String plannerCreateOrder = "$baseUrl/orders"; //done
+  static const String getPlannerAllClientOrder = "$baseUrl/orders/author/my-client-orders?limit=100000000000"; //done
 
 
 }
