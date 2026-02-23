@@ -82,22 +82,24 @@ class VendorBookingController extends GetxController {
         isLoading.value = false;
         vendorGetAllOrderResponseModel.value = VendorGetAllOrderResponseModel.fromJson(data);
         vendorGetAllOrderResponseModel.value.data?.forEach((value) {
-          allBookings.add(
-            VendorBookingModel(
-              sid: value.sId ?? "",
-              plannerName: value.receiver?.name ?? "",
-              serviceName: value.title ?? "",
-              days: "${value.duration} Days",
-              price: "${value.totalAmount}",
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
-              status: value.status == "complete" ? VendorBookingStatus.complete :
-              value.status == "pending" ? VendorBookingStatus.pending :
-              value.status == "cancelled" ? VendorBookingStatus.cancelled :
-              VendorBookingStatus.active,
-              coverImage: value.receiver?.photoUrl ?? "",
-            ),
-          );
+          if(value.status != "denied") {
+            allBookings.add(
+              VendorBookingModel(
+                sid: value.sId ?? "",
+                plannerName: value.receiver?.name ?? "",
+                serviceName: value.title ?? "",
+                days: "${value.duration} Days",
+                price: "${value.totalAmount}",
+                startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
+                endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+                status: value.status == "complete" ? VendorBookingStatus.complete :
+                value.status == "pending" ? VendorBookingStatus.pending :
+                value.status == "denied" ? VendorBookingStatus.cancelled :
+                VendorBookingStatus.active,
+                coverImage: value.receiver?.photoUrl ?? "",
+              ),
+            );
+          }
         });
       },
       onFail: (e,data) {

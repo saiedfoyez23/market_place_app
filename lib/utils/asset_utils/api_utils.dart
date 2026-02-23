@@ -41,6 +41,9 @@ class ApiUtils {
   static const String vendorOrderCancel = "$baseUrl/orders/canceled"; //done
   static const String plannerCreateOrder = "$baseUrl/orders"; //done
   static const String getPlannerAllClientOrder = "$baseUrl/orders/author/my-client-orders?limit=100000000000"; //done
+  static const String getPlannerOrderDetails = "$baseUrl/orders"; //done
+  static const String updatePlannerOrderStatus = "$baseUrl/orders/status"; //done
+  static const String plannerOrderCancel = "$baseUrl/orders/canceled"; //done
 
 
 }

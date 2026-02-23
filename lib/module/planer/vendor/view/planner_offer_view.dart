@@ -92,7 +92,11 @@ class PlannerOfferView extends StatelessWidget {
                               child: ListView.builder(
                                 itemCount: plannerOfferController.filteredBookings.length,
                                 itemBuilder: (context, index) {
-                                  return bookingCard(booking: plannerOfferController.filteredBookings[index],context: context);
+                                  return Obx(()=>bookingCard(
+                                    booking: plannerOfferController.filteredBookings[index],
+                                    context: context,
+                                    plannerOfferController: plannerOfferController,
+                                  ));
                                 },
                               )
                           ),
@@ -166,7 +170,7 @@ class PlannerOfferView extends StatelessWidget {
   /// ------------------------------
   /// BOOKING CARD
   /// ------------------------------
-  Widget bookingCard({required PlannerBookingModel booking, required BuildContext context}) {
+  Widget bookingCard({required PlannerOfferController plannerOfferController,required PlannerBookingModel booking, required BuildContext context}) {
     Color badgeColor = Colors.grey;
     Color textColor = Colors.white;
     String text = "";
@@ -288,7 +292,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.white255,
                   backgroundColor: ColorUtils.blue96,
@@ -322,7 +326,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue206,
@@ -334,10 +338,17 @@ class PlannerOfferView extends StatelessWidget {
               SpaceHelperWidget.h(10.w(context)),
 
               Expanded(
-                child: ButtonHelperWidget.customButtonWidgetAdventPro(
+                child: plannerOfferController.isUpdate.value == true && plannerOfferController.selectId.value == booking.sid ?
+                LoadingHelperWidget.loadingHelperWidget(
+                  context: context,
+                ) :
+                ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
+                    plannerOfferController.isUpdate.value = true;
+                    plannerOfferController.selectId.value = booking.sid;
+                    await plannerOfferController.updateOrderStatusController(context: context, orderId: booking.sid);
+                    //Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
                   },
                   text: "Accept Order",
                 ),
@@ -350,7 +361,7 @@ class PlannerOfferView extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+              Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
             },
             textColor: ColorUtils.blue96,
             backgroundColor: ColorUtils.blue206,

@@ -146,7 +146,7 @@ class VendorOrderDetailsView extends StatelessWidget {
                           // ----------------------------------------
                           buildPlannerCard(context: context,vendorOrderDetailsController: vendorOrderDetailsController),
 
-                          vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.status == "active" ?
+                          vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.status == "running" ?
                           Column(
                             children: [
 

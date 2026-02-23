@@ -15,6 +15,8 @@ class PlannerOfferController extends GetxController {
   Rx<PlannerGetAllVendorOrderResponseModel> plannerGetAllVendorOrderResponseModel = PlannerGetAllVendorOrderResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   BuildContext context;
+  RxString selectId = "".obs;
+  RxBool isUpdate = false.obs;
 
   PlannerOfferController({required this.context});
 
@@ -40,21 +42,23 @@ class PlannerOfferController extends GetxController {
         isLoading.value = false;
         plannerGetAllVendorOrderResponseModel.value = PlannerGetAllVendorOrderResponseModel.fromJson(data);
         plannerGetAllVendorOrderResponseModel.value.data?.forEach((value) {
-          allBookings.add(
-            PlannerBookingModel(
-              sid: value.sId ?? "",
-              vendorName: value.receiver?.name ?? "",
-              serviceName: value.title ?? "",
-              days: "${value.duration} Days",
-              price: "${value.totalAmount}",
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
-              status: value.status == "complete" ? PlannerBookingStatus.complete :
-              value.status == "pending" ? PlannerBookingStatus.pending :
-              PlannerBookingStatus.inProcess,
-              coverImage: value.receiver?.photoUrl ?? "",
-            ),
-          );
+          if(value.status != "denied") {
+            allBookings.add(
+              PlannerBookingModel(
+                sid: value.sId ?? "",
+                vendorName: value.sender?.name ?? "",
+                serviceName: value.title ?? "",
+                days: "${value.duration} Days",
+                price: "${value.totalAmount}",
+                startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
+                endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+                status: value.status == "complete" ? PlannerBookingStatus.complete :
+                value.status == "running" ? PlannerBookingStatus.inProcess :
+                PlannerBookingStatus.pending,
+                coverImage: value.sender?.photoUrl ?? "",
+              ),
+            );
+          }
         });
       },
       onFail: (e,data) {
@@ -65,6 +69,35 @@ class PlannerOfferController extends GetxController {
         print(data);
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
+      },
+    );
+  }
+
+
+  Future<void> updateOrderStatusController({
+    required BuildContext context,
+    required String orderId,
+  }) async {
+
+    BaseApiUtils.patch(
+      url: "${ApiUtils.updatePlannerOrderStatus}/$orderId",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: {
+        "status": "running" // running | denied
+      },
+      onSuccess: (e,data) async {
+        isUpdate.value = false;
+        selectId.value = "";
+        isLoading.value = true;
+        await getAllVendorOrderController(context: context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isUpdate.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isUpdate.value = false;
       },
     );
   }
@@ -84,7 +117,7 @@ class PlannerOfferController extends GetxController {
           allBookings.add(
             PlannerBookingModel(
               sid: value.sId ?? "",
-              vendorName: value.receiver?.name ?? "",
+              vendorName: value.sender?.name ?? "",
               serviceName: value.title ?? "",
               days: "${value.duration} Days",
               price: "${value.totalAmount}",
@@ -93,7 +126,7 @@ class PlannerOfferController extends GetxController {
               status: value.status == "complete" ? PlannerBookingStatus.complete :
               value.status == "pending" ? PlannerBookingStatus.pending :
               PlannerBookingStatus.inProcess,
-              coverImage: value.receiver?.photoUrl ?? "",
+              coverImage: value.sender?.photoUrl ?? "",
             ),
           );
         });
@@ -109,6 +142,9 @@ class PlannerOfferController extends GetxController {
       },
     );
   }
+
+
+
 
 
   RxList<PlannerBookingModel> allBookings = <PlannerBookingModel>[
