@@ -44,6 +44,8 @@ class ApiUtils {
   static const String getPlannerOrderDetails = "$baseUrl/orders"; //done
   static const String updatePlannerOrderStatus = "$baseUrl/orders/status"; //done
   static const String plannerOrderCancel = "$baseUrl/orders/canceled"; //done
+  static const String getUserHomeResponse = "$baseUrl/meta/user"; //done
+  static const String getAllPlannerServiceResponse = "$baseUrl/services/active?authority=planer&limit=1000000000"; //done
 
 
 }

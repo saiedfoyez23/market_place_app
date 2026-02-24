@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserHomeDashboardController extends GetxController {
@@ -14,38 +17,66 @@ class UserHomeDashboardController extends GetxController {
     index.value = changeValue;
   }
 
+  RxBool isLoading = false.obs;
+  BuildContext context;
+  UserHomeDashboardController({required this.context});
+  Rx<ClientHomeResponseModel> clientHomeResponseModel = ClientHomeResponseModel().obs;
+  Rx<UserMyProfileDetailsResponseModel> userMyProfileDetailsResponseModel = UserMyProfileDetailsResponseModel().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
 
-  // Upcoming bookings data
-  RxList<Map<String, dynamic>> upcomingBookings = [
-    {'title': 'Wedding Reception - Johnson Family', 'date': 'Nov 5, 2025', 'status': 'Confirmed'},
-    {'title': 'Wedding Reception - Johnson Family', 'date': 'Nov 5, 2025', 'status': 'Confirmed'},
-    {'title': 'Wedding Reception - Johnson Family', 'date': 'Nov 5, 2025', 'status': 'Confirmed'},
-  ].obs;
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      await getProfileController(context: context);
+      await getUserHomeController(context: context);
+    });
+  }
 
-  // Recommended vendors (placeholder data)
-  var recommendedVendors = List.generate(4, (index) => {
-    'name': 'Here is a Client Profile',
-    'rating': 4.7,
-    'reviews': 320,
-    'imageUrl': ImageUtils.recomendedImage
-  }).obs;
+  Future<void> getProfileController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        userMyProfileDetailsResponseModel.value = UserMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
 
-  // Top vendors (placeholder data)
-  var topVendors = List.generate(2, (index) => {
-    'name': 'Here is a Client Profile',
-    'rating': 4.7,
-    'reviews': 320,
-    'imageUrl': ImageUtils.recomendedImage,
-  }).obs;
-
-  // Planner services (placeholder data)
-  var plannerServices = List.generate(2, (index) => {
-    'name': 'Here is a Client Profile',
-    'rating': 4.7,
-    'reviews': 320,
-    'imageUrl': ImageUtils.recomendedImage,
-  }).obs;
+  }
 
 
+  Future<void> getUserHomeController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getUserHomeResponse,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        clientHomeResponseModel.value = ClientHomeResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
 
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserHomeDashboardView extends StatelessWidget {
-  UserHomeDashboardView({super.key});
-
-  final UserHomeDashboardController userHomeDashboardController = Get.put(UserHomeDashboardController());
+  const UserHomeDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final UserHomeDashboardController userHomeDashboardController = Get.put(UserHomeDashboardController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,447 +18,398 @@ class UserHomeDashboardView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
-            slivers: [
-
-              
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      // app bar
-                      Row(
-                        children: [
-
-                          ImageHelperWidget.circleImageHelperWidget(
-                            width: 50.w(context),
-                            height: 50.h(context),
-                            verticalPadding: 1.vpm(context),
-                            horizontalPadding: 1.hpm(context),
-                            backgroundColor: ColorUtils.orange213,
-                            radius: 25.r(context),
-                            imageAsset: ImageUtils.noImage,
-                          ),
-
-                          SpaceHelperWidget.h(12.w(context)),
+          child: userHomeDashboardController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          RefreshIndicator(
+            onRefresh: () async {
+              Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+            },
+            child: CustomScrollView(
+              slivers: [
 
 
-                          Expanded(
-                            child: Column(
-                              children: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                                RichTextHelperWidget.headingRichText(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  textSpans: [
-                                    CustomTextSpan(
-                                        text: 'Welcome back ',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: ColorUtils.black64
-                                    ).toTextSpan(),
-                                    CustomTextSpan(
-                                      text: 'Shahid',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: ColorUtils.orange119,
-                                    ).toTextSpan(),
-                                  ],
-                                ),
+                        SpaceHelperWidget.v(32.h(context)),
 
-
-                                SpaceHelperWidget.v(3.h(context)),
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  textColor: ColorUtils.black107,
-                                  text: "Plan your next event with trusted professionals.",
-                                ),
-
-
-
-                              ],
-                            ),
-                          ),
-
-
-                          SpaceHelperWidget.h(15.w(context)),
-
-                          InkWell(
-                            onTap: () async {
-                              Get.off(()=>UserNotificationView(),preventDuplicates: false);
-                            },
-                            child: ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 50.h(context),
-                              width: 50.w(context),
-                              imageString: ImageUtils.notificationBellImage,
-                            ),
-                          ),
-
-                          SpaceHelperWidget.h(15.w(context)),
-
-
-                          InkWell(
-                            onTap: () async {
-                              //Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
-                            },
-                            child: ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 50.h(context),
-                              width: 50.w(context),
-                              imageString: ImageUtils.filterSearchImage,
-                            ),
-                          ),
-
-
-
-
-                        ],
-                      ),
-
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-
-                      // Search Bar
-                      TextFormFieldWidget.build(
-                        context: context,
-                        hintText: "Search Planner...",
-                        controller: userHomeDashboardController.searchController.value,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            20.lpm(context),
-                            14.5.tpm(context),
-                            5.rpm(context),
-                            14.5.bpm(context),
-                          ),
-                          child: ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 20.h(context),
-                            width: 20.w(context),
-                            imageString: ImageUtils.searchImage,
-                          ),
-                        ),
-                      ),
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      SizedBox(
-                        height: 200.h(context),
-                        child: PageView(
-                          controller: userHomeDashboardController.pageController.value,
-                          scrollDirection: Axis.horizontal,
-                          onPageChanged: (value) {
-                            userHomeDashboardController.changeIndex(value);
-                          },
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r(context)),
-                              child: ImageHelperWidget.assetImageWidget(
-                                context: context,
-                                height: 172,
-                                width: 428,
-                                imageString: ImageUtils.userDashboardImage,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r(context)),
-                              child: ImageHelperWidget.assetImageWidget(
-                                context: context,
-                                height: 172,
-                                width: 428,
-                                imageString: ImageUtils.userDashboardImage,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r(context)),
-                              child: ImageHelperWidget.assetImageWidget(
-                                context: context,
-                                height: 172,
-                                width: 428,
-                                imageString: ImageUtils.userDashboardImage,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r(context)),
-                              child: ImageHelperWidget.assetImageWidget(
-                                context: context,
-                                height: 172,
-                                width: 428,
-                                imageString: ImageUtils.userDashboardImage,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SpaceHelperWidget.v(20.h(context)),
-
-
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: List.generate(4, (index) {
-                          if(userHomeDashboardController.index.value == index) {
-                            return Container(
-                              height: 12.h(context),
-                              width: 30.w(context),
-                              margin: EdgeInsets.only(right: 6.rpm(context)),
-                              decoration: BoxDecoration(
-                                color: ColorUtils.orange119,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(6.r(context)),
-                              ),
-                            );
-                          } else {
-                            return Container(
-                              height: 12.h(context),
-                              width: 12.w(context),
-                              margin: EdgeInsets.only(right: 6.rpm(context)),
-                              decoration: BoxDecoration(
-                                color: ColorUtils.orange213,
-                                shape: BoxShape.circle,
-                              ),
-                            );
-                          }
-                        }),
-                      ),
-
-
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      // Categories
-
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.centerLeft,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        textColor: ColorUtils.black48,
-                        text: "Categories",
-                      ),
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          buildCategoryCard(title: 'Weddings', image: ImageUtils.categoryImage4, context: context),
-                          buildCategoryCard(title: 'Corporates', image: ImageUtils.categoryImage1, context: context),
-                          buildCategoryCard(title: 'Birthday', image: ImageUtils.categoryImage2, context: context),
-                          buildCategoryCard(title: 'Others', image: ImageUtils.categoryImage3, context: context),
-                        ],
-                      ),
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      // Upcoming Booking Section
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
-                        decoration: BoxDecoration(
-                          color: ColorUtils.white247,
-                          borderRadius: BorderRadius.circular(20.r(context)),
-                        ),
-                        child: Column(
+                        // app bar
+                        Row(
                           children: [
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                            ImageHelperWidget.circleImageHelperWidget(
+                              width: 50.w(context),
+                              height: 50.h(context),
+                              verticalPadding: 1.vpm(context),
+                              horizontalPadding: 1.hpm(context),
+                              backgroundColor: ColorUtils.orange213,
+                              radius: 25.r(context),
+                              imageAsset: userHomeDashboardController.userMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
+                              imageUrl: userHomeDashboardController.userMyProfileDetailsResponseModel.value.data?.photoUrl,
+                            ),
 
-                                Expanded(
-                                  child: TextHelperClass.headingTextWithoutWidth(
+                            SpaceHelperWidget.h(12.w(context)),
+
+
+                            Expanded(
+                              child: Column(
+                                children: [
+
+                                  RichTextHelperWidget.headingRichText(
                                     context: context,
                                     alignment: Alignment.centerLeft,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    textColor: ColorUtils.black48,
-                                    text: "Upcoming Booking",
+                                    textSpans: [
+                                      CustomTextSpan(
+                                          text: 'Welcome back ',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: ColorUtils.black64
+                                      ).toTextSpan(),
+                                      CustomTextSpan(
+                                        text: userHomeDashboardController.userMyProfileDetailsResponseModel.value.data!.name.toString().split(" ").first,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorUtils.orange119,
+                                      ).toTextSpan(),
+                                    ],
                                   ),
-                                ),
 
-                                SpaceHelperWidget.h(12.w(context)),
 
-                                ButtonHelperWidget.customButtonWidget(
-                                  context: context,
-                                  onPressed: () async {},
-                                  text: "See All",
-                                  padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                                  alignment: Alignment.center,
-                                  textColor: ColorUtils.orange119,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ],
+                                  SpaceHelperWidget.v(3.h(context)),
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    textColor: ColorUtils.black107,
+                                    text: "Plan your next event with trusted professionals.",
+                                  ),
+
+
+
+                                ],
+                              ),
                             ),
-                            SpaceHelperWidget.v(12.h(context)),
-                            ...userHomeDashboardController.upcomingBookings.map((booking) => buildBookingCard(booking: booking,context: context)).toList(),
+
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+                            InkWell(
+                              onTap: () async {
+                                Get.off(()=>UserNotificationView(),preventDuplicates: false);
+                              },
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 50.h(context),
+                                width: 50.w(context),
+                                imageString: ImageUtils.notificationBellImage,
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+
+                            InkWell(
+                              onTap: () async {
+                                //Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
+                              },
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 50.h(context),
+                                width: 50.w(context),
+                                imageString: ImageUtils.filterSearchImage,
+                              ),
+                            ),
+
+
+
 
                           ],
                         ),
-                      ),
 
-                      SpaceHelperWidget.v(32.h(context)),
 
-                      // Recommended for You
+                        SpaceHelperWidget.v(32.h(context)),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
 
-                          Expanded(
-                            child: TextHelperClass.headingTextWithoutWidth(
+                        // Search Bar
+                        TextFormFieldWidget.build(
+                          context: context,
+                          hintText: "Search Planner...",
+                          controller: userHomeDashboardController.searchController.value,
+                          keyboardType: TextInputType.emailAddress,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              20.lpm(context),
+                              14.5.tpm(context),
+                              5.rpm(context),
+                              14.5.bpm(context),
+                            ),
+                            child: ImageHelperWidget.assetImageWidget(
                               context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              textColor: ColorUtils.black48,
-                              text: 'Recommended for You',
+                              height: 20.h(context),
+                              width: 20.w(context),
+                              imageString: ImageUtils.searchImage,
                             ),
                           ),
+                        ),
 
-                          SpaceHelperWidget.h(12.w(context)),
+                        SpaceHelperWidget.v(32.h(context)),
 
-                          ButtonHelperWidget.customButtonWidget(
-                            context: context,
-                            onPressed: () async {},
-                            text: "See All",
-                            padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                            alignment: Alignment.center,
-                            textColor: ColorUtils.blue96,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                            backgroundColor: Colors.transparent,
+                        SizedBox(
+                          height: 200.h(context),
+                          child: PageView(
+                            controller: userHomeDashboardController.pageController.value,
+                            scrollDirection: Axis.horizontal,
+                            onPageChanged: (value) {
+                              userHomeDashboardController.changeIndex(value);
+                            },
+                            children: List.generate(userHomeDashboardController.clientHomeResponseModel.value.data!.banners!.length, (index) {
+                              return ImageHelperWidget.styledImage(
+                                context: context,
+                                borderRadius: 12,
+                                height: 172,
+                                width: 428,
+                                imageUrl: userHomeDashboardController.clientHomeResponseModel.value.data!.banners![index].url,
+                              );
+                            })
                           ),
-                        ],
-                      ),
+                        ),
 
-                      SpaceHelperWidget.v(20.h(context)),
-
-
-                      Row(
-                        children: [
-                          Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.recommendedVendors[0], context: context)),
-                          SpaceHelperWidget.h(12.w(context)),
-                          Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.recommendedVendors[1], context: context)),
-                        ],
-                      ),
+                        SpaceHelperWidget.v(20.h(context)),
 
 
 
-                      SpaceHelperWidget.v(32.h(context)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: List.generate(userHomeDashboardController.clientHomeResponseModel.value.data!.banners!.length, (index) {
+                            if(userHomeDashboardController.index.value == index) {
+                              return Container(
+                                height: 12.h(context),
+                                width: 30.w(context),
+                                margin: EdgeInsets.only(right: 6.rpm(context)),
+                                decoration: BoxDecoration(
+                                  color: ColorUtils.orange119,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(6.r(context)),
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                height: 12.h(context),
+                                width: 12.w(context),
+                                margin: EdgeInsets.only(right: 6.rpm(context)),
+                                decoration: BoxDecoration(
+                                  color: ColorUtils.orange213,
+                                  shape: BoxShape.circle,
+                                ),
+                              );
+                            }
+                          }),
+                        ),
 
-                      // Top Vendor
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        SpaceHelperWidget.v(32.h(context)),
 
-                          Expanded(
-                            child: TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              textColor: ColorUtils.black48,
-                              text: 'Top Planner',
+                        // Categories
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.centerLeft,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black48,
+                          text: "Categories",
+                        ),
+
+                        SpaceHelperWidget.v(16.h(context)),
+
+                        Container(
+                          height: 90.h(context),
+                          width: 428.w(context),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent
+                          ),
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?.length,
+                            itemBuilder: (context,int index) {
+                              return buildCategoryCard(
+                                title: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].title,
+                                image: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].logo,
+                                context: context,
+                              );
+                            },
+                          ),
+                        ),
+
+
+                        SpaceHelperWidget.v(32.h(context)),
+
+                        // Upcoming Booking Section
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
+                          decoration: BoxDecoration(
+                            color: ColorUtils.white247,
+                            borderRadius: BorderRadius.circular(20.r(context)),
+                          ),
+                          child: Column(
+                            children: [
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+
+                                  Expanded(
+                                    child: TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.centerLeft,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      textColor: ColorUtils.black48,
+                                      text: "Upcoming Booking",
+                                    ),
+                                  ),
+
+                                  SpaceHelperWidget.h(12.w(context)),
+
+                                  ButtonHelperWidget.customButtonWidget(
+                                    context: context,
+                                    onPressed: () async {
+                                      Get.off(()=>DashboardUserView(index: 1),preventDuplicates: false);
+                                    },
+                                    text: "See All",
+                                    padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                    alignment: Alignment.center,
+                                    textColor: ColorUtils.orange119,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ],
+                              ),
+                              SpaceHelperWidget.v(12.h(context)),
+                              ...userHomeDashboardController.clientHomeResponseModel.value.data!.upcomingBooking!.map((booking) => buildBookingCard(booking: booking,context: context)),
+
+                            ],
+                          ),
+                        ),
+
+                        SpaceHelperWidget.v(32.h(context)),
+
+                        // Recommended for You
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+
+                            Expanded(
+                              child: TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: 'Recommended for You',
+                              ),
                             ),
-                          ),
 
-                          SpaceHelperWidget.h(12.w(context)),
+                            SpaceHelperWidget.h(12.w(context)),
 
-                          ButtonHelperWidget.customButtonWidget(
-                            context: context,
-                            onPressed: () async {},
-                            text: "See All",
-                            padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                            alignment: Alignment.center,
-                            textColor: ColorUtils.blue96,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ],
-                      ),
-
-                      SpaceHelperWidget.v(20.h(context)),
-
-
-                      Row(
-                        children: [
-                          Expanded(child: buildVendorCard(vendor: userHomeDashboardController.topVendors[0], context: context)),
-                          SpaceHelperWidget.h(12.w(context)),
-                          Expanded(child: buildVendorCard(vendor: userHomeDashboardController.topVendors[1], context: context)),
-                        ],
-                      ),
-
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      // Top Vendor
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-                          Expanded(
-                            child: TextHelperClass.headingTextWithoutWidth(
+                            ButtonHelperWidget.customButtonWidget(
                               context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 20,
+                              onPressed: () async {},
+                              text: "See All",
+                              padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                              alignment: Alignment.center,
+                              textColor: ColorUtils.blue96,
                               fontWeight: FontWeight.w600,
-                              textColor: ColorUtils.black48,
-                              text: 'Planner Service',
+                              fontSize: 24,
+                              backgroundColor: Colors.transparent,
                             ),
-                          ),
+                          ],
+                        ),
 
-                          SpaceHelperWidget.h(12.w(context)),
+                        SpaceHelperWidget.v(20.h(context)),
 
-                          ButtonHelperWidget.customButtonWidget(
-                            context: context,
-                            onPressed: () async {},
-                            text: "See All",
-                            padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                            alignment: Alignment.center,
-                            textColor: ColorUtils.blue96,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ],
-                      ),
-
-                      SpaceHelperWidget.v(20.h(context)),
-
-                      Row(
-                        children: [
-                          Expanded(child: buildPlannerCard(service: userHomeDashboardController.plannerServices[0], context: context)),
-                          SpaceHelperWidget.h(12.w(context)),
-                          Expanded(child: buildPlannerCard(service: userHomeDashboardController.plannerServices[1], context: context)),
-                        ],
-                      ),
+                        userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices!.length > 1 ?
+                        Row(
+                          children: [
+                            Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context)),
+                            SpaceHelperWidget.h(12.w(context)),
+                            Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![1], context: context)),
+                          ],
+                        ) :
+                        buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context),
 
 
-                      SpaceHelperWidget.v(32.h(context)), // Space for bottom nav
-                    ],
+                        SpaceHelperWidget.v(32.h(context)),
+
+                        // Top Vendor
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+
+                            Expanded(
+                              child: TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: 'Planner Service',
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(12.w(context)),
+
+                            ButtonHelperWidget.customButtonWidget(
+                              context: context,
+                              onPressed: () async {
+                                Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
+                              },
+                              text: "See All",
+                              padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                              alignment: Alignment.center,
+                              textColor: ColorUtils.blue96,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ],
+                        ),
+
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        userHomeDashboardController.clientHomeResponseModel.value.data!.planerService!.length > 1 ?
+                        Row(
+                          children: [
+                            Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![0], context: context)),
+                            SpaceHelperWidget.h(12.w(context)),
+                            Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![1], context: context)),
+                          ],
+                        ) :
+                        buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![1], context: context),
+
+
+                        SpaceHelperWidget.v(32.h(context)), // Space for bottom nav
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       )),
@@ -466,31 +417,38 @@ class UserHomeDashboardView extends StatelessWidget {
   }
 
   Widget buildCategoryCard({required String title, required String image,required BuildContext context}) {
-    return Column(
-      children: [
-        ImageHelperWidget.assetImageWidget(
-          context: context,
-          height: 50.h(context),
-          width: 50.w(context),
-          imageString: image,
-        ),
+    return Container(
+      margin: EdgeInsets.only(right: 24.rpm(context)),
+      child: Column(
+        children: [
+          ImageHelperWidget.styledImage(
+            context: context,
+            height: 60.h(context),
+            width: 60.w(context),
+            imageUrl: image,
+            borderRadius: 8
+          ),
 
-        SpaceHelperWidget.v(6.h(context)),
+          SpaceHelperWidget.v(6.h(context)),
 
 
-        TextHelperClass.headingTextWithoutWidth(
-          context: context,
-          alignment: Alignment.center,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          textColor: ColorUtils.black48,
-          text: title,
-        ),
-      ],
+          Expanded(
+            child: TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.center,
+              textAlign: TextAlign.center,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              textColor: ColorUtils.black48,
+              text: title,
+            ),
+          )
+        ],
+      ),
     );
   }
 
-  Widget buildRecommendationCard({required Map<String, dynamic> vendor,required BuildContext context}) {
+  Widget buildRecommendationCard({required ClientHomeResponseRecommendServices vendor,required BuildContext context}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 8.hpm(context)),
       decoration: BoxDecoration(
@@ -501,13 +459,13 @@ class UserHomeDashboardView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r(context)),
-            child: Container(
-              height: 170.w(context),
-              color: Colors.transparent,
-              child: Image.asset(vendor['imageUrl'], fit: BoxFit.cover),
-            ),
+
+          ImageHelperWidget.styledImage(
+            context: context,
+            height: 170,
+            width: 428,
+            imageUrl: vendor.images?.first,
+            borderRadius: 8,
           ),
 
 
@@ -521,7 +479,8 @@ class UserHomeDashboardView extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w600,
             textColor: ColorUtils.black64,
-            text: vendor['name'] ?? '',
+            text: vendor.title ?? '',
+            textOverFlow: TextOverflow.ellipsis
           ),
 
 
@@ -537,13 +496,13 @@ class UserHomeDashboardView extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   textSpans: [
                     CustomTextSpan(
-                        text: '${vendor['rating'].toString()} ',
+                        text: '${vendor.author?.avgRating.toString()} ',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: ColorUtils.black10
                     ).toTextSpan(),
                     CustomTextSpan(
-                      text: '(${vendor['reviews']} review)',
+                      text: '(${vendor.author?.ratingCount} review)',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: ColorUtils.black94,
@@ -575,7 +534,7 @@ class UserHomeDashboardView extends StatelessWidget {
     );
   }
 
-  Widget buildBookingCard({required Map<String, dynamic> booking,required BuildContext context}) {
+  Widget buildBookingCard({required ClientHomeResponseUpcomingBooking booking,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.bpm(context)),
       padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
@@ -596,13 +555,14 @@ class UserHomeDashboardView extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
+
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black64,
-                  text: booking['title'],
+                  text: "${booking.title} - ${booking.type}",
                 ),
 
                 SpaceHelperWidget.v(8.h(context)),
@@ -619,11 +579,12 @@ class UserHomeDashboardView extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textColor: ColorUtils.black74,
-                        text: booking['date'],
+                        text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
                       ),
                     ),
 
 
+                    booking.status == "confirmed" ?
                     Row(
                       children: [
 
@@ -642,11 +603,19 @@ class UserHomeDashboardView extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           textColor: ColorUtils.green139,
-                          text: booking['status'],
+                          text: booking.status,
                         ),
 
                       ],
-                    )
+                    ) :
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      textColor: ColorUtils.yellow177,
+                      text: booking.status,
+                    ),
 
 
 
@@ -667,8 +636,7 @@ class UserHomeDashboardView extends StatelessWidget {
     );
   }
 
-
-  Widget buildVendorCard({required Map<String, dynamic> vendor,required BuildContext context}) {
+  Widget buildPlannerCard({required ClientHomeResponsePlanerService service,required BuildContext context}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 8.hpm(context)),
       decoration: BoxDecoration(
@@ -679,14 +647,23 @@ class UserHomeDashboardView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r(context)),
-            child: Container(
-              height: 170.w(context),
-              color: Colors.transparent,
-              child: Image.asset(vendor['imageUrl'], fit: BoxFit.cover),
-            ),
+
+          ImageHelperWidget.styledImage(
+            context: context,
+            height: 170,
+            width: 428,
+            imageUrl: service.images?.first,
+            borderRadius: 8,
           ),
+
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(8.r(context)),
+          //   child: Container(
+          //     height: 170.w(context),
+          //     color: Colors.transparent,
+          //     child: Image.asset(service['imageUrl'], fit: BoxFit.cover),
+          //   ),
+          // ),
 
 
           SpaceHelperWidget.v(12.h(context)),
@@ -699,7 +676,8 @@ class UserHomeDashboardView extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w600,
             textColor: ColorUtils.black64,
-            text: vendor['name'] ?? '',
+            text: service.title ?? '',
+            textOverFlow: TextOverflow.ellipsis
           ),
 
 
@@ -715,98 +693,13 @@ class UserHomeDashboardView extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   textSpans: [
                     CustomTextSpan(
-                        text: '${vendor['rating'].toString()} ',
+                        text: '${service.author?.avgRating.toString()} ',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: ColorUtils.black10
                     ).toTextSpan(),
                     CustomTextSpan(
-                      text: '(${vendor['reviews']} review)',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: ColorUtils.black94,
-                    ).toTextSpan(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          SpaceHelperWidget.v(12.h(context)),
-
-
-          ButtonHelperWidget.customButtonWidgetAdventPro(
-            context: context,
-            backgroundColor: ColorUtils.blue206,
-            textColor: ColorUtils.blue96,
-            height: 45.h(context),
-            borderRadius: 10,
-            padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
-            onPressed: () async {
-              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
-            },
-            text:'View Details',
-          ),
-
-        ],
-      ),
-    );
-  }
-
-  Widget buildPlannerCard({required Map<String, dynamic> service,required BuildContext context}) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 8.hpm(context)),
-      decoration: BoxDecoration(
-          color: ColorUtils.white255,
-          borderRadius: BorderRadius.circular(12.r(context)),
-          border: Border.all(color: ColorUtils.white221)
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r(context)),
-            child: Container(
-              height: 170.w(context),
-              color: Colors.transparent,
-              child: Image.asset(service['imageUrl'], fit: BoxFit.cover),
-            ),
-          ),
-
-
-          SpaceHelperWidget.v(12.h(context)),
-
-
-          TextHelperClass.headingTextWithoutWidth(
-            context: context,
-            alignment: Alignment.center,
-            textAlign: TextAlign.center,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            textColor: ColorUtils.black64,
-            text: service['name'] ?? '',
-          ),
-
-
-          SpaceHelperWidget.v(12.h(context)),
-
-          Row(
-            children: [
-              Icon(Icons.star, color: Colors.orange, size: 18.r(context)),
-              SpaceHelperWidget.h(6.w(context)),
-              Expanded(
-                child: RichTextHelperWidget.headingRichText(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  textSpans: [
-                    CustomTextSpan(
-                        text: '${service['rating'].toString()} ',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: ColorUtils.black10
-                    ).toTextSpan(),
-                    CustomTextSpan(
-                      text: '(${service['reviews']} review)',
+                      text: '(${service.author?.ratingCount} review)',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: ColorUtils.black94,
