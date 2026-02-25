@@ -1,16 +1,18 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import '../../../../utils/utils.dart';
 
-class AllPlannerServiceController extends GetxController {
+class AllRecommendedServiceController extends GetxController {
+
 
   RxBool isLoading = false.obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
-  Rx<GetAllPlannerServiceResponseModel> getAllPlannerServiceResponseModel = GetAllPlannerServiceResponseModel().obs;
+  Rx<GetAllRecommendedServiceResponseModel> getAllRecommendedServiceResponseModel = GetAllRecommendedServiceResponseModel().obs;
   BuildContext context;
-  AllPlannerServiceController({required this.context});
+  AllRecommendedServiceController({required this.context});
 
   @override
   void onInit() {
@@ -18,18 +20,18 @@ class AllPlannerServiceController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllPlannerServiceController(context: context);
+      await getAllRecommendedServiceController(context: context);
     });
   }
 
 
-  Future<void> getAllPlannerServiceController({required BuildContext context}) async {
+  Future<void> getAllRecommendedServiceController({required BuildContext context}) async {
     BaseApiUtils.get(
-      url: ApiUtils.getAllPlannerServiceResponse,
+      url: ApiUtils.getAllRecommendedServiceResponse,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = false;
-        getAllPlannerServiceResponseModel.value = GetAllPlannerServiceResponseModel.fromJson(data);
+        getAllRecommendedServiceResponseModel.value = GetAllRecommendedServiceResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -54,7 +56,7 @@ class AllPlannerServiceController extends GetxController {
       onSuccess: (e,data) async {
         isLoading.value = true;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await getAllPlannerServiceController(context: context);
+        await getAllRecommendedServiceController(context: context);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -67,10 +69,6 @@ class AllPlannerServiceController extends GetxController {
     );
 
   }
-
-
-
-
 
 
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:marketplaceapp/module/module.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-
-class UserAllPlannerServiceView extends StatelessWidget {
-  const UserAllPlannerServiceView({super.key});
+class UserAllRecommendedServiceView extends StatelessWidget {
+  const UserAllRecommendedServiceView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AllPlannerServiceController allPlannerServiceController = Get.put(AllPlannerServiceController(context: context));
+    final AllRecommendedServiceController allRecommendedServiceController = Get.put(AllRecommendedServiceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -23,7 +22,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: allPlannerServiceController.isLoading.value == true ?
+            child: allRecommendedServiceController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
@@ -40,7 +39,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
                     onBackPressed: () async {
                       Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
                     },
-                    title: "All planner Services",
+                    title: "Recommended",
                   ),
 
 
@@ -51,10 +50,10 @@ class UserAllPlannerServiceView extends StatelessWidget {
                         return vendorCard(
                           index: index,
                           context: context,
-                          allPlannerServiceController: allPlannerServiceController,
+                          allRecommendedServiceController: allRecommendedServiceController,
                         );
                       },
-                      childCount: allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?.length,
+                      childCount: allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?.length,
                     ),
                   ),
 
@@ -68,13 +67,14 @@ class UserAllPlannerServiceView extends StatelessWidget {
     );
   }
 
+
   // ---------------- DYNAMIC CARD ----------------
   Widget vendorCard({
     required int index,
     required BuildContext context,
-    required AllPlannerServiceController allPlannerServiceController,
+    required AllRecommendedServiceController allRecommendedServiceController,
   }) {
-    var data = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index];
+    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -94,7 +94,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
               img: data!.images!.first,
               index: index,
               context: context,
-              allPlannerServiceController: allPlannerServiceController,
+              allRecommendedServiceController: allRecommendedServiceController,
             ),
 
             Padding(
@@ -105,13 +105,13 @@ class UserAllPlannerServiceView extends StatelessWidget {
                   infoSection(
                     index: index,
                     context: context,
-                    allPlannerServiceController: allPlannerServiceController,
+                    allRecommendedServiceController: allRecommendedServiceController,
                   ),
 
                   buttons(
                     index: index,
                     context: context,
-                    allPlannerServiceController: allPlannerServiceController,
+                    allRecommendedServiceController: allRecommendedServiceController,
                   ),
 
                 ],
@@ -129,9 +129,9 @@ class UserAllPlannerServiceView extends StatelessWidget {
     required String img,
     required int index,
     required BuildContext context,
-    required AllPlannerServiceController allPlannerServiceController,
+    required AllRecommendedServiceController allRecommendedServiceController,
   }) {
-    var data = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index];
+    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
 
     return Stack(
       children: [
@@ -153,7 +153,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
           child: data?.isFavorite != false ?
           InkWell(
             onTap: () async {
-              await allPlannerServiceController.createFavoritesController(
+              await allRecommendedServiceController.createFavoritesController(
                 context: context,
                 serviceId: data?.sId,
               );
@@ -166,7 +166,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
             ),
           ) : InkWell(
             onTap: () async {
-              await allPlannerServiceController.createFavoritesController(
+              await allRecommendedServiceController.createFavoritesController(
                 context: context,
                 serviceId: data?.sId,
               );
@@ -187,9 +187,9 @@ class UserAllPlannerServiceView extends StatelessWidget {
   Widget infoSection({
     required int index,
     required BuildContext context,
-    required AllPlannerServiceController allPlannerServiceController,
+    required AllRecommendedServiceController allRecommendedServiceController,
   }) {
-    var data = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index];
+    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Column(
@@ -326,9 +326,9 @@ class UserAllPlannerServiceView extends StatelessWidget {
   Widget buttons({
     required int index,
     required BuildContext context,
-    required AllPlannerServiceController allPlannerServiceController,
+    required AllRecommendedServiceController allRecommendedServiceController,
   }) {
-    var data = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index];
+    var data =allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
@@ -362,5 +362,6 @@ class UserAllPlannerServiceView extends StatelessWidget {
       ),
     );
   }
+
 
 }

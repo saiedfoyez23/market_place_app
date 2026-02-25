@@ -328,7 +328,9 @@ class UserHomeDashboardView extends StatelessWidget {
 
                             ButtonHelperWidget.customButtonWidget(
                               context: context,
-                              onPressed: () async {},
+                              onPressed: () async {
+                                Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
+                              },
                               text: "See All",
                               padding: EdgeInsets.only(left: 14.5.lpm(context)),
                               alignment: Alignment.center,

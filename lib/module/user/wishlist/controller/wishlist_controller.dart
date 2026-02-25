@@ -1,16 +1,19 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
+
 import '../../../../utils/utils.dart';
 
-class AllPlannerServiceController extends GetxController {
+class WishlistController extends GetxController {
 
   RxBool isLoading = false.obs;
+  RxBool isDelete = false.obs;
+  Rx<GetAllFavoritesResponseModel> getAllFavoritesResponseModel = GetAllFavoritesResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
-  Rx<GetAllPlannerServiceResponseModel> getAllPlannerServiceResponseModel = GetAllPlannerServiceResponseModel().obs;
   BuildContext context;
-  AllPlannerServiceController({required this.context});
+  WishlistController({required this.context});
 
   @override
   void onInit() {
@@ -18,18 +21,18 @@ class AllPlannerServiceController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllPlannerServiceController(context: context);
+      await getAllFavoritesController(context: context);
     });
   }
 
 
-  Future<void> getAllPlannerServiceController({required BuildContext context}) async {
+  Future<void> getAllFavoritesController({required BuildContext context}) async {
     BaseApiUtils.get(
-      url: ApiUtils.getAllPlannerServiceResponse,
+      url: ApiUtils.getAllFavoritesResponse,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = false;
-        getAllPlannerServiceResponseModel.value = GetAllPlannerServiceResponseModel.fromJson(data);
+        getAllFavoritesResponseModel.value = GetAllFavoritesResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -40,36 +43,32 @@ class AllPlannerServiceController extends GetxController {
         isLoading.value = false;
       },
     );
-
   }
 
 
-  Future<void> createFavoritesController({
+  Future<void> deleteFavoritesController({
     required BuildContext context,
-    required String serviceId,
+    required String wishlistId
   }) async {
-    BaseApiUtils.post(
-      url: "${ApiUtils.createFavoriteResponse}/${serviceId}",
+    BaseApiUtils.delete(
+      url: "${ApiUtils.deleteFavoritesResponse}/${wishlistId}",
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
+        isDelete.value = false;
         isLoading.value = true;
-        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await getAllPlannerServiceController(context: context);
+        Get.back();
+        await getAllFavoritesController(context: context);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
+        isDelete.value = false;
       },
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
+        isDelete.value = false;
       },
     );
-
   }
-
-
-
 
 
 

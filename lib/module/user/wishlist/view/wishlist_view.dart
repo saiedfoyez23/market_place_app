@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class WishlistView extends StatelessWidget {
@@ -6,42 +8,50 @@ class WishlistView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WishlistController wishlistController = Get.put(WishlistController(context: context));
     return Scaffold(
-      body: Container(
-        height: 930.h(context),
-        width: 428.w(context),
-        decoration: BoxDecoration(
-          color: ColorUtils.white251,
-        ),
-        child: CustomScrollView(
-          slivers: [
+      body: SafeArea(
+        child: Obx(()=> Container(
+          height: 930.h(context),
+          width: 428.w(context),
+          decoration: BoxDecoration(
+            color: ColorUtils.white251,
+          ),
+          child: wishlistController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
+            slivers: [
 
 
-            MainPageAppBarHelperWidget(
-              centerTitle: false,
-              title: "Wishlist",
-            ),
+              MainPageAppBarHelperWidget(
+                centerTitle: false,
+                title: "Wishlist",
+              ),
 
 
 
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                child: Column(
-                  children: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                  child: Column(
+                    children: [
 
 
-                    SpaceHelperWidget.v(32.h(context)),
+                      SpaceHelperWidget.v(32.h(context)),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
 
-            SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    (context, int index) {
+              SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, int index) {
+                          var data = wishlistController.getAllFavoritesResponseModel.value.data?[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                         child: Container(
@@ -65,14 +75,11 @@ class WishlistView extends StatelessWidget {
                             children: [
                               // ---------------------- LEFT IMAGE ----------------------
 
-                              Padding(
-                                padding: EdgeInsets.only(top: 14.tpm(context)),
-                                child: ImageHelperWidget.assetImageWidget(
-                                  context: context,
-                                  height: 116.h(context),
-                                  width: 100.w(context),
-                                  imageString: ImageUtils.wishlistImage,
-                                ),
+                              ImageHelperWidget.styledImage(
+                                context: context,
+                                height: 150,
+                                width: 100,
+                                imageUrl: data?.service?.images?.first,
                               ),
 
                               SpaceHelperWidget.h(12.w(context)),
@@ -98,7 +105,8 @@ class WishlistView extends StatelessWidget {
                                           horizontalPadding: 1.hpm(context),
                                           backgroundColor: ColorUtils.orange213,
                                           radius: 25.r(context),
-                                          imageAsset: ImageUtils.noImage,
+                                          imageAsset: data?.service?.author?.photoUrl == null ? ImageUtils.noImage : null,
+                                          imageUrl: data?.service?.author?.photoUrl,
                                         ),
 
                                         SpaceHelperWidget.h(8.w(context)),
@@ -111,9 +119,12 @@ class WishlistView extends StatelessWidget {
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                             textColor: ColorUtils.black48,
-                                            text: "Party Perfect",
+                                            text: data?.service?.author?.name ?? "",
                                           ),
                                         ),
+
+
+                                        SpaceHelperWidget.h(8.w(context)),
 
 
                                         // Rating
@@ -129,7 +140,7 @@ class WishlistView extends StatelessWidget {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                               textColor: ColorUtils.black10,
-                                              text: "4.7",
+                                              text: data?.service?.author?.avgRating.toString() ?? "",
                                             ),
                                           ],
                                         ),
@@ -145,7 +156,8 @@ class WishlistView extends StatelessWidget {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       textColor: ColorUtils.black48,
-                                      text: "Kids Birthday Party Extravaganza",
+                                      text: data?.service?.title ?? "",
+                                      textOverFlow: TextOverflow.ellipsis,
                                     ),
 
 
@@ -158,7 +170,7 @@ class WishlistView extends StatelessWidget {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                       textColor: ColorUtils.black80,
-                                      text: "Colorful themed decorations with games, entertainment, and birthday cake",
+                                      text: data?.service?.subtitle ?? "",
                                     ),
 
                                     SpaceHelperWidget.v(12.h(context)),
@@ -180,7 +192,7 @@ class WishlistView extends StatelessWidget {
                                                   color: ColorUtils.black94
                                               ).toTextSpan(),
                                               CustomTextSpan(
-                                                text: '\$200',
+                                                text: '\$${data?.service?.price ?? ""}',
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
                                                 color: ColorUtils.black48,
@@ -192,7 +204,7 @@ class WishlistView extends StatelessWidget {
                                         ButtonHelperWidget.customButtonWidget(
                                           context: context,
                                           onPressed: () async {
-
+                                            WishlistDialogBoxWidget().deleteProfileDialog(context: context, wishlistId: data?.sId, wishlistController: wishlistController);
                                           },
                                           text: "Delete",
                                           padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
@@ -212,16 +224,17 @@ class WishlistView extends StatelessWidget {
                         ),
                       );
                     },
-                  childCount: 10,
-                )
-            )
+                    childCount: wishlistController.getAllFavoritesResponseModel.value.data?.length,
+                  )
+              )
 
 
 
 
 
-          ],
-        ),
+            ],
+          ),
+        )),
       ),
     );
   }
