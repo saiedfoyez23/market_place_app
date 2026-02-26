@@ -244,10 +244,15 @@ class UserHomeDashboardView extends StatelessWidget {
                             shrinkWrap: true,
                             itemCount: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?.length,
                             itemBuilder: (context,int index) {
-                              return buildCategoryCard(
-                                title: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].title,
-                                image: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].logo,
-                                context: context,
+                              return InkWell(
+                                onTap: () async {
+                                  Get.off(()=>UserCategoryWiseServiceView(categoryId: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].sId),preventDuplicates: false);
+                                },
+                                child: buildCategoryCard(
+                                  title: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].title,
+                                  image: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].logo,
+                                  context: context,
+                                ),
                               );
                             },
                           ),
@@ -526,7 +531,7 @@ class UserHomeDashboardView extends StatelessWidget {
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
-              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+              Get.off(()=>UserPlannerServiceDetailsView(isHome: true, serviceId: vendor.sId,),preventDuplicates: false);
             },
             text:'View Details',
           ),
@@ -723,7 +728,7 @@ class UserHomeDashboardView extends StatelessWidget {
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
-              Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+              Get.off(()=>UserPlannerServiceDetailsView(isHome: true,serviceId: service.sId,),preventDuplicates: false);
             },
             text:'View Details',
           ),

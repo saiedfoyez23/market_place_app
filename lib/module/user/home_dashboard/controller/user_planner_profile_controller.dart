@@ -1,7 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
-class UserVendorProfileController extends GetxController {
+
+class UserPlannerProfileController extends GetxController {
+  BuildContext context;
+  String userId;
+  UserPlannerProfileController({required this.context,required this.userId});
+  Rx<GetPlannerProfileDetailsResponseModel> getPlannerProfileDetailsResponseModel = GetPlannerProfileDetailsResponseModel().obs;
+
+
 
   RxDouble rating = 4.7.obs;
 

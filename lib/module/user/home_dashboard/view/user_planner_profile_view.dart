@@ -4,12 +4,19 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserVendorProfileView extends StatelessWidget {
-  UserVendorProfileView({super.key});
-
-  final UserVendorProfileController userVendorProfileController = Get.put(UserVendorProfileController());
+  UserVendorProfileView({
+    super.key,
+    required this.isHome,
+    required this.serviceId,
+    required this.userId,
+  });
+  final bool isHome;
+  final String serviceId;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
+    final UserPlannerProfileController userPlannerProfileController = Get.put(UserPlannerProfileController(userId: userId,context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -24,9 +31,9 @@ class UserVendorProfileView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>UserVendorServiceDetailsView(),preventDuplicates: false);
+                  Get.off(()=>UserPlannerServiceDetailsView(isHome: isHome, serviceId: serviceId,),preventDuplicates: false);
                 },
-                title: "Vendor Information",
+                title: "Planner Information",
               ),
 
 

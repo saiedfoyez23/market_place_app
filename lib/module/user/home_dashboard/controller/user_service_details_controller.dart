@@ -1,140 +1,112 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserServiceDetailsController extends GetxController {
 
-  Rx<UserServiceDetailsModel> service = UserServiceDetailsModel(
-    title: "Kids Birthday Party Extravaganza",
-    description: "Colorful themed decorations with games, entertainment, and birthday cake arrangement. Using a mass messaging platform allows event planners to reach their entire audience in just a few clicks.",
-    imageUrl: ImageUtils.wishlistImage,
-    sections: [
-      UserServiceSection(
-        title: "Entrance & Welcome Area",
-        items: [
-          "Welcome board with birthday name & age",
-          "Balloon arch / gate decoration",
-          "Flower stand or LED frame at entry",
-          "Red carpet or themed walkway",
-          "Photo booth backdrop",
-        ],
-      ),
-      UserServiceSection(
-        title: "Cake & Dessert Section",
-        items: [
-          "Cake stand & dessert trays",
-          "Cake backdrop or arch",
-          "LED candles or spotlight on cake",
-          "Customized cake topper",
-        ],
-      ),
-      UserServiceSection(
-        title: "Photo Zone",
-        items: [
-          "Themed photo booth with props",
-          "Neon light signs",
-          "Instax / Polaroid corner for instant photos",
-        ],
-      ),
-    ],
-    vendor: UserVendorModel(
-      name: "Bella Photography Studio",
-      image: "assets/user.jpg",
-      category: "Photography",
-      location: "Mohakhali, Gulshan 01",
-      about: "I have a 4 years old golden retriever. I’ve taken good care of him since he was 8 weeks old. He’s very playful and super friendly to any dogs and people. My dog is particularly adept at fostering positive interactions, demonstrating a calm and considerate demeanor with small dogs",
-      verified: true,
-    ),
-    reviews: [
-      UserReviewModel(
-        userName: "SRP–Polash",
-        image: "assets/user.jpg",
-        rating: 2.5,
-        comment: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-      ),
-      UserReviewModel(
-        userName: "SRP–Polash",
-        image: "assets/user.jpg",
-        rating: 5.0,
-        comment: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-      ),
-      UserReviewModel(
-        userName: "SRP–Polash",
-        image: "assets/user.jpg",
-        rating: 5.0,
-        comment: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-      ),
-      UserReviewModel(
-        userName: "SRP–Polash",
-        image: "assets/user.jpg",
-        rating: 3.5,
-        comment: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-      ),
-      UserReviewModel(
-        userName: "SRP–Polash",
-        image: "assets/user.jpg",
-        rating: 4,
-        comment: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-      ),
-    ],
-  ).obs;
-
-}
+  Rx<GetServiceDetailsResponseModel> getServiceDetailsResponseModel = GetServiceDetailsResponseModel().obs;
+  Rx<GetAllUserReviewResponseModel> getAllUserReviewResponseModel = GetAllUserReviewResponseModel().obs;
+  BuildContext context;
+  String serviceId;
+  UserServiceDetailsController({required this.context,required this.serviceId});
+  RxBool isLoading = false.obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
 
 
-class UserServiceDetailsModel {
-  String title;
-  String description;
-  String imageUrl;
-  List<UserServiceSection> sections;
-  UserVendorModel vendor;
-  List<UserReviewModel> reviews;
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      await getServiceDetailsController(
+        context: context,
+        serviceId: serviceId,
+        onComplete: (userId) async {
+          await getAllUserReviewController(context: context, userId: userId);
+        },
+      );
+    });
+  }
 
-  UserServiceDetailsModel({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-    required this.sections,
-    required this.vendor,
-    required this.reviews,
-  });
-}
+  Future<void> getAllUserReviewController({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getAllUserReview(userId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        getAllUserReviewResponseModel.value = GetAllUserReviewResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
 
 
-class UserServiceSection {
-  String title;
-  List<String> items;
+  Future<void> getServiceDetailsController({
+    required BuildContext context,
+    required String serviceId,
+    required Function onComplete,
+  }) async {
+    BaseApiUtils.get(
+      url: "${ApiUtils.serviceDetailsResponse}/${serviceId}",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        getServiceDetailsResponseModel.value = GetServiceDetailsResponseModel.fromJson(data);
+        onComplete(getServiceDetailsResponseModel.value.data?.author?.sId);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
 
-  UserServiceSection({required this.title, required this.items});
-}
+  }
 
-class UserVendorModel {
-  final String name;
-  final String image;
-  final String category;
-  final String location;
-  final String about;
-  final bool verified;
+  Future<void> createFavoritesController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.post(
+      url: "${ApiUtils.createFavoriteResponse}/${serviceId}",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        await getServiceDetailsController(
+          context: context,
+          serviceId: serviceId,
+          onComplete: (userId) async {
+            await getAllUserReviewController(context: context, userId: userId);
+          },
+        );
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
 
-  UserVendorModel({
-    required this.name,
-    required this.image,
-    required this.category,
-    required this.location,
-    required this.about,
-    required this.verified,
-  });
-}
-
-class UserReviewModel {
-  final String userName;
-  final String image;
-  final double rating;
-  final String comment;
-
-  UserReviewModel({
-    required this.userName,
-    required this.image,
-    required this.rating,
-    required this.comment,
-  });
+  }
 }

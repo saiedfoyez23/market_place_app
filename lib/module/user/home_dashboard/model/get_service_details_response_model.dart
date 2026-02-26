@@ -1,24 +1,17 @@
-class GetAllRecommendedServiceResponseModel {
+class GetServiceDetailsResponseModel {
   var success;
   var statusCode;
   var message;
-  GetAllRecommendedServiceResponseMeta? meta;
-  List<GetAllRecommendedServiceResponse>? data;
+  GetServiceDetailsResponse? data;
 
-  GetAllRecommendedServiceResponseModel(
-      {this.success, this.statusCode, this.message, this.meta, this.data});
+  GetServiceDetailsResponseModel(
+      {this.success, this.statusCode, this.message, this.data});
 
-  GetAllRecommendedServiceResponseModel.fromJson(Map<String, dynamic> json) {
+  GetServiceDetailsResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? new GetAllRecommendedServiceResponseMeta.fromJson(json['meta']) : null;
-    if (json['data'] != null) {
-      data = <GetAllRecommendedServiceResponse>[];
-      json['data'].forEach((v) {
-        data!.add(new GetAllRecommendedServiceResponse.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new GetServiceDetailsResponse.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,87 +19,83 @@ class GetAllRecommendedServiceResponseModel {
     data['success'] = this.success;
     data['statusCode'] = this.statusCode;
     data['message'] = this.message;
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
-    }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class GetAllRecommendedServiceResponseMeta {
-  var page;
-  var limit;
-  var total;
-  var totalPage;
-
-  GetAllRecommendedServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
-
-  GetAllRecommendedServiceResponseMeta.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    limit = json['limit'];
-    total = json['total'];
-    totalPage = json['totalPage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['page'] = this.page;
-    data['limit'] = this.limit;
-    data['total'] = this.total;
-    data['totalPage'] = this.totalPage;
-    return data;
-  }
-}
-
-class GetAllRecommendedServiceResponse {
-  GetAllRecommendedServiceResponseLocation? location;
-  var isFeatured;
+class GetServiceDetailsResponse {
+  GetServiceDetailsResponseLocation? location;
   var sId;
-  GetAllRecommendedServiceResponseAuthor? author;
-  GetAllRecommendedServiceResponseCategory? category;
+  GetServiceDetailsResponseAuthor? author;
+  var authority;
+  GetServiceDetailsResponseCategory? category;
   var title;
   var subtitle;
+  var description;
   List<String>? images;
   var address;
   var locationUrl;
+  var price;
+  var priceType;
   var status;
+  var isDeleted;
+  var createdAt;
+  var updatedAt;
+  var iV;
+  var isFeatured;
   var isFavorite;
 
-  GetAllRecommendedServiceResponse({
+  GetServiceDetailsResponse({
     this.location,
-    this.isFeatured,
     this.sId,
     this.author,
+    this.authority,
     this.category,
     this.title,
     this.subtitle,
+    this.description,
     this.images,
     this.address,
     this.locationUrl,
+    this.price,
+    this.priceType,
     this.status,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.isFeatured,
     this.isFavorite,
   });
 
-  GetAllRecommendedServiceResponse.fromJson(Map<String, dynamic> json) {
+  GetServiceDetailsResponse.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetAllRecommendedServiceResponseLocation.fromJson(json['location'])
+        ? new GetServiceDetailsResponseLocation.fromJson(json['location'])
         : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
-    json['author'] != null ? new GetAllRecommendedServiceResponseAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new GetServiceDetailsResponseAuthor.fromJson(json['author']) : null;
+    authority = json['authority'];
     category = json['category'] != null
-        ? new GetAllRecommendedServiceResponseCategory.fromJson(json['category'])
+        ? new GetServiceDetailsResponseCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
+    description = json['description'];
     images = json['images'].cast<String>();
     address = json['address'];
     locationUrl = json['locationUrl'];
+    price = json['price'];
+    priceType = json['priceType'];
     status = json['status'];
+    isDeleted = json['isDeleted'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    isFeatured = json['isFeatured'];
     isFavorite = json['isFavorite'];
   }
 
@@ -115,34 +104,42 @@ class GetAllRecommendedServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
     }
+    data['authority'] = this.authority;
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
     data['title'] = this.title;
     data['subtitle'] = this.subtitle;
+    data['description'] = this.description;
     data['images'] = this.images;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
+    data['price'] = this.price;
+    data['priceType'] = this.priceType;
     data['status'] = this.status;
+    data['isDeleted'] = this.isDeleted;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['isFeatured'] = this.isFeatured;
     data['isFavorite'] = this.isFavorite;
     return data;
   }
 }
 
-class GetAllRecommendedServiceResponseLocation {
+class GetServiceDetailsResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
-  GetAllRecommendedServiceResponseLocation({this.type, this.coordinates});
+  GetServiceDetailsResponseLocation({this.type, this.coordinates});
 
-  GetAllRecommendedServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetServiceDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates = json['coordinates'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -153,36 +150,39 @@ class GetAllRecommendedServiceResponseLocation {
   }
 }
 
-class GetAllRecommendedServiceResponseAuthor {
+class GetServiceDetailsResponseAuthor {
   var sId;
   var name;
-  var email;
   var photoUrl;
+  var address;
+  var bio;
   List<String>? categories;
-  var role;
+  var locationUrl;
   var avgRating;
   var ratingCount;
   var isKycVerified;
 
-  GetAllRecommendedServiceResponseAuthor({
+  GetServiceDetailsResponseAuthor({
     this.sId,
     this.name,
-    this.email,
     this.photoUrl,
+    this.address,
+    this.bio,
     this.categories,
-    this.role,
+    this.locationUrl,
     this.avgRating,
     this.ratingCount,
     this.isKycVerified,
   });
 
-  GetAllRecommendedServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+  GetServiceDetailsResponseAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
-    email = json['email'];
     photoUrl = json['photoUrl'];
+    address = json['address'];
+    bio = json['bio'];
     categories = json['categories'].cast<String>();
-    role = json['role'];
+    locationUrl = json['locationUrl'];
     avgRating = json['avgRating'];
     ratingCount = json['ratingCount'];
     isKycVerified = json['isKycVerified'];
@@ -192,10 +192,11 @@ class GetAllRecommendedServiceResponseAuthor {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['name'] = this.name;
-    data['email'] = this.email;
     data['photoUrl'] = this.photoUrl;
+    data['address'] = this.address;
+    data['bio'] = this.bio;
     data['categories'] = this.categories;
-    data['role'] = this.role;
+    data['locationUrl'] = this.locationUrl;
     data['avgRating'] = this.avgRating;
     data['ratingCount'] = this.ratingCount;
     data['isKycVerified'] = this.isKycVerified;
@@ -203,13 +204,13 @@ class GetAllRecommendedServiceResponseAuthor {
   }
 }
 
-class GetAllRecommendedServiceResponseCategory {
+class GetServiceDetailsResponseCategory {
   var sId;
   var title;
 
-  GetAllRecommendedServiceResponseCategory({this.sId, this.title});
+  GetServiceDetailsResponseCategory({this.sId, this.title});
 
-  GetAllRecommendedServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+  GetServiceDetailsResponseCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }

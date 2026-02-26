@@ -1,22 +1,22 @@
-class GetAllRecommendedServiceResponseModel {
+class GetAllCategoryServiceResponseModel {
   var success;
   var statusCode;
   var message;
-  GetAllRecommendedServiceResponseMeta? meta;
-  List<GetAllRecommendedServiceResponse>? data;
+  GetAllCategoryServiceResponseMeta? meta;
+  List<GetAllCategoryServiceResponse>? data;
 
-  GetAllRecommendedServiceResponseModel(
+  GetAllCategoryServiceResponseModel(
       {this.success, this.statusCode, this.message, this.meta, this.data});
 
-  GetAllRecommendedServiceResponseModel.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? new GetAllRecommendedServiceResponseMeta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new GetAllCategoryServiceResponseMeta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
-      data = <GetAllRecommendedServiceResponse>[];
+      data = <GetAllCategoryServiceResponse>[];
       json['data'].forEach((v) {
-        data!.add(new GetAllRecommendedServiceResponse.fromJson(v));
+        data!.add(new GetAllCategoryServiceResponse.fromJson(v));
       });
     }
   }
@@ -36,15 +36,15 @@ class GetAllRecommendedServiceResponseModel {
   }
 }
 
-class GetAllRecommendedServiceResponseMeta {
+class GetAllCategoryServiceResponseMeta {
   var page;
   var limit;
   var total;
   var totalPage;
 
-  GetAllRecommendedServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
+  GetAllCategoryServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
 
-  GetAllRecommendedServiceResponseMeta.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponseMeta.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     limit = json['limit'];
     total = json['total'];
@@ -61,12 +61,11 @@ class GetAllRecommendedServiceResponseMeta {
   }
 }
 
-class GetAllRecommendedServiceResponse {
-  GetAllRecommendedServiceResponseLocation? location;
-  var isFeatured;
+class GetAllCategoryServiceResponse {
+  GetAllCategoryServiceResponseLocation? location;
   var sId;
-  GetAllRecommendedServiceResponseAuthor? author;
-  GetAllRecommendedServiceResponseCategory? category;
+  GetAllCategoryServiceResponseAuthor? author;
+  GetAllCategoryServiceResponseCategory? category;
   var title;
   var subtitle;
   List<String>? images;
@@ -75,9 +74,8 @@ class GetAllRecommendedServiceResponse {
   var status;
   var isFavorite;
 
-  GetAllRecommendedServiceResponse({
+  GetAllCategoryServiceResponse({
     this.location,
-    this.isFeatured,
     this.sId,
     this.author,
     this.category,
@@ -90,16 +88,15 @@ class GetAllRecommendedServiceResponse {
     this.isFavorite,
   });
 
-  GetAllRecommendedServiceResponse.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponse.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetAllRecommendedServiceResponseLocation.fromJson(json['location'])
+        ? new GetAllCategoryServiceResponseLocation.fromJson(json['location'])
         : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
-    json['author'] != null ? new GetAllRecommendedServiceResponseAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new GetAllCategoryServiceResponseAuthor.fromJson(json['author']) : null;
     category = json['category'] != null
-        ? new GetAllRecommendedServiceResponseCategory.fromJson(json['category'])
+        ? new GetAllCategoryServiceResponseCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
@@ -115,7 +112,6 @@ class GetAllRecommendedServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -134,15 +130,15 @@ class GetAllRecommendedServiceResponse {
   }
 }
 
-class GetAllRecommendedServiceResponseLocation {
+class GetAllCategoryServiceResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
-  GetAllRecommendedServiceResponseLocation({this.type, this.coordinates});
+  GetAllCategoryServiceResponseLocation({this.type, this.coordinates});
 
-  GetAllRecommendedServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates = json['coordinates'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -153,7 +149,7 @@ class GetAllRecommendedServiceResponseLocation {
   }
 }
 
-class GetAllRecommendedServiceResponseAuthor {
+class GetAllCategoryServiceResponseAuthor {
   var sId;
   var name;
   var email;
@@ -164,7 +160,7 @@ class GetAllRecommendedServiceResponseAuthor {
   var ratingCount;
   var isKycVerified;
 
-  GetAllRecommendedServiceResponseAuthor({
+  GetAllCategoryServiceResponseAuthor({
     this.sId,
     this.name,
     this.email,
@@ -176,7 +172,7 @@ class GetAllRecommendedServiceResponseAuthor {
     this.isKycVerified,
   });
 
-  GetAllRecommendedServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -203,13 +199,13 @@ class GetAllRecommendedServiceResponseAuthor {
   }
 }
 
-class GetAllRecommendedServiceResponseCategory {
+class GetAllCategoryServiceResponseCategory {
   var sId;
   var title;
 
-  GetAllRecommendedServiceResponseCategory({this.sId, this.title});
+  GetAllCategoryServiceResponseCategory({this.sId, this.title});
 
-  GetAllRecommendedServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+  GetAllCategoryServiceResponseCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }

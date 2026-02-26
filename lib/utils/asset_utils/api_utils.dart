@@ -48,9 +48,15 @@ class ApiUtils {
   static const String getAllPlannerServiceResponse = "$baseUrl/services/active?authority=planer&limit=1000000000"; //done
   static const String createFavoriteResponse = "$baseUrl/favorites"; //done
   static const String getAllRecommendedServiceResponse = "$baseUrl/services/recommend?limit=1000000000"; //done
+  static const String getAllCategoryServiceResponse = "$baseUrl/services/active?authority=planer&category="; //done
   static const String getAllFavoritesResponse = "$baseUrl/favorites?limit=1000000000"; //done
   static const String deleteFavoritesResponse = "$baseUrl/favorites"; //done
-
-
+  static const String serviceDetailsResponse = "$baseUrl/services"; //done
+  static String getAllUserReview(String userId) {
+    return "$baseUrl/reviews/user/${userId}?limit=100000000000";
+  }
+  static String getPlannerProfileResponse(String userId) {
+    return "$baseUrl/users/${userId}";
+  }
 
 }
