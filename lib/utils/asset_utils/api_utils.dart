@@ -58,5 +58,11 @@ class ApiUtils {
   static String getPlannerProfileResponse(String userId) {
     return "$baseUrl/users/${userId}";
   }
+  static String getUserWisePlannerService(String userId) {
+    return "$baseUrl/services/user/${userId}?limit=10000000000";
+  }
+  static String getPlannerAllPortfolio(String userId) {
+    return "$baseUrl/portfolio/user/${userId}?limit=100000000000";
+  }
 
 }

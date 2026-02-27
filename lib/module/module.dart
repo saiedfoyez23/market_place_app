@@ -84,6 +84,8 @@ export 'user/home_dashboard/view/user_category_wise_service_view.dart';
 export 'user/home_dashboard/model/get_service_details_response_model.dart';
 export 'user/home_dashboard/model/get_all_user_review_response_model.dart';
 export 'user/home_dashboard/model/get_planner_profile_details_response_model.dart';
+export 'user/home_dashboard/model/get_all_planner_wise_service_response_model.dart';
+export 'user/home_dashboard/model/get_planner_all_portfolio_response_model.dart';
 export 'vendor/onboarding/view/vendor_onboarding_view.dart';
 export 'vendor/onboarding/controller/vendor_onboarding_controller.dart';
 export 'vendor/authorization/view/vendor_auth_splash_view.dart';

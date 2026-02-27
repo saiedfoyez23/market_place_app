@@ -136,5 +136,6 @@ class ImageUtils {
   static const String closeIconImage = "image/planner_image/close_icon_image.png";
   static const String favoriteIcon = "image/favorite_icon.png";
   static const String unfavoriteIcon = "image/unfavorite_icon.png";
+  static const String verifyPaymentImage = "image/verify_payment_image.png";
 }
 

@@ -5,9 +5,20 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserPlannerServiceDetailsView extends StatelessWidget {
-  UserPlannerServiceDetailsView({super.key,required this.isHome,required this.serviceId});
+  const UserPlannerServiceDetailsView({
+    super.key,
+    required this.isHome,
+    required this.serviceId,
+    required this.isRecommended,
+    required this.isCategory,
+    required this.categoryId
+  });
+
   final bool isHome;
+  final bool isRecommended;
+  final bool isCategory;
   final String serviceId;
+  final String categoryId;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +29,10 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
       onPopInvokedWithResult: (didPop,onPopInvoked) {
         if(isHome == true) {
           Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+        } else if(isRecommended == true) {
+          Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
+        } else if(isCategory == true && categoryId != "") {
+          Get.off(()=>UserCategoryWiseServiceView(categoryId: categoryId,),preventDuplicates: false);
         }
       },
       child: Scaffold(
@@ -252,7 +267,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () async {
-          Get.off(()=>UserVendorProfileView(isHome: isHome,serviceId: serviceId,userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,),preventDuplicates: false);
+          Get.off(()=>UserVendorProfileView(categoryId: categoryId,isCategory: isCategory,isRecommended: isRecommended,isHome: isHome,serviceId: serviceId,userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,),preventDuplicates: false);
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
@@ -398,7 +413,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
             ButtonHelperWidget.customButtonWidget(
               context: context,
               onPressed: () async {
-                Get.off(()=>UserVendorProfileView(isHome: isHome,serviceId: serviceId,userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,),preventDuplicates: false);
+                Get.off(()=>UserVendorProfileView(isCategory: isCategory,categoryId: categoryId,isRecommended: isRecommended,isHome: isHome,serviceId: serviceId,userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,),preventDuplicates: false);
               },
               text: "See All",
               padding: EdgeInsets.only(left: 14.5.lpm(context)),

@@ -115,6 +115,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
 
                   buttons(
                     index: index,
+                    categoryId: categoryId,
                     context: context,
                     userCategoryWiseServiceController: userCategoryWiseServiceController,
                   ),
@@ -334,6 +335,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
   // ---------------- BUTTONS ----------------
   Widget buttons({
     required int index,
+    required String categoryId,
     required BuildContext context,
     required UserCategoryWiseServiceController userCategoryWiseServiceController,
   }) {
@@ -359,7 +361,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>PlannerServiceDetailsView(),preventDuplicates: false);
+                Get.off(()=>UserPlannerServiceDetailsView(categoryId: categoryId,isCategory: true,isRecommended: false,isHome: false, serviceId: data?.sId,),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,

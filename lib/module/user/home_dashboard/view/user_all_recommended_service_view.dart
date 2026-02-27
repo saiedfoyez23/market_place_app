@@ -328,7 +328,7 @@ class UserAllRecommendedServiceView extends StatelessWidget {
     required BuildContext context,
     required AllRecommendedServiceController allRecommendedServiceController,
   }) {
-    var data =allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
+    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
@@ -350,7 +350,7 @@ class UserAllRecommendedServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>PlannerServiceDetailsView(),preventDuplicates: false);
+                Get.off(()=>UserPlannerServiceDetailsView(categoryId: '',isCategory: false,isRecommended: true,isHome: false, serviceId: data?.sId,),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,
