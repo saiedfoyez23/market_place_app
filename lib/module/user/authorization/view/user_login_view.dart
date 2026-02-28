@@ -141,8 +141,8 @@ class UserLoginView extends StatelessWidget {
                           ButtonHelperWidget.customIconButtonWidget(
                             context: context,
                             onPressed: () async {
-                              if(userLoginController.isCheck.value == true) {
-                                userLoginController.isCheck.value = false;
+                              if(userLoginController.isCheck.value == false) {
+                                userLoginController.isCheck.value = true;
                               } else {
                                 await userLoginController.removeRememberMe();
                               }
