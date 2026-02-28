@@ -350,7 +350,15 @@ class UserAllPlannerServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>PlannerServiceDetailsView(),preventDuplicates: false);
+                Get.off(()=>UserPlannerServiceDetailsView(
+                  isWishlist: false,
+                  isPlanner: true,
+                  categoryId: '',
+                  isCategory: false,
+                  isRecommended: false,
+                  isHome: false,
+                  serviceId: data?.sId,
+                ), preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,

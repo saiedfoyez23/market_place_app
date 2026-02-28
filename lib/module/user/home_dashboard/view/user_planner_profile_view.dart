@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-class UserVendorProfileView extends StatelessWidget {
-  UserVendorProfileView({
+class UserPlannerProfileView extends StatelessWidget {
+  UserPlannerProfileView({
     super.key,
     required this.isHome,
     required this.isRecommended,
@@ -12,13 +12,17 @@ class UserVendorProfileView extends StatelessWidget {
     required this.userId,
     required this.categoryId,
     required this.isCategory,
+    required this.isPlanner,
+    required this.isWishlist,
   });
   final bool isHome;
   final bool isRecommended;
+  final bool isPlanner;
   final String serviceId;
   final String userId;
   final bool isCategory;
   final String categoryId;
+  final bool isWishlist;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,15 @@ class UserVendorProfileView extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>UserPlannerServiceDetailsView(categoryId: categoryId,isCategory: isCategory,isRecommended: isRecommended,isHome: isHome, serviceId: serviceId,),preventDuplicates: false);
+        Get.off(()=>UserPlannerServiceDetailsView(
+          isWishlist: isWishlist,
+          isPlanner: isPlanner,
+          categoryId: categoryId,
+          isCategory: isCategory,
+          isRecommended: isRecommended,
+          isHome: isHome,
+          serviceId: serviceId,
+        ), preventDuplicates: false);
       },
       child: Scaffold(
         body: Obx(()=>SafeArea(
@@ -47,7 +59,15 @@ class UserVendorProfileView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>UserPlannerServiceDetailsView(isRecommended: isRecommended,isHome: isHome, serviceId: serviceId, isCategory: isCategory, categoryId: categoryId,),preventDuplicates: false);
+                    Get.off(()=>UserPlannerServiceDetailsView(
+                      isWishlist: isWishlist,
+                      isPlanner: isPlanner,
+                      isRecommended: isRecommended,
+                      isHome: isHome,
+                      serviceId: serviceId,
+                      isCategory: isCategory,
+                      categoryId: categoryId,
+                    ), preventDuplicates: false);
                   },
                   title: "Planner Information",
                 ),
@@ -118,14 +138,14 @@ class UserVendorProfileView extends StatelessWidget {
                               height: 25.h(context),
                               width: 25.w(context),
                               imageString: ImageUtils.verifyImage,
-                            ) : userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.notifySettings?.subscription == true ?
+                            ) : userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.isActiveSubscription == true ?
                             ImageHelperWidget.assetImageWidget(
                               context: context,
                               height: 25.h(context),
                               width: 25.w(context),
                               imageString: ImageUtils.verifyPaymentImage,
                             ) : userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.isKycVerified == true &&
-                                userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.notifySettings?.subscription == true ?
+                                userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.isActiveSubscription == true ?
                             ImageHelperWidget.assetImageWidget(
                               context: context,
                               height: 25.h(context),
@@ -438,12 +458,18 @@ class UserVendorProfileView extends StatelessWidget {
               SpaceHelperWidget.v(10.h(context)),
 
 
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: List.generate(userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data!.categories!.length, (index) {
-                  return serviceChip(text: userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data!.categories![index], context: context);
-                })
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  runAlignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: List.generate(userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data!.categories!.length, (index) {
+                    return serviceChip(text: userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data!.categories![index], context: context);
+                  }),
+                ),
               ),
 
 
@@ -469,6 +495,73 @@ class UserVendorProfileView extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,
+                text: 'Feature List',
+              ),
+            ),
+
+            SpaceHelperWidget.h(12.w(context)),
+
+            ButtonHelperWidget.customButtonWidget(
+              context: context,
+              onPressed: () async {
+                Get.off(()=>UserPlannerProfileFeatureView(
+                    isHome: isHome,
+                    isRecommended: isRecommended,
+                    serviceId: serviceId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    isCategory: isCategory,
+                    isPlanner: isPlanner,
+                    isWishlist: isWishlist),
+                    preventDuplicates: false
+                );
+              },
+              text: "See All",
+              padding: EdgeInsets.only(left: 14.5.lpm(context)),
+              alignment: Alignment.center,
+              textColor: ColorUtils.blue96,
+              fontWeight: FontWeight.w600,
+              fontSize: 24,
+              backgroundColor: Colors.transparent,
+            ),
+          ],
+        ),
+
+        SpaceHelperWidget.v(10.h(context)),
+        if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
+
+          if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data!.length > 1) ...[
+            Row(
+              children: [
+                Expanded(child: buildPlannerFeatureCard(service: userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data![0], context: context)),
+                SpaceHelperWidget.h(12.w(context)),
+                Expanded(child: buildPlannerFeatureCard(service: userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data![1], context: context)),
+              ],
+            )
+          ] else ...[
+            buildPlannerFeatureCard(service: userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data![0], context: context),
+          ]
+
+
+        ] else ...[
+          SizedBox.shrink()
+        ],
+
+
+        SpaceHelperWidget.v(20.h(context)),
+
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+
+            Expanded(
+              child: TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.centerLeft,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                textColor: ColorUtils.black48,
                 text: 'Planner Services',
               ),
             ),
@@ -477,7 +570,19 @@ class UserVendorProfileView extends StatelessWidget {
 
             ButtonHelperWidget.customButtonWidget(
               context: context,
-              onPressed: () async {},
+              onPressed: () async {
+                Get.off(()=>UserPlannerProfileServiceView(
+                    isHome: isHome,
+                    isRecommended: isRecommended,
+                    serviceId: serviceId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    isCategory: isCategory,
+                    isPlanner: isPlanner,
+                    isWishlist: isWishlist),
+                    preventDuplicates: false
+                );
+              },
               text: "See All",
               padding: EdgeInsets.only(left: 14.5.lpm(context)),
               alignment: Alignment.center,
@@ -532,7 +637,19 @@ class UserVendorProfileView extends StatelessWidget {
 
             ButtonHelperWidget.customButtonWidget(
               context: context,
-              onPressed: () async {},
+              onPressed: () async {
+                Get.off(()=>UserPlannerProfilePortfolioView(
+                    isHome: isHome,
+                    isRecommended: isRecommended,
+                    serviceId: serviceId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    isCategory: isCategory,
+                    isPlanner: isPlanner,
+                    isWishlist: isWishlist,),
+                  preventDuplicates: false
+                );
+              },
               text: "See All",
               padding: EdgeInsets.only(left: 14.5.lpm(context)),
               alignment: Alignment.center,
@@ -676,7 +793,122 @@ class UserVendorProfileView extends StatelessWidget {
             height: 45.h(context),
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
-            onPressed: () async {},
+            onPressed: () async {
+              Get.off(()=>UserPlannerWiseServiceDetailsView(
+                isWishlist: isWishlist,
+                isCategory: isCategory,
+                isPlanner: isPlanner,
+                isRecommended: isRecommended,
+                isHome: isHome,
+                serviceId: serviceId,
+                userId: userId,
+                categoryId: categoryId,
+              ),preventDuplicates: false);
+            },
+            text:'View Details',
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  Widget buildPlannerFeatureCard({required GetAllFeaturedServiceResponse service,required BuildContext context}) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 8.hpm(context)),
+      decoration: BoxDecoration(
+          color: ColorUtils.white255,
+          borderRadius: BorderRadius.circular(12.r(context)),
+          border: Border.all(color: ColorUtils.white221)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          ImageHelperWidget.styledImage(
+            context: context,
+            height: 130.h(context),
+            width: 438.w(context),
+            imageUrl: service.images?.first,
+          ),
+
+
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(8.r(context)),
+          //   child: Container(
+          //     height: 170.w(context),
+          //     color: Colors.transparent,
+          //     child: Image.asset(service['imageUrl'], fit: BoxFit.cover),
+          //   ),
+          // ),
+
+
+          SpaceHelperWidget.v(12.h(context)),
+
+
+          TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.center,
+              textAlign: TextAlign.center,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              textColor: ColorUtils.black64,
+              text: service.title ?? '',
+              textOverFlow: TextOverflow.ellipsis
+          ),
+
+
+          SpaceHelperWidget.v(12.h(context)),
+
+          Row(
+            children: [
+              Icon(Icons.star, color: Colors.orange, size: 18.r(context)),
+              SpaceHelperWidget.h(6.w(context)),
+              Expanded(
+                child: RichTextHelperWidget.headingRichText(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  textSpans: [
+                    CustomTextSpan(
+                        text: '${service.author?.avgRating ?? 0.0} ',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: ColorUtils.black10
+                    ).toTextSpan(),
+                    CustomTextSpan(
+                      text: '(${service.author?.ratingCount ?? 0} review)',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: ColorUtils.black94,
+                    ).toTextSpan(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          SpaceHelperWidget.v(12.h(context)),
+
+
+          ButtonHelperWidget.customButtonWidgetAdventPro(
+            context: context,
+            backgroundColor: ColorUtils.blue206,
+            textColor: ColorUtils.blue96,
+            height: 45.h(context),
+            borderRadius: 10,
+            padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
+            onPressed: () async {
+              Get.off(()=>UserPlannerWiseServiceDetailsView(
+                isWishlist: isWishlist,
+                isCategory: isCategory,
+                isPlanner: isPlanner,
+                isRecommended: isRecommended,
+                isHome: isHome,
+                serviceId: serviceId,
+                userId: userId,
+                categoryId: categoryId,
+              ),preventDuplicates: false);
+            },
             text:'View Details',
           ),
 
@@ -908,7 +1140,6 @@ class UserVendorProfileView extends StatelessWidget {
       ],
     );
   }
-
 
   Widget reviewItem({required GetAllUserReviewResponseReviews r,required BuildContext context}) {
     return Column(

@@ -15,6 +15,7 @@ class UserPlannerProfileController extends GetxController {
   Rx<GetAllPlannerWiseServiceResponseModel> getAllPlannerWiseServiceResponseModel = GetAllPlannerWiseServiceResponseModel().obs;
   Rx<GetAllUserReviewResponseModel> getAllUserReviewResponseModel = GetAllUserReviewResponseModel().obs;
   Rx<GetPlannerProfileDetailsResponseModel> getPlannerProfileDetailsResponseModel = GetPlannerProfileDetailsResponseModel().obs;
+  Rx<GetAllFeaturedServiceResponseModel> getAllFeaturedServiceResponseModel = GetAllFeaturedServiceResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
 
 
@@ -29,6 +30,7 @@ class UserPlannerProfileController extends GetxController {
         userId: userId,
         onComplete: (userId) async {
           await getAllUserReviewController(context: context, userId: userId);
+          await getAllFeaturedServiceDetailsController(context: context, userId: userId);
           await getAllPlannerWiseServiceDetailsController(context: context, userId: userId);
           await getPlannerAllPortfolioController(context: context, userId: userId);
         },
@@ -69,6 +71,29 @@ class UserPlannerProfileController extends GetxController {
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         getAllPlannerWiseServiceResponseModel.value = GetAllPlannerWiseServiceResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
+
+
+  Future<void> getAllFeaturedServiceDetailsController({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getUserFeaturedService(userId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        getAllFeaturedServiceResponseModel.value = GetAllFeaturedServiceResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -128,53 +153,6 @@ class UserPlannerProfileController extends GetxController {
 
   }
 
-
-  RxDouble rating = 4.7.obs;
-
-  RxInt totalReviews = 5200.obs;
-
-  RxMap<int, int> ratingCounts = {
-    5: 3200,
-    4: 1300,
-    3: 800,
-    2: 120,
-    1: 80,
-  }.obs;
-
-  var plannerServices = List.generate(2, (index) => {
-    'name': 'Here is a Client Profile',
-    'rating': 4.7,
-    'reviews': 320,
-    'imageUrl': ImageUtils.recomendedImage,
-  }).obs;
-
-  RxList<UserReviewVendorModel> reviews = <UserReviewVendorModel>[
-    UserReviewVendorModel(
-      userName: "SRP–Polash",
-      userImage: "https://i.pravatar.cc/100?img=1",
-      rating: 5.0,
-      review: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-    ),
-    UserReviewVendorModel(
-      userName: "SRP–Polash",
-      userImage: "https://i.pravatar.cc/100?img=5",
-      rating: 4.0,
-      review: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-    ),
-    UserReviewVendorModel(
-      userName: "SRP–Polash",
-      userImage: "https://i.pravatar.cc/100?img=5",
-      rating: 3.5,
-      review: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-    ),
-    UserReviewVendorModel(
-      userName: "SRP–Polash",
-      userImage: "https://i.pravatar.cc/100?img=5",
-      rating: 5.0,
-      review: "Sunghee was a great sitter and Dallas thoroughly enjoyed his stay.",
-    ),
-  ].obs;
-
   Rx<UserVendorProfileTab> selectedTab = UserVendorProfileTab.overview.obs;
 
   void changeTab(UserVendorProfileTab selectTab) {
@@ -184,20 +162,4 @@ class UserPlannerProfileController extends GetxController {
 
 }
 
-
 enum UserVendorProfileTab { overview, reviews }
-
-
-class UserReviewVendorModel {
-  final String userName;
-  final String userImage;
-  final double rating;
-  final String review;
-
-  UserReviewVendorModel({
-    required this.userName,
-    required this.userImage,
-    required this.rating,
-    required this.review,
-  });
-}

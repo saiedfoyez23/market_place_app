@@ -1,22 +1,22 @@
-class GetAllPlannerServiceResponseModel {
+class GetAllFeaturedServiceResponseModel {
   var success;
   var statusCode;
   var message;
-  GetAllPlannerServiceResponseMeta? meta;
-  List<GetAllPlannerServiceResponse>? data;
+  GetAllFeaturedServiceResponseMeta? meta;
+  List<GetAllFeaturedServiceResponse>? data;
 
-  GetAllPlannerServiceResponseModel(
+  GetAllFeaturedServiceResponseModel(
       {this.success, this.statusCode, this.message, this.meta, this.data});
 
-  GetAllPlannerServiceResponseModel.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? new GetAllPlannerServiceResponseMeta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new GetAllFeaturedServiceResponseMeta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
-      data = <GetAllPlannerServiceResponse>[];
+      data = <GetAllFeaturedServiceResponse>[];
       json['data'].forEach((v) {
-        data!.add(new GetAllPlannerServiceResponse.fromJson(v));
+        data!.add(new GetAllFeaturedServiceResponse.fromJson(v));
       });
     }
   }
@@ -36,15 +36,15 @@ class GetAllPlannerServiceResponseModel {
   }
 }
 
-class GetAllPlannerServiceResponseMeta {
+class GetAllFeaturedServiceResponseMeta {
   var page;
   var limit;
   var total;
   var totalPage;
 
-  GetAllPlannerServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
+  GetAllFeaturedServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
 
-  GetAllPlannerServiceResponseMeta.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponseMeta.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     limit = json['limit'];
     total = json['total'];
@@ -61,23 +61,22 @@ class GetAllPlannerServiceResponseMeta {
   }
 }
 
-class GetAllPlannerServiceResponse {
-  GetAllPlannerServiceResponseLocation? location;
-  var isFeatured;
+class GetAllFeaturedServiceResponse {
+  GetAllFeaturedServiceResponseLocation? location;
   var sId;
-  GetAllPlannerServiceResponseAuthor? author;
-  GetAllPlannerServiceResponseCategory? category;
+  GetAllFeaturedServiceResponseAuthor? author;
+  GetAllFeaturedServiceResponseCategory? category;
   var title;
   var subtitle;
   List<String>? images;
   var address;
   var locationUrl;
   var status;
+  var isFeatured;
   var isFavorite;
 
-  GetAllPlannerServiceResponse({
+  GetAllFeaturedServiceResponse({
     this.location,
-    this.isFeatured,
     this.sId,
     this.author,
     this.category,
@@ -87,19 +86,19 @@ class GetAllPlannerServiceResponse {
     this.address,
     this.locationUrl,
     this.status,
+    this.isFeatured,
     this.isFavorite,
   });
 
-  GetAllPlannerServiceResponse.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponse.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetAllPlannerServiceResponseLocation.fromJson(json['location'])
+        ? new GetAllFeaturedServiceResponseLocation.fromJson(json['location'])
         : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
-    json['author'] != null ? new GetAllPlannerServiceResponseAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new GetAllFeaturedServiceResponseAuthor.fromJson(json['author']) : null;
     category = json['category'] != null
-        ? new GetAllPlannerServiceResponseCategory.fromJson(json['category'])
+        ? new GetAllFeaturedServiceResponseCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
@@ -107,6 +106,7 @@ class GetAllPlannerServiceResponse {
     address = json['address'];
     locationUrl = json['locationUrl'];
     status = json['status'];
+    isFeatured = json['isFeatured'];
     isFavorite = json['isFavorite'];
   }
 
@@ -115,7 +115,6 @@ class GetAllPlannerServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -129,20 +128,21 @@ class GetAllPlannerServiceResponse {
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     data['status'] = this.status;
+    data['isFeatured'] = this.isFeatured;
     data['isFavorite'] = this.isFavorite;
     return data;
   }
 }
 
-class GetAllPlannerServiceResponseLocation {
+class GetAllFeaturedServiceResponseLocation {
   var type;
   List<dynamic>? coordinates;
 
-  GetAllPlannerServiceResponseLocation({this.type, this.coordinates});
+  GetAllFeaturedServiceResponseLocation({this.type, this.coordinates});
 
-  GetAllPlannerServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates = json['coordinates'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -153,7 +153,7 @@ class GetAllPlannerServiceResponseLocation {
   }
 }
 
-class GetAllPlannerServiceResponseAuthor {
+class GetAllFeaturedServiceResponseAuthor {
   var sId;
   var name;
   var email;
@@ -164,7 +164,7 @@ class GetAllPlannerServiceResponseAuthor {
   var ratingCount;
   var isKycVerified;
 
-  GetAllPlannerServiceResponseAuthor({
+  GetAllFeaturedServiceResponseAuthor({
     this.sId,
     this.name,
     this.email,
@@ -176,7 +176,7 @@ class GetAllPlannerServiceResponseAuthor {
     this.isKycVerified,
   });
 
-  GetAllPlannerServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -203,13 +203,13 @@ class GetAllPlannerServiceResponseAuthor {
   }
 }
 
-class GetAllPlannerServiceResponseCategory {
+class GetAllFeaturedServiceResponseCategory {
   var sId;
   var title;
 
-  GetAllPlannerServiceResponseCategory({this.sId, this.title});
+  GetAllFeaturedServiceResponseCategory({this.sId, this.title});
 
-  GetAllPlannerServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+  GetAllFeaturedServiceResponseCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }

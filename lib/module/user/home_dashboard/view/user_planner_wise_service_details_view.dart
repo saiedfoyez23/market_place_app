@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
-class UserPlannerServiceDetailsView extends StatelessWidget {
-  const UserPlannerServiceDetailsView({
+class UserPlannerWiseServiceDetailsView extends StatelessWidget {
+  const UserPlannerWiseServiceDetailsView({
     super.key,
     required this.isHome,
-    required this.serviceId,
     required this.isRecommended,
-    required this.isCategory,
+    required this.serviceId,
+    required this.userId,
     required this.categoryId,
+    required this.isCategory,
     required this.isPlanner,
     required this.isWishlist,
   });
-
+  final String userId;
   final bool isHome;
   final bool isRecommended;
   final bool isCategory;
@@ -26,34 +27,33 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserServiceDetailsController userServiceDetailsController = Get.put(UserServiceDetailsController(
+    final UserPlannerWiseServiceDetailsController userPlannerWiseServiceDetailsController = Get.put(UserPlannerWiseServiceDetailsController(
         context: context,serviceId: serviceId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        if(isHome == true) {
-          Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
-        } else if(isRecommended == true) {
-          Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
-        } else if(isCategory == true && categoryId != "") {
-          Get.off(()=>UserCategoryWiseServiceView(categoryId: categoryId,),preventDuplicates: false);
-        } else if (isPlanner == true) {
-          Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
-        } else if (isWishlist == true) {
-          Get.off(()=>DashboardUserView(index: 3),preventDuplicates: false);
-        }
+        Get.off(()=>UserPlannerProfileView(
+          isHome: isHome,
+          isRecommended: isRecommended,
+          serviceId: serviceId,
+          userId: userId,
+          categoryId: categoryId,
+          isCategory: isCategory,
+          isPlanner: isPlanner,
+          isWishlist: isWishlist,
+        ),preventDuplicates: false);
       },
       child: Scaffold(
         body: SafeArea(
           child: Obx(() {
-            final data = userServiceDetailsController.getServiceDetailsResponseModel.value;
+            final data = userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value;
             return Container(
               height: 930.h(context),
               width: 428.w(context),
               decoration: BoxDecoration(
                 color: ColorUtils.white255,
               ),
-              child: userServiceDetailsController.isLoading.value == true ?
+              child: userPlannerWiseServiceDetailsController.isLoading.value == true ?
               LoadingHelperWidget.loadingHelperWidget(
                 context: context,
                 height: 930.h(context),
@@ -65,17 +65,16 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
 
                   AuthAppBarHelperWidget(
                     onBackPressed: () async {
-                      if(isHome == true) {
-                        Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
-                      } else if(isRecommended == true) {
-                        Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
-                      } else if(isCategory == true && categoryId != "") {
-                        Get.off(()=>UserCategoryWiseServiceView(categoryId: categoryId,),preventDuplicates: false);
-                      } else if (isPlanner == true) {
-                        Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
-                      } else if (isWishlist == true) {
-                        Get.off(()=>DashboardUserView(index: 3),preventDuplicates: false);
-                      }
+                      Get.off(()=>UserPlannerProfileView(
+                        isHome: isHome,
+                        isRecommended: isRecommended,
+                        serviceId: serviceId,
+                        userId: userId,
+                        categoryId: categoryId,
+                        isCategory: isCategory,
+                        isPlanner: isPlanner,
+                        isWishlist: isWishlist,
+                      ),preventDuplicates: false);
                     },
                     title: "Service Details",
                   ),
@@ -100,7 +99,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
                                 header(
                                   context: context,
                                   imageUrl: data.data!.images!.first,
-                                  userServiceDetailsController: userServiceDetailsController,
+                                  userPlannerWiseServiceDetailsController: userPlannerWiseServiceDetailsController,
                                 ),
                                 SpaceHelperWidget.v(12.h(context)),
                                 title(title: data.data?.title,context: context),
@@ -114,16 +113,9 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
                           ),
 
 
-                          vendorCard(
-                            userServiceDetailsController: userServiceDetailsController,
-                            context: context,
-                          ),
-
-                          SpaceHelperWidget.v(32.h(context)),
-
                           reviews(
                             context: context,
-                            userServiceDetailsController: userServiceDetailsController,
+                            userPlannerWiseServiceDetailsController: userPlannerWiseServiceDetailsController,
                           ),
 
                           SpaceHelperWidget.v(32.h(context)),
@@ -157,7 +149,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
   Widget header({
     required String imageUrl,
     required BuildContext context,
-    required UserServiceDetailsController userServiceDetailsController,
+    required UserPlannerWiseServiceDetailsController userPlannerWiseServiceDetailsController,
   }) {
     return Stack(
       children: [
@@ -176,12 +168,12 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
         Positioned(
           top: 12.h(context),
           right: 12.w(context),
-          child: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.isFavorite != false ?
+          child: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.isFavorite != false ?
           InkWell(
             onTap: () async {
-              await userServiceDetailsController.createFavoritesController(
+              await userPlannerWiseServiceDetailsController.createFavoritesController(
                 context: context,
-                serviceId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.sId,
+                serviceId: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.sId,
               );
             },
             child: ImageHelperWidget.assetImageWidget(
@@ -192,9 +184,9 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
             ),
           ) : InkWell(
             onTap: () async {
-              await userServiceDetailsController.createFavoritesController(
+              await userPlannerWiseServiceDetailsController.createFavoritesController(
                 context: context,
-                serviceId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.sId,
+                serviceId: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.sId,
               );
             },
             child: ImageHelperWidget.assetImageWidget(
@@ -271,149 +263,10 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
     );
   }
 
-  /// VENDOR CARD DYNAMIC
-  Widget vendorCard({
-    required UserServiceDetailsController userServiceDetailsController,
-    required BuildContext context,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.r(context)),
-        color: ColorUtils.white249,
-      ),
-      child: TextButton(
-        onPressed: () async {
-          Get.off(()=> UserPlannerProfileView(
-            isWishlist: isWishlist,
-            isPlanner: isPlanner,
-            categoryId: categoryId,
-            isCategory: isCategory,
-            isRecommended: isRecommended,
-            isHome: isHome,
-            serviceId: serviceId,
-            userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
-          ),preventDuplicates: false);
-        },
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
-          shadowColor: Colors.transparent,
-          overlayColor: Colors.transparent,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Row(
-              children: [
-
-                ImageHelperWidget.circleImageHelperWidget(
-                  width: 32.w(context),
-                  height: 32.h(context),
-                  verticalPadding: 1.vpm(context),
-                  horizontalPadding: 1.hpm(context),
-                  backgroundColor: ColorUtils.orange213,
-                  radius: 25.r(context),
-                  imageAsset: ImageUtils.noImage,
-                ),
-
-                SpaceHelperWidget.h(12.w(context)),
-
-                Expanded(
-                  child: TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    textColor: ColorUtils.black48,
-                    text: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.name ?? "",
-                  ),
-                ),
-
-                SpaceHelperWidget.h(6.w(context)),
-
-                Row(
-                  children: [
-                    Icon(Icons.star, color: ColorUtils.yellow199, size: 20.r(context)),
-                    SpaceHelperWidget.h(6.w(context)),
-                    RichTextHelperWidget.headingWithoutWidthRichText(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textSpans: [
-                        CustomTextSpan(
-                          text: '${userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.avgRating ?? 0.0} ',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: ColorUtils.black10,
-                        ).toTextSpan(),
-                        CustomTextSpan(
-                          text: '(${userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.ratingCount ?? 0} reviews)',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: ColorUtils.black10,
-                        ).toTextSpan(),
-                      ],
-                    ),
-                  ],
-                ),
-
-              ],
-            ),
-
-            SpaceHelperWidget.v(14.h(context)),
-
-
-            Row(
-              children: [
-                ImageHelperWidget.assetImageWidget(
-                  context: context,
-                  height: 21.h(context),
-                  width: 21.w(context),
-                  imageString: ImageUtils.locationImage,
-                ),
-
-                SpaceHelperWidget.h(8.w(context)),
-
-
-                Expanded(
-                  child: TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    textColor: ColorUtils.black94,
-                    text: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.address,
-                  ),
-                ),
-
-
-              ],
-            ),
-
-
-            SpaceHelperWidget.v(16.h(context)),
-
-
-            TextHelperClass.headingTextWithoutWidth(
-              context: context,
-              alignment: Alignment.centerLeft,
-              textAlign: TextAlign.start,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              textColor: ColorUtils.black95,
-              text: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.bio ?? "",
-            ),
-
-          ],
-        ),
-      ),
-    );
-  }
 
   /// REVIEWS DYNAMIC
   Widget reviews({
-    required UserServiceDetailsController userServiceDetailsController,
+    required UserPlannerWiseServiceDetailsController userPlannerWiseServiceDetailsController,
     required BuildContext context,
   }) {
     return Column(
@@ -446,7 +299,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
                   isRecommended: isRecommended,
                   isHome: isHome,
                   serviceId: serviceId,
-                  userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
+                  userId: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
                 ),preventDuplicates: false);
               },
               text: "See All",
@@ -463,7 +316,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
         SpaceHelperWidget.v(32.h(context)),
 
 
-        ...userServiceDetailsController.getAllUserReviewResponseModel.value.data!.reviews!.map((r) => reviewItem(r: r,context: context)).toList(),
+        ...userPlannerWiseServiceDetailsController.getAllUserReviewResponseModel.value.data!.reviews!.map((r) => reviewItem(r: r,context: context)).toList(),
       ],
     );
   }

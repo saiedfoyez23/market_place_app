@@ -531,7 +531,15 @@ class UserHomeDashboardView extends StatelessWidget {
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
-              Get.off(()=>UserPlannerServiceDetailsView(categoryId: "",isCategory: false,isRecommended: false,isHome: true, serviceId: vendor.sId,),preventDuplicates: false);
+              Get.off(()=>UserPlannerServiceDetailsView(
+                isWishlist: false,
+                isPlanner: false,
+                categoryId: "",
+                isCategory: false,
+                isRecommended: false,
+                isHome: true,
+                serviceId: vendor.sId,
+              ), preventDuplicates: false);
             },
             text:'View Details',
           ),
@@ -728,7 +736,15 @@ class UserHomeDashboardView extends StatelessWidget {
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
-              Get.off(()=>UserPlannerServiceDetailsView(categoryId: "",isCategory: false,isRecommended: false,isHome: true,serviceId: service.sId,),preventDuplicates: false);
+              Get.off(()=>UserPlannerServiceDetailsView(
+                isWishlist: false,
+                isPlanner: false,
+                categoryId: "",
+                isCategory: false,
+                isRecommended: false,
+                isHome: true,
+                serviceId: service.sId,
+              ), preventDuplicates: false);
             },
             text:'View Details',
           ),

@@ -3,16 +3,46 @@ import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-class UserAllRecommendedServiceView extends StatelessWidget {
-  const UserAllRecommendedServiceView({super.key});
+class UserPlannerProfileFeatureView extends StatelessWidget {
+  const UserPlannerProfileFeatureView({
+    super.key,
+    required this.isHome,
+    required this.isRecommended,
+    required this.serviceId,
+    required this.userId,
+    required this.categoryId,
+    required this.isCategory,
+    required this.isPlanner,
+    required this.isWishlist,
+  });
+
+
+  final bool isHome;
+  final bool isRecommended;
+  final bool isPlanner;
+  final String serviceId;
+  final String userId;
+  final bool isCategory;
+  final String categoryId;
+  final bool isWishlist;
 
   @override
   Widget build(BuildContext context) {
-    final AllRecommendedServiceController allRecommendedServiceController = Get.put(AllRecommendedServiceController(context: context));
+    final UserPlannerProfileFeatureController userPlannerProfileFeatureController = Get.put(UserPlannerProfileFeatureController(
+        context: context, userId: userId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+        Get.off(()=>UserPlannerProfileView(
+          isHome: isHome,
+          isRecommended: isRecommended,
+          serviceId: serviceId,
+          userId: userId,
+          categoryId: categoryId,
+          isCategory: isCategory,
+          isPlanner: isPlanner,
+          isWishlist: isWishlist,
+        ),preventDuplicates: false);
       },
       child: Scaffold(
         body: Obx(()=>SafeArea(
@@ -22,14 +52,23 @@ class UserAllRecommendedServiceView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: allRecommendedServiceController.isLoading.value == true ?
+            child: userPlannerProfileFeatureController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
             ) :
             RefreshIndicator(
               onRefresh: () async {
-                Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
+                Get.off(()=>UserPlannerProfileFeatureView(
+                  isHome: isHome,
+                  isRecommended: isRecommended,
+                  serviceId: serviceId,
+                  userId: userId,
+                  categoryId: categoryId,
+                  isCategory: isCategory,
+                  isPlanner: isPlanner,
+                  isWishlist: isWishlist,
+                ),preventDuplicates: false);
               },
               child: CustomScrollView(
                 slivers: [
@@ -37,9 +76,18 @@ class UserAllRecommendedServiceView extends StatelessWidget {
 
                   AuthAppBarHelperWidget(
                     onBackPressed: () async {
-                      Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+                      Get.off(()=>UserPlannerProfileView(
+                        isHome: isHome,
+                        isRecommended: isRecommended,
+                        serviceId: serviceId,
+                        userId: userId,
+                        categoryId: categoryId,
+                        isCategory: isCategory,
+                        isPlanner: isPlanner,
+                        isWishlist: isWishlist,
+                      ),preventDuplicates: false);
                     },
-                    title: "Recommended",
+                    title: "Feature List",
                   ),
 
 
@@ -50,10 +98,10 @@ class UserAllRecommendedServiceView extends StatelessWidget {
                         return vendorCard(
                           index: index,
                           context: context,
-                          allRecommendedServiceController: allRecommendedServiceController,
+                          userPlannerProfileFeatureController: userPlannerProfileFeatureController,
                         );
                       },
-                      childCount: allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?.length,
+                      childCount: userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?.length,
                     ),
                   ),
 
@@ -72,9 +120,9 @@ class UserAllRecommendedServiceView extends StatelessWidget {
   Widget vendorCard({
     required int index,
     required BuildContext context,
-    required AllRecommendedServiceController allRecommendedServiceController,
+    required UserPlannerProfileFeatureController userPlannerProfileFeatureController,
   }) {
-    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
+    var data = userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -84,17 +132,19 @@ class UserAllRecommendedServiceView extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r(context)),
           color: ColorUtils.white243,
           border: Border.all(
-              color: ColorUtils.white215,
-              width: 1
+            color: ColorUtils.white215,
+            width: 1,
           ),
         ),
         child: Column(
           children: [
+
+
             imageSection(
               img: data!.images!.first,
               index: index,
               context: context,
-              allRecommendedServiceController: allRecommendedServiceController,
+              userPlannerProfileFeatureController: userPlannerProfileFeatureController,
             ),
 
             Padding(
@@ -105,13 +155,13 @@ class UserAllRecommendedServiceView extends StatelessWidget {
                   infoSection(
                     index: index,
                     context: context,
-                    allRecommendedServiceController: allRecommendedServiceController,
+                    userPlannerProfileFeatureController: userPlannerProfileFeatureController,
                   ),
 
                   buttons(
                     index: index,
                     context: context,
-                    allRecommendedServiceController: allRecommendedServiceController,
+                    userPlannerProfileFeatureController: userPlannerProfileFeatureController,
                   ),
 
                 ],
@@ -129,9 +179,9 @@ class UserAllRecommendedServiceView extends StatelessWidget {
     required String img,
     required int index,
     required BuildContext context,
-    required AllRecommendedServiceController allRecommendedServiceController,
+    required UserPlannerProfileFeatureController userPlannerProfileFeatureController,
   }) {
-    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
+    var data = userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
 
     return Stack(
       children: [
@@ -153,9 +203,10 @@ class UserAllRecommendedServiceView extends StatelessWidget {
           child: data?.isFavorite != false ?
           InkWell(
             onTap: () async {
-              await allRecommendedServiceController.createFavoritesController(
+              await userPlannerProfileFeatureController.createFavoritesController(
                 context: context,
                 serviceId: data?.sId,
+                userId: userId,
               );
             },
             child: ImageHelperWidget.assetImageWidget(
@@ -166,9 +217,10 @@ class UserAllRecommendedServiceView extends StatelessWidget {
             ),
           ) : InkWell(
             onTap: () async {
-              await allRecommendedServiceController.createFavoritesController(
+              await userPlannerProfileFeatureController.createFavoritesController(
                 context: context,
                 serviceId: data?.sId,
+                userId: userId,
               );
             },
             child: ImageHelperWidget.assetImageWidget(
@@ -187,9 +239,9 @@ class UserAllRecommendedServiceView extends StatelessWidget {
   Widget infoSection({
     required int index,
     required BuildContext context,
-    required AllRecommendedServiceController allRecommendedServiceController,
+    required UserPlannerProfileFeatureController userPlannerProfileFeatureController,
   }) {
-    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
+    var data = userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Column(
@@ -326,9 +378,9 @@ class UserAllRecommendedServiceView extends StatelessWidget {
   Widget buttons({
     required int index,
     required BuildContext context,
-    required AllRecommendedServiceController allRecommendedServiceController,
+    required UserPlannerProfileFeatureController userPlannerProfileFeatureController,
   }) {
-    var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
+    var data =  userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
@@ -350,15 +402,16 @@ class UserAllRecommendedServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>UserPlannerServiceDetailsView(
-                  isWishlist: false,
-                  isPlanner: false,
-                  categoryId: '',
-                  isCategory: false,
-                  isRecommended: true,
-                  isHome: false,
-                  serviceId: data?.sId,
-                ), preventDuplicates: false);
+                Get.off(()=>UserPlannerWiseServiceDetailsView(
+                  isWishlist: isWishlist,
+                  isCategory: isCategory,
+                  isPlanner: isPlanner,
+                  isRecommended: isRecommended,
+                  isHome: isHome,
+                  serviceId: serviceId,
+                  userId: userId,
+                  categoryId: categoryId,
+                ),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,
@@ -370,6 +423,4 @@ class UserAllRecommendedServiceView extends StatelessWidget {
       ),
     );
   }
-
-
 }

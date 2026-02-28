@@ -136,7 +136,7 @@ class GetAllRecommendedServiceResponse {
 
 class GetAllRecommendedServiceResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
   GetAllRecommendedServiceResponseLocation({this.type, this.coordinates});
 

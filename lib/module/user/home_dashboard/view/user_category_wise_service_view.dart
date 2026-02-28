@@ -361,7 +361,15 @@ class UserCategoryWiseServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>UserPlannerServiceDetailsView(categoryId: categoryId,isCategory: true,isRecommended: false,isHome: false, serviceId: data?.sId,),preventDuplicates: false);
+                Get.off(()=>UserPlannerServiceDetailsView(
+                  isWishlist: false,
+                  isPlanner: false,
+                  categoryId: categoryId,
+                  isCategory: true,
+                  isRecommended: false,
+                  isHome: false,
+                  serviceId: data?.sId,
+                ),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,
