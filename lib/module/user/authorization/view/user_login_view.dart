@@ -29,7 +29,6 @@ class UserLoginView extends StatelessWidget {
                 },
               ),
 
-
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
