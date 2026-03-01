@@ -138,8 +138,6 @@ class TextFormFieldWidget {
     );
   }
 
-
-
   static Widget otpInputFiledBuild({
     required BuildContext context,
     required ValueChanged<String> onCompleted,

@@ -23,7 +23,7 @@ class PlannerMessageView extends StatelessWidget {
 
               MainPageAppBarHelperWidget(
                 centerTitle: false,
-                title: "Message",
+                title: "Messages",
                 actions: [
 
 
