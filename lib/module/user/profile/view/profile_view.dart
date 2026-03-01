@@ -4,20 +4,25 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProfileDetailsController profileDetailsController = Get.put(ProfileDetailsController(context: context));
     return Scaffold(
-      body: Container(
+      body: Obx(()=>Container(
         height: 930.h(context),
         width: 428.w(context),
         decoration: BoxDecoration(
           color: ColorUtils.white251,
         ),
-        child: CustomScrollView(
+        child: profileDetailsController.isLoading.value == true ?
+        LoadingHelperWidget.loadingHelperWidget(
+          context: context,
+          height: 930.h(context),
+        ) :
+        CustomScrollView(
           slivers: [
-
 
 
             MainPageAppBarHelperWidget(
@@ -33,7 +38,7 @@ class ProfileView extends StatelessWidget {
                   children: [
 
                     SpaceHelperWidget.v(32.h(context)),
-                    
+
                     ImageHelperWidget.circleImageHelperWidget(
                       width: 150.w(context),
                       height: 150.h(context),
@@ -41,8 +46,10 @@ class ProfileView extends StatelessWidget {
                       horizontalPadding: 4.5.vpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 75.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageUrl: profileDetailsController.userMyProfileDetailsResponseModel.value.data?.photoUrl,
+                      imageAsset: profileDetailsController.userMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
                     ),
+
 
                     SpaceHelperWidget.v(32.h(context)),
 
@@ -127,7 +134,10 @@ class ProfileView extends StatelessWidget {
                       title: "Delete Profile",
                       imagePath: ImageUtils.deleteProfileImage,
                       onTap: () async {
-                        ProfileDialogBoxWidget().deleteProfileDialog(context: context);
+                        ProfileDialogBoxWidget().deleteProfileDialog(
+                          context: context,
+                          profileDetailsController: profileDetailsController,
+                        );
                       },
                     ),
 
@@ -163,7 +173,7 @@ class ProfileView extends StatelessWidget {
 
           ],
         ),
-      ),
+      )),
     );
   }
 }

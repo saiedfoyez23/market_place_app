@@ -4,12 +4,12 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorBookingView extends StatelessWidget {
-  VendorBookingView({super.key});
+  const VendorBookingView({super.key});
 
-  final VendorBookingController vendorBookingController = Get.put(VendorBookingController());
 
   @override
   Widget build(BuildContext context) {
+    final VendorBookingController vendorBookingController = Get.put(VendorBookingController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,7 +18,12 @@ class VendorBookingView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
+          child: vendorBookingController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers : [
 
 
@@ -39,7 +44,7 @@ class VendorBookingView extends StatelessWidget {
                     textColor: ColorUtils.white255,
                     fontWeight: FontWeight.w700,
                     onPressed: () async {
-                      Get.off(()=>VendorCreateNewOrderView(),preventDuplicates: false);
+                      Get.off(()=>VendorCreateOrderPickLocationPlaceView(),preventDuplicates: false);
                     },
                     iconPath: ImageUtils.addImage,
                     text: "Create Order",
@@ -61,7 +66,7 @@ class VendorBookingView extends StatelessWidget {
 
                       SpaceHelperWidget.v(16.h(context)),
 
-                      buildTabs(context: context),
+                      buildTabs(context: context,vendorBookingController: vendorBookingController),
 
                       SpaceHelperWidget.v(26.h(context)),
 
@@ -87,20 +92,25 @@ class VendorBookingView extends StatelessWidget {
   /// ------------------------------
   /// TAB BAR
   /// ------------------------------
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({required BuildContext context,required VendorBookingController vendorBookingController}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(status: VendorBookingStatus.all,title: "All",context: context),
-        tabItem(status: VendorBookingStatus.active,title: "Active",context: context),
-        tabItem(status: VendorBookingStatus.complete,title: "Complete",context: context),
-        tabItem(status: VendorBookingStatus.pending,title: "Pending",context: context),
-        tabItem(status: VendorBookingStatus.cancelled,title: "Cancelled",context: context),
+        tabItem(status: VendorBookingStatus.all,title: "All",context: context, vendorBookingController: vendorBookingController),
+        tabItem(status: VendorBookingStatus.active,title: "Active",context: context, vendorBookingController: vendorBookingController),
+        tabItem(status: VendorBookingStatus.complete,title: "Complete",context: context, vendorBookingController: vendorBookingController),
+        tabItem(status: VendorBookingStatus.pending,title: "Pending",context: context, vendorBookingController: vendorBookingController),
+        tabItem(status: VendorBookingStatus.cancelled,title: "Cancelled",context: context, vendorBookingController: vendorBookingController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required VendorBookingStatus status,required BuildContext context}) {
+  Widget tabItem({
+    required String title,
+    required VendorBookingStatus status,
+    required BuildContext context,
+    required VendorBookingController vendorBookingController,
+  }) {
     bool isSelected = vendorBookingController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -188,17 +198,20 @@ class VendorBookingView extends StatelessWidget {
                       horizontalPadding: 1.hpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageAsset: booking.coverImage == "" ? ImageUtils.noImage : null,
+                      imageUrl: booking.coverImage == "" ? null : booking.coverImage,
                     ),
                     SpaceHelperWidget.h(10.w(context)),
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textAlign: TextAlign.start,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      textColor: ColorUtils.black48,
-                      text: booking.vendorName,
+                    Expanded(
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: booking.plannerName,
+                      ),
                     ),
                   ],
                 ),
@@ -250,7 +263,7 @@ class VendorBookingView extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>VendorOrderDetailsView(),preventDuplicates: false);
+              Get.off(()=>VendorOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
             },
             text: "View Details",
           ),

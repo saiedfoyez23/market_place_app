@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class UserVendorServiceDetailsView extends StatelessWidget {
-  UserVendorServiceDetailsView({super.key});
+class VendorServiceDetailsView extends StatelessWidget {
+  const VendorServiceDetailsView({super.key,required this.serviceId});
 
-  final UserServiceDetailsController userServiceDetailsController = Get.put(UserServiceDetailsController());
+  final String serviceId;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Obx(() {
-          final data = userServiceDetailsController.service.value;
-          return Container(
+    final VendorServiceDetailsController vendorServiceDetailsController = Get.put(VendorServiceDetailsController(context: context,serviceId: serviceId));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Obx(()=>Container(
             height: 930.h(context),
             width: 428.w(context),
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: CustomScrollView(
+            child: vendorServiceDetailsController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
               slivers: [
-
-
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+                    Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
                   },
                   title: "Service Details",
                 ),
-
 
 
                 SliverToBoxAdapter(
@@ -41,6 +49,7 @@ class UserVendorServiceDetailsView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+
                         Container(
                           margin: EdgeInsets.only(bottom: 32.bpm(context)),
                           decoration: BoxDecoration(
@@ -49,35 +58,83 @@ class UserVendorServiceDetailsView extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              header(context: context,imageUrl: data.imageUrl),
+                              header(
+                                context: context,
+                                imageUrl: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
+                                "" : vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.images!.first,
+                              ),
                               SpaceHelperWidget.v(12.h(context)),
-                              title(title: data.title,context: context),
+                              title(
+                                title: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.title ?? "",
+                                context: context,
+                              ),
                               SpaceHelperWidget.v(12.h(context)),
-                              description(text: data.description,context: context),
+                              description(
+                                text: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.subtitle ?? "",
+                                context: context,
+                              ),
                               SpaceHelperWidget.v(20.h(context)),
-                              buildSections(sections: data.sections,context: context),
+                              buildSections(
+                                description: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.description ?? "",
+                                context: context,
+                              ),
                               SpaceHelperWidget.v(20.h(context)),
                             ],
                           ),
                         ),
 
 
-                        vendorCard(v: data.vendor,context: context),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                          padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r(context)),
+                            color: ColorUtils.white249,
+                          ),
+                          child: Column(
+                            children: [
 
-                        SpaceHelperWidget.v(32.h(context)),
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                textAlign: TextAlign.start,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black64,
+                                text: "Service Information: ",
+                              ),
 
-                        reviews(context: context, reviews: data.reviews,),
 
-                        SpaceHelperWidget.v(32.h(context)),
+                              SpaceHelperWidget.v(10.h(context)),
 
-
-                        ButtonHelperWidget.customButtonWidgetAdventPro(
-                          context: context,
-                          onPressed: () async {
-                            Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
-                          },
-                          text: "Message",
+                              rowItem(
+                                title: "Category: ",
+                                value: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.category?.title ?? "",
+                                context: context,
+                              ),
+                              rowItem(
+                                title: "Price: ",
+                                value: "${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.price} / ${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.priceType}" ,
+                                context: context,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  if (await canLaunchUrl(Uri.parse(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.locationUrl))) {
+                                    await launchUrl(Uri.parse(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.locationUrl), mode: LaunchMode.externalApplication);
+                                  }
+                                },
+                                child: rowItem(
+                                  title: "Location: ",
+                                  value: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.address ?? "",
+                                  context: context,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+
+
+                        reviews(context: context, reviews: vendorServiceDetailsController.service.value.reviews,),
 
                         SpaceHelperWidget.v(32.h(context)),
 
@@ -85,11 +142,12 @@ class UserVendorServiceDetailsView extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                )
+
               ],
             ),
-          );
-        }),
+          )),
+        ),
       ),
     );
   }
@@ -103,21 +161,13 @@ class UserVendorServiceDetailsView extends StatelessWidget {
             topLeft: Radius.circular(12.r(context)),
             topRight: Radius.circular(12.r(context)),
           ),
-          child: Image.asset(
+          child: imageUrl == "" ?
+          SpaceHelperWidget.sq(192.h(context), 428.w(context)) :
+          Image.network(
             imageUrl,
             height: 192.h(context),
             width: 428.w(context),
             fit: BoxFit.cover,
-          ),
-        ),
-        Positioned(
-          top: 12.h(context),
-          right: 12.w(context),
-          child: ImageHelperWidget.assetImageWidget(
-            context: context,
-            height: 26.h(context),
-            width: 26.w(context),
-            imageString: ImageUtils.serviceLoveImage,
           ),
         ),
       ],
@@ -156,8 +206,7 @@ class UserVendorServiceDetailsView extends StatelessWidget {
     );
   }
 
-  /// DYNAMIC SECTION LIST
-  Widget buildSections({required List sections, required BuildContext context}) {
+  Widget buildSections({required String description, required BuildContext context}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.hpm(context)),
       child: Column(
@@ -176,189 +225,64 @@ class UserVendorServiceDetailsView extends StatelessWidget {
 
           SpaceHelperWidget.v(20.h(context)),
 
+          HtmlWidget(
+            description,
+          ),
 
-          ...sections.map((s) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  ImageHelperWidget.assetImageWidget(
-                    context: context,
-                    height: 24.h(context),
-                    width: 24.w(context),
-                    imageString: ImageUtils.grayRightSignImage,
-                  ),
-
-                  SpaceHelperWidget.h(10.w(context)),
-
-
-                  TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    textColor: ColorUtils.black48,
-                    text: s.title,
-                  ),
-
-                ],
-              ),
-              SpaceHelperWidget.v(16.h(context)),
-
-
-              ...s.items.map((text) => Padding(
-                padding: EdgeInsets.only(left: 32.lpm(context), bottom: 8.bpm(context)),
-                child: Row(
-                  children: [
-                    Icon(Icons.circle, size: 10.r(context), color: ColorUtils.blue96),
-
-                    SpaceHelperWidget.h(10.w(context)),
-
-                    Expanded(
-                      child: TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.centerLeft,
-                        textAlign: TextAlign.start,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black80,
-                        text: text,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-            ],
-          ),),
         ],
       ),
     );
   }
 
-  /// VENDOR CARD DYNAMIC
-  Widget vendorCard({required dynamic v,required BuildContext context}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.r(context)),
-        color: ColorUtils.white249,
-      ),
-      child: TextButton(
-        onPressed: () async {
-          Get.off(()=>UserVendorProfileView(),preventDuplicates: false);
-        },
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
-          shadowColor: Colors.transparent,
-          overlayColor: Colors.transparent,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+  Widget rowItem({required String title,required String value,required BuildContext context}) {
+    return Column(
+      children: [
+
+        Row(
           children: [
-
-            Row(
-              children: [
-
-                ImageHelperWidget.circleImageHelperWidget(
-                  width: 32.w(context),
-                  height: 32.h(context),
-                  verticalPadding: 1.vpm(context),
-                  horizontalPadding: 1.hpm(context),
-                  backgroundColor: ColorUtils.orange213,
-                  radius: 25.r(context),
-                  imageAsset: ImageUtils.noImage,
-                ),
-
-                SpaceHelperWidget.h(12.w(context)),
-
-                Expanded(
-                  child: TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    textColor: ColorUtils.black48,
-                    text: v.name,
-                  ),
-                ),
-
-                SpaceHelperWidget.h(6.w(context)),
-
-                Row(
-                  children: [
-                    Icon(Icons.star, color: ColorUtils.yellow199, size: 20.r(context)),
-                    SpaceHelperWidget.h(6.w(context)),
-                    RichTextHelperWidget.headingWithoutWidthRichText(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textSpans: [
-                        CustomTextSpan(
-                          text: '${4.7} ',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: ColorUtils.black10,
-                        ).toTextSpan(),
-                        CustomTextSpan(
-                          text: '(${320} reviews)',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: ColorUtils.black10,
-                        ).toTextSpan(),
-                      ],
-                    ),
-                  ],
-                ),
-
-              ],
-            ),
-
-            SpaceHelperWidget.v(14.h(context)),
-
-
-            Row(
-              children: [
-                ImageHelperWidget.assetImageWidget(
-                  context: context,
-                  height: 21.h(context),
-                  width: 21.w(context),
-                  imageString: ImageUtils.locationImage,
-                ),
-
-                SpaceHelperWidget.h(8.w(context)),
-
-
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  textAlign: TextAlign.start,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  textColor: ColorUtils.black94,
-                  text: v.location,
-                ),
-
-
-              ],
-            ),
-
-
-            SpaceHelperWidget.v(16.h(context)),
-
 
             TextHelperClass.headingTextWithoutWidth(
               context: context,
               alignment: Alignment.centerLeft,
               textAlign: TextAlign.start,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              textColor: ColorUtils.black95,
-              text: v.about,
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+              textColor: ColorUtils.black48,
+              text: title,
             ),
 
+            SpaceHelperWidget.h(20.w(context)),
+
+            Expanded(
+              child: TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.centerRight,
+                textAlign: TextAlign.right,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                textColor: ColorUtils.black48,
+                text: value,
+              ),
+            ),
           ],
         ),
-      ),
+
+
+
+        SpaceHelperWidget.v(3.h(context)),
+
+        Divider(
+          thickness: 1,
+          color: ColorUtils.gray194,
+        ),
+
+        SpaceHelperWidget.v(7.h(context)),
+
+
+
+
+      ],
     );
   }
 
@@ -377,7 +301,7 @@ class UserVendorServiceDetailsView extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,
-                text: 'Reviews from Planer',
+                text: 'Reviews from User',
               ),
             ),
 

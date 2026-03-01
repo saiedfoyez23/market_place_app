@@ -1,0 +1,219 @@
+class GetAllCategoryServiceResponseModel {
+  var success;
+  var statusCode;
+  var message;
+  GetAllCategoryServiceResponseMeta? meta;
+  List<GetAllCategoryServiceResponse>? data;
+
+  GetAllCategoryServiceResponseModel(
+      {this.success, this.statusCode, this.message, this.meta, this.data});
+
+  GetAllCategoryServiceResponseModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    statusCode = json['statusCode'];
+    message = json['message'];
+    meta = json['meta'] != null ? new GetAllCategoryServiceResponseMeta.fromJson(json['meta']) : null;
+    if (json['data'] != null) {
+      data = <GetAllCategoryServiceResponse>[];
+      json['data'].forEach((v) {
+        data!.add(new GetAllCategoryServiceResponse.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
+    }
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class GetAllCategoryServiceResponseMeta {
+  var page;
+  var limit;
+  var total;
+  var totalPage;
+
+  GetAllCategoryServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
+
+  GetAllCategoryServiceResponseMeta.fromJson(Map<String, dynamic> json) {
+    page = json['page'];
+    limit = json['limit'];
+    total = json['total'];
+    totalPage = json['totalPage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['page'] = this.page;
+    data['limit'] = this.limit;
+    data['total'] = this.total;
+    data['totalPage'] = this.totalPage;
+    return data;
+  }
+}
+
+class GetAllCategoryServiceResponse {
+  GetAllCategoryServiceResponseLocation? location;
+  var sId;
+  GetAllCategoryServiceResponseAuthor? author;
+  GetAllCategoryServiceResponseCategory? category;
+  var title;
+  var subtitle;
+  List<String>? images;
+  var address;
+  var locationUrl;
+  var status;
+  var isFavorite;
+
+  GetAllCategoryServiceResponse({
+    this.location,
+    this.sId,
+    this.author,
+    this.category,
+    this.title,
+    this.subtitle,
+    this.images,
+    this.address,
+    this.locationUrl,
+    this.status,
+    this.isFavorite,
+  });
+
+  GetAllCategoryServiceResponse.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new GetAllCategoryServiceResponseLocation.fromJson(json['location'])
+        : null;
+    sId = json['_id'];
+    author =
+    json['author'] != null ? new GetAllCategoryServiceResponseAuthor.fromJson(json['author']) : null;
+    category = json['category'] != null
+        ? new GetAllCategoryServiceResponseCategory.fromJson(json['category'])
+        : null;
+    title = json['title'];
+    subtitle = json['subtitle'];
+    images = json['images'].cast<String>();
+    address = json['address'];
+    locationUrl = json['locationUrl'];
+    status = json['status'];
+    isFavorite = json['isFavorite'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    if (this.author != null) {
+      data['author'] = this.author!.toJson();
+    }
+    if (this.category != null) {
+      data['category'] = this.category!.toJson();
+    }
+    data['title'] = this.title;
+    data['subtitle'] = this.subtitle;
+    data['images'] = this.images;
+    data['address'] = this.address;
+    data['locationUrl'] = this.locationUrl;
+    data['status'] = this.status;
+    data['isFavorite'] = this.isFavorite;
+    return data;
+  }
+}
+
+class GetAllCategoryServiceResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  GetAllCategoryServiceResponseLocation({this.type, this.coordinates});
+
+  GetAllCategoryServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<int>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
+    return data;
+  }
+}
+
+class GetAllCategoryServiceResponseAuthor {
+  var sId;
+  var name;
+  var email;
+  var photoUrl;
+  List<String>? categories;
+  var role;
+  var avgRating;
+  var ratingCount;
+  var isKycVerified;
+
+  GetAllCategoryServiceResponseAuthor({
+    this.sId,
+    this.name,
+    this.email,
+    this.photoUrl,
+    this.categories,
+    this.role,
+    this.avgRating,
+    this.ratingCount,
+    this.isKycVerified,
+  });
+
+  GetAllCategoryServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+    photoUrl = json['photoUrl'];
+    categories = json['categories'].cast<String>();
+    role = json['role'];
+    avgRating = json['avgRating'];
+    ratingCount = json['ratingCount'];
+    isKycVerified = json['isKycVerified'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['photoUrl'] = this.photoUrl;
+    data['categories'] = this.categories;
+    data['role'] = this.role;
+    data['avgRating'] = this.avgRating;
+    data['ratingCount'] = this.ratingCount;
+    data['isKycVerified'] = this.isKycVerified;
+    return data;
+  }
+}
+
+class GetAllCategoryServiceResponseCategory {
+  var sId;
+  var title;
+
+  GetAllCategoryServiceResponseCategory({this.sId, this.title});
+
+  GetAllCategoryServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    return data;
+  }
+}
