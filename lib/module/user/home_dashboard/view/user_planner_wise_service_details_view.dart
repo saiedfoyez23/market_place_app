@@ -288,28 +288,28 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=> UserPlannerProfileView(
-                  isWishlist: isWishlist,
-                  isPlanner: isPlanner,
-                  isCategory: isCategory,
-                  categoryId: categoryId,
-                  isRecommended: isRecommended,
-                  isHome: isHome,
-                  serviceId: serviceId,
-                  userId: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
-                ),preventDuplicates: false);
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.orange119,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+            // ButtonHelperWidget.customButtonWidget(
+            //   context: context,
+            //   onPressed: () async {
+            //     Get.off(()=> UserPlannerProfileView(
+            //       isWishlist: isWishlist,
+            //       isPlanner: isPlanner,
+            //       isCategory: isCategory,
+            //       categoryId: categoryId,
+            //       isRecommended: isRecommended,
+            //       isHome: isHome,
+            //       serviceId: serviceId,
+            //       userId: userPlannerWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
+            //     ),preventDuplicates: false);
+            //   },
+            //   text: "See All",
+            //   padding: EdgeInsets.only(left: 14.5.lpm(context)),
+            //   alignment: Alignment.center,
+            //   textColor: ColorUtils.orange119,
+            //   fontWeight: FontWeight.w600,
+            //   fontSize: 24,
+            //   backgroundColor: Colors.transparent,
+            // ),
           ],
         ),
 

@@ -14,6 +14,7 @@ class ChooseUserController extends GetxController {
 
 
   Future<void> userLoginRedirection() async {
+    print(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse));
     if(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse) != null) {
       userLoginResponseModel.value = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!));
       if(userLoginResponseModel.value.data != null) {

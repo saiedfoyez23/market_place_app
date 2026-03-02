@@ -114,20 +114,20 @@ class UserHomeDashboardView extends StatelessWidget {
                               ),
                             ),
 
-                            SpaceHelperWidget.h(15.w(context)),
+                            // SpaceHelperWidget.h(15.w(context)),
 
 
-                            InkWell(
-                              onTap: () async {
-                                //Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
-                              },
-                              child: ImageHelperWidget.assetImageWidget(
-                                context: context,
-                                height: 50.h(context),
-                                width: 50.w(context),
-                                imageString: ImageUtils.filterSearchImage,
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () async {
+                            //     //Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
+                            //   },
+                            //   child: ImageHelperWidget.assetImageWidget(
+                            //     context: context,
+                            //     height: 50.h(context),
+                            //     width: 50.w(context),
+                            //     imageString: ImageUtils.filterSearchImage,
+                            //   ),
+                            // ),
 
 
 
@@ -142,9 +142,19 @@ class UserHomeDashboardView extends StatelessWidget {
                         // Search Bar
                         TextFormFieldWidget.build(
                           context: context,
-                          hintText: "Search Planner...",
+                          hintText: "Search Planner Or Category....",
                           controller: userHomeDashboardController.searchController.value,
                           keyboardType: TextInputType.emailAddress,
+                          readOnly: true,
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              barrierColor: Colors.black.withOpacity(0.3),
+                              builder: (context) {
+                                return UserSearchDialogBox();
+                              },
+                            );
+                          },
                           prefixIcon: Padding(
                             padding: EdgeInsets.fromLTRB(
                               20.lpm(context),
@@ -599,7 +609,7 @@ class UserHomeDashboardView extends StatelessWidget {
                     ),
 
 
-                    booking.status == "confirmed" ?
+                    booking.status == "completed" ?
                     Row(
                       children: [
 
@@ -629,7 +639,7 @@ class UserHomeDashboardView extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       textColor: ColorUtils.yellow177,
-                      text: booking.status,
+                      text: booking.status == "running" ? "In Process" : booking.status,
                     ),
 
 

@@ -4,12 +4,12 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserBookingView extends StatelessWidget {
-  UserBookingView({super.key});
+  const UserBookingView({super.key});
 
-  final UserBookingController userBookingController = Get.put(UserBookingController());
 
   @override
   Widget build(BuildContext context) {
+    final UserBookingController userBookingController = Get.put(UserBookingController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,42 +18,63 @@ class UserBookingView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
-            slivers : [
+          child: userBookingController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          RefreshIndicator(
+            onRefresh: () async {
+              userBookingController.allBookings.clear();
+              userBookingController.isLoading.value = true;
+              Future.delayed(Duration(seconds: 1),() async {
+                await  userBookingController.getAllPlannerOrderController(context: context);
+              });
+            },
+            child: CustomScrollView(
+              slivers : [
 
 
-              MainPageAppBarHelperWidget(
-                centerTitle: false,
-                title: "My Bookings",
-              ),
+                MainPageAppBarHelperWidget(
+                  centerTitle: false,
+                  title: "My Bookings",
+                ),
 
 
 
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
 
-                      SpaceHelperWidget.v(16.h(context)),
+                        SpaceHelperWidget.v(16.h(context)),
 
-                      buildTabs(context: context),
+                        buildTabs(
+                          context: context,
+                          userBookingController: userBookingController,
+                        ),
 
-                      SpaceHelperWidget.v(26.h(context)),
+                        SpaceHelperWidget.v(26.h(context)),
 
-                      Expanded(
-                          child: ListView.builder(
-                            itemCount: userBookingController.filteredBookings.length,
-                            itemBuilder: (context, index) {
-                              return bookingCard(booking: userBookingController.filteredBookings[index],context: context);
-                            },
-                          )
-                      ),
-                    ],
+                        Expanded(
+                            child: ListView.builder(
+                              itemCount: userBookingController.filteredBookings.length,
+                              itemBuilder: (context, index) {
+                                return Obx(()=>bookingCard(
+                                  userBookingController: userBookingController,
+                                  booking: userBookingController.filteredBookings[index],
+                                  context: context,
+                                ));
+                              },
+                            )
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       )),
@@ -63,19 +84,27 @@ class UserBookingView extends StatelessWidget {
   /// ------------------------------
   /// TAB BAR
   /// ------------------------------
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required UserBookingController userBookingController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(status: UserBookingStatus.all,title: "All",context: context),
-        tabItem(status: UserBookingStatus.complete,title: "Complete",context: context),
-        tabItem(status: UserBookingStatus.inProcess,title: "In-Process",context: context),
-        tabItem(status: UserBookingStatus.pending,title: "Pending",context: context),
+        tabItem(status: UserBookingStatus.all,title: "All",context: context,userBookingController: userBookingController),
+        tabItem(status: UserBookingStatus.complete,title: "Complete",context: context,userBookingController: userBookingController),
+        tabItem(status: UserBookingStatus.inProcess,title: "In-Process",context: context,userBookingController: userBookingController),
+        tabItem(status: UserBookingStatus.pending,title: "Pending",context: context,userBookingController: userBookingController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required UserBookingStatus status,required BuildContext context}) {
+  Widget tabItem({
+    required String title,
+    required UserBookingStatus status,
+    required BuildContext context,
+    required UserBookingController userBookingController
+  }) {
     bool isSelected = userBookingController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -109,7 +138,11 @@ class UserBookingView extends StatelessWidget {
   /// ------------------------------
   /// BOOKING CARD
   /// ------------------------------
-  Widget bookingCard({required UserBookingModel booking, required BuildContext context}) {
+  Widget bookingCard({
+    required UserBookingModel booking,
+    required BuildContext context,
+    required UserBookingController userBookingController,
+  }) {
     Color badgeColor = Colors.grey;
     Color textColor = Colors.white;
     String text = "";
@@ -158,17 +191,20 @@ class UserBookingView extends StatelessWidget {
                       horizontalPadding: 1.hpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageAsset: booking.coverImage == "" ? ImageUtils.noImage : null,
+                      imageUrl: booking.coverImage != "" ? booking.coverImage : null,
                     ),
                     SpaceHelperWidget.h(10.w(context)),
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textAlign: TextAlign.start,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      textColor: ColorUtils.black48,
-                      text: booking.vendorName,
+                    Expanded(
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: booking.plannerName,
+                      ),
                     ),
                   ],
                 ),
@@ -226,7 +262,7 @@ class UserBookingView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>UserOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>UserOrderDetailsView(orderId: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.white255,
                   backgroundColor: ColorUtils.blue96,
@@ -241,7 +277,7 @@ class UserBookingView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>UserFeedbackView(),preventDuplicates: false);
+                    Get.off(()=>UserFeedbackView(orderId: booking.sid,senderId: booking.plannerSid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue231,
@@ -260,7 +296,7 @@ class UserBookingView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>UserOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>UserOrderDetailsView(orderId: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue206,
@@ -272,10 +308,19 @@ class UserBookingView extends StatelessWidget {
               SpaceHelperWidget.h(10.w(context)),
 
               Expanded(
-                child: ButtonHelperWidget.customButtonWidgetAdventPro(
+                child: userBookingController.isSubmit.value == true ?
+                LoadingHelperWidget.loadingHelperWidget(context: context) :
+                ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>BookingPaymentSuccessView(),preventDuplicates: false);
+                    userBookingController.isSubmit.value = true;
+                    Map<String,dynamic> data = {
+                      "modelType": "Order",
+                      "type": "initial",
+                      "user": booking.userSid,
+                      "reference": booking.sid,
+                    };
+                    await userBookingController.createPaymentController(context: context, data: data);
                   },
                   text: "Accept Order",
                 ),
@@ -288,7 +333,7 @@ class UserBookingView extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>UserOrderDetailsView(),preventDuplicates: false);
+              Get.off(()=>UserOrderDetailsView(orderId: booking.sid,),preventDuplicates: false);
             },
             textColor: ColorUtils.blue96,
             backgroundColor: ColorUtils.blue206,

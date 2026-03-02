@@ -52,6 +52,12 @@ class ApiUtils {
   static const String getAllFavoritesResponse = "$baseUrl/favorites?limit=1000000000"; //done
   static const String deleteFavoritesResponse = "$baseUrl/favorites"; //done
   static const String serviceDetailsResponse = "$baseUrl/services"; //done
+  static const String getAllUserOrder = "$baseUrl/orders/author/my-client-orders?limit=10000000000"; //done
+  static const String createReview = "$baseUrl/reviews"; //done
+  static const String createPayments = "$baseUrl/payments/checkout"; //done
+  static String getUserOrderDetails(String orderId) {
+    return "$baseUrl/orders/${orderId}";
+  }
   static String getAllUserReview(String userId) {
     return "$baseUrl/reviews/user/${userId}?limit=100000000000";
   }
@@ -67,5 +73,9 @@ class ApiUtils {
   static String getPlannerAllPortfolio(String userId) {
     return "$baseUrl/portfolio/user/${userId}?limit=100000000000";
   }
+  static String userOrderCancel(String orderId) {
+    return "$baseUrl/orders/canceled/${orderId}";
+  }
+
 
 }

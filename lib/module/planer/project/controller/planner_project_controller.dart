@@ -47,7 +47,7 @@ class PlannerProjectController extends GetxController {
               budgetTotal: double.parse(value.totalAmount.toString()),
               startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
               endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
-              status: value.status == "complete" ? PlannerProjectStatus.complete :
+              status: value.status == "completed" ? PlannerProjectStatus.complete :
               value.status == "pending" ? PlannerProjectStatus.pending :
               value.status == "cancelled" ?PlannerProjectStatus.cancelled :
               PlannerProjectStatus.active,

@@ -313,7 +313,8 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
                   horizontalPadding: 1.hpm(context),
                   backgroundColor: ColorUtils.orange213,
                   radius: 25.r(context),
-                  imageAsset: ImageUtils.noImage,
+                  imageAsset: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.photoUrl == null ? ImageUtils.noImage : null,
+                  imageUrl: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.photoUrl,
                 ),
 
                 SpaceHelperWidget.h(12.w(context)),
@@ -558,7 +559,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
 
   Widget ratingBarWidget({required GetAllUserReviewResponseReviews r, required BuildContext context}) {
     int fullStars = r.overallRating.floor();
-    double fractional = r.overallRating - fullStars;
+    num fractional = r.overallRating - fullStars;
     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
     return Row(
