@@ -411,7 +411,7 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
 
   Widget ratingBarWidget({required GetAllUserReviewResponseReviews r, required BuildContext context}) {
     int fullStars = r.overallRating.floor();
-    double fractional = r.overallRating - fullStars;
+    num fractional = r.overallRating - fullStars;
     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
     return Row(

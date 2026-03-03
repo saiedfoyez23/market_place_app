@@ -57,6 +57,10 @@ class WishlistView extends StatelessWidget {
                         child: Container(
                           width: 428.w(context),
                           margin: EdgeInsets.only(bottom: 12.bpm(context)),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 14.hpm(context),
+                            vertical: 14.vpm(context),
+                          ),
                           decoration: BoxDecoration(
                               color: ColorUtils.white243,
                               borderRadius: BorderRadius.circular(12.r(context)),
@@ -65,14 +69,8 @@ class WishlistView extends StatelessWidget {
                                 width: .5,
                               )
                           ),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 14.hpm(context),
-                                vertical: 14.vpm(context),
-                              ),
-                            ),
-                            onPressed: () async {
+                          child: InkWell(
+                            onTap: () async {
                               Get.off(()=> UserPlannerServiceDetailsView(
                                 isWishlist: true,
                                 isPlanner: false,
@@ -214,6 +212,7 @@ class WishlistView extends StatelessWidget {
                                               ],
                                             ),
                                           ),
+
 
                                           ButtonHelperWidget.customButtonWidget(
                                             context: context,

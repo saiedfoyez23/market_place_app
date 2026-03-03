@@ -37,6 +37,10 @@ class PlannerProjectController extends GetxController {
         isLoading.value = false;
         plannerGetAllClientOrderResponseModel.value = PlannerGetAllClientOrderResponseModel.fromJson(data);
         plannerGetAllClientOrderResponseModel.value.data?.forEach((value) {
+          if (value.status == "denied") {
+            return;
+          }
+
           allProjects.add(
             ProjectModel(
               sid: value.sId ?? "",

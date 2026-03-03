@@ -50,6 +50,7 @@ class ApiUtils {
   static const String getAllRecommendedServiceResponse = "$baseUrl/services/recommend?limit=1000000000"; //done
   static const String getAllCategoryServiceResponse = "$baseUrl/services/active?authority=planer&category="; //done
   static const String getAllFavoritesResponse = "$baseUrl/favorites?limit=1000000000"; //done
+  static const String getUserSearchResponse = "$baseUrl/search-histories?limit=100000000"; //done
   static const String deleteFavoritesResponse = "$baseUrl/favorites"; //done
   static const String serviceDetailsResponse = "$baseUrl/services"; //done
   static const String getAllUserOrder = "$baseUrl/orders/author/my-client-orders?limit=10000000000"; //done
@@ -75,6 +76,9 @@ class ApiUtils {
   }
   static String userOrderCancel(String orderId) {
     return "$baseUrl/orders/canceled/${orderId}";
+  }
+  static String userOrderDenied(String orderId) {
+    return "$baseUrl/orders/status/${orderId}";
   }
 
 

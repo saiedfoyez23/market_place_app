@@ -9,6 +9,7 @@ import '../../../../utils/utils.dart';
 class UserBookingDetailsController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isSubmit = false.obs;
+  RxBool isDenied = false.obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
   Rx<GetClientOrderDetailsResponseModel> getClientOrderDetailsResponseModel = GetClientOrderDetailsResponseModel().obs;
   BuildContext context;
@@ -73,6 +74,33 @@ class UserBookingDetailsController extends GetxController {
         print(data);
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isSubmit.value = false;
+      },
+    );
+  }
+
+
+  Future<void> deniedOfferController({
+    required BuildContext context,
+    required Map<String,dynamic> data,
+    required String orderId,
+  }) async {
+    BaseApiUtils.patch(
+      url: ApiUtils.userOrderDenied(orderId),
+      data: data,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        isDenied.value = false;
+        Get.off(()=>DashboardUserView(index: 1),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDenied.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDenied.value = false;
       },
     );
   }

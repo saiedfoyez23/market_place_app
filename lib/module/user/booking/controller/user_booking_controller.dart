@@ -37,25 +37,27 @@ class UserBookingController extends GetxController {
         isLoading.value = false;
         getAllClientOrderResponseModel.value = GetAllClientOrderResponseModel.fromJson(data);
         getAllClientOrderResponseModel.value.data?.forEach((value) {
-          if(value.status != "denied") {
-            allBookings.add(
-              UserBookingModel(
-                sid: value.sId ?? "",
-                userSid: value.receiver?.sId ?? "",
-                plannerSid: value.sender?.sId ?? "",
-                plannerName: value.sender?.name ?? "",
-                serviceName: value.title ?? "",
-                days: "${value.duration} Days",
-                price: "${value.totalAmount}",
-                startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-                endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
-                status: value.status == "completed" ? UserBookingStatus.complete :
-                value.status == "running" ? UserBookingStatus.inProcess :
-                UserBookingStatus.pending,
-                coverImage: value.sender?.photoUrl ?? "",
-              ),
-            );
+          if (value.status == "cancelled" || value.status == "denied") {
+            return;
           }
+
+          allBookings.add(
+            UserBookingModel(
+              sid: value.sId ?? "",
+              userSid: value.receiver?.sId ?? "",
+              plannerSid: value.sender?.sId ?? "",
+              plannerName: value.sender?.name ?? "",
+              serviceName: value.title ?? "",
+              days: "${value.duration} Days",
+              price: "${value.totalAmount}",
+              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
+              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              status: value.status == "completed" ? UserBookingStatus.complete :
+              value.status == "running" ? UserBookingStatus.inProcess :
+              UserBookingStatus.pending,
+              coverImage: value.sender?.photoUrl ?? "",
+            ),
+          );
         });
       },
       onFail: (e,data) {

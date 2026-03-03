@@ -154,12 +154,22 @@ class UserOrderDetailsView extends StatelessWidget {
                             children: [
 
                               Expanded(
-                                child: ButtonHelperWidget.customButtonWidgetAdventPro(
+                                child: userBookingDetailsController.isDenied.value == true ?
+                                LoadingHelperWidget.loadingHelperWidget(context: context) :
+                                ButtonHelperWidget.customButtonWidgetAdventPro(
                                   context: context,
                                   onPressed: () async {
-                                    Get.off(()=>DashboardUserView(index: 1),preventDuplicates: false);
+                                    userBookingDetailsController.isDenied.value = true;
+                                    Map<String,dynamic> data = {
+                                      "status": "denied"
+                                    };
+                                    await userBookingDetailsController.deniedOfferController(
+                                      context: context,
+                                      data: data,
+                                      orderId: userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.sId ?? "",
+                                    );
                                   },
-                                  text: "Denied Offer",
+                                  text: "Decline Offer",
                                   textColor: ColorUtils.red202,
                                   backgroundColor: ColorUtils.red9,
                                 ),
@@ -208,8 +218,6 @@ class UserOrderDetailsView extends StatelessWidget {
                                     await userBookingDetailsController.createPaymentController(context: context, data: data);
                                   },
                                   text: "Complete Order",
-                                  textColor: ColorUtils.white255,
-                                  backgroundColor: ColorUtils.white217,
                                 ),
                               ),
 
@@ -222,6 +230,8 @@ class UserOrderDetailsView extends StatelessWidget {
                                     Get.off(()=>UserCancelOfferView(orderID: userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.sId ?? ""),preventDuplicates: false);
                                   },
                                   text: "Cancel Order",
+                                  textColor: ColorUtils.red202,
+                                  backgroundColor: ColorUtils.red9,
                                 ),
                               ),
 
