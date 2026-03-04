@@ -6,6 +6,7 @@ import 'package:marketplaceapp/utils/utils.dart';
 class UserPlannerProfileView extends StatelessWidget {
   UserPlannerProfileView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.isRecommended,
     required this.serviceId,
@@ -15,6 +16,7 @@ class UserPlannerProfileView extends StatelessWidget {
     required this.isPlanner,
     required this.isWishlist,
   });
+  final bool isSearchBar;
   final bool isHome;
   final bool isRecommended;
   final bool isPlanner;
@@ -30,15 +32,20 @@ class UserPlannerProfileView extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>UserPlannerServiceDetailsView(
-          isWishlist: isWishlist,
-          isPlanner: isPlanner,
-          categoryId: categoryId,
-          isCategory: isCategory,
-          isRecommended: isRecommended,
-          isHome: isHome,
-          serviceId: serviceId,
-        ), preventDuplicates: false);
+        if(isSearchBar == true) {
+          Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+        } else {
+          Get.off(()=>UserPlannerServiceDetailsView(
+            isSearchBar: isSearchBar,
+            isWishlist: isWishlist,
+            isPlanner: isPlanner,
+            categoryId: categoryId,
+            isCategory: isCategory,
+            isRecommended: isRecommended,
+            isHome: isHome,
+            serviceId: serviceId,
+          ), preventDuplicates: false);
+        }
       },
       child: Scaffold(
         body: Obx(()=>SafeArea(
@@ -59,15 +66,20 @@ class UserPlannerProfileView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>UserPlannerServiceDetailsView(
-                      isWishlist: isWishlist,
-                      isPlanner: isPlanner,
-                      isRecommended: isRecommended,
-                      isHome: isHome,
-                      serviceId: serviceId,
-                      isCategory: isCategory,
-                      categoryId: categoryId,
-                    ), preventDuplicates: false);
+                    if(isSearchBar == true) {
+                      Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+                    } else {
+                      Get.off(()=>UserPlannerServiceDetailsView(
+                        isSearchBar: isSearchBar,
+                        isWishlist: isWishlist,
+                        isPlanner: isPlanner,
+                        isRecommended: isRecommended,
+                        isHome: isHome,
+                        serviceId: serviceId,
+                        isCategory: isCategory,
+                        categoryId: categoryId,
+                      ), preventDuplicates: false);
+                    }
                   },
                   title: "Planner Information",
                 ),
@@ -188,7 +200,7 @@ class UserPlannerProfileView extends StatelessWidget {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       textColor: ColorUtils.black48,
-                                      text: userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.address,
+                                      text: userPlannerProfileController.getPlannerProfileDetailsResponseModel.value.data?.address ?? "",
                                     ),
                                   ),
 
@@ -506,6 +518,7 @@ class UserPlannerProfileView extends StatelessWidget {
               onPressed: () async {
                 Get.off(()=>UserPlannerProfileFeatureView(
                     isHome: isHome,
+                    isSearchBar: isSearchBar,
                     isRecommended: isRecommended,
                     serviceId: serviceId,
                     userId: userId,
@@ -573,6 +586,7 @@ class UserPlannerProfileView extends StatelessWidget {
               onPressed: () async {
                 Get.off(()=>UserPlannerProfileServiceView(
                     isHome: isHome,
+                    isSearchBar: isSearchBar,
                     isRecommended: isRecommended,
                     serviceId: serviceId,
                     userId: userId,
@@ -640,6 +654,7 @@ class UserPlannerProfileView extends StatelessWidget {
               onPressed: () async {
                 Get.off(()=>UserPlannerProfilePortfolioView(
                     isHome: isHome,
+                    isSearchBar: isSearchBar,
                     isRecommended: isRecommended,
                     serviceId: serviceId,
                     userId: userId,
@@ -663,6 +678,7 @@ class UserPlannerProfileView extends StatelessWidget {
 
         SpaceHelperWidget.v(20.h(context)),
 
+        userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?.isNotEmpty == true ?
         Row(
           children: List.generate(3, (index) {
             return Expanded(
@@ -682,6 +698,14 @@ class UserPlannerProfileView extends StatelessWidget {
               ),
             );
           }),
+        ) :
+        TextHelperClass.headingTextWithoutWidth(
+          context: context,
+          alignment: Alignment.center,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          textColor: ColorUtils.black48,
+          text: 'No Portfolio Available',
         ),
 
         SpaceHelperWidget.v(30.h(context)),
@@ -795,8 +819,10 @@ class UserPlannerProfileView extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
               Get.off(()=>UserPlannerWiseServiceDetailsView(
+                isSearchBar: isSearchBar,
                 isWishlist: isWishlist,
                 isCategory: isCategory,
+                plannerWiseServiceId: service.sId,
                 isPlanner: isPlanner,
                 isRecommended: isRecommended,
                 isHome: isHome,
@@ -902,6 +928,8 @@ class UserPlannerProfileView extends StatelessWidget {
                 isWishlist: isWishlist,
                 isCategory: isCategory,
                 isPlanner: isPlanner,
+                isSearchBar: isSearchBar,
+                plannerWiseServiceId: service.sId,
                 isRecommended: isRecommended,
                 isHome: isHome,
                 serviceId: serviceId,

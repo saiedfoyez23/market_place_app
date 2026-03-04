@@ -74,6 +74,7 @@ class WishlistView extends StatelessWidget {
                               Get.off(()=> UserPlannerServiceDetailsView(
                                 isWishlist: true,
                                 isPlanner: false,
+                                isSearchBar: false,
                                 categoryId: "",
                                 isCategory: false,
                                 isRecommended: false,

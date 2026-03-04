@@ -7,8 +7,10 @@ import 'package:marketplaceapp/module/module.dart';
 class UserPlannerWiseServiceDetailsView extends StatelessWidget {
   const UserPlannerWiseServiceDetailsView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.isRecommended,
+    required this.plannerWiseServiceId,
     required this.serviceId,
     required this.userId,
     required this.categoryId,
@@ -16,10 +18,12 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
     required this.isPlanner,
     required this.isWishlist,
   });
+  final bool isSearchBar;
   final String userId;
   final bool isHome;
   final bool isRecommended;
   final bool isCategory;
+  final String plannerWiseServiceId;
   final String serviceId;
   final String categoryId;
   final bool isPlanner;
@@ -28,7 +32,7 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserPlannerWiseServiceDetailsController userPlannerWiseServiceDetailsController = Get.put(UserPlannerWiseServiceDetailsController(
-        context: context,serviceId: serviceId));
+        context: context,serviceId: plannerWiseServiceId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -41,6 +45,7 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
           isCategory: isCategory,
           isPlanner: isPlanner,
           isWishlist: isWishlist,
+          isSearchBar: isSearchBar,
         ),preventDuplicates: false);
       },
       child: Scaffold(
@@ -74,6 +79,7 @@ class UserPlannerWiseServiceDetailsView extends StatelessWidget {
                         isCategory: isCategory,
                         isPlanner: isPlanner,
                         isWishlist: isWishlist,
+                        isSearchBar: isSearchBar,
                       ),preventDuplicates: false);
                     },
                     title: "Service Details",

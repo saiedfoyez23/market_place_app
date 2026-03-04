@@ -7,6 +7,7 @@ import 'package:marketplaceapp/module/module.dart';
 class UserPlannerProfilePortfolioView extends StatelessWidget {
   const UserPlannerProfilePortfolioView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.isRecommended,
     required this.serviceId,
@@ -16,7 +17,7 @@ class UserPlannerProfilePortfolioView extends StatelessWidget {
     required this.isPlanner,
     required this.isWishlist,
   });
-
+  final bool isSearchBar;
   final bool isHome;
   final bool isRecommended;
   final bool isPlanner;
@@ -41,6 +42,7 @@ class UserPlannerProfilePortfolioView extends StatelessWidget {
           isCategory: isCategory,
           categoryId: categoryId,
           isWishlist: isWishlist,
+          isSearchBar: isSearchBar,
         ),preventDuplicates: false);
       },
       child: Scaffold(
@@ -71,6 +73,7 @@ class UserPlannerProfilePortfolioView extends StatelessWidget {
                       isCategory: isCategory,
                       categoryId: categoryId,
                       isWishlist: isWishlist,
+                      isSearchBar: isSearchBar,
                     ),preventDuplicates: false);
                   },
                   title: "Portfolio",

@@ -365,6 +365,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
                   isWishlist: false,
                   isPlanner: false,
                   categoryId: categoryId,
+                  isSearchBar: false,
                   isCategory: true,
                   isRecommended: false,
                   isHome: false,

@@ -298,23 +298,43 @@ class UserHomeDashboardView extends StatelessWidget {
 
                                   SpaceHelperWidget.h(12.w(context)),
 
-                                  ButtonHelperWidget.customButtonWidget(
-                                    context: context,
-                                    onPressed: () async {
-                                      Get.off(()=>DashboardUserView(index: 1),preventDuplicates: false);
-                                    },
-                                    text: "See All",
-                                    padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                                    alignment: Alignment.center,
-                                    textColor: ColorUtils.orange119,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 24,
-                                    backgroundColor: Colors.transparent,
-                                  ),
+                                  if(userHomeDashboardController.clientHomeResponseModel.value.data?.upcomingBooking?.isNotEmpty == true)...[
+                                    ButtonHelperWidget.customButtonWidget(
+                                      context: context,
+                                      onPressed: () async {
+                                        Get.off(()=>DashboardUserView(index: 1),preventDuplicates: false);
+                                      },
+                                      text: "See All",
+                                      padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                      alignment: Alignment.center,
+                                      textColor: ColorUtils.orange119,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 24,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                  ] else...[
+                                    SizedBox.shrink(),
+                                  ]
+
+
                                 ],
                               ),
                               SpaceHelperWidget.v(12.h(context)),
-                              ...userHomeDashboardController.clientHomeResponseModel.value.data!.upcomingBooking!.map((booking) => buildBookingCard(booking: booking,context: context)),
+
+                              if(userHomeDashboardController.clientHomeResponseModel.value.data?.upcomingBooking?.isNotEmpty == true)...[
+                                ...userHomeDashboardController.clientHomeResponseModel.value.data!.upcomingBooking!.map((booking) => buildBookingCard(booking: booking,context: context)),
+                              ] else...[
+                                TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.center,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black48,
+                                  text: "No Upcoming Booking Available",
+                                ),
+                              ]
+
 
                             ],
                           ),
@@ -341,34 +361,59 @@ class UserHomeDashboardView extends StatelessWidget {
 
                             SpaceHelperWidget.h(12.w(context)),
 
-                            ButtonHelperWidget.customButtonWidget(
-                              context: context,
-                              onPressed: () async {
-                                Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
-                              },
-                              text: "See All",
-                              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                              alignment: Alignment.center,
-                              textColor: ColorUtils.blue96,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24,
-                              backgroundColor: Colors.transparent,
-                            ),
+                            if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices?.isNotEmpty == true)...[
+                              ButtonHelperWidget.customButtonWidget(
+                                context: context,
+                                onPressed: () async {
+                                  Get.off(()=>UserAllRecommendedServiceView(),preventDuplicates: false);
+                                },
+                                text: "See All",
+                                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                alignment: Alignment.center,
+                                textColor: ColorUtils.blue96,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ] else...[
+                              SizedBox.shrink(),
+                            ],
+
+
                           ],
                         ),
 
                         SpaceHelperWidget.v(20.h(context)),
 
-                        userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices!.length > 1 ?
-                        Row(
-                          children: [
-                            Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context)),
-                            SpaceHelperWidget.h(12.w(context)),
-                            Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![1], context: context)),
-                          ],
-                        ) :
-                        buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context),
-
+                        if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices?.isNotEmpty == true)...[
+                          if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices!.length > 1)...[
+                            Row(
+                              children: [
+                                Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context)),
+                                SpaceHelperWidget.h(12.w(context)),
+                                Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![1], context: context)),
+                              ],
+                            )
+                          ] else...[
+                            Row(
+                              children: [
+                                Expanded(child: buildRecommendationCard(vendor: userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices![0], context: context)),
+                                SpaceHelperWidget.h(12.w(context)),
+                                Expanded(child: SizedBox.shrink()),
+                              ],
+                            )
+                          ]
+                        ] else...[
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Recommended Service Available",
+                          ),
+                        ],
 
                         SpaceHelperWidget.v(32.h(context)),
 
@@ -391,33 +436,61 @@ class UserHomeDashboardView extends StatelessWidget {
 
                             SpaceHelperWidget.h(12.w(context)),
 
-                            ButtonHelperWidget.customButtonWidget(
-                              context: context,
-                              onPressed: () async {
-                                Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
-                              },
-                              text: "See All",
-                              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                              alignment: Alignment.center,
-                              textColor: ColorUtils.blue96,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24,
-                              backgroundColor: Colors.transparent,
-                            ),
+                            if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService?.isNotEmpty == true)...[
+                              ButtonHelperWidget.customButtonWidget(
+                                context: context,
+                                onPressed: () async {
+                                  Get.off(()=>UserAllPlannerServiceView(),preventDuplicates: false);
+                                },
+                                text: "See All",
+                                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                alignment: Alignment.center,
+                                textColor: ColorUtils.blue96,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ] else...[
+                              SizedBox.shrink(),
+                            ],
+
                           ],
                         ),
 
                         SpaceHelperWidget.v(20.h(context)),
 
-                        userHomeDashboardController.clientHomeResponseModel.value.data!.planerService!.length > 1 ?
-                        Row(
-                          children: [
-                            Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![0], context: context)),
-                            SpaceHelperWidget.h(12.w(context)),
-                            Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![1], context: context)),
-                          ],
-                        ) :
-                        buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![1], context: context),
+
+                        if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService?.isNotEmpty == true)...[
+                          if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService!.length > 1)...[
+                            Row(
+                              children: [
+                                Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![0], context: context)),
+                                SpaceHelperWidget.h(12.w(context)),
+                                Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![1], context: context)),
+                              ],
+                            )
+                          ] else...[
+                            Row(
+                              children: [
+                                Expanded(child: buildPlannerCard(service: userHomeDashboardController.clientHomeResponseModel.value.data!.planerService![0], context: context)),
+                                SpaceHelperWidget.h(12.w(context)),
+                                Expanded(child: SizedBox.shrink()),
+                              ],
+                            )
+                          ]
+                        ] else...[
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Planner Service Available",
+                          ),
+                        ],
+
+
 
 
                         SpaceHelperWidget.v(32.h(context)), // Space for bottom nav
@@ -543,6 +616,7 @@ class UserHomeDashboardView extends StatelessWidget {
             onPressed: () async {
               Get.off(()=>UserPlannerServiceDetailsView(
                 isWishlist: false,
+                isSearchBar: false,
                 isPlanner: false,
                 categoryId: "",
                 isCategory: false,
@@ -749,6 +823,7 @@ class UserHomeDashboardView extends StatelessWidget {
               Get.off(()=>UserPlannerServiceDetailsView(
                 isWishlist: false,
                 isPlanner: false,
+                isSearchBar: false,
                 categoryId: "",
                 isCategory: false,
                 isRecommended: false,

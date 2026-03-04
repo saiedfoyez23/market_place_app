@@ -7,6 +7,7 @@ import 'package:marketplaceapp/utils/utils.dart';
 class UserPlannerProfileServiceView extends StatelessWidget {
   const UserPlannerProfileServiceView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.isRecommended,
     required this.serviceId,
@@ -17,7 +18,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
     required this.isWishlist,
   });
 
-
+  final bool isSearchBar;
   final bool isHome;
   final bool isRecommended;
   final bool isPlanner;
@@ -43,6 +44,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
           isCategory: isCategory,
           isPlanner: isPlanner,
           isWishlist: isWishlist,
+          isSearchBar: isSearchBar,
         ),preventDuplicates: false);
       },
       child: Scaffold(
@@ -69,6 +71,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
                   isCategory: isCategory,
                   isPlanner: isPlanner,
                   isWishlist: isWishlist,
+                  isSearchBar: isSearchBar,
                 ),preventDuplicates: false);
               },
               child: CustomScrollView(
@@ -86,6 +89,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
                         isCategory: isCategory,
                         isPlanner: isPlanner,
                         isWishlist: isWishlist,
+                        isSearchBar: isSearchBar,
                       ),preventDuplicates: false);
                     },
                     title: "Planner Service",
@@ -407,7 +411,9 @@ class UserPlannerProfileServiceView extends StatelessWidget {
                   isWishlist: isWishlist,
                   isCategory: isCategory,
                   isPlanner: isPlanner,
+                  isSearchBar: isSearchBar,
                   isRecommended: isRecommended,
+                  plannerWiseServiceId: data?.sId ?? "",
                   isHome: isHome,
                   serviceId: serviceId,
                   userId: userId,

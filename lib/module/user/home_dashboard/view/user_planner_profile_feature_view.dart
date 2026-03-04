@@ -6,6 +6,7 @@ import 'package:marketplaceapp/utils/utils.dart';
 class UserPlannerProfileFeatureView extends StatelessWidget {
   const UserPlannerProfileFeatureView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.isRecommended,
     required this.serviceId,
@@ -16,7 +17,7 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
     required this.isWishlist,
   });
 
-
+  final bool isSearchBar;
   final bool isHome;
   final bool isRecommended;
   final bool isPlanner;
@@ -42,6 +43,7 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
           isCategory: isCategory,
           isPlanner: isPlanner,
           isWishlist: isWishlist,
+          isSearchBar: isSearchBar,
         ),preventDuplicates: false);
       },
       child: Scaffold(
@@ -60,6 +62,7 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
             RefreshIndicator(
               onRefresh: () async {
                 Get.off(()=>UserPlannerProfileFeatureView(
+                  isSearchBar: isSearchBar,
                   isHome: isHome,
                   isRecommended: isRecommended,
                   serviceId: serviceId,
@@ -77,6 +80,7 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
                   AuthAppBarHelperWidget(
                     onBackPressed: () async {
                       Get.off(()=>UserPlannerProfileView(
+                        isSearchBar: isSearchBar,
                         isHome: isHome,
                         isRecommended: isRecommended,
                         serviceId: serviceId,
@@ -407,7 +411,9 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
                   isCategory: isCategory,
                   isPlanner: isPlanner,
                   isRecommended: isRecommended,
+                  plannerWiseServiceId: data?.sId ?? "",
                   isHome: isHome,
+                  isSearchBar: isSearchBar,
                   serviceId: serviceId,
                   userId: userId,
                   categoryId: categoryId,

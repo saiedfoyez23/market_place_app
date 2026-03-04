@@ -63,7 +63,6 @@ class GetAllPlannerServiceResponseMeta {
 
 class GetAllPlannerServiceResponse {
   GetAllPlannerServiceResponseLocation? location;
-  var isFeatured;
   var sId;
   GetAllPlannerServiceResponseAuthor? author;
   GetAllPlannerServiceResponseCategory? category;
@@ -73,11 +72,11 @@ class GetAllPlannerServiceResponse {
   var address;
   var locationUrl;
   var status;
+  var isFeatured;
   var isFavorite;
 
   GetAllPlannerServiceResponse({
     this.location,
-    this.isFeatured,
     this.sId,
     this.author,
     this.category,
@@ -87,6 +86,7 @@ class GetAllPlannerServiceResponse {
     this.address,
     this.locationUrl,
     this.status,
+    this.isFeatured,
     this.isFavorite,
   });
 
@@ -94,7 +94,6 @@ class GetAllPlannerServiceResponse {
     location = json['location'] != null
         ? new GetAllPlannerServiceResponseLocation.fromJson(json['location'])
         : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
     json['author'] != null ? new GetAllPlannerServiceResponseAuthor.fromJson(json['author']) : null;
@@ -107,6 +106,7 @@ class GetAllPlannerServiceResponse {
     address = json['address'];
     locationUrl = json['locationUrl'];
     status = json['status'];
+    isFeatured = json['isFeatured'];
     isFavorite = json['isFavorite'];
   }
 
@@ -115,7 +115,6 @@ class GetAllPlannerServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -129,6 +128,7 @@ class GetAllPlannerServiceResponse {
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     data['status'] = this.status;
+    data['isFeatured'] = this.isFeatured;
     data['isFavorite'] = this.isFavorite;
     return data;
   }
@@ -142,7 +142,7 @@ class GetAllPlannerServiceResponseLocation {
 
   GetAllPlannerServiceResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates = json['coordinates'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {

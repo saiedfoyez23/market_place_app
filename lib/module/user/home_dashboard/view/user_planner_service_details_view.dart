@@ -7,6 +7,7 @@ import 'package:marketplaceapp/utils/utils.dart';
 class UserPlannerServiceDetailsView extends StatelessWidget {
   const UserPlannerServiceDetailsView({
     super.key,
+    required this.isSearchBar,
     required this.isHome,
     required this.serviceId,
     required this.isRecommended,
@@ -15,7 +16,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
     required this.isPlanner,
     required this.isWishlist,
   });
-
+  final bool isSearchBar;
   final bool isHome;
   final bool isRecommended;
   final bool isCategory;
@@ -284,6 +285,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
       child: TextButton(
         onPressed: () async {
           Get.off(()=> UserPlannerProfileView(
+            isSearchBar: isSearchBar,
             isWishlist: isWishlist,
             isPlanner: isPlanner,
             categoryId: categoryId,
@@ -440,6 +442,7 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
               context: context,
               onPressed: () async {
                 Get.off(()=> UserPlannerProfileView(
+                  isSearchBar: isSearchBar,
                   isWishlist: isWishlist,
                   isPlanner: isPlanner,
                   isCategory: isCategory,

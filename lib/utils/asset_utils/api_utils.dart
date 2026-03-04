@@ -56,6 +56,8 @@ class ApiUtils {
   static const String getAllUserOrder = "$baseUrl/orders/author/my-client-orders?limit=10000000000"; //done
   static const String createReview = "$baseUrl/reviews"; //done
   static const String createPayments = "$baseUrl/payments/checkout"; //done
+  static const String clearHistories = "$baseUrl/search-histories/clear-histories"; //done
+  static const String createHistories = "$baseUrl/search-histories"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -79,6 +81,12 @@ class ApiUtils {
   }
   static String userOrderDenied(String orderId) {
     return "$baseUrl/orders/status/${orderId}";
+  }
+  static String getSearchResponse(String searchTerm) {
+    return "$baseUrl/search-histories/search-data?searchTerm=${searchTerm}";
+  }
+  static String deleteSingleResponse(String searchId) {
+    return "$baseUrl/search-histories/${searchId}";
   }
 
 

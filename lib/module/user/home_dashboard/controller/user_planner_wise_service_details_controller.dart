@@ -23,6 +23,7 @@ class UserPlannerWiseServiceDetailsController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     isLoading.value = true;
+    print(serviceId);
     Future.delayed(Duration(seconds: 1),() async {
       await getServiceDetailsController(
         context: context,
