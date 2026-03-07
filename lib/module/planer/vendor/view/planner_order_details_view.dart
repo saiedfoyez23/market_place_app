@@ -255,6 +255,19 @@ class PlannerOrderDetailsView extends StatelessWidget {
                             },
                             text: "Cancel Offer",
                           ) :
+                          plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.status == "completed" ?
+                          ButtonHelperWidget.customButtonWidgetAdventPro(
+                            context: context,
+                            onPressed: () async {
+                              Get.off(()=>PlannerFeedbackView(
+                                orderId: orderID,
+                                senderId: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.sId ?? "",
+                              ),preventDuplicates: false);
+                            },
+                            textColor: ColorUtils.blue96,
+                            backgroundColor: ColorUtils.blue231,
+                            text: "Leave Feedback",
+                          ) :
                           SizedBox.shrink(),
 
 

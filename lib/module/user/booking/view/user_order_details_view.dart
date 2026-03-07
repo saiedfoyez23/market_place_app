@@ -237,6 +237,7 @@ class UserOrderDetailsView extends StatelessWidget {
 
                             ],
                           ) :
+                          userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.status == "completed" ?
                           ButtonHelperWidget.customButtonWidgetAdventPro(
                             context: context,
                             onPressed: () async {
@@ -248,7 +249,7 @@ class UserOrderDetailsView extends StatelessWidget {
                             textColor: ColorUtils.blue96,
                             backgroundColor: ColorUtils.blue231,
                             text: "Leave Feedback",
-                          ),
+                          ) : SizedBox.shrink(),
 
 
                           SpaceHelperWidget.v(40.h(context)),

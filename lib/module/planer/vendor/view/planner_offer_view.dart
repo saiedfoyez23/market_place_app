@@ -89,16 +89,33 @@ class PlannerOfferView extends StatelessWidget {
                           SpaceHelperWidget.v(26.h(context)),
 
                           Expanded(
-                              child: ListView.builder(
-                                itemCount: plannerOfferController.filteredBookings.length,
-                                itemBuilder: (context, index) {
-                                  return Obx(()=>bookingCard(
-                                    booking: plannerOfferController.filteredBookings[index],
-                                    context: context,
-                                    plannerOfferController: plannerOfferController,
-                                  ));
-                                },
-                              )
+                            child: plannerOfferController.filteredBookings.isNotEmpty == true ?
+                            ListView.builder(
+                              itemCount: plannerOfferController.filteredBookings.length,
+                              itemBuilder: (context, index) {
+                                return Obx(()=>bookingCard(
+                                  booking: plannerOfferController.filteredBookings[index],
+                                  context: context,
+                                  plannerOfferController: plannerOfferController,
+                                ));
+                              },
+                            ) :
+                            SizedBox(
+                              height: 630.h(context),
+                              width: 428.w(context),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.center,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black48,
+                                  text: "No Offer Available",
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -125,8 +142,9 @@ class PlannerOfferView extends StatelessWidget {
       children: [
         tabItem(status: PlannerBookingStatus.all,title: "All",context: context,plannerOfferController: plannerOfferController),
         tabItem(status: PlannerBookingStatus.complete,title: "Complete",context: context,plannerOfferController: plannerOfferController),
-        tabItem(status: PlannerBookingStatus.inProcess,title: "In-Process",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.active,title: "Active",context: context,plannerOfferController: plannerOfferController),
         tabItem(status: PlannerBookingStatus.pending,title: "Pending",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.cancelled,title: "Cancelled",context: context,plannerOfferController: plannerOfferController),
       ],
     );
   }
@@ -181,15 +199,20 @@ class PlannerOfferView extends StatelessWidget {
         textColor = ColorUtils.green139;
         text = "Completed";
         break;
-      case PlannerBookingStatus.inProcess:
-        badgeColor = ColorUtils.yellow249;
-        textColor = ColorUtils.yellow95;
-        text = "In-Process";
+      case PlannerBookingStatus.active:
+        badgeColor = ColorUtils.blue173;
+        textColor = ColorUtils.blue96;
+        text = "Active";
         break;
       case PlannerBookingStatus.pending:
         badgeColor = ColorUtils.red20;
         textColor = ColorUtils.red202;
         text = "Pending";
+        break;
+      case PlannerBookingStatus.cancelled:
+        badgeColor = ColorUtils.red20;
+        textColor = ColorUtils.red202;
+        text = "Cancelled";
         break;
       default:
         break;
@@ -307,7 +330,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerFeedbackView(),preventDuplicates: false);
+                    Get.off(()=>PlannerFeedbackView(orderId: booking.sid,senderId: booking.vendorId,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue231,
@@ -357,6 +380,15 @@ class PlannerOfferView extends StatelessWidget {
 
 
             ],
+          ) : text == "Active" ?
+          ButtonHelperWidget.customButtonWidgetAdventPro(
+            context: context,
+            onPressed: () async {
+              Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
+            },
+            textColor: ColorUtils.blue96,
+            backgroundColor: ColorUtils.blue206,
+            text: "View Details",
           ) :
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,

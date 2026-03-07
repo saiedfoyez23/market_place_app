@@ -1,39 +1,49 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
+
 import '../../../../utils/utils.dart';
 
-class UserPlannerProfileFeatureController extends GetxController {
+class PlannerVendorWiseServiceDetailsController extends GetxController {
 
-  RxBool isLoading = false.obs;
+  Rx<GetServiceDetailsResponseModel> getServiceDetailsResponseModel = GetServiceDetailsResponseModel().obs;
+  Rx<GetAllUserReviewResponseModel> getAllUserReviewResponseModel = GetAllUserReviewResponseModel().obs;
   BuildContext context;
-  String userId;
-  UserPlannerProfileFeatureController({required this.context,required this.userId});
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
-  Rx<GetAllFeaturedServiceResponseModel> getAllFeaturedServiceResponseModel = GetAllFeaturedServiceResponseModel().obs;
+  String serviceId;
+  PlannerVendorWiseServiceDetailsController({required this.context,required this.serviceId});
+  RxBool isLoading = false.obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     isLoading.value = true;
+    print(serviceId);
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllPlannerFeatureServiceDetailsController(context: context, userId: userId);
+      await getServiceDetailsController(
+        context: context,
+        serviceId: serviceId,
+        onComplete: (userId) async {
+          await getAllUserReviewController(context: context, userId: userId);
+        },
+      );
     });
   }
 
-
-  Future<void> getAllPlannerFeatureServiceDetailsController({
+  Future<void> getAllUserReviewController({
     required BuildContext context,
     required String userId,
   }) async {
     BaseApiUtils.get(
-      url: ApiUtils.getUserFeaturedService(userId),
+      url: ApiUtils.getAllUserReview(userId),
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = false;
-        getAllFeaturedServiceResponseModel.value = GetAllFeaturedServiceResponseModel.fromJson(data);
+        getAllUserReviewResponseModel.value = GetAllUserReviewResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -47,18 +57,18 @@ class UserPlannerProfileFeatureController extends GetxController {
 
   }
 
-  Future<void> createFavoritesController({
+
+  Future<void> getServiceDetailsController({
     required BuildContext context,
     required String serviceId,
-    required String userId,
+    required Function onComplete,
   }) async {
-    BaseApiUtils.post(
-      url: "${ApiUtils.createFavoriteResponse}/${serviceId}",
+    BaseApiUtils.get(
+      url: "${ApiUtils.serviceDetailsResponse}/${serviceId}",
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isLoading.value = true;
-        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await getAllPlannerFeatureServiceDetailsController(context: context, userId: userId,);
+        getServiceDetailsResponseModel.value = GetServiceDetailsResponseModel.fromJson(data);
+        onComplete(getServiceDetailsResponseModel.value.data?.author?.sId);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -71,7 +81,6 @@ class UserPlannerProfileFeatureController extends GetxController {
     );
 
   }
-
 
 
 

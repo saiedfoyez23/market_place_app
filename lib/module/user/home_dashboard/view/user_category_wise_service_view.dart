@@ -45,7 +45,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
                   ),
 
 
-
+                  userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?.isNotEmpty == true ?
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                           (context,int index) {
@@ -57,6 +57,27 @@ class UserCategoryWiseServiceView extends StatelessWidget {
                         );
                       },
                       childCount: userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?.length,
+                    ),
+                  ) :
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: SizedBox(
+                        height: 630.h(context),
+                        width: 428.w(context),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Category Service Available",
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
@@ -236,6 +257,72 @@ class UserCategoryWiseServiceView extends StatelessWidget {
 
               SpaceHelperWidget.h(6.w(context)),
 
+              if(data?.author?.isKycVerified == true)...[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4.hpm(context),vertical: 2.vpm(context)),
+                  decoration: BoxDecoration(
+                    color: ColorUtils.blue219,
+                    borderRadius: BorderRadius.circular(6.r(context)),
+                  ),
+                  child: Row(
+                    children: [
+
+                      ImageHelperWidget.assetImageWidget(
+                        context: context,
+                        height: 17.h(context),
+                        width: 17.w(context),
+                        imageString: ImageUtils.verifyImage,
+                      ),
+
+                      SpaceHelperWidget.h(6.w(context)),
+
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        textColor: ColorUtils.black48,
+                        text: "Verified",
+                      ),
+
+
+                    ],
+                  ),
+                )
+              ] else...[
+                SizedBox.shrink()
+              ]
+
+
+
+            ],
+          ),
+
+          SpaceHelperWidget.v(14.h(context)),
+
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.centerLeft,
+                containerColor: ColorUtils.blue219,
+                padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
+                textAlign: TextAlign.start,
+                fontSize: 17,
+                fontWeight: FontWeight.w400,
+                borderRadius: BorderRadius.circular(6.r(context)),
+                textColor: ColorUtils.blue71,
+                text: data?.category?.title ?? "",
+              ),
+
+
+
+              SpaceHelperWidget.h(6.w(context)),
+
               Row(
                 children: [
                   Icon(Icons.star, color: ColorUtils.yellow199, size: 20.r(context)),
@@ -266,7 +353,6 @@ class UserCategoryWiseServiceView extends StatelessWidget {
           ),
 
           SpaceHelperWidget.v(16.h(context)),
-
 
 
           TextHelperClass.headingTextWithoutWidth(

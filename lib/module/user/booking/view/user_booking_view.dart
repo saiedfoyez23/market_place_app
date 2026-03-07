@@ -57,17 +57,35 @@ class UserBookingView extends StatelessWidget {
 
                         SpaceHelperWidget.v(26.h(context)),
 
+
                         Expanded(
-                            child: ListView.builder(
-                              itemCount: userBookingController.filteredBookings.length,
-                              itemBuilder: (context, index) {
-                                return Obx(()=>bookingCard(
-                                  userBookingController: userBookingController,
-                                  booking: userBookingController.filteredBookings[index],
+                          child: userBookingController.filteredBookings.isNotEmpty == true ?
+                          ListView.builder(
+                            itemCount: userBookingController.filteredBookings.length,
+                            itemBuilder: (context, index) {
+                              return Obx(()=>bookingCard(
+                                userBookingController: userBookingController,
+                                booking: userBookingController.filteredBookings[index],
+                                context: context,
+                              ));
+                            },
+                          ) :
+                          SizedBox(
+                              height: 630.h(context),
+                              width: 428.w(context),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: TextHelperClass.headingTextWithoutWidth(
                                   context: context,
-                                ));
-                              },
-                            )
+                                  alignment: Alignment.center,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black48,
+                                  text: "No Booking Available",
+                                ),
+                              ),
+                            ),
                         ),
                       ],
                     ),
@@ -93,8 +111,9 @@ class UserBookingView extends StatelessWidget {
       children: [
         tabItem(status: UserBookingStatus.all,title: "All",context: context,userBookingController: userBookingController),
         tabItem(status: UserBookingStatus.complete,title: "Complete",context: context,userBookingController: userBookingController),
-        tabItem(status: UserBookingStatus.inProcess,title: "In-Process",context: context,userBookingController: userBookingController),
+        tabItem(status: UserBookingStatus.active,title: "Active",context: context,userBookingController: userBookingController),
         tabItem(status: UserBookingStatus.pending,title: "Pending",context: context,userBookingController: userBookingController),
+        tabItem(status: UserBookingStatus.cancelled,title: "Cancelled",context: context,userBookingController: userBookingController),
       ],
     );
   }
@@ -153,15 +172,20 @@ class UserBookingView extends StatelessWidget {
         textColor = ColorUtils.green139;
         text = "Completed";
         break;
-      case UserBookingStatus.inProcess:
-        badgeColor = ColorUtils.yellow249;
-        textColor = ColorUtils.yellow95;
-        text = "In-Process";
+      case UserBookingStatus.active:
+        badgeColor = ColorUtils.blue173;
+        textColor = ColorUtils.blue96;
+        text = "Active";
         break;
       case UserBookingStatus.pending:
+        badgeColor = ColorUtils.yellow249;
+        textColor = ColorUtils.yellow95;
+        text = "Pending";
+        break;
+      case UserBookingStatus.cancelled:
         badgeColor = ColorUtils.red20;
         textColor = ColorUtils.red202;
-        text = "Pending";
+        text = "Cancelled";
         break;
       default:
         break;

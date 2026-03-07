@@ -37,10 +37,9 @@ class UserBookingController extends GetxController {
         isLoading.value = false;
         getAllClientOrderResponseModel.value = GetAllClientOrderResponseModel.fromJson(data);
         getAllClientOrderResponseModel.value.data?.forEach((value) {
-          if (value.status == "cancelled" || value.status == "denied") {
+          if (value.status == "denied") {
             return;
           }
-
           allBookings.add(
             UserBookingModel(
               sid: value.sId ?? "",
@@ -53,8 +52,9 @@ class UserBookingController extends GetxController {
               startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
               endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
               status: value.status == "completed" ? UserBookingStatus.complete :
-              value.status == "running" ? UserBookingStatus.inProcess :
-              UserBookingStatus.pending,
+              value.status == "pending" ? UserBookingStatus.pending :
+              value.status == "running" ? UserBookingStatus.active :
+              UserBookingStatus.cancelled,
               coverImage: value.sender?.photoUrl ?? "",
             ),
           );
@@ -154,7 +154,7 @@ class UserBookingController extends GetxController {
 }
 
 
-enum UserBookingStatus { all, complete, pending, inProcess }
+enum UserBookingStatus {all, complete, pending, active, cancelled}
 
 
 class UserBookingModel {

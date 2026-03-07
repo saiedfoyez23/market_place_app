@@ -59,16 +59,20 @@ class UserAllRecommendedServiceView extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.centerLeft,
-                          textAlign: TextAlign.start,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "No Recommended Service Available",
+                      child: SizedBox(
+                        height: 630.h(context),
+                        width: 428.w(context),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Recommended Service Available",
+                          ),
                         ),
                       ),
                     ),

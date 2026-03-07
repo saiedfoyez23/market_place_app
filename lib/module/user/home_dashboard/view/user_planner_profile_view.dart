@@ -124,7 +124,6 @@ class UserPlannerProfileView extends StatelessWidget {
                           ),
                         ),
 
-
                         SpaceHelperWidget.v(20.h(context)),
 
                         Row(
@@ -513,36 +512,41 @@ class UserPlannerProfileView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=>UserPlannerProfileFeatureView(
-                    isHome: isHome,
-                    isSearchBar: isSearchBar,
-                    isRecommended: isRecommended,
-                    serviceId: serviceId,
-                    userId: userId,
-                    categoryId: categoryId,
-                    isCategory: isCategory,
-                    isPlanner: isPlanner,
-                    isWishlist: isWishlist),
-                    preventDuplicates: false
-                );
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.blue96,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+            if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=>UserPlannerProfileFeatureView(
+                      isHome: isHome,
+                      isSearchBar: isSearchBar,
+                      isRecommended: isRecommended,
+                      serviceId: serviceId,
+                      userId: userId,
+                      categoryId: categoryId,
+                      isCategory: isCategory,
+                      isPlanner: isPlanner,
+                      isWishlist: isWishlist),
+                      preventDuplicates: false
+                  );
+                },
+                text: "See All",
+                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                alignment: Alignment.center,
+                textColor: ColorUtils.blue96,
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                backgroundColor: Colors.transparent,
+              ),
+            ] else ...[
+              SizedBox.shrink(),
+            ],
+
           ],
         ),
 
-        SpaceHelperWidget.v(10.h(context)),
-        if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
+        SpaceHelperWidget.v(20.h(context)),
 
+        if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
           if(userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data!.length > 1) ...[
             Row(
               children: [
@@ -552,12 +556,24 @@ class UserPlannerProfileView extends StatelessWidget {
               ],
             )
           ] else ...[
-            buildPlannerFeatureCard(service: userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data![0], context: context),
+            Row(
+              children: [
+                Expanded(child: buildPlannerFeatureCard(service: userPlannerProfileController.getAllFeaturedServiceResponseModel.value.data![0], context: context)),
+                SpaceHelperWidget.h(12.w(context)),
+                Expanded(child: SizedBox.shrink())
+              ],
+            )
           ]
-
-
         ] else ...[
-          SizedBox.shrink()
+          TextHelperClass.headingTextWithoutWidth(
+            context: context,
+            alignment: Alignment.center,
+            textAlign: TextAlign.start,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            textColor: ColorUtils.black48,
+            text: "No Feature List Available",
+          ),
         ],
 
 
@@ -581,10 +597,12 @@ class UserPlannerProfileView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=>UserPlannerProfileServiceView(
+
+            if(userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data?.isNotEmpty == true) ...[
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=>UserPlannerProfileServiceView(
                     isHome: isHome,
                     isSearchBar: isSearchBar,
                     isRecommended: isRecommended,
@@ -593,24 +611,28 @@ class UserPlannerProfileView extends StatelessWidget {
                     categoryId: categoryId,
                     isCategory: isCategory,
                     isPlanner: isPlanner,
-                    isWishlist: isWishlist),
-                    preventDuplicates: false
-                );
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.blue96,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+                    isWishlist: isWishlist,),
+                      preventDuplicates: false
+                  );
+                },
+                text: "See All",
+                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                alignment: Alignment.center,
+                textColor: ColorUtils.blue96,
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                backgroundColor: Colors.transparent,
+              ),
+            ] else ...[
+              SizedBox.shrink(),
+            ],
+
           ],
         ),
 
-        SpaceHelperWidget.v(10.h(context)),
-        if(userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data?.isNotEmpty == true) ...[
+        SpaceHelperWidget.v(20.h(context)),
 
+        if(userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data?.isNotEmpty == true) ...[
           if(userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data!.length > 1) ...[
             Row(
               children: [
@@ -620,12 +642,24 @@ class UserPlannerProfileView extends StatelessWidget {
               ],
             )
           ] else ...[
-            buildPlannerCard(service: userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data![0], context: context),
+            Row(
+              children: [
+                Expanded(child: buildPlannerCard(service: userPlannerProfileController.getAllPlannerWiseServiceResponseModel.value.data![0], context: context)),
+                SpaceHelperWidget.h(12.w(context)),
+                Expanded(child: SizedBox.shrink()),
+              ],
+            )
           ]
-
-
         ] else ...[
-          SizedBox.shrink()
+          TextHelperClass.headingTextWithoutWidth(
+            context: context,
+            alignment: Alignment.center,
+            textAlign: TextAlign.start,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            textColor: ColorUtils.black48,
+            text: "No Planner Services Available",
+          ),
         ],
 
 
@@ -649,10 +683,11 @@ class UserPlannerProfileView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=>UserPlannerProfilePortfolioView(
+            if(userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?.isNotEmpty == true)...[
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=>UserPlannerProfilePortfolioView(
                     isHome: isHome,
                     isSearchBar: isSearchBar,
                     isRecommended: isRecommended,
@@ -662,51 +697,81 @@ class UserPlannerProfileView extends StatelessWidget {
                     isCategory: isCategory,
                     isPlanner: isPlanner,
                     isWishlist: isWishlist,),
-                  preventDuplicates: false
-                );
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.blue96,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+                      preventDuplicates: false
+                  );
+                },
+                text: "See All",
+                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                alignment: Alignment.center,
+                textColor: ColorUtils.blue96,
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                backgroundColor: Colors.transparent,
+              ),
+            ] else...[
+              SizedBox.shrink(),
+            ]
+
+
           ],
         ),
 
         SpaceHelperWidget.v(20.h(context)),
 
-        userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?.isNotEmpty == true ?
-        Row(
-          children: List.generate(3, (index) {
-            return Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ImageHelperWidget.styledImage(
-                      context: context,
-                      height: 125.h(context),
-                      width: 125.w(context),
-                      borderRadius: 0,
-                      imageUrl: userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?[index].url ?? "",
-                    ),
+        if(userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?.isNotEmpty == true)...[
+          if(userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data!.length > 2)...[
+            Row(
+              children: List.generate(3, (index) {
+                return Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ImageHelperWidget.styledImage(
+                          context: context,
+                          height: 125.h(context),
+                          width: 125.w(context),
+                          borderRadius: 0,
+                          imageUrl: userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?[index].url ?? "",
+                        ),
+                      ),
+                      SpaceHelperWidget.h(5.w(context)),
+                    ],
                   ),
-                  SpaceHelperWidget.h(5.w(context)),
-                ],
-              ),
-            );
-          }),
-        ) :
-        TextHelperClass.headingTextWithoutWidth(
-          context: context,
-          alignment: Alignment.center,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          textColor: ColorUtils.black48,
-          text: 'No Portfolio Available',
-        ),
+                );
+              }),
+            )
+          ] else...[
+            Row(
+              children: List.generate(userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data!.length, (index) {
+                return Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ImageHelperWidget.styledImage(
+                          context: context,
+                          height: 125.h(context),
+                          width: 125.w(context),
+                          borderRadius: 0,
+                          imageUrl: userPlannerProfileController.getPlannerAllPortfolioResponseModel.value.data?[index].url ?? "",
+                        ),
+                      ),
+                      SpaceHelperWidget.h(5.w(context)),
+                    ],
+                  ),
+                );
+              }),
+            )
+          ]
+        ] else...[
+          TextHelperClass.headingTextWithoutWidth(
+            context: context,
+            alignment: Alignment.center,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            textColor: ColorUtils.black48,
+            text: 'No Portfolio Available',
+          ),
+        ],
 
         SpaceHelperWidget.v(30.h(context)),
 

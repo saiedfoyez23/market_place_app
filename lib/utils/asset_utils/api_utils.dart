@@ -46,9 +46,11 @@ class ApiUtils {
   static const String plannerOrderCancel = "$baseUrl/orders/canceled"; //done
   static const String getUserHomeResponse = "$baseUrl/meta/user"; //done
   static const String getAllPlannerServiceResponse = "$baseUrl/services/active?authority=planer&limit=1000000000"; //done
+  static const String getAllVendorServiceResponse = "$baseUrl/services/active?authority=vendor&limit=100000000"; //done
   static const String createFavoriteResponse = "$baseUrl/favorites"; //done
   static const String getAllRecommendedServiceResponse = "$baseUrl/services/recommend?limit=1000000000"; //done
   static const String getAllCategoryServiceResponse = "$baseUrl/services/active?authority=planer&category="; //done
+  static const String getAllVendorCategoryServiceResponse = "$baseUrl/services/active?authority=vendor&category="; //done
   static const String getAllFavoritesResponse = "$baseUrl/favorites?limit=1000000000"; //done
   static const String getUserSearchResponse = "$baseUrl/search-histories?limit=100000000"; //done
   static const String deleteFavoritesResponse = "$baseUrl/favorites"; //done

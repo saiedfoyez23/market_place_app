@@ -1,22 +1,22 @@
-class GetAllPlannerWiseServiceResponseModel {
+class GetAllVendorServiceResponseModel {
   var success;
   var statusCode;
   var message;
-  GetAllPlannerWiseServiceResponseMeta? meta;
-  List<GetAllPlannerWiseServiceResponse>? data;
+  GetAllVendorServiceResponseMeta? meta;
+  List<GetAllVendorServiceResponse>? data;
 
-  GetAllPlannerWiseServiceResponseModel(
+  GetAllVendorServiceResponseModel(
       {this.success, this.statusCode, this.message, this.meta, this.data});
 
-  GetAllPlannerWiseServiceResponseModel.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? new GetAllPlannerWiseServiceResponseMeta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new GetAllVendorServiceResponseMeta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
-      data = <GetAllPlannerWiseServiceResponse>[];
+      data = <GetAllVendorServiceResponse>[];
       json['data'].forEach((v) {
-        data!.add(new GetAllPlannerWiseServiceResponse.fromJson(v));
+        data!.add(new GetAllVendorServiceResponse.fromJson(v));
       });
     }
   }
@@ -36,15 +36,15 @@ class GetAllPlannerWiseServiceResponseModel {
   }
 }
 
-class GetAllPlannerWiseServiceResponseMeta {
+class GetAllVendorServiceResponseMeta {
   var page;
   var limit;
   var total;
   var totalPage;
 
-  GetAllPlannerWiseServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
+  GetAllVendorServiceResponseMeta({this.page, this.limit, this.total, this.totalPage});
 
-  GetAllPlannerWiseServiceResponseMeta.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponseMeta.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     limit = json['limit'];
     total = json['total'];
@@ -61,12 +61,12 @@ class GetAllPlannerWiseServiceResponseMeta {
   }
 }
 
-class GetAllPlannerWiseServiceResponse {
-  GetAllPlannerWiseServiceResponseLocation? location;
+class GetAllVendorServiceResponse {
+  GetAllVendorServiceResponseLocation? location;
   var isFeatured;
   var sId;
-  GetAllPlannerWiseServiceResponseAuthor? author;
-  GetAllPlannerWiseServiceResponseCategory? category;
+  GetAllVendorServiceResponseAuthor? author;
+  GetAllVendorServiceResponseCategory? category;
   var title;
   var subtitle;
   List<String>? images;
@@ -75,7 +75,7 @@ class GetAllPlannerWiseServiceResponse {
   var status;
   var isFavorite;
 
-  GetAllPlannerWiseServiceResponse({
+  GetAllVendorServiceResponse({
     this.location,
     this.isFeatured,
     this.sId,
@@ -90,16 +90,16 @@ class GetAllPlannerWiseServiceResponse {
     this.isFavorite,
   });
 
-  GetAllPlannerWiseServiceResponse.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponse.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetAllPlannerWiseServiceResponseLocation.fromJson(json['location'])
+        ? new GetAllVendorServiceResponseLocation.fromJson(json['location'])
         : null;
     isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
-    json['author'] != null ? new GetAllPlannerWiseServiceResponseAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new GetAllVendorServiceResponseAuthor.fromJson(json['author']) : null;
     category = json['category'] != null
-        ? new GetAllPlannerWiseServiceResponseCategory.fromJson(json['category'])
+        ? new GetAllVendorServiceResponseCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
@@ -134,13 +134,13 @@ class GetAllPlannerWiseServiceResponse {
   }
 }
 
-class GetAllPlannerWiseServiceResponseLocation {
+class GetAllVendorServiceResponseLocation {
   var type;
   List<dynamic>? coordinates;
 
-  GetAllPlannerWiseServiceResponseLocation({this.type, this.coordinates});
+  GetAllVendorServiceResponseLocation({this.type, this.coordinates});
 
-  GetAllPlannerWiseServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }
@@ -153,7 +153,7 @@ class GetAllPlannerWiseServiceResponseLocation {
   }
 }
 
-class GetAllPlannerWiseServiceResponseAuthor {
+class GetAllVendorServiceResponseAuthor {
   var sId;
   var name;
   var email;
@@ -164,7 +164,7 @@ class GetAllPlannerWiseServiceResponseAuthor {
   var ratingCount;
   var isKycVerified;
 
-  GetAllPlannerWiseServiceResponseAuthor({
+  GetAllVendorServiceResponseAuthor({
     this.sId,
     this.name,
     this.email,
@@ -176,8 +176,7 @@ class GetAllPlannerWiseServiceResponseAuthor {
     this.isKycVerified,
   });
 
-
-  GetAllPlannerWiseServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -204,13 +203,13 @@ class GetAllPlannerWiseServiceResponseAuthor {
   }
 }
 
-class GetAllPlannerWiseServiceResponseCategory {
+class GetAllVendorServiceResponseCategory {
   var sId;
   var title;
 
-  GetAllPlannerWiseServiceResponseCategory({this.sId, this.title});
+  GetAllVendorServiceResponseCategory({this.sId, this.title});
 
-  GetAllPlannerWiseServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+  GetAllVendorServiceResponseCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }

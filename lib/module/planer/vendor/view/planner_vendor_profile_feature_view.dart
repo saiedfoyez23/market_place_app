@@ -1,50 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
-import 'package:marketplaceapp/module/user/home_dashboard/controller/user_planner_profile_service_controller.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
-class UserPlannerProfileServiceView extends StatelessWidget {
-  const UserPlannerProfileServiceView({
+class PlannerVendorProfileFeatureView extends StatelessWidget {
+  const PlannerVendorProfileFeatureView({
     super.key,
-    required this.isSearchBar,
-    required this.isHome,
-    required this.isRecommended,
     required this.serviceId,
     required this.userId,
-    required this.categoryId,
+    required this.isHome,
     required this.isCategory,
-    required this.isPlanner,
-    required this.isWishlist,
+    required this.isSearch,
+    required this.categoryId
   });
 
-  final bool isSearchBar;
-  final bool isHome;
-  final bool isRecommended;
-  final bool isPlanner;
   final String serviceId;
   final String userId;
+  final bool isHome;
   final bool isCategory;
+  final bool isSearch;
   final String categoryId;
-  final bool isWishlist;
-
   @override
   Widget build(BuildContext context) {
-    final UserPlannerProfileServiceController userPlannerProfileServiceController = Get.put(UserPlannerProfileServiceController(
+    final PlannerVendorProfileFeatureController plannerVendorProfileFeatureController = Get.put(PlannerVendorProfileFeatureController(
         context: context, userId: userId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>UserPlannerProfileView(
-          isHome: isHome,
-          isRecommended: isRecommended,
+        Get.off(()=>PlannerVendorProfileView(
           serviceId: serviceId,
           userId: userId,
-          categoryId: categoryId,
+          isHome: isHome,
           isCategory: isCategory,
-          isPlanner: isPlanner,
-          isWishlist: isWishlist,
-          isSearchBar: isSearchBar,
+          isSearch: isSearch,
+          categoryId: categoryId,
         ),preventDuplicates: false);
       },
       child: Scaffold(
@@ -55,23 +44,20 @@ class UserPlannerProfileServiceView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: userPlannerProfileServiceController.isLoading.value == true ?
+            child: plannerVendorProfileFeatureController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(
               context: context,
               height: 930.h(context),
             ) :
             RefreshIndicator(
               onRefresh: () async {
-                Get.off(()=>UserPlannerProfileServiceView(
-                  isHome: isHome,
-                  isRecommended: isRecommended,
+                Get.off(()=>PlannerVendorProfileFeatureView(
                   serviceId: serviceId,
                   userId: userId,
-                  categoryId: categoryId,
+                  isSearch: isSearch,
                   isCategory: isCategory,
-                  isPlanner: isPlanner,
-                  isWishlist: isWishlist,
-                  isSearchBar: isSearchBar,
+                  isHome: isHome,
+                  categoryId: categoryId,
                 ),preventDuplicates: false);
               },
               child: CustomScrollView(
@@ -80,33 +66,30 @@ class UserPlannerProfileServiceView extends StatelessWidget {
 
                   AuthAppBarHelperWidget(
                     onBackPressed: () async {
-                      Get.off(()=>UserPlannerProfileView(
-                        isHome: isHome,
-                        isRecommended: isRecommended,
+                      Get.off(()=>PlannerVendorProfileView(
                         serviceId: serviceId,
                         userId: userId,
-                        categoryId: categoryId,
+                        isSearch: isSearch,
                         isCategory: isCategory,
-                        isPlanner: isPlanner,
-                        isWishlist: isWishlist,
-                        isSearchBar: isSearchBar,
+                        isHome: isHome,
+                        categoryId: categoryId,
                       ),preventDuplicates: false);
                     },
-                    title: "Planner Service",
+                    title: "Feature List",
                   ),
 
 
-                  userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?.isNotEmpty == true ?
+                  plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true ?
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                           (context,int index) {
                         return vendorCard(
                           index: index,
                           context: context,
-                          userPlannerProfileServiceController: userPlannerProfileServiceController,
+                          plannerVendorProfileFeatureController: plannerVendorProfileFeatureController,
                         );
                       },
-                      childCount: userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?.length,
+                      childCount: plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?.length,
                     ),
                   ) :
                   SliverToBoxAdapter(
@@ -124,7 +107,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
                             textColor: ColorUtils.black48,
-                            text: "No Planner Service Available",
+                            text: "No Feature Service Available",
                           ),
                         ),
                       ),
@@ -146,9 +129,9 @@ class UserPlannerProfileServiceView extends StatelessWidget {
   Widget vendorCard({
     required int index,
     required BuildContext context,
-    required UserPlannerProfileServiceController userPlannerProfileServiceController,
+    required PlannerVendorProfileFeatureController plannerVendorProfileFeatureController,
   }) {
-    var data = userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
+    var data = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -170,7 +153,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
               img: data!.images!.first,
               index: index,
               context: context,
-              userPlannerProfileServiceController: userPlannerProfileServiceController,
+              plannerVendorProfileFeatureController: plannerVendorProfileFeatureController,
             ),
 
             Padding(
@@ -181,13 +164,13 @@ class UserPlannerProfileServiceView extends StatelessWidget {
                   infoSection(
                     index: index,
                     context: context,
-                    userPlannerProfileServiceController: userPlannerProfileServiceController,
+                    plannerVendorProfileFeatureController: plannerVendorProfileFeatureController,
                   ),
 
                   buttons(
                     index: index,
                     context: context,
-                    userPlannerProfileServiceController: userPlannerProfileServiceController,
+                    plannerVendorProfileFeatureController: plannerVendorProfileFeatureController,
                   ),
 
                 ],
@@ -205,9 +188,9 @@ class UserPlannerProfileServiceView extends StatelessWidget {
     required String img,
     required int index,
     required BuildContext context,
-    required UserPlannerProfileServiceController userPlannerProfileServiceController,
+    required PlannerVendorProfileFeatureController plannerVendorProfileFeatureController,
   }) {
-    var data = userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
+    var data = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
 
     return Stack(
       children: [
@@ -223,40 +206,6 @@ class UserPlannerProfileServiceView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Positioned(
-          top: 12.h(context),
-          right: 12.w(context),
-          child: data?.isFavorite != false ?
-          InkWell(
-            onTap: () async {
-              await userPlannerProfileServiceController.createFavoritesController(
-                context: context,
-                serviceId: data?.sId,
-                userId: userId,
-              );
-            },
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 26.h(context),
-              width: 26.w(context),
-              imageString: ImageUtils.unfavoriteIcon,
-            ),
-          ) : InkWell(
-            onTap: () async {
-              await userPlannerProfileServiceController.createFavoritesController(
-                context: context,
-                serviceId: data?.sId,
-                userId: userId,
-              );
-            },
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 26.h(context),
-              width: 26.w(context),
-              imageString: ImageUtils.favoriteIcon,
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -265,9 +214,9 @@ class UserPlannerProfileServiceView extends StatelessWidget {
   Widget infoSection({
     required int index,
     required BuildContext context,
-    required UserPlannerProfileServiceController userPlannerProfileServiceController,
+    required PlannerVendorProfileFeatureController plannerVendorProfileFeatureController,
   }) {
-    var data = userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
+    var data = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Column(
@@ -469,9 +418,9 @@ class UserPlannerProfileServiceView extends StatelessWidget {
   Widget buttons({
     required int index,
     required BuildContext context,
-    required UserPlannerProfileServiceController userPlannerProfileServiceController,
+    required PlannerVendorProfileFeatureController plannerVendorProfileFeatureController,
   }) {
-    var data = userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
+    var data = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
@@ -481,7 +430,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                Get.off(()=>DashboardPlannerView(index: 3),preventDuplicates: false);
               },
               text: "Message",
             ),
@@ -493,18 +442,27 @@ class UserPlannerProfileServiceView extends StatelessWidget {
             child: ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>UserPlannerWiseServiceDetailsView(
-                  isWishlist: isWishlist,
-                  isCategory: isCategory,
-                  isPlanner: isPlanner,
-                  isSearchBar: isSearchBar,
-                  isRecommended: isRecommended,
-                  plannerWiseServiceId: data?.sId ?? "",
-                  isHome: isHome,
+                Get.off(()=>PlannerVendorWiseServiceDetailsView(
+                  vendorWiseServiceId: data?.sId ?? "",
                   serviceId: serviceId,
                   userId: userId,
+                  isCategory: isCategory,
+                  isSearch: isSearch,
+                  isHome: isHome,
                   categoryId: categoryId,
-                ),preventDuplicates: false);
+                ),preventDuplicates: false,);
+                // Get.off(()=>UserPlannerWiseServiceDetailsView(
+                //   isWishlist: isWishlist,
+                //   isCategory: isCategory,
+                //   isPlanner: isPlanner,
+                //   isRecommended: isRecommended,
+                //   plannerWiseServiceId: data?.sId ?? "",
+                //   isHome: isHome,
+                //   isSearchBar: isSearchBar,
+                //   serviceId: serviceId,
+                //   userId: userId,
+                //   categoryId: categoryId,
+                // ),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,
@@ -516,5 +474,4 @@ class UserPlannerProfileServiceView extends StatelessWidget {
       ),
     );
   }
-
 }

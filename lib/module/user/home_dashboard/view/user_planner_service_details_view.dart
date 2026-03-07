@@ -438,29 +438,34 @@ class UserPlannerServiceDetailsView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=> UserPlannerProfileView(
-                  isSearchBar: isSearchBar,
-                  isWishlist: isWishlist,
-                  isPlanner: isPlanner,
-                  isCategory: isCategory,
-                  categoryId: categoryId,
-                  isRecommended: isRecommended,
-                  isHome: isHome,
-                  serviceId: serviceId,
-                  userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
-                ),preventDuplicates: false);
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.orange119,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+            if(userServiceDetailsController.getAllUserReviewResponseModel.value.data?.reviews?.isNotEmpty == true)...[
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=> UserPlannerProfileView(
+                    isSearchBar: isSearchBar,
+                    isWishlist: isWishlist,
+                    isPlanner: isPlanner,
+                    isCategory: isCategory,
+                    categoryId: categoryId,
+                    isRecommended: isRecommended,
+                    isHome: isHome,
+                    serviceId: serviceId,
+                    userId: userServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId,
+                  ),preventDuplicates: false);
+                },
+                text: "See All",
+                padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                alignment: Alignment.center,
+                textColor: ColorUtils.orange119,
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                backgroundColor: Colors.transparent,
+              ),
+            ] else...[
+              SizedBox.shrink(),
+            ]
+
           ],
         ),
 

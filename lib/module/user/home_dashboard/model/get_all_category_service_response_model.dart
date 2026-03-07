@@ -63,6 +63,7 @@ class GetAllCategoryServiceResponseMeta {
 
 class GetAllCategoryServiceResponse {
   GetAllCategoryServiceResponseLocation? location;
+  var isFeatured;
   var sId;
   GetAllCategoryServiceResponseAuthor? author;
   GetAllCategoryServiceResponseCategory? category;
@@ -76,6 +77,7 @@ class GetAllCategoryServiceResponse {
 
   GetAllCategoryServiceResponse({
     this.location,
+    this.isFeatured,
     this.sId,
     this.author,
     this.category,
@@ -92,6 +94,7 @@ class GetAllCategoryServiceResponse {
     location = json['location'] != null
         ? new GetAllCategoryServiceResponseLocation.fromJson(json['location'])
         : null;
+    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
     json['author'] != null ? new GetAllCategoryServiceResponseAuthor.fromJson(json['author']) : null;
@@ -112,6 +115,7 @@ class GetAllCategoryServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
+    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -138,7 +142,7 @@ class GetAllCategoryServiceResponseLocation {
 
   GetAllCategoryServiceResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<int>();
+    coordinates = json['coordinates'].cast<double>();
   }
 
   Map<String, dynamic> toJson() {

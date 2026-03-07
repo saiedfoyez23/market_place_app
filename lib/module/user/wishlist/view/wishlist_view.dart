@@ -47,7 +47,7 @@ class WishlistView extends StatelessWidget {
                 ),
               ),
 
-
+              wishlistController.getAllFavoritesResponseModel.value.data?.isNotEmpty == true ?
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, int index) {
@@ -241,7 +241,28 @@ class WishlistView extends StatelessWidget {
                     },
                     childCount: wishlistController.getAllFavoritesResponseModel.value.data?.length,
                   )
-              )
+              ) :
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                  child: SizedBox(
+                    height: 630.h(context),
+                    width: 428.w(context),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.start,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "No Wishlist Available",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
 
 
 

@@ -1,17 +1,17 @@
-class PlannerMyProfileDetailsResponseModel {
+class GetVendorProfileDetailsResponseModel {
   var success;
   var statusCode;
   var message;
-  PlannerMyProfileDetailsResponse? data;
+  GetVendorProfileDetailsResponse? data;
 
-  PlannerMyProfileDetailsResponseModel(
+  GetVendorProfileDetailsResponseModel(
       {this.success, this.statusCode, this.message, this.data});
 
-  PlannerMyProfileDetailsResponseModel.fromJson(Map<String, dynamic> json) {
+  GetVendorProfileDetailsResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    data = json['data'] != null ? new PlannerMyProfileDetailsResponse.fromJson(json['data']) : null;
+    data = json['data'] != null ? new GetVendorProfileDetailsResponse.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +26,7 @@ class PlannerMyProfileDetailsResponseModel {
   }
 }
 
-class PlannerMyProfileDetailsResponse {
+class GetVendorProfileDetailsResponse {
   var sId;
   var name;
   var email;
@@ -37,20 +37,20 @@ class PlannerMyProfileDetailsResponse {
   var bio;
   List<String>? categories;
   var locationUrl;
-  PlannerMyProfileDetailsResponseLocation? location;
-  PlannerMyProfileDetailsResponseSocialProfiles? socialProfiles;
+  GetVendorProfileDetailsResponseLocation? location;
+  GetVendorProfileDetailsResponseSocialProfiles? socialProfiles;
   var role;
   var status;
   var avgRating;
   var ratingCount;
-  PlannerMyProfileDetailsResponseNotifySettings? notifySettings;
+  GetVendorProfileDetailsResponseNotifySettings? notifySettings;
   var isKycVerified;
   var id;
   var createdAt;
   var isActiveSubscription;
   var type;
 
-  PlannerMyProfileDetailsResponse({
+  GetVendorProfileDetailsResponse({
     this.sId,
     this.name,
     this.email,
@@ -75,7 +75,7 @@ class PlannerMyProfileDetailsResponse {
     this.type,
   });
 
-  PlannerMyProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
+  GetVendorProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -87,17 +87,17 @@ class PlannerMyProfileDetailsResponse {
     categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
     location = json['location'] != null
-        ? new PlannerMyProfileDetailsResponseLocation.fromJson(json['location'])
+        ? new GetVendorProfileDetailsResponseLocation.fromJson(json['location'])
         : null;
     socialProfiles = json['socialProfiles'] != null
-        ? new PlannerMyProfileDetailsResponseSocialProfiles.fromJson(json['socialProfiles'])
+        ? new GetVendorProfileDetailsResponseSocialProfiles.fromJson(json['socialProfiles'])
         : null;
     role = json['role'];
     status = json['status'];
     avgRating = json['avgRating'];
     ratingCount = json['ratingCount'];
     notifySettings = json['notifySettings'] != null
-        ? new PlannerMyProfileDetailsResponseNotifySettings.fromJson(json['notifySettings'])
+        ? new GetVendorProfileDetailsResponseNotifySettings.fromJson(json['notifySettings'])
         : null;
     isKycVerified = json['isKycVerified'];
     id = json['id'];
@@ -140,13 +140,13 @@ class PlannerMyProfileDetailsResponse {
   }
 }
 
-class PlannerMyProfileDetailsResponseLocation {
-  String? type;
-  List<double>? coordinates;
+class GetVendorProfileDetailsResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
 
-  PlannerMyProfileDetailsResponseLocation({this.type, this.coordinates});
+  GetVendorProfileDetailsResponseLocation({this.type, this.coordinates});
 
-  PlannerMyProfileDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetVendorProfileDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }
@@ -159,14 +159,14 @@ class PlannerMyProfileDetailsResponseLocation {
   }
 }
 
-class PlannerMyProfileDetailsResponseSocialProfiles {
-  String? instagram;
-  String? linkedin;
-  String? website;
+class GetVendorProfileDetailsResponseSocialProfiles {
+  var instagram;
+  var linkedin;
+  var website;
 
-  PlannerMyProfileDetailsResponseSocialProfiles({this.instagram, this.linkedin, this.website});
+  GetVendorProfileDetailsResponseSocialProfiles({this.instagram, this.linkedin, this.website});
 
-  PlannerMyProfileDetailsResponseSocialProfiles.fromJson(Map<String, dynamic> json) {
+  GetVendorProfileDetailsResponseSocialProfiles.fromJson(Map<String, dynamic> json) {
     instagram = json['instagram'];
     linkedin = json['linkedin'];
     website = json['website'];
@@ -181,7 +181,7 @@ class PlannerMyProfileDetailsResponseSocialProfiles {
   }
 }
 
-class PlannerMyProfileDetailsResponseNotifySettings {
+class GetVendorProfileDetailsResponseNotifySettings {
   var all;
   var profile;
   var service;
@@ -189,7 +189,7 @@ class PlannerMyProfileDetailsResponseNotifySettings {
   var subscription;
   var payment;
 
-  PlannerMyProfileDetailsResponseNotifySettings({
+  GetVendorProfileDetailsResponseNotifySettings({
     this.all,
     this.profile,
     this.service,
@@ -198,7 +198,7 @@ class PlannerMyProfileDetailsResponseNotifySettings {
     this.payment,
   });
 
-  PlannerMyProfileDetailsResponseNotifySettings.fromJson(Map<String, dynamic> json) {
+  GetVendorProfileDetailsResponseNotifySettings.fromJson(Map<String, dynamic> json) {
     all = json['all'];
     profile = json['profile'];
     service = json['service'];
