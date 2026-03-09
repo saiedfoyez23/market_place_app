@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
-
 
 
 class PlannerVendorController extends GetxController {

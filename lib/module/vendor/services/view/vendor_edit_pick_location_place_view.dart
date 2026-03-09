@@ -51,7 +51,7 @@ class VendorEditPickLocationPlaceView extends StatelessWidget {
 
                         GooglePlaceAutoCompleteTextField(
                           textEditingController: vendorEditPickLocationPlaceController.searchController.value,
-                          googleAPIKey: "AIzaSyB_3nOokGz9jksH5jN_f05YNEJeZqWizYM",
+                          googleAPIKey: "AIzaSyB3Ktiqv1sAYhiBJnWYQ34E45JeNQfjQEc",
                           debounceTime: 800,
                           countries: const ["bd"],
                           isLatLngRequired: true,

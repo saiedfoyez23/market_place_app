@@ -92,9 +92,9 @@ class VendorBookingController extends GetxController {
                 price: "${value.totalAmount}",
                 startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
                 endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
-                status: value.status == "complete" ? VendorBookingStatus.complete :
+                status: value.status == "completed" ? VendorBookingStatus.complete :
                 value.status == "pending" ? VendorBookingStatus.pending :
-                value.status == "denied" ? VendorBookingStatus.cancelled :
+                value.status == "cancelled" ? VendorBookingStatus.cancelled :
                 VendorBookingStatus.active,
                 coverImage: value.receiver?.photoUrl ?? "",
               ),

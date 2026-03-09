@@ -12,114 +12,120 @@ class PlannerProjectDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(()=> SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: CustomScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            slivers: [
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: Obx(()=> SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              slivers: [
 
-              AuthAppBarHelperWidget(
-                onBackPressed: () async {
-                  Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
-                },
-                title: "Order Details",
-              ),
-
-
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-
-                    SpaceHelperWidget.v(16.h(context)),
-
-                    buildTabs(context: context),
-
-
-                    SpaceHelperWidget.v(16.h(context)),
-
-
-                  ],
+                AuthAppBarHelperWidget(
+                  onBackPressed: () async {
+                    Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+                  },
+                  title: "Project Details",
                 ),
-              ),
 
 
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                SliverToBoxAdapter(
                   child: Column(
                     children: [
 
-                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.overview ?
-                      Expanded(
-                        child: OverViewPage.overViewPage(
-                          context: context,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        ),
-                      ) :
-                      SizedBox.shrink(),
+                      SpaceHelperWidget.v(16.h(context)),
+
+                      buildTabs(context: context),
 
 
-                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.vendors ?
-                      Expanded(
-                        child: VendorInformationShowPage.vendorInformationPage(
-                          context: context,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        ),
-                      ) :
-                      SizedBox.shrink(),
-
-                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.tasks ?
-                      Expanded(
-                        child: TasksPage.tasksPage(
-                          context: context,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        ),
-                      ) :
-                      SizedBox.shrink(),
-
-
-
-                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.files ?
-                      Expanded(
-                        child: FilesPage.filesPage(
-                          context: context,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        ),
-                      ) :
-                      SizedBox.shrink(),
-
-
-                      plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.payments ?
-                      Expanded(
-                        child: PaymentPage.paymentPage(
-                          context: context,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        ),
-                      ) :
-                      SizedBox.shrink()
-
-
-
-
-
+                      SpaceHelperWidget.v(16.h(context)),
 
 
                     ],
                   ),
                 ),
-              )
 
 
-            ],
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
+
+                        plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.overview ?
+                        Expanded(
+                          child: OverViewPage.overViewPage(
+                            context: context,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          ),
+                        ) :
+                        SizedBox.shrink(),
+
+
+                        plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.vendors ?
+                        Expanded(
+                          child: VendorInformationShowPage.vendorInformationPage(
+                            context: context,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          ),
+                        ) :
+                        SizedBox.shrink(),
+
+                        plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.tasks ?
+                        Expanded(
+                          child: TasksPage.tasksPage(
+                            context: context,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          ),
+                        ) :
+                        SizedBox.shrink(),
+
+
+
+                        plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.files ?
+                        Expanded(
+                          child: FilesPage.filesPage(
+                            context: context,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          ),
+                        ) :
+                        SizedBox.shrink(),
+
+
+                        plannerProjectDetailsController.selectedPage.value == PlannerOrderDetailsPage.payments ?
+                        Expanded(
+                          child: PaymentPage.paymentPage(
+                            context: context,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          ),
+                        ) :
+                        SizedBox.shrink()
+
+
+
+
+
+
+
+                      ],
+                    ),
+                  ),
+                )
+
+
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

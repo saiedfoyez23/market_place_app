@@ -195,7 +195,7 @@ class VendorGetAllOrderResponse {
 
 class VendorGetAllOrderResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
   VendorGetAllOrderResponseLocation({this.type, this.coordinates});
 
@@ -216,13 +216,15 @@ class VendorGetAllOrderResponseSender {
   var sId;
   var name;
   var photoUrl;
+  var isKycVerified;
 
-  VendorGetAllOrderResponseSender({this.sId, this.name, this.photoUrl});
+  VendorGetAllOrderResponseSender({this.sId, this.name, this.photoUrl, this.isKycVerified});
 
   VendorGetAllOrderResponseSender.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     photoUrl = json['photoUrl'];
+    isKycVerified = json['isKycVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -230,6 +232,7 @@ class VendorGetAllOrderResponseSender {
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['photoUrl'] = this.photoUrl;
+    data['isKycVerified'] = this.isKycVerified;
     return data;
   }
 }
