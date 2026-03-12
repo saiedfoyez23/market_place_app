@@ -63,7 +63,6 @@ class GetAllVendorServiceResponseMeta {
 
 class GetAllVendorServiceResponse {
   GetAllVendorServiceResponseLocation? location;
-  var isFeatured;
   var sId;
   GetAllVendorServiceResponseAuthor? author;
   GetAllVendorServiceResponseCategory? category;
@@ -73,11 +72,11 @@ class GetAllVendorServiceResponse {
   var address;
   var locationUrl;
   var status;
+  var isFeatured;
   var isFavorite;
 
   GetAllVendorServiceResponse({
     this.location,
-    this.isFeatured,
     this.sId,
     this.author,
     this.category,
@@ -87,6 +86,7 @@ class GetAllVendorServiceResponse {
     this.address,
     this.locationUrl,
     this.status,
+    this.isFeatured,
     this.isFavorite,
   });
 
@@ -94,7 +94,6 @@ class GetAllVendorServiceResponse {
     location = json['location'] != null
         ? new GetAllVendorServiceResponseLocation.fromJson(json['location'])
         : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
     json['author'] != null ? new GetAllVendorServiceResponseAuthor.fromJson(json['author']) : null;
@@ -107,6 +106,7 @@ class GetAllVendorServiceResponse {
     address = json['address'];
     locationUrl = json['locationUrl'];
     status = json['status'];
+    isFeatured = json['isFeatured'];
     isFavorite = json['isFavorite'];
   }
 
@@ -115,7 +115,6 @@ class GetAllVendorServiceResponse {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -129,6 +128,7 @@ class GetAllVendorServiceResponse {
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     data['status'] = this.status;
+    data['isFeatured'] = this.isFeatured;
     data['isFavorite'] = this.isFavorite;
     return data;
   }

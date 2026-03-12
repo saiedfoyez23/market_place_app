@@ -40,7 +40,6 @@ class PlannerProjectController extends GetxController {
           if (value.status == "denied") {
             return;
           }
-
           allProjects.add(
             ProjectModel(
               sid: value.sId ?? "",

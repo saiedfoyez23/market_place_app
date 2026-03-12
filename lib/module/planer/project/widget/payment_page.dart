@@ -26,7 +26,7 @@ class PaymentPage {
                       context: context,
                       icon: ImageUtils.totalReceivedImage,
                       title: 'Total Received',
-                      value: '\$${plannerProjectDetailsController.totalReceived.toStringAsFixed(0)}',
+                      value: '\$${plannerProjectDetailsController.getAllProjectPaymentResponseModel.value.data?.totalReceived ?? 0}',
                       color: ColorUtils.cyan199,
                     ),
                   ),
@@ -39,7 +39,7 @@ class PaymentPage {
                       context: context,
                       icon: ImageUtils.pendingPaymentsImage,
                       title: 'Pending Payments',
-                      value: '\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}',
+                      value: '\$${plannerProjectDetailsController.getAllProjectPaymentResponseModel.value.data?.pendingPayment ?? 0}',
                       color: ColorUtils.blue206,
                     ),
                   ),
@@ -58,7 +58,7 @@ class PaymentPage {
                       context: context,
                       icon: ImageUtils.vendorPaymentsImage,
                       title: 'Vendor Payments',
-                      value: '\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}',
+                      value: '\$${plannerProjectDetailsController.getAllProjectPaymentResponseModel.value.data?.vendorPayment ?? 0}',
                       color: ColorUtils.green213,
                     ),
                   ),
@@ -71,7 +71,7 @@ class PaymentPage {
                       context: context,
                       icon: ImageUtils.totalSavedImage,
                       title: 'Total Saved',
-                      value: '\$${plannerProjectDetailsController.totalPending.toStringAsFixed(0)}',
+                      value: '\$${plannerProjectDetailsController.getAllProjectPaymentResponseModel.value.data?.totalSaved ?? 0}',
                       color: ColorUtils.orange213,
                     ),
                   ),
@@ -81,7 +81,7 @@ class PaymentPage {
 
               SizedBox(height: 16),
               // Payment List
-              ...plannerProjectDetailsController.payments.map((payment) => Container(
+              ...plannerProjectDetailsController.getAllProjectPaymentResponseModel.value.data!.payments!.map((payment) => Container(
                 padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 14.hpm(context)),
                 decoration: BoxDecoration(
                   color: ColorUtils.white243,
@@ -91,18 +91,24 @@ class PaymentPage {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _rowItem(title: "Source:", value: "${payment.source}", context: context),
-                    _rowItem(title: "Description:", value: "${payment.description}", context: context),
-                    _rowItem(title: "Date:", value: "${DateFormat('dd MMM yyyy').format(payment.date)}", context: context),
-                    _rowStatusItem(title: "Status:", value: "${payment.status}", context: context),
-                    _rowItem(title: 'Amount:', value: "\$${payment.amount.toStringAsFixed(2)}", context: context),
+                    _rowItem(title: "Vendor Name: ", value: payment.vendor?.name ?? "", context: context),
+                    _rowItem(title: "Order Title: ", value: payment.vendorOrder?.title ?? "", context: context),
+                    _rowItem(title: "Date: ", value: "${DateFormat('dd MMM yyyy').format(DateTime.parse(payment.createdAt))}", context: context),
+                    _rowStatusItem(title: "Status: ", value: payment.paymentStatus == "pending"? "Pending" : "Paid", context: context),
+                    _rowItem(title: 'Amount: ', value: "\$${payment.agreedAmount}", context: context),
 
                     SpaceHelperWidget.v(10.h(context)),
 
-                    payment.status != "Paid" ?
+                    payment.paymentStatus == "pending" ?
                     ButtonHelperWidget.customButtonWidgetAdventPro(
                       context: context,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        PaymentDialogBoxWidget().makePaymentDialog(
+                          context: context,
+                          paymentId: payment.sId,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        );
+                      },
                       text: "Make Payment",
                       backgroundColor: ColorUtils.white217,
                       textColor: ColorUtils.white255,

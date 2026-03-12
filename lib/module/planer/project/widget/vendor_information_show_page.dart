@@ -12,7 +12,7 @@ class VendorInformationShowPage {
     required BuildContext context,
     required PlannerProjectDetailsController plannerProjectDetailsController,
   }) {
-    return Obx(() => CustomScrollView(
+    return Obx(()=>CustomScrollView(
       slivers: [
 
         SliverToBoxAdapter(
@@ -26,7 +26,12 @@ class VendorInformationShowPage {
                   Expanded(
                     child: ButtonHelperWidget.customButtonWidgetAdventPro(
                       context: context,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        VendorAddDialogBoxWidget().showCompareQouotesDialog(
+                          context: context,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        );
+                      },
                       text: "Compare Qouotes",
                       backgroundColor: ColorUtils.blue173,
                       textColor: ColorUtils.blue96,
@@ -48,7 +53,10 @@ class VendorInformationShowPage {
                       textColor: ColorUtils.white255,
                       fontWeight: FontWeight.w700,
                       onPressed: () async {
-
+                        VendorAddDialogBoxWidget().showAddVendorOrderDialog(
+                          context: context,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        );
                       },
                       iconPath: ImageUtils.addImage,
                       text: "Add Vendor",
@@ -68,16 +76,30 @@ class VendorInformationShowPage {
           ),
         ),
 
-
+        plannerProjectDetailsController.getAllProjectVendorResponseModel.value.data?.isEmpty == true ?
+        SliverFillRemaining(
+          child: Align(
+            alignment: Alignment.center,
+            child: TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.center,
+              textAlign: TextAlign.start,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              textColor: ColorUtils.black48,
+              text: "No Vendor Assign In This Project",
+            ),
+          ),
+        ) :
         SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context,int index) {
                   return _vendorInformation(
                     context: context,
-                    vendor: plannerProjectDetailsController.vendors[index],
+                    vendor: plannerProjectDetailsController.getAllProjectVendorResponseModel.value.data![index],
                   );
                 },
-              childCount: plannerProjectDetailsController.vendors.length,
+              childCount: plannerProjectDetailsController.getAllProjectVendorResponseModel.value.data?.length,
             )
         ),
 
@@ -86,15 +108,15 @@ class VendorInformationShowPage {
           child: Column(
             children: [
 
-              SpaceHelperWidget.v(30.h(context)),
-
-              ButtonHelperWidget.customButtonWidgetAdventPro(
-                context: context,
-                onPressed: () async {},
-                text: "Complete Order",
-                backgroundColor: ColorUtils.white217,
-                textColor: ColorUtils.white255,
-              ),
+              // SpaceHelperWidget.v(30.h(context)),
+              //
+              // ButtonHelperWidget.customButtonWidgetAdventPro(
+              //   context: context,
+              //   onPressed: () async {},
+              //   text: "Complete Order",
+              //   backgroundColor: ColorUtils.white217,
+              //   textColor: ColorUtils.white255,
+              // ),
 
               SpaceHelperWidget.v(30.h(context)),
 
@@ -110,13 +132,13 @@ class VendorInformationShowPage {
 
   static Widget _vendorInformation({
     required BuildContext context,
-    required PlannerProjectVendorModel vendor,
+    required GetAllProjectVendorResponse vendor,
   }) {
 
     Color badgeColor = Colors.grey;
     Color textColor = Colors.white;
 
-    if(vendor.status == "Confirmed") {
+    if(vendor.status == "confirmed") {
       badgeColor = ColorUtils.green02;
       textColor = ColorUtils.green139;
     } else {
@@ -146,7 +168,7 @@ class VendorInformationShowPage {
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,
-                text: vendor.name,
+                text: vendor.vendor?.name ?? "",
               ),
 
               SpaceHelperWidget.h(10.w(context)),
@@ -164,7 +186,7 @@ class VendorInformationShowPage {
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                   textColor: textColor,
-                  text: vendor.status,
+                  text: vendor.status == "confirmed" ? "Confirmed" : "Assigned",
                 ),
               ),
 
@@ -180,15 +202,15 @@ class VendorInformationShowPage {
             fontSize: 17,
             fontWeight: FontWeight.w500,
             textColor: ColorUtils.black48,
-            text: vendor.category,
+            text: vendor.vendorOrder?.title ?? "",
           ),
 
           SpaceHelperWidget.v(20.h(context)),
 
-          _rowItem(title: "Email", value: vendor.email, context: context),
-          _rowItem(title: "Phone", value: vendor.phone, context: context),
-          _rowItem(title: "Quote", value: "\$${vendor.quote}", context: context),
-          _rowItem(title: "Location", value: vendor.location, context: context),
+          _rowItem(title: "Email", value: vendor.vendor?.email, context: context),
+          _rowItem(title: "Phone", value: vendor.vendor?.contractNumber, context: context),
+          _rowItem(title: "Quote", value: "\$${vendor.agreedAmount}", context: context),
+          _rowItem(title: "Location", value: vendor.vendor?.address, context: context),
 
         ],
       ),
@@ -220,7 +242,7 @@ class VendorInformationShowPage {
               child: TextHelperClass.headingTextWithoutWidth(
                 context: context,
                 alignment: Alignment.centerRight,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.end,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,

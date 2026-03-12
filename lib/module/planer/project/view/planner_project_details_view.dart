@@ -6,12 +6,13 @@ import 'package:marketplaceapp/utils/utils.dart';
 
 
 class PlannerProjectDetailsView extends StatelessWidget {
-  PlannerProjectDetailsView({super.key});
+  PlannerProjectDetailsView({super.key,required this.projectId});
 
-  final PlannerProjectDetailsController plannerProjectDetailsController = Get.put(PlannerProjectDetailsController());
+  final String projectId;
 
   @override
   Widget build(BuildContext context) {
+    final PlannerProjectDetailsController plannerProjectDetailsController = Get.put(PlannerProjectDetailsController(context: context, projectId: projectId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -25,7 +26,12 @@ class PlannerProjectDetailsView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: CustomScrollView(
+            child: plannerProjectDetailsController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
               physics: NeverScrollableScrollPhysics(),
               slivers: [
 
@@ -43,7 +49,7 @@ class PlannerProjectDetailsView extends StatelessWidget {
 
                       SpaceHelperWidget.v(16.h(context)),
 
-                      buildTabs(context: context),
+                      buildTabs(context: context,plannerProjectDetailsController: plannerProjectDetailsController),
 
 
                       SpaceHelperWidget.v(16.h(context)),
@@ -131,20 +137,28 @@ class PlannerProjectDetailsView extends StatelessWidget {
 
 
 
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerProjectDetailsController plannerProjectDetailsController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(page: PlannerOrderDetailsPage.overview,title: "Overview",context: context),
-        tabItem(page: PlannerOrderDetailsPage.vendors,title: "Vendors",context: context),
-        tabItem(page: PlannerOrderDetailsPage.tasks,title: "Tasks",context: context),
-        tabItem(page: PlannerOrderDetailsPage.files,title: "Files",context: context),
-        tabItem(page: PlannerOrderDetailsPage.payments,title: "Payments",context: context),
+        tabItem(page: PlannerOrderDetailsPage.overview,title: "Overview",context: context,plannerProjectDetailsController: plannerProjectDetailsController),
+        tabItem(page: PlannerOrderDetailsPage.vendors,title: "Vendors",context: context,plannerProjectDetailsController: plannerProjectDetailsController),
+        tabItem(page: PlannerOrderDetailsPage.tasks,title: "Tasks",context: context,plannerProjectDetailsController: plannerProjectDetailsController),
+        tabItem(page: PlannerOrderDetailsPage.files,title: "Files",context: context,plannerProjectDetailsController: plannerProjectDetailsController),
+        tabItem(page: PlannerOrderDetailsPage.payments,title: "Payments",context: context,plannerProjectDetailsController: plannerProjectDetailsController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerOrderDetailsPage page,required BuildContext context}) {
+  Widget tabItem({
+    required PlannerProjectDetailsController plannerProjectDetailsController,
+    required String title,
+    required PlannerOrderDetailsPage page,
+    required BuildContext context,
+  }) {
     bool isSelected = plannerProjectDetailsController.selectedPage.value == page;
     return InkWell(
       onTap: () {
@@ -179,144 +193,73 @@ class PlannerProjectDetailsView extends StatelessWidget {
 }
 
 
-
-class OrderDetailsScreen extends StatefulWidget {
-  @override
-  _OrderDetailsScreenState createState() => _OrderDetailsScreenState();
-}
-
-class _OrderDetailsScreenState extends State<OrderDetailsScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final PlannerProjectDetailsController plannerProjectDetailsController = Get.put(PlannerProjectDetailsController());
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 5, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: Text('Order Details'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          // Tab Bar
-          Container(
-            color: Colors.white,
-            child: TabBar(
-              controller: _tabController,
-              labelColor: Colors.blue,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.blue,
-              tabs: [
-                Tab(text: 'Overview'),
-                Tab(text: 'Vendors'),
-                Tab(text: 'Tasks'),
-                Tab(text: 'Files'),
-                Tab(text: 'Payments'),
-              ],
-            ),
-          ),
-          // Tab Bar View
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                TasksTab(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
 // Tasks Tab
-class TasksTab extends StatelessWidget {
-  final PlannerProjectDetailsController plannerProjectDetailsController  = Get.put(PlannerProjectDetailsController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Overall Progress', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Text('${plannerProjectDetailsController.tasks.where((t) => t.isCompleted).length} of ${plannerProjectDetailsController.tasks.length} tasks completed'),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            itemCount: plannerProjectDetailsController.tasks.length,
-            itemBuilder: (context, index) {
-              final task = plannerProjectDetailsController.tasks[index];
-              return Card(
-                margin: EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: Checkbox(
-                    value: task.isCompleted,
-                    onChanged: (value) {
-                      plannerProjectDetailsController.tasks[index] = PlannerTaskModel(
-                        title: task.title,
-                        date: task.date,
-                        isCompleted: value ?? false,
-                      );
-                      plannerProjectDetailsController.tasks.refresh();
-                    },
-                  ),
-                  title: Text(task.title),
-                  subtitle: Text(DateFormat('dd MMM yyyy').format(task.date)),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      plannerProjectDetailsController.tasks.removeAt(index);
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.add),
-                label: Text('Add Task'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              ),
-              Text('Task Checklist', style: TextStyle(fontSize: 16)),
-            ],
-          ),
-        ),
-      ],
-    ));
-  }
-}
+// class TasksTab extends StatelessWidget {
+//   final PlannerProjectDetailsController plannerProjectDetailsController  = Get.put(PlannerProjectDetailsController());
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(() => Column(
+//       children: [
+//         Padding(
+//           padding: EdgeInsets.all(16),
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Text('Overall Progress', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+//               Text('${plannerProjectDetailsController.tasks.where((t) => t.isCompleted).length} of ${plannerProjectDetailsController.tasks.length} tasks completed'),
+//             ],
+//           ),
+//         ),
+//         Expanded(
+//           child: ListView.builder(
+//             padding: EdgeInsets.symmetric(horizontal: 16),
+//             itemCount: plannerProjectDetailsController.tasks.length,
+//             itemBuilder: (context, index) {
+//               final task = plannerProjectDetailsController.tasks[index];
+//               return Card(
+//                 margin: EdgeInsets.only(bottom: 8),
+//                 child: ListTile(
+//                   leading: Checkbox(
+//                     value: task.isCompleted,
+//                     onChanged: (value) {
+//                       plannerProjectDetailsController.tasks[index] = PlannerTaskModel(
+//                         title: task.title,
+//                         date: task.date,
+//                         isCompleted: value ?? false,
+//                       );
+//                       plannerProjectDetailsController.tasks.refresh();
+//                     },
+//                   ),
+//                   title: Text(task.title),
+//                   subtitle: Text(DateFormat('dd MMM yyyy').format(task.date)),
+//                   trailing: IconButton(
+//                     icon: Icon(Icons.delete, color: Colors.red),
+//                     onPressed: () {
+//                       plannerProjectDetailsController.tasks.removeAt(index);
+//                     },
+//                   ),
+//                 ),
+//               );
+//             },
+//           ),
+//         ),
+//         Padding(
+//           padding: EdgeInsets.all(16),
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               ElevatedButton.icon(
+//                 onPressed: () {},
+//                 icon: Icon(Icons.add),
+//                 label: Text('Add Task'),
+//                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+//               ),
+//               Text('Task Checklist', style: TextStyle(fontSize: 16)),
+//             ],
+//           ),
+//         ),
+//       ],
+//     ));
+//   }
+// }

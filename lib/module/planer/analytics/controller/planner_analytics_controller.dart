@@ -1,9 +1,51 @@
+import 'dart:convert';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
 class PlannerAnalyticsController extends GetxController {
+
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
+  RxBool isLoading = false.obs;
+  BuildContext context;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  PlannerAnalyticsController({required this.context});
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      await getPlannerProfileDetailsController(context: context);
+    });
+  }
+
+
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+        isLoading.value = false;
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
 
   // Static data - can be made reactive if needed
   final RxInt eventsManaged = 234.obs;

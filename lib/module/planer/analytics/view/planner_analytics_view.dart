@@ -7,10 +7,10 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerAnalyticsView extends StatelessWidget {
   PlannerAnalyticsView({super.key});
 
-  final PlannerAnalyticsController plannerAnalyticsController = Get.put(PlannerAnalyticsController());
 
   @override
   Widget build(BuildContext context) {
+    final PlannerAnalyticsController plannerAnalyticsController = Get.put(PlannerAnalyticsController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -19,7 +19,12 @@ class PlannerAnalyticsView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
+          child: plannerAnalyticsController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
 
 
@@ -28,7 +33,51 @@ class PlannerAnalyticsView extends StatelessWidget {
                 title: "Analytics",
               ),
 
+              plannerAnalyticsController.plannerMyProfileDetailsResponseModel.value.data?.type == null ?
+              SliverFillRemaining(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      textColor: ColorUtils.black48,
+                      text: "Access Restricted",
+                    ),
+
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Only subscribed members can see this feature",
+                    ),
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Subscribe now to unlock this feature.",
+                    ),
+
+
+                  ],
+                ),
+              ) :
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -39,6 +88,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Events Managed',
                               value: '${plannerAnalyticsController.eventsManaged.value}',
@@ -50,6 +100,7 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Active Clients',
                               value: '${plannerAnalyticsController.activeClients.value}',
@@ -65,6 +116,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Vendor Partnerships',
                               value: '${plannerAnalyticsController.vendorPartnerships.value}',
@@ -75,6 +127,7 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Total Earnings',
                               value: '\$${plannerAnalyticsController.totalEarnings.value}',
@@ -94,7 +147,7 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                       // Tab Buttons
 
-                      buildTabs(context: context),
+                      buildTabs(context: context,plannerAnalyticsController: plannerAnalyticsController),
 
 
                       plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.eventTypes ?
@@ -149,6 +202,7 @@ class PlannerAnalyticsView extends StatelessWidget {
     required BuildContext context,
     required String title,
     required String value,
+    required PlannerAnalyticsController plannerAnalyticsController,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.hpm(context),vertical: 14.vpm(context)),
@@ -321,18 +375,26 @@ class PlannerAnalyticsView extends StatelessWidget {
   }
 
 
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerAnalyticsController plannerAnalyticsController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Expanded(child: tabItem(status: PlannerAnalyticTab.revenueTrends,title: "Revenue Trends",context: context)),
-        Expanded(child: tabItem(status: PlannerAnalyticTab.eventTypes,title: "Event Types",context: context)),
-        Expanded(child: tabItem(status: PlannerAnalyticTab.topVendors,title: "Top Vendors",context: context)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.revenueTrends,title: "Revenue Trends",context: context,plannerAnalyticsController: plannerAnalyticsController)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.eventTypes,title: "Event Types",context: context,plannerAnalyticsController: plannerAnalyticsController)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.topVendors,title: "Top Vendors",context: context,plannerAnalyticsController: plannerAnalyticsController)),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerAnalyticTab status,required BuildContext context}) {
+  Widget tabItem({
+    required String title,
+    required PlannerAnalyticTab status,
+    required BuildContext context,
+    required PlannerAnalyticsController plannerAnalyticsController,
+  }) {
     bool isSelected = plannerAnalyticsController.selectedTab.value == status;
     return InkWell(
       onTap: () {

@@ -35,7 +35,7 @@ class PlannerProjectView extends StatelessWidget {
 
                 MainPageAppBarHelperWidget(
                   centerTitle: false,
-                  title: "Project",
+                  title: "Projects",
                   actions: [
 
 
@@ -330,10 +330,20 @@ class PlannerProjectView extends StatelessWidget {
           SpaceHelperWidget.v(15.h(context)),
 
 
+          text == "Pending" ?
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>PlannerProjectDetailsView(),preventDuplicates: false);
+              Get.off(()=>PlannerOpenOrderDetailsView(orderID: projectModel.sid),preventDuplicates: false);
+            },
+            backgroundColor: ColorUtils.red20,
+            textColor: ColorUtils.red202,
+            text: "Order Details",
+          ) :
+          ButtonHelperWidget.customButtonWidgetAdventPro(
+            context: context,
+            onPressed: () async {
+              Get.off(()=>PlannerProjectDetailsView(projectId: projectModel.sid,),preventDuplicates: false);
             },
             text: "Open Project",
           ),

@@ -23,203 +23,207 @@ class PlannerVendorView extends StatelessWidget {
             context: context,
             height: 930.h(context),
           ) :
-          CustomScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            slivers: [
+          RefreshIndicator(
+            onRefresh: () async {
+              Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+            },
+            child: CustomScrollView(
+              slivers: [
 
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
-
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                      // app bar
-                      Row(
-                        children: [
-
-                          ImageHelperWidget.circleImageHelperWidget(
-                            width: 50.w(context),
-                            height: 50.h(context),
-                            verticalPadding: 1.vpm(context),
-                            horizontalPadding: 1.hpm(context),
-                            backgroundColor: ColorUtils.orange213,
-                            radius: 25.r(context),
-                            imageAsset: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
-                            imageUrl: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
-                          ),
-
-                          SpaceHelperWidget.h(12.w(context)),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
 
 
-                          Expanded(
-                            child: Column(
-                              children: [
+                        SpaceHelperWidget.v(32.h(context)),
 
-                                RichTextHelperWidget.headingRichText(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  textSpans: [
-                                    CustomTextSpan(
-                                        text: 'Hello!! ',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: ColorUtils.black64
-                                    ).toTextSpan(),
-                                    CustomTextSpan(
-                                      text: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.name.toString().split(" ").first ?? "",
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: ColorUtils.orange119,
-                                    ).toTextSpan(),
-                                  ],
-                                ),
-
-
-                                SpaceHelperWidget.v(3.h(context)),
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  textColor: ColorUtils.black107,
-                                  text: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.address ?? "",
-                                ),
-
-
-
-                              ],
-                            ),
-                          ),
-
-
-
-
-                          SpaceHelperWidget.h(15.w(context)),
-
-                          InkWell(
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                barrierColor: Colors.black.withOpacity(0.3),
-                                builder: (context) {
-                                  return PlannerCategoryDialogBox();
-                                },
-                              );
-                            },
-                            child: ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 50.h(context),
-                              width: 50.w(context),
-                              imageString: ImageUtils.filterSearchImage,
-                            ),
-                          ),
-
-                          SpaceHelperWidget.h(15.w(context)),
-
-                          InkWell(
-                            onTap: () async {
-                              Get.off(()=>PlannerOfferView(),preventDuplicates: false);
-                            },
-                            child: ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 50.h(context),
-                              width: 50.w(context),
-                              imageString: ImageUtils.offerImage,
-                            ),
-                          ),
-
-
-                        ],
-                      ),
-
-
-                      SpaceHelperWidget.v(32.h(context)),
-
-                    ],
-                  ),
-                ),
-              ),
-
-
-              SliverFillRemaining(
-                child: CustomScrollView(
-                  slivers: [
-
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                        child: Column(
+                        // app bar
+                        Row(
                           children: [
 
-                            SpaceHelperWidget.v(16.h(context)),
+                            ImageHelperWidget.circleImageHelperWidget(
+                              width: 50.w(context),
+                              height: 50.h(context),
+                              verticalPadding: 1.vpm(context),
+                              horizontalPadding: 1.hpm(context),
+                              backgroundColor: ColorUtils.orange213,
+                              radius: 25.r(context),
+                              imageAsset: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
+                              imageUrl: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
+                            ),
 
-                            // Search Bar
-                            TextFormFieldWidget.build(
-                              context: context,
-                              hintText: "Search Planner...",
-                              controller: plannerVendorController.searchController.value,
-                              keyboardType: TextInputType.emailAddress,
-                              readOnly: true,
-                              onTap: () async {
-                                showDialog(
-                                  context: context,
-                                  barrierColor: Colors.black.withOpacity(0.3),
-                                  builder: (context) {
-                                    return PlannerSearchDialogBox();
-                                  },
-                                );
-                              },
-                              prefixIcon: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                  20.lpm(context),
-                                  14.5.tpm(context),
-                                  5.rpm(context),
-                                  14.5.bpm(context),
-                                ),
-                                child: ImageHelperWidget.assetImageWidget(
-                                  context: context,
-                                  height: 20.h(context),
-                                  width: 20.w(context),
-                                  imageString: ImageUtils.searchImage,
-                                ),
+                            SpaceHelperWidget.h(12.w(context)),
+
+
+                            Expanded(
+                              child: Column(
+                                children: [
+
+                                  RichTextHelperWidget.headingRichText(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    textSpans: [
+                                      CustomTextSpan(
+                                          text: 'Hello!! ',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: ColorUtils.black64
+                                      ).toTextSpan(),
+                                      CustomTextSpan(
+                                        text: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.name.toString().split(" ").first ?? "",
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorUtils.orange119,
+                                      ).toTextSpan(),
+                                    ],
+                                  ),
+
+
+                                  SpaceHelperWidget.v(3.h(context)),
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    textColor: ColorUtils.black107,
+                                    text: plannerVendorController.plannerMyProfileDetailsResponseModel.value.data?.address ?? "",
+                                  ),
+
+
+
+                                ],
                               ),
                             ),
 
-                            SpaceHelperWidget.v(32.h(context)),
 
-                            // app bar
 
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+                            InkWell(
+                              onTap: () async {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: Colors.black.withOpacity(0.3),
+                                  builder: (context) {
+                                    return PlannerCategoryDialogBox();
+                                  },
+                                );
+                              },
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 50.h(context),
+                                width: 50.w(context),
+                                imageString: ImageUtils.filterSearchImage,
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+                            InkWell(
+                              onTap: () async {
+                                Get.off(()=>PlannerOfferView(),preventDuplicates: false);
+                              },
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 50.h(context),
+                                width: 50.w(context),
+                                imageString: ImageUtils.offerImage,
+                              ),
+                            ),
 
 
                           ],
                         ),
-                      ),
+
+
+                        SpaceHelperWidget.v(32.h(context)),
+
+                      ],
                     ),
-
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                            (context,int index) {
-                          return vendorCard(
-                            index: index,
-                            context: context,
-                            plannerVendorController: plannerVendorController,
-                          );
-                        },
-                        childCount: plannerVendorController.getAllVendorServiceResponseModel.value.data?.length,
-                      ),
-                    ),
-
-
-
-                  ],
+                  ),
                 ),
-              )
-            ],
+
+
+                SliverFillRemaining(
+                  child: CustomScrollView(
+                    slivers: [
+
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                          child: Column(
+                            children: [
+
+                              SpaceHelperWidget.v(16.h(context)),
+
+                              // Search Bar
+                              TextFormFieldWidget.build(
+                                context: context,
+                                hintText: "Search Planner...",
+                                controller: plannerVendorController.searchController.value,
+                                keyboardType: TextInputType.emailAddress,
+                                readOnly: true,
+                                onTap: () async {
+                                  showDialog(
+                                    context: context,
+                                    barrierColor: Colors.black.withOpacity(0.3),
+                                    builder: (context) {
+                                      return PlannerSearchDialogBox();
+                                    },
+                                  );
+                                },
+                                prefixIcon: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    20.lpm(context),
+                                    14.5.tpm(context),
+                                    5.rpm(context),
+                                    14.5.bpm(context),
+                                  ),
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 20.h(context),
+                                    width: 20.w(context),
+                                    imageString: ImageUtils.searchImage,
+                                  ),
+                                ),
+                              ),
+
+                              SpaceHelperWidget.v(32.h(context)),
+
+                              // app bar
+
+
+
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                              (context,int index) {
+                            return vendorCard(
+                              index: index,
+                              context: context,
+                              plannerVendorController: plannerVendorController,
+                            );
+                          },
+                          childCount: plannerVendorController.getAllVendorServiceResponseModel.value.data?.length,
+                        ),
+                      ),
+
+
+
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       )),

@@ -45,8 +45,8 @@ class ApiUtils {
   static const String updatePlannerOrderStatus = "$baseUrl/orders/status"; //done
   static const String plannerOrderCancel = "$baseUrl/orders/canceled"; //done
   static const String getUserHomeResponse = "$baseUrl/meta/user"; //done
-  static const String getAllPlannerServiceResponse = "$baseUrl/services/active?authority=planer&limit=1000000000"; //done
-  static const String getAllVendorServiceResponse = "$baseUrl/services/active?authority=vendor&limit=100000000"; //done
+  static const String getAllPlannerServiceResponse = "$baseUrl/services/active?authority=planer&limit=10000000000"; //done
+  static const String getAllVendorServiceResponse = "$baseUrl/services/active?authority=vendor&limit=10000000000"; //done
   static const String createFavoriteResponse = "$baseUrl/favorites"; //done
   static const String getAllRecommendedServiceResponse = "$baseUrl/services/recommend?limit=1000000000"; //done
   static const String getAllCategoryServiceResponse = "$baseUrl/services/active?authority=planer&category="; //done
@@ -64,6 +64,9 @@ class ApiUtils {
   static const String getAllPackageResponse = "$baseUrl/packages?audience=planer&limit=100000000"; //done
   static const String getAllVendorPackageResponse = "$baseUrl/packages?audience=vendor&limit=100000000"; //done
   static const String userMySubscription = "$baseUrl/subscriptions/my-subscription"; //done
+  static const String createTasksResponse = "$baseUrl/tasks"; //done
+  static const String createFileResponse = "$baseUrl/files"; //done
+  static const String createAssignVendors = "$baseUrl/assign-vendors"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -97,6 +100,34 @@ class ApiUtils {
   static String cancelSubscriptionResponse(String plainId) {
     return "$baseUrl/subscriptions/cancel/${plainId}";
   }
-
-
+  static String projectDetailsResponse(String projectId) {
+    return "$baseUrl/projects/${projectId}";
+  }
+  static String getAllTaskResponse(String projectId) {
+    return "$baseUrl/tasks/project/${projectId}?limit=1000000000";
+  }
+  static String changeTaskStatusResponse(String taskId) {
+    return "$baseUrl/tasks/status/${taskId}";
+  }
+  static String deleteTaskResponse(String taskId) {
+    return "$baseUrl/tasks/${taskId}";
+  }
+  static String getAllFileResponse(String projectId) {
+    return "$baseUrl/files/project/${projectId}?limit=1000000000";
+  }
+  static String deleteFileResponse(String fileId) {
+    return "$baseUrl/files/${fileId}";
+  }
+  static String getAllCompareQuotes(String projectId) {
+    return "$baseUrl/assign-vendors/compare-quotes/${projectId}?limit=1000000000";
+  }
+  static String getAllProjectVendor(String projectId) {
+    return "$baseUrl/assign-vendors/project/${projectId}?limit=10000000000";
+  }
+  static String getAllVendorPayment(String projectId) {
+    return "$baseUrl/projects/payment-overview/${projectId}?limit=10000000000";
+  }
+  static String getVendorMakePayment(String paymentId) {
+    return "$baseUrl/assign-vendors/make-payment/${paymentId}";
+  }
 }

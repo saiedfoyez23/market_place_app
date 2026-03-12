@@ -16,6 +16,7 @@ class PlannerProfilePortfolioController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isDelete = false.obs;
   RxString portfolioId = "".obs;
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
   Rx<PlannerUserWisePortfolioModel> plannerUserWisePortfolioModel = PlannerUserWisePortfolioModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   BuildContext context;
@@ -48,6 +49,7 @@ class PlannerProfilePortfolioController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
+      await getPlannerProfileDetailsController(context: context);
       await getPlannerAllPortfolioController(context: context);
     });
   }
@@ -63,6 +65,27 @@ class PlannerProfilePortfolioController extends GetxController {
         print(data);
         isLoading.value = false;
         plannerUserWisePortfolioModel.value = PlannerUserWisePortfolioModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -151,22 +174,4 @@ class PlannerProfilePortfolioController extends GetxController {
       },
     );
   }
-
-
-  RxList<String> imageString = <String>[
-    ImageUtils.portfolioImage1,
-    ImageUtils.portfolioImage2,
-    ImageUtils.portfolioImage3,
-    ImageUtils.portfolioImage4,
-    ImageUtils.portfolioImage5,
-    ImageUtils.portfolioImage1,
-    ImageUtils.portfolioImage2,
-    ImageUtils.portfolioImage3,
-    ImageUtils.portfolioImage4,
-    ImageUtils.portfolioImage5,
-    ImageUtils.portfolioImage1,
-    ImageUtils.portfolioImage5,
-  ].obs;
-
-
 }

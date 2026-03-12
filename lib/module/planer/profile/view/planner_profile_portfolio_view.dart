@@ -47,7 +47,7 @@ class PlannerProfilePortfolioView extends StatelessWidget {
                     ) :
                     ButtonHelperWidget.customIconButtonWidgetAdventPro(
                       context: context,
-                      backgroundColor: ColorUtils.orange119,
+                      backgroundColor: plannerProfilePortfolioController.plannerMyProfileDetailsResponseModel.value.data?.type == null ? ColorUtils.white217 : ColorUtils.orange119,
                       textSize: 20,
                       iconSize: 20,
                       height: 40,
@@ -55,7 +55,7 @@ class PlannerProfilePortfolioView extends StatelessWidget {
                       borderRadius: 8,
                       textColor: ColorUtils.white255,
                       fontWeight: FontWeight.w700,
-                      onPressed: () async {
+                      onPressed: plannerProfilePortfolioController.plannerMyProfileDetailsResponseModel.value.data?.type == null ? null : () async {
                         await plannerProfilePortfolioController.pickFile(context: context);
                       },
                       iconPath: ImageUtils.uploadIconImage,
@@ -76,7 +76,52 @@ class PlannerProfilePortfolioView extends StatelessWidget {
 
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  sliver: SliverGrid(
+                  sliver: plannerProfilePortfolioController.plannerMyProfileDetailsResponseModel.value.data?.type == null ?
+                  SliverFillRemaining(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black48,
+                          text: "Access Restricted",
+                        ),
+
+
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Only subscribed members can see this feature",
+                        ),
+
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Subscribe now to unlock this feature.",
+                        ),
+
+
+                      ],
+                    ),
+                  ) :
+                  SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                             (context,int index) {
                           return InkWell(
