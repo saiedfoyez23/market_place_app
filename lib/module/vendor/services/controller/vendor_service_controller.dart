@@ -7,6 +7,7 @@ import 'package:marketplaceapp/module/module.dart';
 class VendorServiceController extends GetxController {
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   Rx<VendorGetAllServiceModelResponse> vendorGetAllServiceModelResponse = VendorGetAllServiceModelResponse().obs;
+  Rx<VendorMyProfileDetailsResponseModel> vendorMyProfileDetailsResponseModel = VendorMyProfileDetailsResponseModel().obs;
   RxBool isLoading = false.obs;
   RxBool isDelete = false.obs;
   BuildContext context;
@@ -18,8 +19,29 @@ class VendorServiceController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
+      await getVendorProfileDetailsController(context: context);
       await getVendorAllServiceController(context: context);
     });
+  }
+
+  Future<void> getVendorProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        vendorMyProfileDetailsResponseModel.value = VendorMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
   Future<void> getVendorAllServiceController({
@@ -55,6 +77,29 @@ class VendorServiceController extends GetxController {
         isLoading.value = true;
         isDelete.value = false;
         Navigator.pop(context);
+        await getVendorAllServiceController(context: context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+      },
+    );
+  }
+
+
+  Future<void> addFeaturedController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.patch(
+      url: ApiUtils.addFeatureController(serviceId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
         await getVendorAllServiceController(context: context);
       },
       onFail: (e,data) {

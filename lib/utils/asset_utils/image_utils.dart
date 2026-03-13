@@ -139,5 +139,7 @@ class ImageUtils {
   static const String verifyPaymentImage = "image/verify_payment_image.png";
   static const String cancelButtonImage = "image/cancel_burron_image.png";
   static const String dialogCloseImage = "image/dialog_close_image.png";
+  static const String isFevorateImage = "image/is_fevorate_image.png";
+  static const String isUnfevorateImage = "image/is_unfevorate_image.png";
 }
 

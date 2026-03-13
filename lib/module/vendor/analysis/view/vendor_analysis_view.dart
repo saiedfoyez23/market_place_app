@@ -7,10 +7,9 @@ import 'package:marketplaceapp/utils/utils.dart';
 class VendorAnalysisView extends StatelessWidget {
   VendorAnalysisView({super.key});
 
-  final VendorAnalysisController vendorAnalysisController = Get.put(VendorAnalysisController());
-
   @override
   Widget build(BuildContext context) {
+    final VendorAnalysisController vendorAnalysisController = Get.put(VendorAnalysisController(context: context));
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -19,7 +18,9 @@ class VendorAnalysisView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
+          child: vendorAnalysisController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+          CustomScrollView(
             slivers: [
 
               MainPageAppBarHelperWidget(
@@ -27,6 +28,52 @@ class VendorAnalysisView extends StatelessWidget {
                 title: "Analytics",
               ),
 
+
+              vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == "null" ?
+              SliverFillRemaining(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      textColor: ColorUtils.black48,
+                      text: "Access Restricted",
+                    ),
+
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Only subscribed members can see this feature",
+                    ),
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Subscribe now to unlock this feature.",
+                    ),
+
+
+                  ],
+                ),
+              ) :
               SliverToBoxAdapter(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(16),
@@ -38,25 +85,33 @@ class VendorAnalysisView extends StatelessWidget {
                 
                       // Monthly Revenue
                       sectionTitle("Monthly Revenue (\$)"),
-                      buildBarChart(),
+                      buildBarChart(
+                        vendorAnalysisController: vendorAnalysisController
+                      ),
                 
                       SizedBox(height: 20),
                 
                       // Client Satisfaction
                       sectionTitle("Client Satisfaction"),
-                      buildLineChart(),
+                      buildLineChart(
+                        vendorAnalysisController: vendorAnalysisController,
+                      ),
                 
                       SizedBox(height: 20),
                 
                       // Service Popularity
                       sectionTitle("Service Popularity"),
-                      buildPieChart(),
+                      buildPieChart(
+                        vendorAnalysisController: vendorAnalysisController,
+                      ),
                 
                       SizedBox(height: 20),
                 
                       // Booking Trends
                       sectionTitle("Booking Trends"),
-                      buildBlueTrendChart(),
+                      buildBlueTrendChart(
+                        vendorAnalysisController: vendorAnalysisController,
+                      ),
                     ],
                   ),
                 ),
@@ -92,7 +147,7 @@ class VendorAnalysisView extends StatelessWidget {
   }
 
   // ---------------- BAR CHART ----------------
-  Widget buildBarChart() {
+  Widget buildBarChart({required VendorAnalysisController vendorAnalysisController}) {
     return Obx(() => Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.only(top: 12),
@@ -157,7 +212,7 @@ class VendorAnalysisView extends StatelessWidget {
   }
 
   // ---------------- CLIENT SATISFACTION LINE CHART ----------------
-  Widget buildLineChart() {
+  Widget buildLineChart({required VendorAnalysisController vendorAnalysisController}) {
     return Obx(() => Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.only(top: 12),
@@ -213,7 +268,7 @@ class VendorAnalysisView extends StatelessWidget {
   }
 
   // ---------------- PIE CHART ----------------
-  Widget buildPieChart() {
+  Widget buildPieChart({required VendorAnalysisController vendorAnalysisController}) {
     return Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.only(top: 12),
@@ -246,7 +301,7 @@ class VendorAnalysisView extends StatelessWidget {
   }
 
   // ---------------- BLUE BOOKING LINE CHART ----------------
-  Widget buildBlueTrendChart() {
+  Widget buildBlueTrendChart({required VendorAnalysisController vendorAnalysisController}) {
     return Obx(() => Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.only(top: 12),

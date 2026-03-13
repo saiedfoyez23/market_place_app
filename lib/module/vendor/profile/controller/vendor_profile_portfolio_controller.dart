@@ -14,6 +14,7 @@ class VendorProfilePortfolioController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isDelete = false.obs;
   RxList<dio.MultipartFile> filesList = <dio.MultipartFile>[].obs;
+  Rx<VendorMyProfileDetailsResponseModel> vendorMyProfileDetailsResponseModel = VendorMyProfileDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   Rx<VendorUserWisePortfolioModel> vendorUserWisePortfolioModel = VendorUserWisePortfolioModel().obs;
   BuildContext context;
@@ -46,8 +47,30 @@ class VendorProfilePortfolioController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
+      await getVendorProfileDetailsController(context: context);
       await getVendorAllPortfolioController(context: context);
     });
+  }
+
+  Future<void> getVendorProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        vendorMyProfileDetailsResponseModel.value = VendorMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
 

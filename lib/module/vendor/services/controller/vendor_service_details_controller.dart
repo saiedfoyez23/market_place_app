@@ -11,6 +11,8 @@ class VendorServiceDetailsController extends GetxController {
   Rx<VendorGetServiceDetailsResponseModel> vendorGetServiceDetailsResponseModel = VendorGetServiceDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   BuildContext context;
+  Rx<GetAllUserReviewResponseModel> getAllUserReviewResponseModel = GetAllUserReviewResponseModel().obs;
+  Rx<VendorMyProfileDetailsResponseModel> vendorMyProfileDetailsResponseModel = VendorMyProfileDetailsResponseModel().obs;
   String serviceId;
   VendorServiceDetailsController({required this.context,required this.serviceId});
 
@@ -20,21 +22,100 @@ class VendorServiceDetailsController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getVendorDetailsServiceController(context: context,serviceId: serviceId);
+      await getVendorProfileDetailsController(context: context);
+      await getVendorDetailsServiceController(
+        context: context,
+        serviceId: serviceId,
+        onComplete: (userId) async {
+          getAllUserReviewController(context: context,userId: userId);
+        },
+      );
     });
+  }
+
+  Future<void> getAllUserReviewController({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getAllUserReview(userId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        getAllUserReviewResponseModel.value = GetAllUserReviewResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
+
+  Future<void> getVendorProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        vendorMyProfileDetailsResponseModel.value = VendorMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
   Future<void> getVendorDetailsServiceController({
     required BuildContext context,
     required String serviceId,
+    required Function onComplete,
   }) async {
     BaseApiUtils.get(
       url: "${ApiUtils.serviceDetails}/${serviceId}",
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         print(data);
-        isLoading.value = false;
         vendorGetServiceDetailsResponseModel.value = VendorGetServiceDetailsResponseModel.fromJson(data);
+        onComplete(vendorGetServiceDetailsResponseModel.value.data?.author?.sId);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> addFeaturedController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.patch(
+      url: ApiUtils.addFeatureController(serviceId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
+        await getVendorDetailsServiceController(
+          context: context,
+          serviceId: serviceId,
+          onComplete: (userId) async {
+            getAllUserReviewController(context: context,userId: userId);
+          },
+        );
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

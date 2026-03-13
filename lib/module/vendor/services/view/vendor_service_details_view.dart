@@ -59,6 +59,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                           child: Column(
                             children: [
                               header(
+                                vendorServiceDetailsController: vendorServiceDetailsController,
                                 context: context,
                                 imageUrl: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
                                 "" : vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.images!.first,
@@ -134,7 +135,11 @@ class VendorServiceDetailsView extends StatelessWidget {
                         ),
 
 
-                        reviews(context: context, reviews: vendorServiceDetailsController.service.value.reviews,),
+                        reviews(
+                          context: context,
+                          reviews: vendorServiceDetailsController.service.value.reviews,
+                          vendorServiceDetailsController: vendorServiceDetailsController
+                        ),
 
                         SpaceHelperWidget.v(32.h(context)),
 
@@ -153,7 +158,11 @@ class VendorServiceDetailsView extends StatelessWidget {
   }
 
   /// HEADER
-  Widget header({required String imageUrl,required BuildContext context}) {
+  Widget header({
+    required String imageUrl,
+    required BuildContext context,
+    required VendorServiceDetailsController vendorServiceDetailsController
+  }) {
     return Stack(
       children: [
         ClipRRect(
@@ -170,6 +179,60 @@ class VendorServiceDetailsView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+        vendorServiceDetailsController.vendorMyProfileDetailsResponseModel.value.data?.type == "pro" ?
+        Positioned(
+          top: 12.h(context),
+          right: 12.w(context),
+          child: InkWell(
+            onTap: () async {
+              await vendorServiceDetailsController.addFeaturedController(context: context, serviceId: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.sId);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 8.w(context),
+                vertical: 7.5.h(context),
+              ),
+              decoration: BoxDecoration(
+                color: ColorUtils.white255,
+                borderRadius: BorderRadius.circular(6.r(context)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                  )
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+
+                  ImageHelperWidget.assetImageWidget(
+                    context: context,
+                    height: 16.h(context),
+                    width: 16.w(context),
+                    imageString: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.isFeatured == true ?
+                    ImageUtils.isFevorateImage : ImageUtils.isUnfevorateImage,
+                  ),
+
+                  SpaceHelperWidget.h(4.w(context)),
+
+
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    textColor: ColorUtils.black96,
+                    text: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.isFeatured == true ?
+                    "Remove Featured" : "Add Featured",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ) : SizedBox.shrink(),
       ],
     );
   }
@@ -287,7 +350,10 @@ class VendorServiceDetailsView extends StatelessWidget {
   }
 
   /// REVIEWS DYNAMIC
-  Widget reviews({required List reviews,required BuildContext context}) {
+  Widget reviews({
+    required List reviews,
+    required VendorServiceDetailsController vendorServiceDetailsController,
+    required BuildContext context,}) {
     return Column(
       children: [
         Row(
@@ -309,7 +375,9 @@ class VendorServiceDetailsView extends StatelessWidget {
 
             ButtonHelperWidget.customButtonWidget(
               context: context,
-              onPressed: () async {},
+              onPressed: () async {
+                Get.off(()=>DashboardVendorView(index: 5),preventDuplicates: false);
+              },
               text: "See All",
               padding: EdgeInsets.only(left: 14.5.lpm(context)),
               alignment: Alignment.center,
@@ -324,12 +392,12 @@ class VendorServiceDetailsView extends StatelessWidget {
         SpaceHelperWidget.v(32.h(context)),
 
 
-        ...reviews.map((r) => reviewItem(r: r,context: context)).toList(),
+        ...vendorServiceDetailsController.getAllUserReviewResponseModel.value.data!.reviews!.map((r) => reviewItem(r: r,context: context)).toList(),
       ],
     );
   }
 
-  Widget reviewItem({required dynamic r,required BuildContext context}) {
+  Widget reviewItem({required GetAllUserReviewResponseReviews r,required BuildContext context}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,7 +414,8 @@ class VendorServiceDetailsView extends StatelessWidget {
               horizontalPadding: 1.hpm(context),
               backgroundColor: ColorUtils.orange213,
               radius: 25.r(context),
-              imageAsset: ImageUtils.noImage,
+              imageAsset: r.user?.photoUrl == null ? ImageUtils.noImage : null,
+              imageUrl: r.user?.photoUrl
             ),
 
             SpaceHelperWidget.h(12.w(context)),
@@ -362,7 +431,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black48,
-                    text: r.userName,
+                    text: r.user?.name ?? "",
                   ),
 
                   SpaceHelperWidget.v(6.h(context)),
@@ -383,7 +452,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         textColor: ColorUtils.black61,
-                        text: r.rating.toString(),
+                        text: r.overallRating.toString(),
                       ),
                     ],
                   ),
@@ -398,7 +467,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black95,
-                    text: r.comment,
+                    text: r.review,
                   ),
 
 
@@ -416,9 +485,9 @@ class VendorServiceDetailsView extends StatelessWidget {
     );
   }
 
-  Widget ratingBarWidget({required dynamic r, required BuildContext context}) {
-    int fullStars = r.rating.floor();
-    double fractional = r.rating - fullStars;
+  Widget ratingBarWidget({required GetAllUserReviewResponseReviews r, required BuildContext context}) {
+    int fullStars = r.overallRating.floor();
+    num fractional = r.overallRating - fullStars;
     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
     return Row(

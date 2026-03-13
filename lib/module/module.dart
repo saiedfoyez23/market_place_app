@@ -196,6 +196,8 @@ export 'vendor/profile/controller/vendor_profile_manage_subscription_controller.
 export 'vendor/profile/controller/vendor_profile_subscription_controller.dart';
 export 'vendor/profile/view/vendor_payment_view.dart';
 export 'vendor/profile/controller/vendor_payment_controller.dart';
+export 'vendor/profile/widget/vendor_without_subscription_profile_widget.dart';
+export 'vendor/profile/widget/vendor_with_subscription_profile_widget.dart';
 export 'planer/onboarding/view/planer_onboarding_view.dart';
 export 'planer/onboarding/controller/planer_onboarding_controller.dart';
 export 'planer/onboarding/widget/planer_onboarding_widget.dart';

@@ -130,4 +130,7 @@ class ApiUtils {
   static String getVendorMakePayment(String paymentId) {
     return "$baseUrl/assign-vendors/make-payment/${paymentId}";
   }
+  static String addFeatureController(String serviceId) {
+    return "$baseUrl/services/featured/${serviceId}";
+  }
 }

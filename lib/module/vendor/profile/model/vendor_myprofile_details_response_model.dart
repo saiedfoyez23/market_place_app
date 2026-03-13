@@ -27,8 +27,6 @@ class VendorMyProfileDetailsResponseModel {
 }
 
 class VendorMyProfileDetailsResponse {
-  VendorMyProfileDetailsLocation? location;
-  VendorMyProfileDetailsNotifySettings? notifySettings;
   var sId;
   var name;
   var email;
@@ -39,18 +37,21 @@ class VendorMyProfileDetailsResponse {
   var bio;
   List<String>? categories;
   var locationUrl;
-  VendorMyProfileDetailsSocialProfiles? socialProfiles;
+  VendorMyProfileDetailsResponseLocation? location;
+  VendorMyProfileDetailsResponseSocialProfiles? socialProfiles;
   var role;
   var status;
   var avgRating;
   var ratingCount;
+  VendorMyProfileDetailsResponseNotifySettings? notifySettings;
   var isKycVerified;
   var id;
   var createdAt;
+  var isActiveSubscription;
+  var type;
+  var isPaystackRecipient;
 
   VendorMyProfileDetailsResponse({
-    this.location,
-    this.notifySettings,
     this.sId,
     this.name,
     this.email,
@@ -61,23 +62,22 @@ class VendorMyProfileDetailsResponse {
     this.bio,
     this.categories,
     this.locationUrl,
+    this.location,
     this.socialProfiles,
     this.role,
     this.status,
     this.avgRating,
     this.ratingCount,
+    this.notifySettings,
     this.isKycVerified,
     this.id,
     this.createdAt,
+    this.isActiveSubscription,
+    this.type,
+    this.isPaystackRecipient,
   });
 
   VendorMyProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new VendorMyProfileDetailsLocation.fromJson(json['location'])
-        : null;
-    notifySettings = json['notifySettings'] != null
-        ? new VendorMyProfileDetailsNotifySettings.fromJson(json['notifySettings'])
-        : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -88,26 +88,29 @@ class VendorMyProfileDetailsResponse {
     bio = json['bio'];
     categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
+    location = json['location'] != null
+        ? new VendorMyProfileDetailsResponseLocation.fromJson(json['location'])
+        : null;
     socialProfiles = json['socialProfiles'] != null
-        ? new VendorMyProfileDetailsSocialProfiles.fromJson(json['socialProfiles'])
+        ? new VendorMyProfileDetailsResponseSocialProfiles.fromJson(json['socialProfiles'])
         : null;
     role = json['role'];
     status = json['status'];
     avgRating = json['avgRating'];
     ratingCount = json['ratingCount'];
+    notifySettings = json['notifySettings'] != null
+        ? new VendorMyProfileDetailsResponseNotifySettings.fromJson(json['notifySettings'])
+        : null;
     isKycVerified = json['isKycVerified'];
     id = json['id'];
     createdAt = json['createdAt'];
+    isActiveSubscription = json['isActiveSubscription'];
+    type = json['type'];
+    isPaystackRecipient = json['isPaystackRecipient'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
-    if (this.notifySettings != null) {
-      data['notifySettings'] = this.notifySettings!.toJson();
-    }
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -118,6 +121,9 @@ class VendorMyProfileDetailsResponse {
     data['bio'] = this.bio;
     data['categories'] = this.categories;
     data['locationUrl'] = this.locationUrl;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
     if (this.socialProfiles != null) {
       data['socialProfiles'] = this.socialProfiles!.toJson();
     }
@@ -125,20 +131,26 @@ class VendorMyProfileDetailsResponse {
     data['status'] = this.status;
     data['avgRating'] = this.avgRating;
     data['ratingCount'] = this.ratingCount;
+    if (this.notifySettings != null) {
+      data['notifySettings'] = this.notifySettings!.toJson();
+    }
     data['isKycVerified'] = this.isKycVerified;
     data['id'] = this.id;
     data['createdAt'] = this.createdAt;
+    data['isActiveSubscription'] = this.isActiveSubscription;
+    data['type'] = this.type;
+    data['isPaystackRecipient'] = this.isPaystackRecipient;
     return data;
   }
 }
 
-class VendorMyProfileDetailsLocation {
-  String? type;
-  List<double>? coordinates;
+class VendorMyProfileDetailsResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
 
-  VendorMyProfileDetailsLocation({this.type, this.coordinates});
+  VendorMyProfileDetailsResponseLocation({this.type, this.coordinates});
 
-  VendorMyProfileDetailsLocation.fromJson(Map<String, dynamic> json) {
+  VendorMyProfileDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }
@@ -151,7 +163,29 @@ class VendorMyProfileDetailsLocation {
   }
 }
 
-class VendorMyProfileDetailsNotifySettings {
+class VendorMyProfileDetailsResponseSocialProfiles {
+  var instagram;
+  var linkedin;
+  var website;
+
+  VendorMyProfileDetailsResponseSocialProfiles({this.instagram, this.linkedin, this.website});
+
+  VendorMyProfileDetailsResponseSocialProfiles.fromJson(Map<String, dynamic> json) {
+    instagram = json['instagram'];
+    linkedin = json['linkedin'];
+    website = json['website'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['instagram'] = this.instagram;
+    data['linkedin'] = this.linkedin;
+    data['website'] = this.website;
+    return data;
+  }
+}
+
+class VendorMyProfileDetailsResponseNotifySettings {
   var all;
   var profile;
   var service;
@@ -159,7 +193,7 @@ class VendorMyProfileDetailsNotifySettings {
   var subscription;
   var payment;
 
-  VendorMyProfileDetailsNotifySettings({
+  VendorMyProfileDetailsResponseNotifySettings({
     this.all,
     this.profile,
     this.service,
@@ -168,7 +202,7 @@ class VendorMyProfileDetailsNotifySettings {
     this.payment,
   });
 
-  VendorMyProfileDetailsNotifySettings.fromJson(Map<String, dynamic> json) {
+  VendorMyProfileDetailsResponseNotifySettings.fromJson(Map<String, dynamic> json) {
     all = json['all'];
     profile = json['profile'];
     service = json['service'];
@@ -185,28 +219,6 @@ class VendorMyProfileDetailsNotifySettings {
     data['bookings'] = this.bookings;
     data['subscription'] = this.subscription;
     data['payment'] = this.payment;
-    return data;
-  }
-}
-
-class VendorMyProfileDetailsSocialProfiles {
-  var instagram;
-  var linkedin;
-  var website;
-
-  VendorMyProfileDetailsSocialProfiles({this.instagram, this.linkedin, this.website});
-
-  VendorMyProfileDetailsSocialProfiles.fromJson(Map<String, dynamic> json) {
-    instagram = json['instagram'];
-    linkedin = json['linkedin'];
-    website = json['website'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['instagram'] = this.instagram;
-    data['linkedin'] = this.linkedin;
-    data['website'] = this.website;
     return data;
   }
 }
