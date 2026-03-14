@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 class VendorServicesView extends StatelessWidget {
   VendorServicesView({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     final VendorServiceController vendorServiceController = Get.put(VendorServiceController(context: context));
