@@ -54,6 +54,11 @@ dependencies:
   html_editor_enhanced: ^2.7.1
   open_file: ^3.5.11
   path_provider: ^2.1.5
+  firebase_core: ^4.5.0
+  firebase_analytics:
+  flutter_local_notifications:
+  googleapis_auth:
+  firebase_messaging:
   flutter_localizations:
     sdk: flutter
 

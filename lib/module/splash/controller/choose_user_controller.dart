@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import '../../../utils/utils.dart';
@@ -10,6 +11,20 @@ class ChooseUserController extends GetxController {
 
   void chooseUser({required String useRole}) {
     chooseUseRole.value = useRole;
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    Future.delayed(Duration(seconds: 1),() async {
+      await initialFirebaseMessaging();
+    });
+  }
+
+  Future<void> initialFirebaseMessaging() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print(token);
   }
 
 
