@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:dio/dio.dart' as dio;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:marketplaceapp/module/module.dart';
+import '../../../../utils/utils.dart';
 
 class VendorCreateAccountController extends GetxController {
 
@@ -15,82 +18,7 @@ class VendorCreateAccountController extends GetxController {
   Rx<TextEditingController> confirmPasswordController = TextEditingController().obs;
   RxBool isConfirmObscure = true.obs;
   RxBool isCheck = false.obs;
-
-
-
-  Rx<TextEditingController> businessNameController = TextEditingController().obs;
-  Rx<TextEditingController> aboutYouController = TextEditingController().obs;
-  RxString selectCategory = "".obs;
-
-  RxList<String> categoryList = <String>[
-    "All",
-    "Furniture",
-    "Clothing",
-    "Electronics",
-    "Food",
-    "Cycling",
-    "Others",
-  ].obs;
-
-  Rx<TextEditingController> fullNameController = TextEditingController().obs;
-  Rx<TextEditingController> dateController = TextEditingController().obs;
-  Rx<TextEditingController> bankNameController = TextEditingController().obs;
-  Rx<TextEditingController> accountNumberController = TextEditingController().obs;
-  Rx<TextEditingController> tinNidNumberController = TextEditingController().obs;
-  Rx<TextEditingController> permanentAddressController = TextEditingController().obs;
-  Rx<TextEditingController> currentAddressController = TextEditingController().obs;
-  Rx<TextEditingController> cityController = TextEditingController().obs;
-  Rx<TextEditingController> postalCodeController = TextEditingController().obs;
-  Rx<TextEditingController> nidNumberController = TextEditingController().obs;
-  RxString selectIdType = "".obs;
-  RxString selectGender = "".obs;
-  Rx<DateTime> dateOfBirth = DateTime.now().obs;
-
-
-  Future<void> dateTimeController({required BuildContext context}) async {
-    // Pick Date
-    final DateTime? pick = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2100),
-    );
-
-    if (pick != null) {
-      dateOfBirth.value = pick;
-      dateController.value.text = DateFormat("dd-MM-yyyy").format(dateOfBirth.value.toLocal());
-    } // user canceled
-  }
-
-
-  Rx<File> selectedUploadFrontSideFile = File("").obs;
-  Rx<File> selectedUploadBackSideFile = File("").obs;
-
-
-  Future<void> pickUploadFrontSideFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png'],
-      withData: false,
-    );
-
-    if (result != null && result.files.single.path != null) {
-      selectedUploadFrontSideFile.value = File(result.files.single.path!);
-    }
-  }
-
-
-  Future<void> pickUploadBackSideFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png'],
-      withData: false,
-    );
-
-    if (result != null && result.files.single.path != null) {
-      selectedUploadBackSideFile.value = File(result.files.single.path!);
-    }
-  }
+  RxBool isLoading = false.obs;
 
 
   Rx<File> profileImageFile = File("").obs;
@@ -115,6 +43,76 @@ class VendorCreateAccountController extends GetxController {
       coverImageFile.value = File(pickedFile.path);
     }
   }
+
+
+  Future<void> createVendorAccountController({
+    required BuildContext context,
+    required String userName,
+    required String email,
+    required String password,
+    required String confirmPassword,
+    required File imageFile,
+    required File coverImageFile,
+  }) async {
+    isLoading.value = true;
+
+    final Map<String, dynamic> jsonData = {
+      "name": userName,
+      "email": email,
+      "role": "vendor",
+      "password": password,
+      "confirmPassword": confirmPassword
+    };
+    print(jsonData);
+    print(imageFile.path);
+    print(coverImageFile.path);
+
+    dio.FormData formData = dio.FormData.fromMap({
+      if(imageFile.path != "")
+        "image": await dio.MultipartFile.fromFile(
+          imageFile.path,
+          filename: imageFile.path.split('/').last,
+          contentType: dio.DioMediaType(
+            MimeTypeUtils.getMimeType(imageFile.path).split('/').first,
+            MimeTypeUtils.getMimeType(imageFile.path).split('/').last,
+          ),
+        ),
+      if(coverImageFile.path != "")
+        "coverPhoto": await dio.MultipartFile.fromFile(
+          coverImageFile.path,
+          filename: coverImageFile.path.split('/').last,
+          contentType: dio.DioMediaType(
+            MimeTypeUtils.getMimeType(coverImageFile.path).split('/').first,
+            MimeTypeUtils.getMimeType(coverImageFile.path).split('/').last,
+          ),
+        ),
+      "data": jsonEncode(jsonData),  // important → JSON encoded string!
+    });
+
+    await BaseApiUtils.post(
+      url: ApiUtils.userRegistration,
+      formData: formData,
+      onSuccess: (e,data) async {
+        await LocalStorageUtils.setString(AppConstantUtils.crateUserResponse, jsonEncode(data));
+        isLoading.value = false;
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        Get.delete<VendorCreateAccountController>();
+        Get.off(()=>VendorCreateAccountOtpView(),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+
+
+
 
 
 

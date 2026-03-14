@@ -1,81 +1,170 @@
+import 'dart:convert';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
 class PlannerAnalyticsController extends GetxController {
 
-  // Static data - can be made reactive if needed
-  final RxInt eventsManaged = 234.obs;
-  final RxInt activeClients = 87.obs;
-  final RxInt vendorPartnerships = 45.obs;
-  final RxDouble totalEarnings = 342500.0.obs;
-  final RxDouble rating = 3.5.obs;
-  final RxInt reviewCount = 24.obs;
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
+  Rx<PlannerRevenueResponseModel> plannerRevenueResponseModel = PlannerRevenueResponseModel().obs;
+  Rx<PlannerEventAnalysisResponseModel> plannerEventAnalysisResponseModel = PlannerEventAnalysisResponseModel().obs;
+  Rx<PlannerVendorAnalysisResponseModel> plannerVendorAnalysisResponseModel = PlannerVendorAnalysisResponseModel().obs;
+  RxBool isLoading = false.obs;
+  BuildContext context;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  PlannerAnalyticsController({required this.context});
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      await getPlannerProfileDetailsController(context: context);
+      await getPlannerRevenueAnalysisController(context: context, eventYear: DateTime.now().year.toString(), categoryYear: DateTime.now().year.toString(), revenueYear: DateTime.now().year.toString());
+      await getPlannerEventAnalysisController(context: context);
+      await getPlannerVendorAnalysisController(context: context);
+    });
+  }
+
+
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  RxList<ServicePopularity> servicePopularity = <ServicePopularity>[].obs;
+
+
+
+  Future<void> getPlannerRevenueAnalysisController({
+    required BuildContext context,
+    required String eventYear,
+    required String categoryYear,
+    required String revenueYear,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getPlannerAnalyticResponse(eventYear, categoryYear, revenueYear),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerRevenueResponseModel.value = PlannerRevenueResponseModel.fromJson(data);
+        for(var i = 0;i < plannerRevenueResponseModel.value.data!.eventManagedOverview!.length;i ++) {
+          eventsBarData.add(
+            BarChartGroupData(x: i, barRods: [BarChartRodData(toY: double.parse(plannerRevenueResponseModel.value.data!.eventManagedOverview![i].count.toString()),width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
+          );
+        }
+        for(var i = 0;i < plannerRevenueResponseModel.value.data!.revenueGrowthOverview!.length;i ++) {
+          revenueBarData.add(
+            BarChartGroupData(x: i, barRods: [BarChartRodData(toY: plannerRevenueResponseModel.value.data!.revenueGrowthOverview?[i].amount / 1000,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
+          );
+        }
+        for(var i = 0; i < plannerRevenueResponseModel.value.data!.vendorCategoryOverview!.length ; i++) {
+          pieSections.add(
+            PieChartSectionData(
+              value: double.parse(plannerRevenueResponseModel.value.data!.vendorCategoryOverview![i].percentage.toString()),
+              color: i%5 == 0 ? Colors.purple : i%5 == 1 ? Colors.green : i%5 == 2 ? Colors.orange : i%5 == 3 ? Colors.red : Colors.blue,
+              title: '${plannerRevenueResponseModel.value.data!.vendorCategoryOverview![i].percentage}%',
+              radius: 60,
+            ),
+          );
+          servicePopularity.add(
+              ServicePopularity(
+                textColor: i%5 == 0 ? Colors.purple : i%5 == 1 ? Colors.green : i%5 == 2 ? Colors.orange : i%5 == 3 ? Colors.red : Colors.blue,
+                title: plannerRevenueResponseModel.value.data!.vendorCategoryOverview![i].type,
+                persentage: plannerRevenueResponseModel.value.data!.vendorCategoryOverview![i].percentage.toString(),
+              )
+          );
+        }
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getPlannerEventAnalysisController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getPlannerEventResponse,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerEventAnalysisResponseModel.value = PlannerEventAnalysisResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getPlannerVendorAnalysisController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getPlannerVendorResponse,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerVendorAnalysisResponseModel.value = PlannerVendorAnalysisResponseModel.fromJson(data);
+        isLoading.value = false;
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
 
   RxInt eventManageYear = DateTime.now().year.obs;
   RxInt revenueGrowthYear = DateTime.now().year.obs;
   RxInt vendorCategoryYear = DateTime.now().year.obs;
 
-  // Event distribution data
-  final List<Map<String, dynamic>> eventTypes = [
-    {'name': 'Weddings', 'count': 12, 'percentage': 70.0},
-    {'name': 'Corporate', 'count': 12, 'percentage': 70.0},
-    {'name': 'Birthday', 'count': 12, 'percentage': 70.0},
-    {'name': 'Other', 'count': 12, 'percentage': 70.0},
-  ];
 
   // Monthly events data for bar chart
-  final List<BarChartGroupData> eventsBarData = [
-    // Jan to Dec placeholders - adjust heights as per image (approximate)
-    BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 50,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 150,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 100,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 200,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 250,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 300,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: 220,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 7, barRods: [BarChartRodData(toY: 180,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 8, barRods: [BarChartRodData(toY: 120,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 9, barRods: [BarChartRodData(toY: 160,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 10, barRods: [BarChartRodData(toY: 200,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 11, barRods: [BarChartRodData(toY: 140,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-  ];
+  RxList<BarChartGroupData> eventsBarData = <BarChartGroupData>[].obs;
 
   // Pie chart data for vendor categories
-  final List<PieChartSectionData> pieSections = [
-    PieChartSectionData(value: 25, color: Colors.purple, title: '25%', radius: 60),
-    PieChartSectionData(value: 33, color: Colors.green, title: '33%', radius: 60),
-    PieChartSectionData(value: 20, color: Colors.orange, title: '20%', radius: 60),
-    PieChartSectionData(value: 15, color: Colors.red, title: '15%', radius: 60),
-    PieChartSectionData(value: 7, color: Colors.blue, title: '7%', radius: 60),
-  ];
+  RxList<PieChartSectionData> pieSections = <PieChartSectionData>[].obs;
 
   // Revenue growth bar data (similar to events)
-  final List<BarChartGroupData> revenueBarData = [
-    // Similar approximate data
-    BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 100,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 150,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 200,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 250,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 300,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 280,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: 220,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 7, barRods: [BarChartRodData(toY: 180,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 8, barRods: [BarChartRodData(toY: 160,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 9, barRods: [BarChartRodData(toY: 120,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 10, barRods: [BarChartRodData(toY: 140,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-    BarChartGroupData(x: 11, barRods: [BarChartRodData(toY: 100,width: 10, color: ColorUtils.orange119, borderRadius: BorderRadius.circular(4),)]),
-  ];
+  RxList<BarChartGroupData> revenueBarData = <BarChartGroupData>[].obs;
 
-  // Top vendors data
-  final List<Map<String, dynamic>> topVendors = [
-    {'name': 'Elegant Catering Co.', 'projects': 8, 'rating': 4.8},
-    {'name': 'Elegant Catering Co.', 'projects': 8, 'rating': 4.8},
-    {'name': 'Elegant Catering Co.', 'projects': 8, 'rating': 4.8},
-    {'name': 'Elegant Catering Co.', 'projects': 8, 'rating': 4.8},
-    {'name': 'Elegant Catering Co.', 'projects': 8, 'rating': 4.8},
-  ];
 
   Rx<PlannerAnalyticTab> selectedTab = PlannerAnalyticTab.revenueTrends.obs;
 

@@ -4,8 +4,9 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserFeedbackView extends StatelessWidget {
-  UserFeedbackView({super.key});
-
+  UserFeedbackView({super.key,required this.orderId,required this.senderId});
+  final String orderId;
+  final String senderId;
   final UserFeedbackController userFeedbackController = Get.put(UserFeedbackController());
 
   @override
@@ -183,12 +184,37 @@ class UserFeedbackView extends StatelessWidget {
 
                         SpaceHelperWidget.v(26.h(context)),
 
-
+                        userFeedbackController.isSubmit.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            userFeedbackController.submitFeedback();
-                            Get.off(()=>UserFeedbackSuccessfullView(),preventDuplicates: false);
+                            if(userFeedbackController.communication.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give communication skill rating");
+                            } else if(userFeedbackController.service.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give service rating");
+                            } else if(userFeedbackController.productQuality.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give product quality rating");
+                            } else if(userFeedbackController.selectedOptions.value == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select think");
+                            } else if(userFeedbackController.messageController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please enter something about your overall experience");
+                            } else {
+                              userFeedbackController.isSubmit.value = true;
+                              Map<String,dynamic> data = {
+                                "order": orderId,
+                                "author": senderId,
+                                "ratings": {
+                                  "communicationSkills": userFeedbackController.communication.value,
+                                  "professionalism": userFeedbackController.service.value,
+                                  "serviceQuality": userFeedbackController.productQuality.value
+                                },
+                                "reactions": userFeedbackController.selectedOptions.value,
+                                "review": userFeedbackController.messageController.value.text
+                              };
+                              print(data);
+                              await userFeedbackController.createReviewController(context: context, data: data);
+                            }
                           },
                           text: "Submit",
                         ),

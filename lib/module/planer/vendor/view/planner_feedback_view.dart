@@ -4,8 +4,9 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class PlannerFeedbackView extends StatelessWidget {
-  PlannerFeedbackView({super.key});
-
+  PlannerFeedbackView({super.key,required this.orderId,required this.senderId});
+  final String orderId;
+  final String senderId;
   final PlannerFeedbackController plannerFeedbackController = Get.put(PlannerFeedbackController());
 
   @override
@@ -139,8 +140,7 @@ class PlannerFeedbackView extends StatelessWidget {
                                 ),
                               );
                             })
-                        ),
-                        ),
+                        ),),
 
 
 
@@ -183,12 +183,37 @@ class PlannerFeedbackView extends StatelessWidget {
 
                         SpaceHelperWidget.v(26.h(context)),
 
-
+                        plannerFeedbackController.isSubmit.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            plannerFeedbackController.submitFeedback();
-                            Get.off(()=>PlannerFeedbackSuccessfullView(),preventDuplicates: false);
+                            if(plannerFeedbackController.communication.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give communication skill rating");
+                            } else if(plannerFeedbackController.service.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give service rating");
+                            } else if(plannerFeedbackController.productQuality.value == 0) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please give product quality rating");
+                            } else if(plannerFeedbackController.selectedOptions.value == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select think");
+                            } else if(plannerFeedbackController.messageController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please enter something about your overall experience");
+                            } else {
+                              plannerFeedbackController.isSubmit.value = true;
+                              Map<String,dynamic> data = {
+                                "order": orderId,
+                                "author": senderId,
+                                "ratings": {
+                                  "communicationSkills": plannerFeedbackController.communication.value,
+                                  "professionalism": plannerFeedbackController.service.value,
+                                  "serviceQuality": plannerFeedbackController.productQuality.value
+                                },
+                                "reactions": plannerFeedbackController.selectedOptions.value,
+                                "review": plannerFeedbackController.messageController.value.text
+                              };
+                              print(data);
+                              await plannerFeedbackController.createReviewController(context: context, data: data);
+                            }
                           },
                           text: "Submit",
                         ),

@@ -134,5 +134,12 @@ class ImageUtils {
   static const String totalSavedImage = "image/planner_image/total_saved_image.png";
   static const String vendorPaymentsImage = "image/planner_image/vendor_payments_image.png";
   static const String closeIconImage = "image/planner_image/close_icon_image.png";
+  static const String favoriteIcon = "image/favorite_icon.png";
+  static const String unfavoriteIcon = "image/unfavorite_icon.png";
+  static const String verifyPaymentImage = "image/verify_payment_image.png";
+  static const String cancelButtonImage = "image/cancel_burron_image.png";
+  static const String dialogCloseImage = "image/dialog_close_image.png";
+  static const String isFevorateImage = "image/is_fevorate_image.png";
+  static const String isUnfevorateImage = "image/is_unfevorate_image.png";
 }
 

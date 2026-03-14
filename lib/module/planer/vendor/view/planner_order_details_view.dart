@@ -1,181 +1,287 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
 
 class PlannerOrderDetailsView extends StatelessWidget {
-  const PlannerOrderDetailsView({super.key});
+  const PlannerOrderDetailsView({super.key,required this.orderID});
+
+  final String orderID;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white251,
-          ),
-          child: CustomScrollView(
-            slivers: [
+    PlannerAllVendorOrderDetailsController plannerAllVendorOrderDetailsController = Get.put(PlannerAllVendorOrderDetailsController(orderID: orderID, context: context));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>PlannerOfferView(),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Obx(()=>Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white251,
+            ),
+            child: plannerAllVendorOrderDetailsController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
+              slivers: [
 
-              AuthAppBarHelperWidget(
-                onBackPressed: () async {
-                  Get.off(()=>PlannerOfferView(),preventDuplicates: false);
-                },
-                title: "Order Details",
-              ),
+                AuthAppBarHelperWidget(
+                  onBackPressed: () async {
+                    Get.off(()=>PlannerOfferView(),preventDuplicates: false);
+                  },
+                  title: "Order Details",
+                ),
 
-              SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    child: Column(
-                      children: [
-                        SpaceHelperWidget.v(16.h(context)),
-                        // ----------------------------------------
-                        // Title
-                        // ----------------------------------------
+                SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: Column(
+                        children: [
+                          SpaceHelperWidget.v(16.h(context)),
+                          // ----------------------------------------
+                          // Title
+                          // ----------------------------------------
 
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.centerLeft,
-                          textAlign: TextAlign.start,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "Kids Birthday Party Extravaganza",
-                        ),
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.title ?? "",
+                          ),
 
-                        SpaceHelperWidget.v(12.h(context)),
-
-
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.centerLeft,
-                          textAlign: TextAlign.start,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          textColor: ColorUtils.black80,
-                          text: "Colorful themed decorations with games, entertainment, and birthday cake arrangement. "
-                              "Using a mass messaging platform allows event planners to reach their entire audience in just a few clicks.",
-                        ),
-
-
-                        SpaceHelperWidget.v(24.h(context)),
+                          SpaceHelperWidget.v(12.h(context)),
 
 
-
-                        // ----------------------------------------
-                        // About This Order Section
-                        // ----------------------------------------
-
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.centerLeft,
-                          textAlign: TextAlign.start,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "About this Order",
-                        ),
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textAlign: TextAlign.start,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            textColor: ColorUtils.black80,
+                            text: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.shortDescription ?? "",
+                          ),
 
 
-                        SpaceHelperWidget.v(20.h(context)),
-
-                        buildSection(
-                          context: context,
-                          imageString: ImageUtils.grayRightSignImage,
-                          title: "Entrance & Welcome Area",
-                          items: [
-                            "Welcome board with birthday name & age",
-                            "Balloon arch / gate decoration",
-                            "Flower stand or LED frame at entry",
-                            "Red carpet or themed walkway",
-                            "Photo booth backdrop",
-                          ],
-                        ),
-
-                        buildSection(
-                          context: context,
-                          imageString: ImageUtils.grayRightSignImage,
-                          title: "Cake & Dessert Section",
-                          items: [
-                            "Cake stand & dessert trays",
-                            "Cake backdrop or arch",
-                            "LED candles or spotlight on cake",
-                            "Customized cake topper",
-                          ],
-                        ),
-
-                        buildSection(
-                          context: context,
-                          imageString: ImageUtils.grayRightSignImage,
-                          title: "Photo Zone",
-                          items: [
-                            "Themed photo booth with props",
-                            "Neon light signs (“Let’s Party”, “Cheers”, “Happy Birthday”)",
-                            "Instax / Polaroid corner for instant photos",
-                          ],
-                        ),
-
-                        SpaceHelperWidget.v(20.h(context)),
-
-
-                        // ----------------------------------------
-                        // Order Information Card
-                        // ----------------------------------------
+                          SpaceHelperWidget.v(24.h(context)),
 
 
 
-                        buildInfoCard(context: context),
+                          // ----------------------------------------
+                          // About This Order Section
+                          // ----------------------------------------
+
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "About this Order",
+                          ),
 
 
-                        buildVendorCard(context: context),
+                          SpaceHelperWidget.v(20.h(context)),
+
+                          HtmlWidget(
+                            plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.description ?? "",
+                          ),
+
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Entrance & Welcome Area",
+                          //   items: [
+                          //     "Welcome board with birthday name & age",
+                          //     "Balloon arch / gate decoration",
+                          //     "Flower stand or LED frame at entry",
+                          //     "Red carpet or themed walkway",
+                          //     "Photo booth backdrop",
+                          //   ],
+                          // ),
+                          //
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Cake & Dessert Section",
+                          //   items: [
+                          //     "Cake stand & dessert trays",
+                          //     "Cake backdrop or arch",
+                          //     "LED candles or spotlight on cake",
+                          //     "Customized cake topper",
+                          //   ],
+                          // ),
+                          //
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Photo Zone",
+                          //   items: [
+                          //     "Themed photo booth with props",
+                          //     "Neon light signs (“Let’s Party”, “Cheers”, “Happy Birthday”)",
+                          //     "Instax / Polaroid corner for instant photos",
+                          //   ],
+                          // ),
 
 
-                        SpaceHelperWidget.v(24.h(context)),
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Entrance & Welcome Area",
+                          //   items: [
+                          //     "Welcome board with birthday name & age",
+                          //     "Balloon arch / gate decoration",
+                          //     "Flower stand or LED frame at entry",
+                          //     "Red carpet or themed walkway",
+                          //     "Photo booth backdrop",
+                          //   ],
+                          // ),
+                          //
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Cake & Dessert Section",
+                          //   items: [
+                          //     "Cake stand & dessert trays",
+                          //     "Cake backdrop or arch",
+                          //     "LED candles or spotlight on cake",
+                          //     "Customized cake topper",
+                          //   ],
+                          // ),
+                          //
+                          // buildSection(
+                          //   context: context,
+                          //   imageString: ImageUtils.grayRightSignImage,
+                          //   title: "Photo Zone",
+                          //   items: [
+                          //     "Themed photo booth with props",
+                          //     "Neon light signs (“Let’s Party”, “Cheers”, “Happy Birthday”)",
+                          //     "Instax / Polaroid corner for instant photos",
+                          //   ],
+                          // ),
 
-                        Row(
-                          children: [
+                          SpaceHelperWidget.v(20.h(context)),
 
-                            Expanded(
-                              child: ButtonHelperWidget.customButtonWidgetAdventPro(
-                                context: context,
-                                onPressed: () async {
-                                  Get.off(()=>PlannerOfferView(),preventDuplicates: false);
-                                },
-                                text: "Cancel Offer",
-                                textColor: ColorUtils.red202,
-                                backgroundColor: ColorUtils.red9,
+
+                          // ----------------------------------------
+                          // Order Information Card
+                          // ----------------------------------------
+
+
+
+                          buildInfoCard(
+                            context: context,
+                            plannerAllVendorOrderDetailsController: plannerAllVendorOrderDetailsController,
+                          ),
+
+
+                          buildVendorCard(
+                            context: context,
+                            plannerAllVendorOrderDetailsController: plannerAllVendorOrderDetailsController,
+                          ),
+
+
+                          SpaceHelperWidget.v(24.h(context)),
+
+
+                          plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.status == "pending" ?
+                          Row(
+                            children: [
+
+                              Expanded(
+                                child: plannerAllVendorOrderDetailsController.isUpdate.value == true ?
+                                LoadingHelperWidget.loadingHelperWidget(
+                                  context: context,
+                                ) :
+                                ButtonHelperWidget.customButtonWidgetAdventPro(
+                                  context: context,
+                                  onPressed: () async {
+                                    plannerAllVendorOrderDetailsController.isUpdate.value = true;
+                                    plannerAllVendorOrderDetailsController.updateOrderStatusController(
+                                      context: context,
+                                      orderId: orderID,
+                                      orderStatus: "denied",
+                                    );
+                                  },
+                                  text: "Denied Offer",
+                                  textColor: ColorUtils.red202,
+                                  backgroundColor: ColorUtils.red9,
+                                ),
                               ),
-                            ),
 
-                            SpaceHelperWidget.h(16.w(context)),
+                              SpaceHelperWidget.h(16.w(context)),
 
-                            Expanded(
-                              child: ButtonHelperWidget.customButtonWidgetAdventPro(
-                                context: context,
-                                onPressed: () async {
-                                  Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
-                                },
-                                text: "Accept Oder",
+                              Expanded(
+                                child: plannerAllVendorOrderDetailsController.isUpdate.value == true ?
+                                LoadingHelperWidget.loadingHelperWidget(
+                                  context: context,
+                                ) :
+                                ButtonHelperWidget.customButtonWidgetAdventPro(
+                                  context: context,
+                                  onPressed: () async {
+                                    plannerAllVendorOrderDetailsController.isUpdate.value = true;
+                                    plannerAllVendorOrderDetailsController.updateOrderStatusController(
+                                      context: context,
+                                      orderId: orderID,
+                                      orderStatus: "running",
+                                    );
+                                    //Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
+                                  },
+                                  text: "Accept Order",
+                                ),
                               ),
-                            ),
 
-                          ],
-                        ),
+                            ],
+                          ) :
+                          plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.status == "running" ?
+                          ButtonHelperWidget.customButtonWidgetAdventPro(
+                            context: context,
+                            onPressed: () async {
+                              Get.off(()=>PlannerCancelOfferView(orderID: orderID),preventDuplicates: false);
+                            },
+                            text: "Cancel Offer",
+                          ) :
+                          plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.status == "completed" ?
+                          ButtonHelperWidget.customButtonWidgetAdventPro(
+                            context: context,
+                            onPressed: () async {
+                              Get.off(()=>PlannerFeedbackView(
+                                orderId: orderID,
+                                senderId: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.sId ?? "",
+                              ),preventDuplicates: false);
+                            },
+                            textColor: ColorUtils.blue96,
+                            backgroundColor: ColorUtils.blue231,
+                            text: "Leave Feedback",
+                          ) :
+                          SizedBox.shrink(),
 
 
-                        SpaceHelperWidget.v(40.h(context)),
+
+                          SpaceHelperWidget.v(40.h(context)),
 
 
-                      ],
-                    ),
-                  )
-              ),
-            ],
-          ),
+                        ],
+                      ),
+                    )
+                ),
+              ],
+            ),
+          )),
         ),
       ),
     );
@@ -247,7 +353,10 @@ class PlannerOrderDetailsView extends StatelessWidget {
     );
   }
 
-  Widget buildInfoCard({required BuildContext context}) {
+  Widget buildInfoCard({
+    required BuildContext context,
+    required PlannerAllVendorOrderDetailsController plannerAllVendorOrderDetailsController,
+  }) {
     return Container(
       margin: EdgeInsets.only(bottom: 20.bpm(context)),
       padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 20.hpm(context)),
@@ -270,17 +379,17 @@ class PlannerOrderDetailsView extends StatelessWidget {
           ),
 
           SpaceHelperWidget.v(16.h(context)),
-          infoRow(title: "Deadline", value: "5 days", context: context),
-          infoRow(title: "Program Start Date", value: "28 Oct 2025", context: context),
-          infoRow(title: "Program End Date", value: "02 Nov 2025", context: context),
-          infoRow(title: "First Payment",value: "\$150", context: context),
-          infoRow(title: "Total Price", value: "\$300", context: context),
+          infoRow(title: "Deadline", value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.duration} days", context: context),
+          infoRow(title: "Program Start Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.startDate))}", context: context),
+          infoRow(title: "Program End Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.endDate))}", context: context),
+          infoRow(title: "Location",value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.address}", context: context),
+          infoRow(title: "Total Price", value: "\$${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.totalAmount}", context: context),
         ],
       ),
     );
   }
 
-  Widget buildVendorCard({required BuildContext context}) {
+  Widget buildVendorCard({required BuildContext context,required PlannerAllVendorOrderDetailsController plannerAllVendorOrderDetailsController}) {
     return Container(
       margin: EdgeInsets.only(bottom: 20.bpm(context)),
       padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 20.hpm(context)),
@@ -313,7 +422,8 @@ class PlannerOrderDetailsView extends StatelessWidget {
                 horizontalPadding: 1.hpm(context),
                 backgroundColor: ColorUtils.orange213,
                 radius: 25.r(context),
-                imageAsset: ImageUtils.noImage,
+                imageAsset: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.photoUrl == null ? ImageUtils.noImage : null,
+                imageUrl: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.photoUrl,
               ),
 
               SpaceHelperWidget.h(12.w(context)),
@@ -326,12 +436,13 @@ class PlannerOrderDetailsView extends StatelessWidget {
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black48,
-                  text: "Bella Photography Studio",
+                  text: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.name ?? "",
                 ),
               ),
 
               SpaceHelperWidget.h(6.w(context)),
 
+              plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.isKycVerified == true ?
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.hpm(context),vertical: 2.vpm(context)),
                 decoration: BoxDecoration(
@@ -363,7 +474,8 @@ class PlannerOrderDetailsView extends StatelessWidget {
 
                   ],
                 ),
-              ),
+              ) :
+              SizedBox.shrink(),
 
 
             ],
@@ -386,7 +498,7 @@ class PlannerOrderDetailsView extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 borderRadius: BorderRadius.circular(6.r(context)),
                 textColor: ColorUtils.blue71,
-                text: "Photography",
+                text: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.categories?.first ?? "",
               ),
 
 
@@ -402,13 +514,13 @@ class PlannerOrderDetailsView extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     textSpans: [
                       CustomTextSpan(
-                        text: '4.7 ',
+                        text: '${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.avgRating} ',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: ColorUtils.black10,
                       ).toTextSpan(),
                       CustomTextSpan(
-                        text: '(320 reviews)',
+                        text: '(${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.ratingCount} reviews)',
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: ColorUtils.black10,
@@ -425,10 +537,9 @@ class PlannerOrderDetailsView extends StatelessWidget {
 
           SpaceHelperWidget.v(16.h(context)),
 
-          infoRow(title: "Phone", value: "+880 1235 6459", context: context),
-
-          infoRow(title: "Email", value: "yourmail@.com", context: context),
-          infoRow(title: "Location", value: "Mohakhali, Dhaka", context: context),
+          infoRow(title: "Phone", value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.contractNumber}", context: context),
+          infoRow(title: "Email", value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.email}", context: context),
+          infoRow(title: "Location", value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.sender?.address}", context: context),
         ],
       ),
     );
@@ -458,7 +569,7 @@ class PlannerOrderDetailsView extends StatelessWidget {
               child: TextHelperClass.headingTextWithoutWidth(
                 context: context,
                 alignment: Alignment.centerRight,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.end,
                 fontSize: 17,
                 fontWeight: FontWeight.w500,
                 textColor: ColorUtils.black48,

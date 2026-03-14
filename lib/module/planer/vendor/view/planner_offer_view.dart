@@ -6,102 +6,155 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerOfferView extends StatelessWidget {
   PlannerOfferView({super.key});
 
-  final PlannerOfferController plannerOfferController = Get.put(PlannerOfferController());
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: CustomScrollView(
-            slivers : [
+    final PlannerOfferController plannerOfferController = Get.put(PlannerOfferController(context: context));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: plannerOfferController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            RefreshIndicator(
+              onRefresh: () async {
+                plannerOfferController.isLoading.value = true;
+                plannerOfferController.allBookings.clear();
+                Future.delayed(Duration(seconds: 1),() async {
+                  plannerOfferController.getAllVendorOrderController(context: context);
+                });
+              },
+              child: CustomScrollView(
+                slivers : [
 
 
-              AuthAppBarHelperWidget(
-                onBackPressed: () async {
-                  Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
-                },
-                title: "All Offers",
-              ),
-
-
-
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-                      TextFormFieldWidget.build(
-                        context: context,
-                        hintText: "Search Planner...",
-                        controller: plannerOfferController.searchController.value,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            20.lpm(context),
-                            14.5.tpm(context),
-                            5.rpm(context),
-                            14.5.bpm(context),
-                          ),
-                          child: ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 20.h(context),
-                            width: 20.w(context),
-                            imageString: ImageUtils.searchImage,
-                          ),
-                        ),
-                      ),
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-
-                      buildTabs(context: context),
-
-                      SpaceHelperWidget.v(26.h(context)),
-
-                      Expanded(
-                          child: ListView.builder(
-                            itemCount: plannerOfferController.filteredBookings.length,
-                            itemBuilder: (context, index) {
-                              return bookingCard(booking: plannerOfferController.filteredBookings[index],context: context);
-                            },
-                          )
-                      ),
-                    ],
+                  AuthAppBarHelperWidget(
+                    onBackPressed: () async {
+                      Get.off(()=>DashboardPlannerView(index: 2),preventDuplicates: false);
+                    },
+                    title: "All Offers",
                   ),
-                ),
+
+
+
+                  SliverFillRemaining(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: Column(
+                        children: [
+
+                          SpaceHelperWidget.v(16.h(context)),
+
+                          TextFormFieldWidget.build(
+                            context: context,
+                            hintText: "Search Planner...",
+                            controller: plannerOfferController.searchController.value,
+                            keyboardType: TextInputType.emailAddress,
+                            onChanged: (value) async {
+                              plannerOfferController.allBookings.clear();
+                              await plannerOfferController.getAllVendorOrderSearchController(context: context, searchTerm: value!);
+                            },
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                20.lpm(context),
+                                14.5.tpm(context),
+                                5.rpm(context),
+                                14.5.bpm(context),
+                              ),
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 20.h(context),
+                                width: 20.w(context),
+                                imageString: ImageUtils.searchImage,
+                              ),
+                            ),
+                          ),
+
+                          SpaceHelperWidget.v(16.h(context)),
+
+
+                          buildTabs(context: context,plannerOfferController: plannerOfferController),
+
+                          SpaceHelperWidget.v(26.h(context)),
+
+                          Expanded(
+                            child: plannerOfferController.filteredBookings.isNotEmpty == true ?
+                            ListView.builder(
+                              itemCount: plannerOfferController.filteredBookings.length,
+                              itemBuilder: (context, index) {
+                                return Obx(()=>bookingCard(
+                                  booking: plannerOfferController.filteredBookings[index],
+                                  context: context,
+                                  plannerOfferController: plannerOfferController,
+                                ));
+                              },
+                            ) :
+                            SizedBox(
+                              height: 630.h(context),
+                              width: 428.w(context),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.center,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black48,
+                                  text: "No Offer Available",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 
   /// ------------------------------
   /// TAB BAR
   /// ------------------------------
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerOfferController plannerOfferController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        tabItem(status: PlannerBookingStatus.all,title: "All",context: context),
-        tabItem(status: PlannerBookingStatus.complete,title: "Complete",context: context),
-        tabItem(status: PlannerBookingStatus.inProcess,title: "In-Process",context: context),
-        tabItem(status: PlannerBookingStatus.pending,title: "Pending",context: context),
+        tabItem(status: PlannerBookingStatus.all,title: "All",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.complete,title: "Complete",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.active,title: "Active",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.pending,title: "Pending",context: context,plannerOfferController: plannerOfferController),
+        tabItem(status: PlannerBookingStatus.cancelled,title: "Cancelled",context: context,plannerOfferController: plannerOfferController),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerBookingStatus status,required BuildContext context}) {
+  Widget tabItem({
+    required PlannerOfferController plannerOfferController,
+    required String title,
+    required PlannerBookingStatus status,
+    required BuildContext context,
+  }) {
     bool isSelected = plannerOfferController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -135,7 +188,7 @@ class PlannerOfferView extends StatelessWidget {
   /// ------------------------------
   /// BOOKING CARD
   /// ------------------------------
-  Widget bookingCard({required PlannerBookingModel booking, required BuildContext context}) {
+  Widget bookingCard({required PlannerOfferController plannerOfferController,required PlannerBookingModel booking, required BuildContext context}) {
     Color badgeColor = Colors.grey;
     Color textColor = Colors.white;
     String text = "";
@@ -146,15 +199,20 @@ class PlannerOfferView extends StatelessWidget {
         textColor = ColorUtils.green139;
         text = "Completed";
         break;
-      case PlannerBookingStatus.inProcess:
-        badgeColor = ColorUtils.yellow249;
-        textColor = ColorUtils.yellow95;
-        text = "In-Process";
+      case PlannerBookingStatus.active:
+        badgeColor = ColorUtils.blue173;
+        textColor = ColorUtils.blue96;
+        text = "Active";
         break;
       case PlannerBookingStatus.pending:
         badgeColor = ColorUtils.red20;
         textColor = ColorUtils.red202;
         text = "Pending";
+        break;
+      case PlannerBookingStatus.cancelled:
+        badgeColor = ColorUtils.red20;
+        textColor = ColorUtils.red202;
+        text = "Cancelled";
         break;
       default:
         break;
@@ -184,17 +242,22 @@ class PlannerOfferView extends StatelessWidget {
                       horizontalPadding: 1.hpm(context),
                       backgroundColor: ColorUtils.orange213,
                       radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
+                      imageAsset: booking.coverImage == "" ? ImageUtils.noImage : null,
+                      imageUrl: booking.coverImage == "" ? null : booking.coverImage,
                     ),
+
                     SpaceHelperWidget.h(10.w(context)),
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      textAlign: TextAlign.start,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      textColor: ColorUtils.black48,
-                      text: booking.vendorName,
+
+                    Expanded(
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: booking.vendorName,
+                      ),
                     ),
                   ],
                 ),
@@ -252,7 +315,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.white255,
                   backgroundColor: ColorUtils.blue96,
@@ -267,7 +330,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerFeedbackView(),preventDuplicates: false);
+                    Get.off(()=>PlannerFeedbackView(orderId: booking.sid,senderId: booking.vendorId,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue231,
@@ -286,7 +349,7 @@ class PlannerOfferView extends StatelessWidget {
                 child: ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+                    Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
                   },
                   textColor: ColorUtils.blue96,
                   backgroundColor: ColorUtils.blue206,
@@ -298,10 +361,17 @@ class PlannerOfferView extends StatelessWidget {
               SpaceHelperWidget.h(10.w(context)),
 
               Expanded(
-                child: ButtonHelperWidget.customButtonWidgetAdventPro(
+                child: plannerOfferController.isUpdate.value == true && plannerOfferController.selectId.value == booking.sid ?
+                LoadingHelperWidget.loadingHelperWidget(
+                  context: context,
+                ) :
+                ButtonHelperWidget.customButtonWidgetAdventPro(
                   context: context,
                   onPressed: () async {
-                    Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
+                    plannerOfferController.isUpdate.value = true;
+                    plannerOfferController.selectId.value = booking.sid;
+                    await plannerOfferController.updateOrderStatusController(context: context, orderId: booking.sid);
+                    //Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
                   },
                   text: "Accept Order",
                 ),
@@ -310,11 +380,20 @@ class PlannerOfferView extends StatelessWidget {
 
 
             ],
+          ) : text == "Active" ?
+          ButtonHelperWidget.customButtonWidgetAdventPro(
+            context: context,
+            onPressed: () async {
+              Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
+            },
+            textColor: ColorUtils.blue96,
+            backgroundColor: ColorUtils.blue206,
+            text: "View Details",
           ) :
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>PlannerOrderDetailsView(),preventDuplicates: false);
+              Get.off(()=>PlannerOrderDetailsView(orderID: booking.sid,),preventDuplicates: false);
             },
             textColor: ColorUtils.blue96,
             backgroundColor: ColorUtils.blue206,

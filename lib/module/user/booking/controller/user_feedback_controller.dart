@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
 class UserFeedbackController extends GetxController {
 
-  var communication = 1.obs;
-  var service = 1.obs;
-  var productQuality = 1.obs;
+  var communication = 0.obs;
+  var service = 0.obs;
+  var productQuality = 0.obs;
+  RxBool isSubmit = false.obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
 
   List<String> image = [
     ImageUtils.greateQuality,
@@ -28,16 +33,41 @@ class UserFeedbackController extends GetxController {
     "Would exchange again",
   ];
 
-  var selectedOptions = <String>[].obs;
+  RxString selectedOptions = "".obs;
 
   Rx<TextEditingController> messageController = TextEditingController().obs;
 
   void toggleOption(String value) {
     if (selectedOptions.contains(value)) {
-      selectedOptions.remove(value);
+      selectedOptions.value = "";
     } else {
-      selectedOptions.add(value);
+      selectedOptions.value = value;
     }
+  }
+
+  Future<void> createReviewController({
+    required BuildContext context,
+    required Map<String,dynamic> data,
+  }) async {
+    BaseApiUtils.post(
+      url: ApiUtils.createReview,
+      data: data,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+        Get.off(()=>UserFeedbackSuccessfullView(),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+    );
   }
 
   void submitFeedback() {

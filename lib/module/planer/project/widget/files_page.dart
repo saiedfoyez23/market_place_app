@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
 
@@ -12,7 +13,8 @@ class FilesPage {
     required BuildContext context,
     required PlannerProjectDetailsController plannerProjectDetailsController,
   }) {
-    return CustomScrollView(
+    return Obx(()=> plannerProjectDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type == "elite" ?
+    CustomScrollView(
       slivers: [
 
         SliverToBoxAdapter(
@@ -39,7 +41,8 @@ class FilesPage {
                   SpaceHelperWidget.h(16.w(context)),
 
 
-
+                  plannerProjectDetailsController.isFileSubmit.value == true ?
+                  LoadingHelperWidget.loadingHelperWidget(context: context,height: 40,width: 50) :
                   ButtonHelperWidget.customIconButtonWidgetAdventPro(
                     context: context,
                     backgroundColor: ColorUtils.blue96,
@@ -51,7 +54,11 @@ class FilesPage {
                     textColor: ColorUtils.white255,
                     fontWeight: FontWeight.w700,
                     onPressed: () async {
-                      await plannerProjectDetailsController.pickFile();
+                      Map<String,dynamic> data = {
+                        "project": "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.sId ?? ""}",
+                      };
+                      print(data);
+                      await plannerProjectDetailsController.pickFile(context: context,data: data);
                     },
                     iconPath: ImageUtils.uploadIconImage,
                     text: "Upload File",
@@ -65,119 +72,193 @@ class FilesPage {
           ),
         ),
 
-
+        plannerProjectDetailsController.getAllFileResponseModel.value.data?.isEmpty == true ?
+        SliverFillRemaining(
+          child: Align(
+            alignment: Alignment.center,
+            child: TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.center,
+              textAlign: TextAlign.start,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              textColor: ColorUtils.black48,
+              text: "No File Available",
+            ),
+          ),
+        ) :
         SliverList(
           delegate: SliverChildBuilderDelegate(
                 (context,int index) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 20.bpm(context)),
-                    padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 8.hpm(context)),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorUtils.white215,width: .5),
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10.r(context)),
+              return Container(
+                margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 8.hpm(context)),
+                decoration: BoxDecoration(
+                  border: Border.all(color: ColorUtils.white215,width: .5),
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10.r(context)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+
+
+                    ImageHelperWidget.assetImageWidget(
+                      context: context,
+                      height: 24.h(context),
+                      width: 24.w(context),
+                      imageString: ImageUtils.fileTypeImage,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+
+                    SpaceHelperWidget.h(16.w(context)),
 
 
-                        ImageHelperWidget.assetImageWidget(
-                          context: context,
-                          height: 24.h(context),
-                          width: 24.w(context),
-                          imageString: ImageUtils.fileTypeImage,
-                        ),
+                    Expanded(
+                      child: Column(
+                        children: [
 
-                        SpaceHelperWidget.h(16.w(context)),
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textAlign: TextAlign.start,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            textColor: ColorUtils.black48,
+                            text: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url == null ? "" :
+                            plannerProjectDetailsController.getAllFileResponseModel.value.data![index].url.toString().split("/").last,
+                          ),
 
-
-                        Expanded(
-                          child: Column(
-                            children: [
-
-                              TextHelperClass.headingTextWithoutWidth(
-                                context: context,
-                                alignment: Alignment.centerLeft,
-                                textAlign: TextAlign.start,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                textColor: ColorUtils.black48,
-                                text: plannerProjectDetailsController.files[index].name,
-                              ),
-
-                              SpaceHelperWidget.v(6.h(context)),
+                          SpaceHelperWidget.v(6.h(context)),
 
 
-                              RichTextHelperWidget.headingRichText(
-                                context: context,
-                                alignment: Alignment.centerLeft,
-                                textSpans: [
-                                  CustomTextSpan(
-                                    text: "${plannerProjectDetailsController.files[index].size} . ",
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorUtils.black74,
-                                  ).toTextSpan(),
-                                  CustomTextSpan(
-                                    text: "Uploaded  ${DateFormat('dd MMM yyyy').format(plannerProjectDetailsController.files[index].uploadDate)}",
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorUtils.black74,
-                                  ).toTextSpan(),
-                                ],
-                              ),
-
-
+                          RichTextHelperWidget.headingRichText(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            textSpans: [
+                              CustomTextSpan(
+                                text: "${plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].fileSize} MB . ",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: ColorUtils.black74,
+                              ).toTextSpan(),
+                              CustomTextSpan(
+                                text: "Uploaded  ${DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].createdAt))}",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: ColorUtils.black74,
+                              ).toTextSpan(),
                             ],
                           ),
-                        ),
 
 
-                        SpaceHelperWidget.h(6.w(context)),
-
-
-                        InkWell(
-                          onTap: () async {},
-                          child: ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 32.h(context),
-                            width: 32.w(context),
-                            imageString: ImageUtils.fileDownloadImage,
-                          ),
-                        ),
-
-                        SpaceHelperWidget.h(12.w(context)),
-
-
-                        InkWell(
-                          onTap: () async {},
-                          child: ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 32.h(context),
-                            width: 32.w(context),
-                            imageString: ImageUtils.fileDeleteImage,
-                          ),
-                        ),
-
-
-
-
-                        
-
-                      ],
+                        ],
+                      ),
                     ),
-                  );
-                },
-            childCount: plannerProjectDetailsController.files.length,
+
+
+                    SpaceHelperWidget.h(6.w(context)),
+
+
+                    InkWell(
+                      onTap: () async {
+                        await plannerProjectDetailsController.downloadAndOpenFile(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url);
+                      },
+                      child: ImageHelperWidget.assetImageWidget(
+                        context: context,
+                        height: 32.h(context),
+                        width: 32.w(context),
+                        imageString: ImageUtils.fileDownloadImage,
+                      ),
+                    ),
+
+                    SpaceHelperWidget.h(12.w(context)),
+
+
+                    InkWell(
+                      onTap: () async {
+                        FileDialogBoxWidget().fileDeleteDialog(
+                          context: context,
+                          fileId: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].sId,
+                          plannerProjectDetailsController: plannerProjectDetailsController,
+                        );
+                      },
+                      child: ImageHelperWidget.assetImageWidget(
+                        context: context,
+                        height: 32.h(context),
+                        width: 32.w(context),
+                        imageString: ImageUtils.fileDeleteImage,
+                      ),
+                    ),
+
+
+
+
+
+
+                  ],
+                ),
+              );
+            },
+            childCount: plannerProjectDetailsController.getAllFileResponseModel.value.data?.length,
           ),
         )
 
 
 
       ],
-    );
+    ) :
+    CustomScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      slivers: [
+
+        SliverFillRemaining(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.center,
+                textAlign: TextAlign.center,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                textColor: ColorUtils.black48,
+                text: "Access Restricted",
+              ),
+
+
+              SpaceHelperWidget.v(20.h(context)),
+
+              TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.center,
+                textAlign: TextAlign.center,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                textColor: ColorUtils.black48,
+                text: "Only subscribed members can see this feature",
+              ),
+
+              SpaceHelperWidget.v(20.h(context)),
+
+              TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.center,
+                textAlign: TextAlign.center,
+                fontSize: 21,
+                fontWeight: FontWeight.w500,
+                textColor: ColorUtils.black48,
+                text: "Subscribe now to unlock this feature.",
+              ),
+
+
+            ],
+          ),
+        )
+
+      ],
+    ));
   }
 
 

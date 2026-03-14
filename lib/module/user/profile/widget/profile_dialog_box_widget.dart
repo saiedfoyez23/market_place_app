@@ -6,12 +6,15 @@ import 'package:marketplaceapp/module/module.dart';
 
 class ProfileDialogBoxWidget {
 
-  void deleteProfileDialog({required BuildContext context}) {
+  void deleteProfileDialog({
+    required BuildContext context,
+    required ProfileDetailsController profileDetailsController
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false, // user must tap a button
       builder: (context) {
-        return Dialog(
+        return Obx(()=>Dialog(
           insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r(context)),
@@ -60,7 +63,7 @@ class ProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,
@@ -76,10 +79,14 @@ class ProfileDialogBoxWidget {
 
 
                       Expanded(
-                        child: ButtonHelperWidget.customButtonWidget(
+                        child: profileDetailsController.isDelete.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(
+                          context: context,
+                        ) :
+                        ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            await profileDetailsController.getProfileDeleteController(context: context);
                           },
                           text: "Delete",
                           borderRadius: 40,
@@ -96,7 +103,7 @@ class ProfileDialogBoxWidget {
               ),
             ),
           ),
-        );
+        ));
       },
     );
   }
@@ -156,7 +163,7 @@ class ProfileDialogBoxWidget {
                         child: ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           text: "No",
                           borderRadius: 40,

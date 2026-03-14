@@ -1,76 +1,94 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
+
 
 class PlannerVendorController extends GetxController {
-
-  var favoriteList = <int, bool>{}.obs;
-
+  RxBool isLoading = false.obs;
   Rx<TextEditingController> searchController = TextEditingController().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  Rx<GetAllVendorServiceResponseModel> getAllVendorServiceResponseModel = GetAllVendorServiceResponseModel().obs;
+  BuildContext context;
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
+  PlannerVendorController({required this.context});
 
-  RxList<PlannerVendorModel> vendors = <PlannerVendorModel>[
-    PlannerVendorModel(
-      image: ImageUtils.wishlistImage,
-      title: "Bella Photography Studio",
-      category: "Photography",
-      location: "Mohakhali, Gulshan 01",
-      description:
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      rating: 4.7,
-      reviews: 320,
-      isVerified: true,
-    ),
-    PlannerVendorModel(
-      image: ImageUtils.wishlistImage,
-      title: "Happy Moments Decor",
-      category: "Decoration",
-      location: "Banani, Dhaka",
-      description:
-      "Premium decoration with customized balloon setups and lighting.",
-      rating: 4.8,
-      reviews: 290,
-      isVerified: true,
-    ),
-    PlannerVendorModel(
-      image: ImageUtils.wishlistImage,
-      title: "Party Master Event",
-      category: "Event Planner",
-      location: "Mirpur, Dhaka",
-      description:
-      "Complete birthday event package with games, music & cakes.",
-      rating: 4.9,
-      reviews: 510,
-      isVerified: false,
-    ),
-  ].obs;
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: 1),() async {
+      await getPlannerProfileDetailsController(context: context);
+      await getAllVendorServiceController(context: context);
+    });
+  }
 
-
-  void toggleFavorite(int index) {
-    favoriteList[index] = !(favoriteList[index] ?? false);
+  Future<void> getAllVendorServiceController({required BuildContext context}) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getAllVendorServiceResponse,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        getAllVendorServiceResponseModel.value = GetAllVendorServiceResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
 
-}
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  // Future<void> createFavoritesController({
+  //   required BuildContext context,
+  //   required String serviceId,
+  // }) async {
+  //   BaseApiUtils.post(
+  //     url: "${ApiUtils.createFavoriteResponse}/${serviceId}",
+  //     authorization: userLoginResponseModel.value.data?.accessToken,
+  //     onSuccess: (e,data) async {
+  //       isLoading.value = true;
+  //       MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+  //       await getAllVendorServiceController(context: context);
+  //     },
+  //     onFail: (e,data) {
+  //       MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+  //       isLoading.value = false;
+  //     },
+  //     onExceptionFail: (e,data) {
+  //       MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+  //       isLoading.value = false;
+  //     },
+  //   );
+  //
+  // }
 
 
-class PlannerVendorModel {
-  String image;
-  String title;
-  String category;
-  String location;
-  String description;
-  double rating;
-  int reviews;
-  bool isVerified;
-
-  PlannerVendorModel({
-    required this.image,
-    required this.title,
-    required this.category,
-    required this.location,
-    required this.description,
-    required this.rating,
-    required this.reviews,
-    required this.isVerified,
-  });
 }

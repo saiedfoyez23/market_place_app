@@ -10,57 +10,64 @@ class UserNotificationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() {
-        return SafeArea(
-          child: Container(
-            height: 930.h(context),
-            width: 428.w(context),
-            decoration: BoxDecoration(
-              color: ColorUtils.white255,
-            ),
-            child: CustomScrollView(
-              slivers: [
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+        Get.delete<UserNotificationController>(force: true);
+      },
+      child: Scaffold(
+        body: Obx(() {
+          return SafeArea(
+            child: Container(
+              height: 930.h(context),
+              width: 428.w(context),
+              decoration: BoxDecoration(
+                color: ColorUtils.white255,
+              ),
+              child: CustomScrollView(
+                slivers: [
 
 
-                AuthAppBarHelperWidget(
-                  onBackPressed: () async {
-                    Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
-                    Get.delete<UserNotificationController>(force: true);
-                  },
-                  title: "Notifications",
-                ),
-
-
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-                    ],
+                  AuthAppBarHelperWidget(
+                    onBackPressed: () async {
+                      Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+                      Get.delete<UserNotificationController>(force: true);
+                    },
+                    title: "Notifications",
                   ),
-                ),
 
 
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context,int index) {
-                        return buildDismissibleNotificationCard(item: userNotificationController.notifications[index],context: context);
-                      },
-                      childCount: userNotificationController.notifications.length,
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+
+                        SpaceHelperWidget.v(16.h(context)),
+
+                      ],
                     ),
                   ),
-                ),
 
 
-              ],
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                            (context,int index) {
+                          return buildDismissibleNotificationCard(item: userNotificationController.notifications[index],context: context);
+                        },
+                        childCount: userNotificationController.notifications.length,
+                      ),
+                    ),
+                  ),
+
+
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

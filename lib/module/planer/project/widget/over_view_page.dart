@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
@@ -32,13 +33,13 @@ class OverViewPage {
             
                 _aboutThisOrder(context: context, plannerProjectDetailsController: plannerProjectDetailsController),
             
-                ButtonHelperWidget.customButtonWidgetAdventPro(
-                  context: context,
-                  onPressed: () async {},
-                  text: "Complete Order",
-                  backgroundColor: ColorUtils.white217,
-                  textColor: ColorUtils.white255,
-                ),
+                // ButtonHelperWidget.customButtonWidgetAdventPro(
+                //   context: context,
+                //   onPressed: () async {},
+                //   text: "Complete Order",
+                //   backgroundColor: ColorUtils.white217,
+                //   textColor: ColorUtils.white255,
+                // ),
             
                 SpaceHelperWidget.v(30.h(context)),
             
@@ -86,7 +87,8 @@ class OverViewPage {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.hpm(context), vertical: 5.vpm(context)),
                 decoration: BoxDecoration(
-                  color: ColorUtils.green02,
+                  color: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "completed" ? ColorUtils.blue173 :
+                  plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "cancelled" ? ColorUtils.red20 : ColorUtils.green02,
                   borderRadius: BorderRadius.circular(100.r(context)),
                 ),
                 child: TextHelperClass.headingTextWithoutWidth(
@@ -95,8 +97,10 @@ class OverViewPage {
                   textAlign: TextAlign.center,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  textColor: ColorUtils.green139,
-                  text: 'Active',
+                  textColor: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "completed" ? ColorUtils.blue96 :
+                  plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "cancelled" ? ColorUtils.red202 : ColorUtils.green139,
+                  text: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "completed" ? "Completed" :
+                  plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "cancelled" ? "Cancelled" : "Active",
                 ),
               ),
 
@@ -112,15 +116,15 @@ class OverViewPage {
             fontSize: 18,
             fontWeight: FontWeight.w600,
             textColor: ColorUtils.black48,
-            text: plannerProjectDetailsController.eventInfo.value.name,
+            text: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.title ?? "",
           ),
 
           SpaceHelperWidget.v(20.h(context)),
 
-          _rowItem(title: "5 Days", value: "Form \$300", context: context),
-          _rowItem(title: 'Start date:', value: DateFormat('dd MMM yyyy').format(plannerProjectDetailsController.eventInfo.value.startDate), context: context),
-          _rowItem(title: "End date:", value: DateFormat('dd MMM yyyy').format(plannerProjectDetailsController.eventInfo.value.endDate), context: context),
-          _rowItem(title: "Location", value: plannerProjectDetailsController.eventInfo.value.location, context: context),
+          _rowItem(title: "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.duration ?? 0} Days", value: "Form \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0}", context: context),
+          _rowItem(title: 'Start date:', value: DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.startDate)), context: context),
+          _rowItem(title: "End date:", value: DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.endDate)), context: context),
+          _rowItem(title: "Location", value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.address ?? "", context: context),
 
 
         ],
@@ -156,10 +160,10 @@ class OverViewPage {
 
           SpaceHelperWidget.v(20.h(context)),
 
-          _rowItem(title: 'Name:', value: plannerProjectDetailsController.clientInfo.value.name, context: context),
-          _rowItem(title: 'Email:', value: plannerProjectDetailsController.clientInfo.value.email, context: context),
-          _rowItem(title: 'Phone:', value: plannerProjectDetailsController.clientInfo.value.phone, context: context),
-          _rowItem(title: 'Location:', value: plannerProjectDetailsController.clientInfo.value.location, context: context),
+          _rowItem(title: 'Name:', value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.client?.name ?? "", context: context),
+          _rowItem(title: 'Email:', value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.client?.email ?? "", context: context),
+          _rowItem(title: 'Phone:', value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.client?.contractNumber ?? "", context: context),
+          _rowItem(title: 'Location:', value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.client?.address ?? "", context: context),
 
         ],
       ),
@@ -218,7 +222,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black48,
-                  text: plannerProjectDetailsController.progressInfo.value.totalVendors.toString(),
+                  text: "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.totalVendor ?? 0}",
                 ),
               ),
             ],
@@ -250,7 +254,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black48,
-                  text: "\$150 / \$300",
+                  text: "\$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0} / \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0}",
                 ),
               ),
             ],
@@ -262,7 +266,7 @@ class OverViewPage {
           ClipRRect(
             borderRadius: BorderRadius.circular(2.r(context)),
             child: LinearProgressIndicator(
-              value: (150 / 300),
+              value: (int.parse("${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.received ?? 0}") / int.parse("${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.budget ?? 0}")),
               backgroundColor: ColorUtils.white217,
               minHeight: 8.h(context),
               valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),
@@ -296,7 +300,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black48,
-                  text: "70%",
+                  text: "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.taskProgress ?? 0}%",
                 ),
               ),
             ],
@@ -308,7 +312,7 @@ class OverViewPage {
           ClipRRect(
             borderRadius: BorderRadius.circular(2.r(context)),
             child: LinearProgressIndicator(
-              value: .7,
+              value: (double.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.taskProgress.toString() ?? "0.0") / 100),
               backgroundColor: ColorUtils.white217,
               minHeight: 8.h(context),
               valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),
@@ -349,42 +353,44 @@ class OverViewPage {
 
 
           SpaceHelperWidget.v(20.h(context)),
+          
+          HtmlWidget(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.description)
 
-          _buildSection(
-            context: context,
-            imageString: ImageUtils.grayRightSignImage,
-            title: "Entrance & Welcome Area",
-            items: [
-              "Welcome board with birthday name & age",
-              "Balloon arch / gate decoration",
-              "Flower stand or LED frame at entry",
-              "Red carpet or themed walkway",
-              "Photo booth backdrop",
-            ],
-          ),
-
-          _buildSection(
-            context: context,
-            imageString: ImageUtils.grayRightSignImage,
-            title: "Cake & Dessert Section",
-            items: [
-              "Cake stand & dessert trays",
-              "Cake backdrop or arch",
-              "LED candles or spotlight on cake",
-              "Customized cake topper",
-            ],
-          ),
-
-          _buildSection(
-            context: context,
-            imageString: ImageUtils.grayRightSignImage,
-            title: "Photo Zone",
-            items: [
-              "Themed photo booth with props",
-              "Neon light signs (“Let’s Party”, “Cheers”, “Happy Birthday”)",
-              "Instax / Polaroid corner for instant photos",
-            ],
-          ),
+          // _buildSection(
+          //   context: context,
+          //   imageString: ImageUtils.grayRightSignImage,
+          //   title: "Entrance & Welcome Area",
+          //   items: [
+          //     "Welcome board with birthday name & age",
+          //     "Balloon arch / gate decoration",
+          //     "Flower stand or LED frame at entry",
+          //     "Red carpet or themed walkway",
+          //     "Photo booth backdrop",
+          //   ],
+          // ),
+          //
+          // _buildSection(
+          //   context: context,
+          //   imageString: ImageUtils.grayRightSignImage,
+          //   title: "Cake & Dessert Section",
+          //   items: [
+          //     "Cake stand & dessert trays",
+          //     "Cake backdrop or arch",
+          //     "LED candles or spotlight on cake",
+          //     "Customized cake topper",
+          //   ],
+          // ),
+          //
+          // _buildSection(
+          //   context: context,
+          //   imageString: ImageUtils.grayRightSignImage,
+          //   title: "Photo Zone",
+          //   items: [
+          //     "Themed photo booth with props",
+          //     "Neon light signs (“Let’s Party”, “Cheers”, “Happy Birthday”)",
+          //     "Instax / Polaroid corner for instant photos",
+          //   ],
+          // ),
 
         ],
       ),
@@ -416,7 +422,7 @@ class OverViewPage {
               child: TextHelperClass.headingTextWithoutWidth(
                 context: context,
                 alignment: Alignment.centerRight,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.end,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,
@@ -444,70 +450,70 @@ class OverViewPage {
     );
   }
 
-  static Widget _buildSection({
-    required BuildContext context,
-    required String imageString,
-    required String title,
-    required List<String> items,
-  }) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 20.bpm(context)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ImageHelperWidget.assetImageWidget(
-                context: context,
-                height: 24.h(context),
-                width: 24.w(context),
-                imageString: imageString,
-              ),
-
-              SpaceHelperWidget.h(10.w(context)),
-
-
-              TextHelperClass.headingTextWithoutWidth(
-                context: context,
-                alignment: Alignment.centerLeft,
-                textAlign: TextAlign.start,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                textColor: ColorUtils.black48,
-                text: title,
-              ),
-
-            ],
-          ),
-          SpaceHelperWidget.v(16.h(context)),
-
-
-          ...items.map((text) => Padding(
-            padding: EdgeInsets.only(left: 32.lpm(context), bottom: 8.bpm(context)),
-            child: Row(
-              children: [
-                Icon(Icons.circle, size: 10.r(context), color: ColorUtils.blue96),
-
-                SpaceHelperWidget.h(10.w(context)),
-
-                Expanded(
-                  child: TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    textColor: ColorUtils.black80,
-                    text: text,
-                  ),
-                ),
-              ],
-            ),
-          )),
-        ],
-      ),
-    );
-  }
+  // static Widget _buildSection({
+  //   required BuildContext context,
+  //   required String imageString,
+  //   required String title,
+  //   required List<String> items,
+  // }) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(bottom: 20.bpm(context)),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             ImageHelperWidget.assetImageWidget(
+  //               context: context,
+  //               height: 24.h(context),
+  //               width: 24.w(context),
+  //               imageString: imageString,
+  //             ),
+  //
+  //             SpaceHelperWidget.h(10.w(context)),
+  //
+  //
+  //             TextHelperClass.headingTextWithoutWidth(
+  //               context: context,
+  //               alignment: Alignment.centerLeft,
+  //               textAlign: TextAlign.start,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w600,
+  //               textColor: ColorUtils.black48,
+  //               text: title,
+  //             ),
+  //
+  //           ],
+  //         ),
+  //         SpaceHelperWidget.v(16.h(context)),
+  //
+  //
+  //         ...items.map((text) => Padding(
+  //           padding: EdgeInsets.only(left: 32.lpm(context), bottom: 8.bpm(context)),
+  //           child: Row(
+  //             children: [
+  //               Icon(Icons.circle, size: 10.r(context), color: ColorUtils.blue96),
+  //
+  //               SpaceHelperWidget.h(10.w(context)),
+  //
+  //               Expanded(
+  //                 child: TextHelperClass.headingTextWithoutWidth(
+  //                   context: context,
+  //                   alignment: Alignment.centerLeft,
+  //                   textAlign: TextAlign.start,
+  //                   fontSize: 16,
+  //                   fontWeight: FontWeight.w500,
+  //                   textColor: ColorUtils.black80,
+  //                   text: text,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         )),
+  //       ],
+  //     ),
+  //   );
+  // }
 
 
 }

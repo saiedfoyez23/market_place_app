@@ -7,10 +7,10 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerAnalyticsView extends StatelessWidget {
   PlannerAnalyticsView({super.key});
 
-  final PlannerAnalyticsController plannerAnalyticsController = Get.put(PlannerAnalyticsController());
 
   @override
   Widget build(BuildContext context) {
+    final PlannerAnalyticsController plannerAnalyticsController = Get.put(PlannerAnalyticsController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -19,7 +19,12 @@ class PlannerAnalyticsView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
+          child: plannerAnalyticsController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
 
 
@@ -28,7 +33,51 @@ class PlannerAnalyticsView extends StatelessWidget {
                 title: "Analytics",
               ),
 
+              plannerAnalyticsController.plannerMyProfileDetailsResponseModel.value.data?.type == null ?
+              SliverFillRemaining(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      textColor: ColorUtils.black48,
+                      text: "Access Restricted",
+                    ),
+
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Only subscribed members can see this feature",
+                    ),
+
+                    SpaceHelperWidget.v(20.h(context)),
+
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.center,
+                      textAlign: TextAlign.center,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w500,
+                      textColor: ColorUtils.black48,
+                      text: "Subscribe now to unlock this feature.",
+                    ),
+
+
+                  ],
+                ),
+              ) :
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -39,9 +88,10 @@ class PlannerAnalyticsView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Events Managed',
-                              value: '${plannerAnalyticsController.eventsManaged.value}',
+                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.eventManaged ?? "0"}',
                             ),
                           ),
 
@@ -50,9 +100,10 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Active Clients',
-                              value: '${plannerAnalyticsController.activeClients.value}',
+                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.activeClient ?? "0"}',
                             ),
                           ),
                         ],
@@ -65,9 +116,10 @@ class PlannerAnalyticsView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Vendor Partnerships',
-                              value: '${plannerAnalyticsController.vendorPartnerships.value}',
+                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.vendorPartnership ?? "0"}',
                             ),
                           ),
 
@@ -75,9 +127,10 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                           Expanded(
                             child: buildStatCard(
+                              plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Total Earnings',
-                              value: '\$${plannerAnalyticsController.totalEarnings.value}',
+                              value: '\$${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.totalEarning ?? "0"}',
                             ),
                           ),
                         ],
@@ -94,7 +147,7 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                       // Tab Buttons
 
-                      buildTabs(context: context),
+                      buildTabs(context: context,plannerAnalyticsController: plannerAnalyticsController),
 
 
                       plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.eventTypes ?
@@ -149,6 +202,7 @@ class PlannerAnalyticsView extends StatelessWidget {
     required BuildContext context,
     required String title,
     required String value,
+    required PlannerAnalyticsController plannerAnalyticsController,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.hpm(context),vertical: 14.vpm(context)),
@@ -249,14 +303,14 @@ class PlannerAnalyticsView extends StatelessWidget {
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     textColor: ColorUtils.black64,
-                    text: '${controller.rating.value}',
+                    text: '${controller.plannerRevenueResponseModel.value.data?.review?.avgRating}',
                   ),
 
                   SpaceHelperWidget.v(10.h(context)),
 
                   Obx(() {
-                    int fullStars = controller.rating.value.floor();
-                    double fractional = controller.rating.value - fullStars;
+                    int fullStars = controller.plannerRevenueResponseModel.value.data?.review?.avgRating.floor();
+                    num fractional = controller.plannerRevenueResponseModel.value.data?.review?.avgRating - fullStars;
                     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
                     return Row(
@@ -289,7 +343,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black64,
-                    text: 'Based on ${controller.reviewCount.value} reviews',
+                    text: 'Based on ${controller.plannerRevenueResponseModel.value.data?.review?.ratingCount} reviews',
                   ),
 
 
@@ -321,18 +375,26 @@ class PlannerAnalyticsView extends StatelessWidget {
   }
 
 
-  Widget buildTabs({required BuildContext context}) {
+  Widget buildTabs({
+    required BuildContext context,
+    required PlannerAnalyticsController plannerAnalyticsController,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Expanded(child: tabItem(status: PlannerAnalyticTab.revenueTrends,title: "Revenue Trends",context: context)),
-        Expanded(child: tabItem(status: PlannerAnalyticTab.eventTypes,title: "Event Types",context: context)),
-        Expanded(child: tabItem(status: PlannerAnalyticTab.topVendors,title: "Top Vendors",context: context)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.revenueTrends,title: "Revenue Trends",context: context,plannerAnalyticsController: plannerAnalyticsController)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.eventTypes,title: "Event Types",context: context,plannerAnalyticsController: plannerAnalyticsController)),
+        Expanded(child: tabItem(status: PlannerAnalyticTab.topVendors,title: "Top Vendors",context: context,plannerAnalyticsController: plannerAnalyticsController)),
       ],
     );
   }
 
-  Widget tabItem({required String title,required PlannerAnalyticTab status,required BuildContext context}) {
+  Widget tabItem({
+    required String title,
+    required PlannerAnalyticTab status,
+    required BuildContext context,
+    required PlannerAnalyticsController plannerAnalyticsController,
+  }) {
     bool isSelected = plannerAnalyticsController.selectedTab.value == status;
     return InkWell(
       onTap: () {
@@ -394,7 +456,8 @@ class PlannerAnalyticsView extends StatelessWidget {
           ),
 
           SpaceHelperWidget.v(16.h(context)),
-          ...controller.eventTypes.map((event) => Container(
+
+          ...controller.plannerEventAnalysisResponseModel.value.data!.eventAnalysis!.map((event) => Container(
             margin: EdgeInsets.only(bottom: 22.bpm(context)),
             child: Column(
               children: [
@@ -410,7 +473,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black48,
-                          text: "${event['name']}",
+                          text: "${event.type}",
                         ),
                         SpaceHelperWidget.h(7.w(context)),
 
@@ -424,7 +487,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           borderRadius: BorderRadius.circular(6.r(context)),
                           textColor: ColorUtils.blue71,
-                          text: "${event['count']} events",
+                          text: "${event.count} events",
                         ),
                       ],
                     ),
@@ -436,7 +499,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                       textColor: ColorUtils.black48,
-                      text: "${event['percentage']}%",
+                      text: "${event.percentage}%",
                     ),
 
 
@@ -447,7 +510,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                 SpaceHelperWidget.v(8.h(context)),
 
                 LinearProgressIndicator(
-                  value: (event['percentage'] / 100),
+                  value: (event.percentage / 100),
                   backgroundColor: ColorUtils.white217,
                   minHeight: 8.h(context),
                   valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),
@@ -493,9 +556,14 @@ class PlannerAnalyticsView extends StatelessWidget {
                   Expanded(
                     child: CustomDropdownHelperClass(
                       value: controller.eventManageYear.value,
-                      items: [2025,2026,2027,],
-                      onChanged: (value) {
+                      items: [2025,2026,2027,2028,2029,2030],
+                      onChanged: (value) async {
+                        controller.eventsBarData.clear();
+                        controller.pieSections.clear();
+                        controller.revenueBarData.clear();
                         controller.eventManageYear.value = value!;
+                        await controller.getPlannerRevenueAnalysisController(
+                            context: context, eventYear: value.toString(), categoryYear: value.toString(), revenueYear: value.toString());
                       },
                       hintText: "select",
                     ),
@@ -586,10 +654,15 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                   Expanded(
                     child: CustomDropdownHelperClass(
-                      value: controller.vendorCategoryYear.value,
-                      items: [2025,2026,2027,],
-                      onChanged: (value) {
-                        controller.vendorCategoryYear.value = value!;
+                      value: controller.eventManageYear.value,
+                      items: [2025,2026,2027,2028,2029,2030],
+                      onChanged: (value) async {
+                        controller.eventsBarData.clear();
+                        controller.pieSections.clear();
+                        controller.revenueBarData.clear();
+                        controller.eventManageYear.value = value!;
+                        await controller.getPlannerRevenueAnalysisController(
+                            context: context, eventYear: value.toString(), categoryYear: value.toString(), revenueYear: value.toString());
                       },
                       hintText: "select",
                     ),
@@ -610,45 +683,26 @@ class PlannerAnalyticsView extends StatelessWidget {
 
               SpaceHelperWidget.v(12.h(context)),
 
-              const Column(
-                children: [
 
-                  Row(
+              Column(
+                children: List.generate(controller.servicePopularity.length, (index) {
+                  return Row(
                     children: [
-                      const SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(color: Colors.purple, shape: BoxShape.circle))),
-                      const SizedBox(width: 8),
-                      Text('Photography: 25%'),
+                      SizedBox(
+                        width: 8,
+                        height: 8,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: controller.servicePopularity[index].textColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text('${controller.servicePopularity[index].title}: ${controller.servicePopularity[index].persentage}%'),
                     ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle))),
-                      const SizedBox(width: 8),
-                      Text('Catering: 33%'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle))),
-                      const SizedBox(width: 8),
-                      Text('Decor: 20%'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle))),
-                      const SizedBox(width: 8),
-                      Text('Venue: 15%'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle))),
-                      const SizedBox(width: 8),
-                      Text('Entertainment: 5%'),
-                    ],
-                  ),
-                ],
+                  );
+                }),
               ),
             ],
           ),
@@ -684,10 +738,15 @@ class PlannerAnalyticsView extends StatelessWidget {
 
                   Expanded(
                     child: CustomDropdownHelperClass(
-                      value: controller.revenueGrowthYear.value,
-                      items: [2025,2026,2027,],
-                      onChanged: (value) {
-                        controller.revenueGrowthYear.value = value!;
+                      value: controller.eventManageYear.value,
+                      items: [2025,2026,2027,2028,2029,2030],
+                      onChanged: (value) async {
+                        controller.eventsBarData.clear();
+                        controller.pieSections.clear();
+                        controller.revenueBarData.clear();
+                        controller.eventManageYear.value = value!;
+                        await controller.getPlannerRevenueAnalysisController(
+                            context: context, eventYear: value.toString(), categoryYear: value.toString(), revenueYear: value.toString());
                       },
                       hintText: "select",
                     ),
@@ -781,7 +840,7 @@ class PlannerAnalyticsView extends StatelessWidget {
 
           SpaceHelperWidget.v(16.h(context)),
 
-          ...controller.topVendors.map((vendor) => Container(
+          ...controller.plannerVendorAnalysisResponseModel.value.data!.topVendors!.map((vendor) => Container(
             margin: EdgeInsets.only(bottom: 15.bpm(context)),
             padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 14.hpm(context)),
             decoration: BoxDecoration(
@@ -802,7 +861,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         textColor: ColorUtils.black64,
-                        text: '${vendor['name']}',
+                        text: '${vendor.name ?? ""}',
                       ),
 
                       SpaceHelperWidget.v(8.h(context)),
@@ -814,7 +873,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         textColor: ColorUtils.black96,
-                        text: '${vendor['projects']} projects together',
+                        text: '${vendor.orderCount ?? "0"} projects together',
                       ),
 
                     ],
@@ -832,7 +891,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       textColor: ColorUtils.black64,
-                      text: vendor['rating'].toString(),
+                      text: vendor.avgRating.toString(),
                     ),
                   ],
                 ),

@@ -9,18 +9,24 @@ class PlannerProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PlannerProfileViewController plannerProfileViewController = Get.put(PlannerProfileViewController(context: context));
     return Scaffold(
-      body: SafeArea(
+      body: Obx(()=>SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: CustomScrollView(
+          child: plannerProfileViewController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(
+            context: context,
+            height: 930.h(context),
+          ) :
+          CustomScrollView(
             slivers: [
-        
-        
+
+
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
@@ -35,13 +41,14 @@ class PlannerProfileView extends StatelessWidget {
                           alignment: Alignment.topCenter,
                           children: [
 
-
                             ImageHelperWidget.styledImage(
                               context: context,
-                              imageAsset: ImageUtils.coverImage,
                               height: 250.h(context),
                               width: 428.w(context),
+                              fit: BoxFit.cover,
+                              imageUrl: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.coverPhoto,
                             ),
+
 
                             // Profile Image
                             Padding(
@@ -53,17 +60,18 @@ class PlannerProfileView extends StatelessWidget {
                                 horizontalPadding: 4.5.vpm(context),
                                 backgroundColor: ColorUtils.orange213,
                                 radius: 75.r(context),
-                                imageAsset: ImageUtils.noImage,
+                                imageUrl: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
+                                imageAsset: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
                               ),
                             ),
                           ],
                         ),
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(35.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Edit Profile",
@@ -72,11 +80,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileEditView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Change Password",
@@ -85,11 +93,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileChangePasswordView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Services",
@@ -98,11 +106,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Portfolio",
@@ -111,11 +119,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfilePortfolioView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Manage Subscription",
@@ -124,11 +132,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileManageSubscriptionView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "FAQ",
@@ -137,11 +145,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileFaqView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Notification Manage",
@@ -150,11 +158,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileNotificationView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Terms & Condition",
@@ -163,11 +171,11 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfileTermsAndConditionView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Privacy & Policy",
@@ -176,24 +184,27 @@ class PlannerProfileView extends StatelessWidget {
                           Get.off(()=>PlannerProfilePrivacyAndPolicyView(),preventDuplicates: false);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Delete Profile",
                         imagePath: ImageUtils.plannerDeleteProfileImage,
                         onTap: () async {
-                          PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(context: context);
+                          PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(
+                            context: context,
+                            plannerProfileViewController: plannerProfileViewController,
+                          );
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                       PlannerProfileViewButton().plannerProfileViewButton(
                         context: context,
                         title: "Log Out",
@@ -202,22 +213,22 @@ class PlannerProfileView extends StatelessWidget {
                           PlannerProfileDialogBoxWidget().plannerLogOutDialog(context: context);
                         },
                       ),
-        
-        
+
+
                       SpaceHelperWidget.v(16.h(context)),
-        
-        
+
+
                     ],
                   ),
                 ),
               )
-        
-        
-        
+
+
+
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }
