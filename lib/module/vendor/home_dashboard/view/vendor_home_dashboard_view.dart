@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorHomeDashboardView extends StatelessWidget {
   VendorHomeDashboardView({super.key});
 
-
-  final VendorHomeDashboardController vendorHomeDashboardController = Get.put(VendorHomeDashboardController());
-
   @override
   Widget build(BuildContext context) {
+    final VendorHomeDashboardController vendorHomeDashboardController = Get.put(VendorHomeDashboardController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -19,259 +18,317 @@ class VendorHomeDashboardView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white255,
           ),
-          child: CustomScrollView(
+          child: vendorHomeDashboardController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+          CustomScrollView(
+            physics: NeverScrollableScrollPhysics(),
             slivers: [
-
-
-              MainPageAppBarHelperWidget(
-                centerTitle: true,
-                customTitle: Row(
-                  children: [
-
-
-                    ImageHelperWidget.circleImageHelperWidget(
-                      width: 50.w(context),
-                      height: 50.h(context),
-                      verticalPadding: 1.vpm(context),
-                      horizontalPadding: 1.hpm(context),
-                      backgroundColor: ColorUtils.orange213,
-                      radius: 25.r(context),
-                      imageAsset: ImageUtils.noImage,
-                    ),
-
-                    SpaceHelperWidget.h(12.w(context)),
-
-
-                    Expanded(
-                      child: Column(
-                        children: [
-
-                          RichTextHelperWidget.headingRichText(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            textSpans: [
-                              CustomTextSpan(
-                                text: 'Hello!! ',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: ColorUtils.black64
-                              ).toTextSpan(),
-                              CustomTextSpan(
-                                text: 'Shahid',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: ColorUtils.orange119,
-                              ).toTextSpan(),
-                            ],
-                          ),
-
-
-                          SpaceHelperWidget.v(3.h(context)),
-
-                          TextHelperClass.headingTextWithoutWidth(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            textColor: ColorUtils.black107,
-                            text: "Mohakhali, Dhaka",
-                          ),
-
-
-
-                        ],
-                      ),
-                    ),
-
-                  ],
-                ),
-                actions: [
-
-
-                  InkWell(
-                    onTap: () async {
-                      Get.off(()=>VendorNotificationView(),preventDuplicates: false);
-                    },
-                    child: ImageHelperWidget.assetImageWidget(
-                      context: context,
-                      height: 50.h(context),
-                      width: 50.w(context),
-                      imageString: ImageUtils.notificationBellImage,
-                    ),
-                  ),
-
-                  SpaceHelperWidget.h(15.w(context)),
-
-
-                ],
-              ),
-
-
 
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      SpaceHelperWidget.v(15.h(context)),
 
+                      SpaceHelperWidget.v(32.h(context)),
 
-                      // Stats Row 1: Active Bookings & Monthly Revenue
+                      // app bar
                       Row(
                         children: [
-                          Expanded(
-                            child: buildStatCard(
-                              context: context,
-                              icon: ImageUtils.activeBookingsImage,
-                              title: 'Active Bookings',
-                              value: vendorHomeDashboardController.activeBookings.value.toString(),
-                              color: ColorUtils.cyan199,
-                            ),
+
+                          ImageHelperWidget.circleImageHelperWidget(
+                            width: 50.w(context),
+                            height: 50.h(context),
+                            verticalPadding: 1.vpm(context),
+                            horizontalPadding: 1.hpm(context),
+                            backgroundColor: ColorUtils.orange213,
+                            radius: 25.r(context),
+                            imageAsset: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
+                            imageUrl: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl,
                           ),
 
-                          SpaceHelperWidget.h(16.w(context)),
+                          SpaceHelperWidget.h(12.w(context)),
 
 
                           Expanded(
-                            child: buildStatCard(
-                              context: context,
-                              icon: ImageUtils.monthlyRevenueImage,
-                              title: 'Monthly Revenue',
-                              value: vendorHomeDashboardController.monthlyRevenue.value,
-                              color: ColorUtils.blue96,
-                            ),
-                          ),
-                        ],
-                      ),
-
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-                      // Stats Row 2: Total Bookings & Total Earnings
-                      Row(
-                        children: [
-                          Expanded(
-                            child: buildStatCard(
-                              context: context,
-                              icon: ImageUtils.totalBookingImage,
-                              title: 'Total Bookings',
-                              value: vendorHomeDashboardController.totalBookings.value.toString(),
-                              color: ColorUtils.blue96,
-                            ),
-                          ),
-
-                          SpaceHelperWidget.h(16.w(context)),
-
-                          Expanded(
-                            child: buildStatCard(
-                              context: context,
-                              icon: ImageUtils.totalEarningsImage,
-                              title: 'Total Earnings',
-                              value: vendorHomeDashboardController.totalEarnings.value,
-                              color: ColorUtils.orange213,
-                            ),
-                          ),
-                        ],
-                      ),
-
-
-                      // Upcoming Bookings Section
-
-                      Container(
-                        margin: EdgeInsets.only(top: 32.tpm(context),bottom: 32.bpm(context)),
-                        padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
-                        decoration: BoxDecoration(
-                          color: ColorUtils.white247,
-                          borderRadius: BorderRadius.circular(20.r(context)),
-                        ),
-                        child: Column(
-                          children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
                               children: [
 
-                                Expanded(
-                                  child: TextHelperClass.headingTextWithoutWidth(
-                                    context: context,
-                                    alignment: Alignment.centerLeft,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    textColor: ColorUtils.black48,
-                                    text: "Upcoming Booking",
-                                  ),
-                                ),
-
-                                SpaceHelperWidget.h(12.w(context)),
-
-                                ButtonHelperWidget.customButtonWidget(
+                                RichTextHelperWidget.headingRichText(
                                   context: context,
-                                  onPressed: () async {},
-                                  text: "See All",
-                                  padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                                  alignment: Alignment.center,
-                                  textColor: ColorUtils.orange119,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24,
-                                  backgroundColor: Colors.transparent,
+                                  alignment: Alignment.centerLeft,
+                                  textSpans: [
+                                    CustomTextSpan(
+                                        text: 'Hello!! ',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorUtils.black64
+                                    ).toTextSpan(),
+                                    CustomTextSpan(
+                                      text: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value.data?.name.toString().split(" ").first ?? "",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorUtils.orange119,
+                                    ).toTextSpan(),
+                                  ],
                                 ),
+
+
+                                SpaceHelperWidget.v(3.h(context)),
+
+                                TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.centerLeft,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  textColor: ColorUtils.black107,
+                                  text: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value.data?.address ?? "",
+                                ),
+
+
+
                               ],
                             ),
-                            SpaceHelperWidget.v(12.h(context)),
-                            ...vendorHomeDashboardController.upcomingBookings.map((booking) => buildBookingCard(booking: booking,context: context)).toList(),
+                          ),
 
-                          ],
-                        ),
+
+
+                          SpaceHelperWidget.h(15.w(context)),
+
+                          InkWell(
+                            onTap: () async {
+                              Get.off(()=>VendorNotificationView(),preventDuplicates: false);
+                            },
+                            child: ImageHelperWidget.assetImageWidget(
+                              context: context,
+                              height: 50.h(context),
+                              width: 50.w(context),
+                              imageString: ImageUtils.notificationBellImage,
+                            ),
+                          ),
+
+                          SpaceHelperWidget.h(15.w(context)),
+
+
+                        ],
                       ),
 
 
-                      Container(
-                        margin: EdgeInsets.only(bottom: 32.bpm(context)),
-                        padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
-                        decoration: BoxDecoration(
-                          color: ColorUtils.white247,
-                          borderRadius: BorderRadius.circular(20.r(context)),
-                        ),
-                        child: Column(
-                          children: [
-
-
-                            TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              textColor: ColorUtils.black48,
-                              text: "Top Partnerships",
-                            ),
-
-                            SpaceHelperWidget.v(8.h(context)),
-
-                            TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              textColor: ColorUtils.black48,
-                              text: "Your most collaborated Planer",
-                            ),
-
-                            const SizedBox(height: 12),
-
-                            ...vendorHomeDashboardController.topPartnerships.map((partnership) => buildPartnershipCard(partnership: partnership,context: context)).toList(),
-
-                          ],
-                        ),
-                      ),
-
-                      // Top Partnerships Section
+                      SpaceHelperWidget.v(32.h(context)),
 
                     ],
                   ),
-                )
+                ),
               ),
+
+              SliverFillRemaining(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
+                  },
+                  child: CustomScrollView(
+                    slivers: [
+
+                      SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                SpaceHelperWidget.v(15.h(context)),
+
+
+                                // Stats Row 1: Active Bookings & Monthly Revenue
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: buildStatCard(
+                                        context: context,
+                                        icon: ImageUtils.activeBookingsImage,
+                                        title: 'Active Bookings',
+                                        value: vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.activeBookingCount.toString() ?? "0",
+                                        color: ColorUtils.cyan199,
+                                      ),
+                                    ),
+
+                                    SpaceHelperWidget.h(16.w(context)),
+
+
+                                    Expanded(
+                                      child: buildStatCard(
+                                        context: context,
+                                        icon: ImageUtils.monthlyRevenueImage,
+                                        title: 'Monthly Revenue',
+                                        value: vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.monthlyRevenue.toString() ?? "0",
+                                        color: ColorUtils.blue96,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+
+                                SpaceHelperWidget.v(16.h(context)),
+
+                                // Stats Row 2: Total Bookings & Total Earnings
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: buildStatCard(
+                                        context: context,
+                                        icon: ImageUtils.plannerNewLeadsImage,
+                                        title: 'New Leads',
+                                        value: vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.totalBookingCount.toString() ?? "0",
+                                        color: ColorUtils.green213,
+                                      ),
+                                    ),
+
+                                    SpaceHelperWidget.h(16.w(context)),
+
+                                    Expanded(
+                                      child: buildStatCard(
+                                        context: context,
+                                        icon: ImageUtils.totalEarningsImage,
+                                        title: 'Total Earnings',
+                                        value: vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.totalEarnings.toString() ?? "0",
+                                        color: ColorUtils.orange213,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+
+                                // Upcoming Bookings Section
+
+                                Container(
+                                  margin: EdgeInsets.only(top: 32.tpm(context),bottom: 32.bpm(context)),
+                                  padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
+                                  decoration: BoxDecoration(
+                                    color: ColorUtils.white247,
+                                    borderRadius: BorderRadius.circular(20.r(context)),
+                                  ),
+                                  child: Column(
+                                    children: [
+
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+
+                                          Expanded(
+                                            child: TextHelperClass.headingTextWithoutWidth(
+                                              context: context,
+                                              alignment: Alignment.centerLeft,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              textColor: ColorUtils.black48,
+                                              text: "Upcoming Booking",
+                                            ),
+                                          ),
+
+                                          SpaceHelperWidget.h(12.w(context)),
+
+                                          ButtonHelperWidget.customButtonWidget(
+                                            context: context,
+                                            onPressed: () async {
+                                              Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+                                            },
+                                            text: "See All",
+                                            padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                            alignment: Alignment.center,
+                                            textColor: ColorUtils.orange119,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 24,
+                                            backgroundColor: Colors.transparent,
+                                          ),
+                                        ],
+                                      ),
+                                      SpaceHelperWidget.v(12.h(context)),
+
+                                      if(vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.upcomingBooking?.isNotEmpty == true)...[
+                                        ...vendorHomeDashboardController.vendorHomePageResponseModel.value.data!.upcomingBooking!.map((booking) => buildBookingCard(booking: booking,context: context)),
+                                      ] else...[
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.center,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorUtils.black48,
+                                          text: "No Upcoming Booking Available",
+                                        ),
+                                      ]
+
+                                    ],
+                                  ),
+                                ),
+
+
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 32.bpm(context)),
+                                  padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
+                                  decoration: BoxDecoration(
+                                    color: ColorUtils.white247,
+                                    borderRadius: BorderRadius.circular(20.r(context)),
+                                  ),
+                                  child: Column(
+                                    children: [
+
+
+                                      TextHelperClass.headingTextWithoutWidth(
+                                        context: context,
+                                        alignment: Alignment.centerLeft,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        textColor: ColorUtils.black48,
+                                        text: "Top Partnerships",
+                                      ),
+
+                                      SpaceHelperWidget.v(8.h(context)),
+
+                                      TextHelperClass.headingTextWithoutWidth(
+                                        context: context,
+                                        alignment: Alignment.centerLeft,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        textColor: ColorUtils.black48,
+                                        text: "Your most collaborated Planer",
+                                      ),
+
+                                      const SizedBox(height: 12),
+
+                                      if(vendorHomeDashboardController.vendorHomePageResponseModel.value.data?.topPartnerships?.isNotEmpty == true)...[
+                                        ...vendorHomeDashboardController.vendorHomePageResponseModel.value.data!.topPartnerships!.map((partnership) => buildPartnershipCard(partnership: partnership,context: context)),
+                                      ] else...[
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.center,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorUtils.black48,
+                                          text: "No Top Partnership Available",
+                                        ),
+                                      ]
+
+
+
+                                    ],
+                                  ),
+                                ),
+
+                                // Top Partnerships Section
+
+                              ],
+                            ),
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+              )
+
+
             ],
           ),
         ),
@@ -336,7 +393,7 @@ class VendorHomeDashboardView extends StatelessWidget {
     );
   }
 
-  Widget buildBookingCard({required Map<String, dynamic> booking,required BuildContext context}) {
+  Widget buildBookingCard({required VendorHomePageResponseUpcomingBooking booking,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.bpm(context)),
       padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
@@ -357,13 +414,14 @@ class VendorHomeDashboardView extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
+
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black64,
-                  text: booking['title'],
+                  text: "${booking.title} - ${booking.type}",
                 ),
 
                 SpaceHelperWidget.v(8.h(context)),
@@ -380,11 +438,12 @@ class VendorHomeDashboardView extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textColor: ColorUtils.black74,
-                        text: booking['date'],
+                        text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
                       ),
                     ),
 
 
+                    booking.status == "completed" ?
                     Row(
                       children: [
 
@@ -403,11 +462,19 @@ class VendorHomeDashboardView extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           textColor: ColorUtils.green139,
-                          text: booking['status'],
+                          text: booking.status,
                         ),
 
                       ],
-                    )
+                    ) :
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      textColor: ColorUtils.yellow177,
+                      text: booking.status == "running" ? "In Process" : booking.status,
+                    ),
 
 
 
@@ -428,7 +495,7 @@ class VendorHomeDashboardView extends StatelessWidget {
     );
   }
 
-  Widget buildPartnershipCard({required Map<String, dynamic> partnership,required BuildContext context}) {
+  Widget buildPartnershipCard({required VendorHomePageResponseTopPartnerships partnership,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(bottom: 15.bpm(context)),
       padding: EdgeInsets.symmetric(vertical: 8.vpm(context),horizontal: 14.hpm(context)),
@@ -450,7 +517,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
-                  text: partnership['name'],
+                  text: partnership.plannerName ?? "",
                 ),
 
                 SpaceHelperWidget.v(8.h(context)),
@@ -462,7 +529,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   textColor: ColorUtils.black96,
-                  text: partnership['projects'],
+                  text: "${partnership.orderCount} projects together",
                 ),
 
               ],
@@ -480,7 +547,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 textColor: ColorUtils.black64,
-                text: partnership['rating'].toString(),
+                text: partnership.rating.toString(),
               ),
             ],
           ),

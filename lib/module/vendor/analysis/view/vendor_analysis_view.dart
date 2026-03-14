@@ -11,7 +11,7 @@ class VendorAnalysisView extends StatelessWidget {
   Widget build(BuildContext context) {
     final VendorAnalysisController vendorAnalysisController = Get.put(VendorAnalysisController(context: context));
     return Scaffold(
-      body: SafeArea(
+      body: Obx(()=>SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
@@ -76,41 +76,69 @@ class VendorAnalysisView extends StatelessWidget {
               ) :
               SliverToBoxAdapter(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.r(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      SizedBox(height: 20),
-                
-                      // Monthly Revenue
-                      sectionTitle("Monthly Revenue (\$)"),
-                      buildBarChart(
-                        vendorAnalysisController: vendorAnalysisController
+                      Row(
+                        children: [
+                          Expanded(
+                            child: buildStatCard(
+                              vendorAnalysisController: vendorAnalysisController,
+                              context: context,
+                              title: 'Total Booking',
+                              value: '${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalBookingCount ?? "0"}',
+                            ),
+                          ),
+
+                          SpaceHelperWidget.h(16.w(context)),
+
+
+                          Expanded(
+                            child: buildStatCard(
+                              vendorAnalysisController: vendorAnalysisController,
+                              context: context,
+                              title: 'Total Earnings',
+                              value: '${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalEarnings ?? "0"}',
+                            ),
+                          ),
+                        ],
                       ),
-                
-                      SizedBox(height: 20),
-                
+
+
+                      SpaceHelperWidget.v(20.h(context)),
+
+                      // Monthly Revenue
+
+                      buildBarChart(
+                        vendorAnalysisController: vendorAnalysisController,
+                        context: context,
+                      ),
+
+
+                      SpaceHelperWidget.v(20.h(context)),
+
                       // Client Satisfaction
-                      sectionTitle("Client Satisfaction"),
                       buildLineChart(
                         vendorAnalysisController: vendorAnalysisController,
+                        context: context,
                       ),
-                
-                      SizedBox(height: 20),
-                
+
+                      SpaceHelperWidget.v(20.h(context)),
+
                       // Service Popularity
-                      sectionTitle("Service Popularity"),
                       buildPieChart(
                         vendorAnalysisController: vendorAnalysisController,
+                        context: context
                       ),
-                
-                      SizedBox(height: 20),
-                
+
+                      SpaceHelperWidget.v(20.h(context)),
+
                       // Booking Trends
-                      sectionTitle("Booking Trends"),
                       buildBlueTrendChart(
                         vendorAnalysisController: vendorAnalysisController,
+                        context: context
                       ),
                     ],
                   ),
@@ -119,181 +147,358 @@ class VendorAnalysisView extends StatelessWidget {
             ],
           ),
         ),
+      )),
+    );
+  }
+
+  Widget buildStatCard({
+    required BuildContext context,
+    required String title,
+    required String value,
+    required VendorAnalysisController vendorAnalysisController,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.hpm(context),vertical: 14.vpm(context)),
+      decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12.r(context)),
+          border: Border.all(width: 1,color: ColorUtils.gray197)
+      ),
+      child: Column(
+        children: [
+          TextHelperClass.headingTextWithoutWidth(
+            context: context,
+            alignment: Alignment.centerLeft,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            textColor: ColorUtils.black64,
+            text: title,
+          ),
+
+          SpaceHelperWidget.v(12.h(context)),
+
+
+          TextHelperClass.headingTextWithoutWidth(
+            context: context,
+            alignment: Alignment.centerLeft,
+            fontSize: 26,
+            fontWeight: FontWeight.w500,
+            textColor: ColorUtils.black64,
+            text: value,
+          ),
+        ],
       ),
     );
   }
 
-  // -------------- SECTION TITLE ----------------
-  Widget sectionTitle(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(10)),
-          child: Row(
-            children: [
-              Text("This year"),
-              Icon(Icons.keyboard_arrow_down)
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   // ---------------- BAR CHART ----------------
-  Widget buildBarChart({required VendorAnalysisController vendorAnalysisController}) {
+  Widget buildBarChart({required VendorAnalysisController vendorAnalysisController,required BuildContext context}) {
     return Obx(() => Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.only(top: 12),
-      decoration: cardBox(),
-      height: 360,
-      child: BarChart(
-        BarChartData(
-          maxY: 320,
-          gridData: FlGridData(
-            show: true,
-            drawHorizontalLine: true,
-            getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.shade300,
-              strokeWidth: 1,
-            ),
-          ),
-          borderData: FlBorderData(show: false),
-          titlesData: FlTitlesData(
-            topTitles: AxisTitles(),         // REMOVE top axis
-            rightTitles: AxisTitles(),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: 1,
-                getTitlesWidget: (value, _) => Text(
-                  ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-                  [value.toInt()],
-                  style: TextStyle(fontSize: 10),
+      padding: EdgeInsets.symmetric(vertical: 13.vpm(context),horizontal: 14.hpm(context)),
+      decoration: BoxDecoration(
+        color: ColorUtils.white247,
+        borderRadius: BorderRadius.circular(20.r(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black48,
+                  text: 'Monthly Revenue (\$)',
                 ),
               ),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: 50,
-                getTitlesWidget: (value, _) =>
-                    Text(value.toInt().toString(), style: TextStyle(fontSize: 10)),
+
+
+              Expanded(
+                child: CustomDropdownHelperClass(
+                  value: vendorAnalysisController.eventManageYear.value,
+                  items: [2025,2026,2027,2028,2029,2030],
+                  onChanged: (value) async {
+                    vendorAnalysisController.eventManageYear.value = value!;
+                    vendorAnalysisController.isLoading.value = true;
+                    vendorAnalysisController.pieSections.clear();
+                    vendorAnalysisController.servicePopularity.clear();
+                    await vendorAnalysisController.getVendorAnalyticController(
+                      subscriptionYear: value.toString(),
+                      orderYear: value.toString(),
+                      context: context,
+                      bookingYear: value.toString(),
+                    );
+                  },
+                  hintText: "select",
+                ),
               ),
-            ),
+
+            ],
           ),
-          barGroups: vendorAnalysisController.monthlyRevenue
-              .asMap()
-              .map((i, val) => MapEntry(
-            i,
-            BarChartGroupData(
-              x: i,
-              barRods: [
-                BarChartRodData(
-                  toY: val,
-                  width: 10,
-                  color: Color(0xFFE74A2A),
-                  borderRadius: BorderRadius.circular(4),
-                )
-              ],
-            ),
-          ))
-              .values
-              .toList(),
-        ),
+
+
+
+          SpaceHelperWidget.v(20.h(context)),
+
+
+          SizedBox(
+              height: 450.h(context),
+              child: BarChart(
+                BarChartData(
+                  maxY: 320,
+                  gridData: FlGridData(
+                    show: true,
+                    drawHorizontalLine: true,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: Colors.grey.shade300,
+                      strokeWidth: 1,
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    topTitles: AxisTitles(),         // REMOVE top axis
+                    rightTitles: AxisTitles(),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 1,
+                        getTitlesWidget: (value, _) => Text(
+                          ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+                          [value.toInt()],
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 50,
+                        getTitlesWidget: (value, _) =>
+                            Text(value.toInt().toString(), style: TextStyle(fontSize: 10)),
+                      ),
+                    ),
+                  ),
+                  barGroups: vendorAnalysisController.vendorAnalysisResponseModel.value.data?.monthlyRevenue
+                      ?.asMap()
+                      .map((i, val) => MapEntry(
+                    i,
+                    BarChartGroupData(
+                      x: i,
+                      barRods: [
+                        BarChartRodData(
+                          toY: (double.parse(val.amount.toString()) / 1000),
+                          width: 10,
+                          color: Color(0xFFE74A2A),
+                          borderRadius: BorderRadius.circular(4),
+                        )
+                      ],
+                    ),
+                  ))
+                      .values
+                      .toList(),
+                ),
+              ),
+          )
+        ],
       ),
     ));
   }
 
   // ---------------- CLIENT SATISFACTION LINE CHART ----------------
-  Widget buildLineChart({required VendorAnalysisController vendorAnalysisController}) {
+  Widget buildLineChart({required VendorAnalysisController vendorAnalysisController,required BuildContext context}) {
     return Obx(() => Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.only(top: 12),
-      decoration: cardBox(),
-      height: 360,
-      child: LineChart(
-        LineChartData(
-          maxY: 320,
-          minY: 0,
-          borderData: FlBorderData(
-            show: false,
+      padding: EdgeInsets.symmetric(vertical: 13.vpm(context),horizontal: 14.hpm(context)),
+      decoration: BoxDecoration(
+        color: ColorUtils.white247,
+        borderRadius: BorderRadius.circular(20.r(context)),
+      ),
+      child: Column(
+        children: [
+
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black48,
+                  text: 'Client Satisfaction',
+                ),
+              ),
+
+
+              Expanded(
+                child: CustomDropdownHelperClass(
+                  value: vendorAnalysisController.eventManageYear.value,
+                  items: [2025,2026,2027,2028,2029,2030],
+                  onChanged: (value) async {
+                    vendorAnalysisController.eventManageYear.value = value!;
+                    vendorAnalysisController.isLoading.value = true;
+                    vendorAnalysisController.pieSections.clear();
+                    vendorAnalysisController.servicePopularity.clear();
+                    await vendorAnalysisController.getVendorAnalyticController(
+                      subscriptionYear: value.toString(),
+                      orderYear: value.toString(),
+                      context: context,
+                      bookingYear: value.toString(),
+                    );
+                  },
+                  hintText: "select",
+                ),
+              ),
+
+            ],
           ),
-          gridData: FlGridData(
-            show: true,
-            drawHorizontalLine: true,
-            getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.shade300,
-              strokeWidth: 1,
+
+
+          SpaceHelperWidget.v(20.h(context)),
+
+          SizedBox(
+            height: 450.h(context),
+            child: LineChart(
+              LineChartData(
+                maxY: 320,
+                minY: 0,
+                borderData: FlBorderData(
+                  show: false,
+                ),
+                gridData: FlGridData(
+                  show: true,
+                  drawHorizontalLine: true,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                    color: Colors.grey.shade300,
+                    strokeWidth: 1,
+                  ),
+                ),
+                titlesData: defaultTitles(),
+                lineBarsData: [
+                  LineChartBarData(
+                    isCurved: true,
+                    color: Color(0xFFFF6F61),
+                    barWidth: 3,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Color(0xFFFF6F61).withOpacity(.25),
+                    ),
+                    dotData: FlDotData(
+                      show: true,
+                      getDotPainter: (spot, a, b, c) {
+                        if (spot.x == DateTime.now().month - 1) {
+                          return FlDotCirclePainter(
+                              radius: 6,
+                              color: Colors.blue,
+                              strokeWidth: 0);
+                        }
+                        return FlDotCirclePainter(radius: 0);
+                      },
+                    ),
+                    spots: vendorAnalysisController.vendorAnalysisResponseModel.value.data!.clientSatisfaction
+                        !.asMap()
+                        .entries
+                        .map((e) => FlSpot(e.key.toDouble(), double.parse(e.value.count.toString())))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
           ),
-          titlesData: defaultTitles(),
-          lineBarsData: [
-            LineChartBarData(
-              isCurved: true,
-              color: Color(0xFFFF6F61),
-              barWidth: 3,
-              belowBarData: BarAreaData(
-                show: true,
-                color: Color(0xFFFF6F61).withOpacity(.25),
-              ),
-              dotData: FlDotData(
-                show: true,
-                getDotPainter: (spot, a, b, c) {
-                  if (spot.x == 3) {
-                    return FlDotCirclePainter(
-                        radius: 6,
-                        color: Colors.blue,
-                        strokeWidth: 0);
-                  }
-                  return FlDotCirclePainter(radius: 0);
-                },
-              ),
-              spots: vendorAnalysisController.clientSatisfaction
-                  .asMap()
-                  .entries
-                  .map((e) => FlSpot(e.key.toDouble(), e.value))
-                  .toList(),
-            ),
-          ],
-        ),
+        ],
       ),
     ));
   }
 
   // ---------------- PIE CHART ----------------
-  Widget buildPieChart({required VendorAnalysisController vendorAnalysisController}) {
+  Widget buildPieChart({required VendorAnalysisController vendorAnalysisController,required BuildContext context}) {
     return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.only(top: 12),
-      decoration: cardBox(),
-      height: 360,
-      child: Stack(
+      padding: EdgeInsets.symmetric(vertical: 13.vpm(context),horizontal: 14.hpm(context)),
+      decoration: BoxDecoration(
+        color: ColorUtils.white247,
+        borderRadius: BorderRadius.circular(20.r(context)),
+      ),
+      child: Column(
         children: [
-          PieChart(
-            PieChartData(
-              sectionsSpace: 0,
-              centerSpaceRadius: 40,
-              sections: [
-                PieChartSectionData(
-                    value: 35, color: Color(0xFF7B57C7), radius: 60),
-                PieChartSectionData(
-                    value: 25, color: Color(0xFF447DFF), radius: 60),
-                PieChartSectionData(
-                    value: 15, color: Color(0xFFE74A2A), radius: 60),
-                PieChartSectionData(
-                    value: 20, color: Color(0xFFFFB74D), radius: 60),
-                PieChartSectionData(
-                    value: 5, color: Color(0xFF10C980), radius: 60),
-              ],
+
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black48,
+                  text: 'Service Popularity',
+                ),
+              ),
+
+
+              Expanded(
+                child: CustomDropdownHelperClass(
+                  value: vendorAnalysisController.eventManageYear.value,
+                  items: [2025,2026,2027,2028,2029,2030],
+                  onChanged: (value) async {
+                    vendorAnalysisController.eventManageYear.value = value!;
+                    vendorAnalysisController.isLoading.value = true;
+                    vendorAnalysisController.pieSections.clear();
+                    vendorAnalysisController.servicePopularity.clear();
+                    await vendorAnalysisController.getVendorAnalyticController(
+                      subscriptionYear: value.toString(),
+                      orderYear: value.toString(),
+                      context: context,
+                      bookingYear: value.toString(),
+                    );
+                  },
+                  hintText: "select",
+                ),
+              ),
+
+            ],
+          ),
+
+
+
+          SpaceHelperWidget.v(20.h(context)),
+
+
+          SizedBox(
+            height: 300.h(context),
+            child: PieChart(
+              PieChartData(sections: vendorAnalysisController.pieSections),
             ),
           ),
+
+          SpaceHelperWidget.v(12.h(context)),
+
+          Column(
+            children: List.generate(vendorAnalysisController.servicePopularity.length, (index) {
+              return Row(
+                children: [
+                  SizedBox(
+                    width: 8,
+                    height: 8,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: vendorAnalysisController.servicePopularity[index].textColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Text('${vendorAnalysisController.servicePopularity[index].title}: ${vendorAnalysisController.servicePopularity[index].persentage}%'),
+                ],
+              );
+            }),
+          )
+
 
         ],
       ),
@@ -301,57 +506,109 @@ class VendorAnalysisView extends StatelessWidget {
   }
 
   // ---------------- BLUE BOOKING LINE CHART ----------------
-  Widget buildBlueTrendChart({required VendorAnalysisController vendorAnalysisController}) {
+  Widget buildBlueTrendChart({required VendorAnalysisController vendorAnalysisController,required BuildContext context}) {
     return Obx(() => Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.only(top: 12),
-      decoration: cardBox(),
-      height: 360,
-      child: LineChart(
-        LineChartData(
-          borderData: FlBorderData(
-            show: false,
+      padding: EdgeInsets.symmetric(vertical: 13.vpm(context),horizontal: 14.hpm(context)),
+      decoration: BoxDecoration(
+        color: ColorUtils.white247,
+        borderRadius: BorderRadius.circular(20.r(context)),
+      ),
+      child: Column(
+        children: [
+
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black48,
+                  text: 'Booking Trends',
+                ),
+              ),
+
+
+              Expanded(
+                child: CustomDropdownHelperClass(
+                  value: vendorAnalysisController.eventManageYear.value,
+                  items: [2025,2026,2027,2028,2029,2030],
+                  onChanged: (value) async {
+                    vendorAnalysisController.eventManageYear.value = value!;
+                    vendorAnalysisController.isLoading.value = true;
+                    vendorAnalysisController.pieSections.clear();
+                    vendorAnalysisController.servicePopularity.clear();
+                    await vendorAnalysisController.getVendorAnalyticController(
+                      subscriptionYear: value.toString(),
+                      orderYear: value.toString(),
+                      context: context,
+                      bookingYear: value.toString(),
+                    );
+                  },
+                  hintText: "select",
+                ),
+              ),
+
+            ],
           ),
-          maxY: 320,
-          minY: 0,
-          gridData: FlGridData(
-            show: true,
-            drawHorizontalLine: true,
-            getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.shade300,
-              strokeWidth: 1,
+
+
+
+          SpaceHelperWidget.v(20.h(context)),
+
+
+          SizedBox(
+            height: 450.h(context),
+            child: LineChart(
+              LineChartData(
+                borderData: FlBorderData(
+                  show: false,
+                ),
+                maxY: 320,
+                minY: 0,
+                gridData: FlGridData(
+                  show: true,
+                  drawHorizontalLine: true,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                    color: Colors.grey.shade300,
+                    strokeWidth: 1,
+                  ),
+                ),
+                titlesData: defaultTitles(),
+                lineBarsData: [
+                  LineChartBarData(
+                    isCurved: true,
+                    color: Color(0xFF4A90E2),
+                    barWidth: 3,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Color(0xFF4A90E2).withOpacity(.25),
+                    ),
+                    dotData: FlDotData(
+                      show: true,
+                      getDotPainter: (spot, a, b, c) {
+                        if (spot.x == DateTime.now().month -1) {
+                          return FlDotCirclePainter(
+                              radius: 6,
+                              color: Color(0xFFE74A2A),
+                              strokeWidth: 0);
+                        }
+                        return FlDotCirclePainter(radius: 0);
+                      },
+                    ),
+                    spots: vendorAnalysisController.vendorAnalysisResponseModel.value.data!.bookingTrends
+                        !.asMap()
+                        .entries
+                        .map((e) => FlSpot(e.key.toDouble(), double.parse(e.value.count.toString())))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
           ),
-          titlesData: defaultTitles(),
-          lineBarsData: [
-            LineChartBarData(
-              isCurved: true,
-              color: Color(0xFF4A90E2),
-              barWidth: 3,
-              belowBarData: BarAreaData(
-                show: true,
-                color: Color(0xFF4A90E2).withOpacity(.25),
-              ),
-              dotData: FlDotData(
-                show: true,
-                getDotPainter: (spot, a, b, c) {
-                  if (spot.x == 10) {
-                    return FlDotCirclePainter(
-                        radius: 6,
-                        color: Color(0xFFE74A2A),
-                        strokeWidth: 0);
-                  }
-                  return FlDotCirclePainter(radius: 0);
-                },
-              ),
-              spots: vendorAnalysisController.bookingTrends
-                  .asMap()
-                  .entries
-                  .map((e) => FlSpot(e.key.toDouble(), e.value))
-                  .toList(),
-            ),
-          ],
-        ),
+        ],
       ),
     ));
   }

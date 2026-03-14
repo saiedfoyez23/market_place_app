@@ -67,6 +67,9 @@ class ApiUtils {
   static const String createTasksResponse = "$baseUrl/tasks"; //done
   static const String createFileResponse = "$baseUrl/files"; //done
   static const String createAssignVendors = "$baseUrl/assign-vendors"; //done
+  static const String getVendorHomePage = "$baseUrl/meta/vendor"; //done
+  static const String getPlannerEventResponse = "$baseUrl/analysis/planer-event"; //done
+  static const String getPlannerVendorResponse = "$baseUrl/analysis/planer-vendor"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -133,4 +136,12 @@ class ApiUtils {
   static String addFeatureController(String serviceId) {
     return "$baseUrl/services/featured/${serviceId}";
   }
+  static String getVendorAnalyticResponse(String orderYear,String subscriptionYear,String bookingYear) {
+    return "$baseUrl/analysis/vendor?order_year=${orderYear}&subscription_year=${subscriptionYear}&booking_year=${bookingYear}";
+  }
+  static String getPlannerAnalyticResponse(String eventYear,String categoryYear,String revenueYear) {
+    return "$baseUrl/analysis/planer-revenue?event_year=${eventYear}&category_year=${categoryYear}&revenue_year=${revenueYear}";
+  }
+
+
 }

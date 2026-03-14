@@ -83,12 +83,8 @@ class PlannerProfileServiceView extends StatelessWidget {
                                     width: 1
                                 ),
                               ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  overlayColor: Colors.transparent,
-                                ),
-                                onPressed: () async {
+                              child: InkWell(
+                                  onTap: () async {
                                   Get.off(()=>PlannerProfileServiceDetailsView(serviceId: item.sId),preventDuplicates: false);
                                 },
                                 child: Column(
@@ -111,16 +107,58 @@ class PlannerProfileServiceView extends StatelessWidget {
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                        // Positioned(
-                                        //   top: 12.h(context),
-                                        //   right: 12.w(context),
-                                        //   child: ImageHelperWidget.assetImageWidget(
-                                        //     context: context,
-                                        //     height: 26.h(context),
-                                        //     width: 26.w(context),
-                                        //     imageString: ImageUtils.serviceLoveImage,
-                                        //   ),
-                                        // ),
+                                        plannerProfileServiceController.plannerMyProfileDetailsResponseModel.value.data?.type != null ?
+                                        Positioned(
+                                          top: 12.h(context),
+                                          right: 12.w(context),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await plannerProfileServiceController.addFeaturedController(context: context, serviceId: item.sId);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 8.w(context),
+                                                vertical: 7.5.h(context),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: ColorUtils.white255,
+                                                borderRadius: BorderRadius.circular(6.r(context)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    blurRadius: 4,
+                                                  )
+                                                ],
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+
+
+                                                  ImageHelperWidget.assetImageWidget(
+                                                    context: context,
+                                                    height: 16.h(context),
+                                                    width: 16.w(context),
+                                                    imageString: item.isFeatured == true ? ImageUtils.isFevorateImage : ImageUtils.isUnfevorateImage,
+                                                  ),
+
+                                                  SpaceHelperWidget.h(4.w(context)),
+
+
+                                                  TextHelperClass.headingTextWithoutWidth(
+                                                    context: context,
+                                                    alignment: Alignment.centerLeft,
+                                                    textAlign: TextAlign.start,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    textColor: ColorUtils.black96,
+                                                    text: item.isFeatured == true ? "Remove Featured" : "Add Featured",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ) : SizedBox.shrink(),
                                       ],
                                     ),
 

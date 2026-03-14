@@ -367,7 +367,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 textColor: ColorUtils.black48,
-                text: 'Reviews from User',
+                text: 'Reviews from PLanner',
               ),
             ),
 

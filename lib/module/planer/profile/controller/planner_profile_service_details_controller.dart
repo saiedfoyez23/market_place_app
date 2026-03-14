@@ -7,6 +7,8 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerProfileServiceDetailsController extends GetxController {
 
   RxBool isLoading = false.obs;
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
+  Rx<GetAllUserReviewResponseModel> getAllUserReviewResponseModel = GetAllUserReviewResponseModel().obs;
   Rx<PlannerGetServiceDetailsResponseModel> plannerGetServiceDetailsResponseModel = PlannerGetServiceDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   BuildContext context;
@@ -19,21 +21,102 @@ class PlannerProfileServiceDetailsController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getPlannerDetailsServiceController(context: context,serviceId: serviceId);
+      await getPlannerProfileDetailsController(context: context);
+      await getPlannerDetailsServiceController(
+        context: context,
+        serviceId: serviceId,
+        onComplete: (userId) async {
+          await getAllUserReviewController(userId: userId,context: context);
+        },
+      );
     });
   }
 
   Future<void> getPlannerDetailsServiceController({
     required BuildContext context,
     required String serviceId,
+    required Function onComplete,
   }) async {
     BaseApiUtils.get(
       url: "${ApiUtils.serviceDetails}/${serviceId}",
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         print(data);
-        isLoading.value = false;
         plannerGetServiceDetailsResponseModel.value = PlannerGetServiceDetailsResponseModel.fromJson(data);
+        onComplete(plannerGetServiceDetailsResponseModel.value.data?.author?.sId);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
+  Future<void> getAllUserReviewController({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getAllUserReview(userId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        getAllUserReviewResponseModel.value = GetAllUserReviewResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
+
+
+  Future<void> addFeaturedController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.patch(
+      url: ApiUtils.addFeatureController(serviceId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
+        await getPlannerDetailsServiceController(
+          context: context,
+          serviceId: serviceId,
+          onComplete: (userId) async {
+            getAllUserReviewController(context: context,userId: userId);
+          },
+        );
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

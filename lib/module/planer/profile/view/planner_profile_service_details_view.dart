@@ -60,6 +60,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                           child: Column(
                             children: [
                               header(
+                                plannerProfileServiceDetailsController: plannerProfileServiceDetailsController,
                                 context: context,
                                 imageUrl: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
                                 "" : plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data!.images!.first,
@@ -135,7 +136,11 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                         ),
 
 
-                        reviews(context: context, reviews: plannerProfileServiceDetailsController.service.value.reviews,),
+                        reviews(
+                          context: context,
+                          reviews: plannerProfileServiceDetailsController.service.value.reviews,
+                          plannerProfileServiceDetailsController: plannerProfileServiceDetailsController,
+                        ),
 
                         SpaceHelperWidget.v(32.h(context)),
 
@@ -154,7 +159,11 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
   }
 
   /// HEADER
-  Widget header({required String imageUrl,required BuildContext context}) {
+  Widget header({
+    required PlannerProfileServiceDetailsController plannerProfileServiceDetailsController,
+    required String imageUrl,
+    required BuildContext context,
+  }) {
     return Stack(
       children: [
         ClipRRect(
@@ -171,6 +180,60 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+        plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type != "null" ?
+        Positioned(
+          top: 12.h(context),
+          right: 12.w(context),
+          child: InkWell(
+            onTap: () async {
+              await  plannerProfileServiceDetailsController.addFeaturedController(context: context, serviceId: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.sId);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 8.w(context),
+                vertical: 7.5.h(context),
+              ),
+              decoration: BoxDecoration(
+                color: ColorUtils.white255,
+                borderRadius: BorderRadius.circular(6.r(context)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                  )
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+
+                  ImageHelperWidget.assetImageWidget(
+                    context: context,
+                    height: 16.h(context),
+                    width: 16.w(context),
+                    imageString: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.isFeatured == true ?
+                    ImageUtils.isFevorateImage : ImageUtils.isUnfevorateImage,
+                  ),
+
+                  SpaceHelperWidget.h(4.w(context)),
+
+
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    textColor: ColorUtils.black96,
+                    text: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.isFeatured == true ?
+                    "Remove Featured" : "Add Featured",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ) : SizedBox.shrink(),
       ],
     );
   }
@@ -288,7 +351,11 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
   }
 
   /// REVIEWS DYNAMIC
-  Widget reviews({required List reviews,required BuildContext context}) {
+  Widget reviews({
+    required List reviews,
+    required BuildContext context,
+    required PlannerProfileServiceDetailsController plannerProfileServiceDetailsController
+  }) {
     return Column(
       children: [
         Row(
@@ -310,7 +377,9 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
 
             ButtonHelperWidget.customButtonWidget(
               context: context,
-              onPressed: () async {},
+              onPressed: () async {
+                Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+              },
               text: "See All",
               padding: EdgeInsets.only(left: 14.5.lpm(context)),
               alignment: Alignment.center,
@@ -325,12 +394,12 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
         SpaceHelperWidget.v(32.h(context)),
 
 
-        ...reviews.map((r) => reviewItem(r: r,context: context)).toList(),
+        ...plannerProfileServiceDetailsController.getAllUserReviewResponseModel.value.data!.reviews!.map((r) => reviewItem(r: r,context: context)),
       ],
     );
   }
 
-  Widget reviewItem({required dynamic r,required BuildContext context}) {
+  Widget reviewItem({required GetAllUserReviewResponseReviews r,required BuildContext context}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,7 +432,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black48,
-                    text: r.userName,
+                    text: r.user?.name ?? "",
                   ),
 
                   SpaceHelperWidget.v(6.h(context)),
@@ -384,7 +453,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         textColor: ColorUtils.black61,
-                        text: r.rating.toString(),
+                        text: r.overallRating.toString(),
                       ),
                     ],
                   ),
@@ -399,7 +468,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black95,
-                    text: r.comment,
+                    text: r.review,
                   ),
 
 
@@ -417,9 +486,9 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
     );
   }
 
-  Widget ratingBarWidget({required dynamic r, required BuildContext context}) {
-    int fullStars = r.rating.floor();
-    double fractional = r.rating - fullStars;
+  Widget ratingBarWidget({required GetAllUserReviewResponseReviews r, required BuildContext context}) {
+    int fullStars = r.overallRating.floor();
+    num fractional = r.overallRating - fullStars;
     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
     return Row(

@@ -27,10 +27,11 @@ class PlannerGetServiceDetailsResponseModel {
 }
 
 class PlannerGetServiceDetailsResponse {
-  PlannerGetServiceDetailsLocation? location;
+  PlannerGetServiceDetailsResponseLocation? location;
   var sId;
-  PlannerGetServiceDetailsAuthor? author;
-  PlannerGetServiceDetailsCategory? category;
+  PlannerGetServiceDetailsResponseAuthor? author;
+  var authority;
+  PlannerGetServiceDetailsResponseCategory? category;
   var title;
   var subtitle;
   var description;
@@ -39,16 +40,20 @@ class PlannerGetServiceDetailsResponse {
   var locationUrl;
   var price;
   var priceType;
+  var isFeatured;
   var status;
   var isDeleted;
   var createdAt;
   var updatedAt;
   var iV;
+  var featuredAt;
+  var isFavorite;
 
   PlannerGetServiceDetailsResponse({
     this.location,
     this.sId,
     this.author,
+    this.authority,
     this.category,
     this.title,
     this.subtitle,
@@ -58,22 +63,26 @@ class PlannerGetServiceDetailsResponse {
     this.locationUrl,
     this.price,
     this.priceType,
+    this.isFeatured,
     this.status,
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
     this.iV,
+    this.featuredAt,
+    this.isFavorite,
   });
 
   PlannerGetServiceDetailsResponse.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new PlannerGetServiceDetailsLocation.fromJson(json['location'])
+        ? new PlannerGetServiceDetailsResponseLocation.fromJson(json['location'])
         : null;
     sId = json['_id'];
     author =
-    json['author'] != null ? new PlannerGetServiceDetailsAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new PlannerGetServiceDetailsResponseAuthor.fromJson(json['author']) : null;
+    authority = json['authority'];
     category = json['category'] != null
-        ? new PlannerGetServiceDetailsCategory.fromJson(json['category'])
+        ? new PlannerGetServiceDetailsResponseCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
@@ -83,11 +92,14 @@ class PlannerGetServiceDetailsResponse {
     locationUrl = json['locationUrl'];
     price = json['price'];
     priceType = json['priceType'];
+    isFeatured = json['isFeatured'];
     status = json['status'];
     isDeleted = json['isDeleted'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    featuredAt = json['featuredAt'];
+    isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +111,7 @@ class PlannerGetServiceDetailsResponse {
     if (this.author != null) {
       data['author'] = this.author!.toJson();
     }
+    data['authority'] = this.authority;
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
@@ -110,22 +123,25 @@ class PlannerGetServiceDetailsResponse {
     data['locationUrl'] = this.locationUrl;
     data['price'] = this.price;
     data['priceType'] = this.priceType;
+    data['isFeatured'] = this.isFeatured;
     data['status'] = this.status;
     data['isDeleted'] = this.isDeleted;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['featuredAt'] = this.featuredAt;
+    data['isFavorite'] = this.isFavorite;
     return data;
   }
 }
 
-class PlannerGetServiceDetailsLocation {
+class PlannerGetServiceDetailsResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
-  PlannerGetServiceDetailsLocation({this.type, this.coordinates});
+  PlannerGetServiceDetailsResponseLocation({this.type, this.coordinates});
 
-  PlannerGetServiceDetailsLocation.fromJson(Map<String, dynamic> json) {
+  PlannerGetServiceDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }
@@ -138,36 +154,42 @@ class PlannerGetServiceDetailsLocation {
   }
 }
 
-class PlannerGetServiceDetailsAuthor {
+class PlannerGetServiceDetailsResponseAuthor {
   var sId;
   var name;
   var photoUrl;
   var address;
   var bio;
+  List<String>? categories;
   var locationUrl;
   var avgRating;
   var ratingCount;
+  var isKycVerified;
 
-  PlannerGetServiceDetailsAuthor({
+  PlannerGetServiceDetailsResponseAuthor({
     this.sId,
     this.name,
     this.photoUrl,
     this.address,
     this.bio,
+    this.categories,
     this.locationUrl,
     this.avgRating,
     this.ratingCount,
+    this.isKycVerified,
   });
 
-  PlannerGetServiceDetailsAuthor.fromJson(Map<String, dynamic> json) {
+  PlannerGetServiceDetailsResponseAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     photoUrl = json['photoUrl'];
     address = json['address'];
     bio = json['bio'];
+    categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
     avgRating = json['avgRating'];
     ratingCount = json['ratingCount'];
+    isKycVerified = json['isKycVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -177,20 +199,22 @@ class PlannerGetServiceDetailsAuthor {
     data['photoUrl'] = this.photoUrl;
     data['address'] = this.address;
     data['bio'] = this.bio;
+    data['categories'] = this.categories;
     data['locationUrl'] = this.locationUrl;
     data['avgRating'] = this.avgRating;
     data['ratingCount'] = this.ratingCount;
+    data['isKycVerified'] = this.isKycVerified;
     return data;
   }
 }
 
-class PlannerGetServiceDetailsCategory {
+class PlannerGetServiceDetailsResponseCategory {
   var sId;
   var title;
 
-  PlannerGetServiceDetailsCategory({this.sId, this.title});
+  PlannerGetServiceDetailsResponseCategory({this.sId, this.title});
 
-  PlannerGetServiceDetailsCategory.fromJson(Map<String, dynamic> json) {
+  PlannerGetServiceDetailsResponseCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }
