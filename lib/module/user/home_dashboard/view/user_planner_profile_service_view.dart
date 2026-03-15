@@ -472,16 +472,26 @@ class UserPlannerProfileServiceView extends StatelessWidget {
     required UserPlannerProfileServiceController userPlannerProfileServiceController,
   }) {
     var data = userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: userPlannerProfileServiceController.serviceId.value ==  userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].sId && userPlannerProfileServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                userPlannerProfileServiceController.serviceId.value =  userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].sId;
+                userPlannerProfileServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    userPlannerProfileServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await userPlannerProfileServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
@@ -514,7 +524,7 @@ class UserPlannerProfileServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 
 }

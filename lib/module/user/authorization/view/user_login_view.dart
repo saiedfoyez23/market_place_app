@@ -196,6 +196,7 @@ class UserLoginView extends StatelessWidget {
                                   context: context,
                                   password: userLoginController.passwordController.value.text,
                                   email: userLoginController.emailController.value.text,
+                                  fcmToken: userLoginController.fcmToken.value
                                 );
                               } else {
                                 await userLoginController.rememberMe();
@@ -203,6 +204,7 @@ class UserLoginView extends StatelessWidget {
                                   context: context,
                                   password: userLoginController.passwordController.value.text,
                                   email: userLoginController.emailController.value.text,
+                                  fcmToken: userLoginController.fcmToken.value,
                                 );
                               }
                             }

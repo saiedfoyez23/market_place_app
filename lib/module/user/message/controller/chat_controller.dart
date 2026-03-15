@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/module.dart';
 
 class ChatController extends GetxController {
 
   Rx<TextEditingController> chatController = TextEditingController().obs;
+  final SocketServiceController socketServiceController = Get.put(SocketServiceController());
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    Future.delayed(Duration(microseconds: 100),() async {
+      await socketServiceController.init();
+      socketServiceController.socket!.on('new-message', (data) async {
+        print("user data : ${data}");
+        print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
+      });
+      socketServiceController.socket!.on('onlineUser', (data) async {
+        print("user data : ${data}");
+        print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
+      });
+      socketServiceController.socket!.on('typing', (data) async {
+        print("user data : ${data}");
+        print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
+      });
+      socketServiceController.socket!.on('stopTyping', (data) async {
+        print("user data : ${data}");
+        print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
+      });
+    });
+  }
+
 
   RxList<MessageModel> messages = [
     MessageModel(

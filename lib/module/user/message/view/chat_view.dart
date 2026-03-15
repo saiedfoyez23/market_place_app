@@ -7,7 +7,7 @@ class ChatView extends StatelessWidget {
   ChatView({super.key});
 
   final ChatController chatController = Get.put(ChatController());
-
+  final SocketServiceController socketServiceController = Get.put(SocketServiceController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,16 +61,16 @@ class ChatView extends StatelessWidget {
                                   text: "Shahid Hasan",
                                 ),
                 
-                                SpaceHelperWidget.v(3.h(context)),
-                
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  textColor: ColorUtils.black107,
-                                  text: "Shahid is typing...",
-                                ),
+                                // SpaceHelperWidget.v(3.h(context)),
+                                //
+                                // TextHelperClass.headingTextWithoutWidth(
+                                //   context: context,
+                                //   alignment: Alignment.centerLeft,
+                                //   fontSize: 16,
+                                //   fontWeight: FontWeight.w400,
+                                //   textColor: ColorUtils.black107,
+                                //   text: "Shahid is typing...",
+                                // ),
                 
                 
                 
@@ -187,18 +187,37 @@ class ChatView extends StatelessWidget {
                               hintText: "Type your message",
                               controller: chatController.chatController.value,
                               keyboardType: TextInputType.emailAddress,
-                              suffixIcon: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                  20.lpm(context),
-                                  20.tpm(context),
-                                  20.rpm(context),
-                                  20.bpm(context),
-                                ),
-                                child: ImageHelperWidget.assetImageWidget(
-                                  context: context,
-                                  height: 20.h(context),
-                                  width: 20.w(context),
-                                  imageString: ImageUtils.chatEmojiImage,
+                              suffixIcon: InkWell(
+                                onTap: () async {
+                                  if(chatController.chatController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter a message");
+                                  } else {
+                                    Map<String,dynamic> data = {
+                                      "chatId": "69b6404835f1cedb5051c0b0",
+                                      "text": chatController.chatController.value.text,
+                                      "imageUrl": []
+                                    };
+                                    print(data);
+                                    final ack = await socketServiceController.emitWithAck('new-message', data);
+                                    print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                    print("send dddd");
+                                    chatController.chatController.value.clear();
+
+                                  }
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    20.lpm(context),
+                                    20.tpm(context),
+                                    20.rpm(context),
+                                    20.bpm(context),
+                                  ),
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 20.h(context),
+                                    width: 20.w(context),
+                                    imageString: ImageUtils.chatEmojiImage,
+                                  ),
                                 ),
                               ),
                             ),

@@ -13,21 +13,6 @@ class ChooseUserController extends GetxController {
     chooseUseRole.value = useRole;
   }
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    Future.delayed(Duration(seconds: 1),() async {
-      await initialFirebaseMessaging();
-    });
-  }
-
-  Future<void> initialFirebaseMessaging() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print(token);
-  }
-
-
   Future<void> userLoginRedirection() async {
     print(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse));
     if(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse) != null) {

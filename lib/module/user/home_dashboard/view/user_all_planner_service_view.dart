@@ -417,16 +417,26 @@ class UserAllPlannerServiceView extends StatelessWidget {
     required AllPlannerServiceController allPlannerServiceController,
   }) {
     var data = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: allPlannerServiceController.serviceId.value == allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index].sId && allPlannerServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                allPlannerServiceController.serviceId.value = allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index].sId;
+                allPlannerServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    allPlannerServiceController.getAllPlannerServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await allPlannerServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
@@ -457,7 +467,7 @@ class UserAllPlannerServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 
 }

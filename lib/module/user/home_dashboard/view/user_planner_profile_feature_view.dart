@@ -470,21 +470,33 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
     required BuildContext context,
     required UserPlannerProfileFeatureController userPlannerProfileFeatureController,
   }) {
-    var data =  userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
-    return Padding(
+    var data = userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
+
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: userPlannerProfileFeatureController.serviceId.value == userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].sId && userPlannerProfileFeatureController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                userPlannerProfileFeatureController.serviceId.value = userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].sId;
+                userPlannerProfileFeatureController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    userPlannerProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await userPlannerProfileFeatureController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
           ),
+
 
           SpaceHelperWidget.h(16.w(context)),
 
@@ -513,6 +525,6 @@ class UserPlannerProfileFeatureView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 }

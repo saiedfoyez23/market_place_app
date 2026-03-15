@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
@@ -13,6 +14,7 @@ class PlannerLoginController extends GetxController {
   RxBool isObscure = true.obs;
   RxBool isCheck = false.obs;
   RxBool isSubmit = false.obs;
+  RxString fmcToken = "".obs;
 
 
   @override
@@ -21,7 +23,13 @@ class PlannerLoginController extends GetxController {
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
       await plannerGetRememberMe();
+      await initialFirebaseMessaging();
     });
+  }
+
+  Future<void> initialFirebaseMessaging() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    fmcToken.value = token!;
   }
 
   Future<void> plannerRememberMe() async {
@@ -52,6 +60,7 @@ class PlannerLoginController extends GetxController {
     required BuildContext context,
     required String password,
     required String email,
+    required String fmcToken,
   }) async {
 
     isSubmit.value = true;
@@ -59,6 +68,7 @@ class PlannerLoginController extends GetxController {
     Map<String,dynamic> data = {
       "email": email,
       "password": password,
+      "fcmToken": fmcToken,
     };
 
     print(data);

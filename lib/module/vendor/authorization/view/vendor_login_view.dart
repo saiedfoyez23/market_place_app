@@ -194,6 +194,7 @@ class VendorLoginView extends StatelessWidget {
                               if(vendorLoginController.isCheck.value == false) {
                                 await vendorLoginController.vendorUserLoginController(
                                   context: context,
+                                  fcmToken: vendorLoginController.fmcToken.value,
                                   password: vendorLoginController.passwordController.value.text,
                                   email: vendorLoginController.emailController.value.text,
                                 );
@@ -201,6 +202,7 @@ class VendorLoginView extends StatelessWidget {
                                 await vendorLoginController.vendorRememberMe();
                                 await vendorLoginController.vendorUserLoginController(
                                   context: context,
+                                  fcmToken: vendorLoginController.fmcToken.value,
                                   password: vendorLoginController.passwordController.value.text,
                                   email: vendorLoginController.emailController.value.text,
                                 );

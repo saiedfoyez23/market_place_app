@@ -426,16 +426,26 @@ class UserCategoryWiseServiceView extends StatelessWidget {
     required UserCategoryWiseServiceController userCategoryWiseServiceController,
   }) {
     var data = userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=> Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: userCategoryWiseServiceController.serviceId.value == userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].sId && userCategoryWiseServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                userCategoryWiseServiceController.serviceId.value = userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].sId;
+                userCategoryWiseServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    userCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await userCategoryWiseServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
@@ -466,7 +476,7 @@ class UserCategoryWiseServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 
 

@@ -16,7 +16,7 @@ class UserPlannerWiseServiceDetailsController extends GetxController {
   UserPlannerWiseServiceDetailsController({required this.context,required this.serviceId});
   RxBool isLoading = false.obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
-
+  RxBool isCreate = false.obs;
 
   @override
   void onInit() {
@@ -108,6 +108,31 @@ class UserPlannerWiseServiceDetailsController extends GetxController {
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
+      },
+    );
+
+  }
+
+  Future<void> createMessageController({
+    required BuildContext context,
+    required Map<String,dynamic> data,
+  }) async {
+    BaseApiUtils.post(
+      url: ApiUtils.createMessageResponseList,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: data,
+      onSuccess: (e,data) async {
+        isCreate.value = false;
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isCreate.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isCreate.value = false;
       },
     );
 

@@ -414,16 +414,26 @@ class UserAllRecommendedServiceView extends StatelessWidget {
     required AllRecommendedServiceController allRecommendedServiceController,
   }) {
     var data = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: allRecommendedServiceController.serviceId.value == allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index].sId && allRecommendedServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                allRecommendedServiceController.serviceId.value = allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index].sId;
+                allRecommendedServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    allRecommendedServiceController.getAllRecommendedServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await allRecommendedServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
@@ -454,7 +464,7 @@ class UserAllRecommendedServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 
 

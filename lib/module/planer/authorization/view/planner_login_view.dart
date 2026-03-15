@@ -197,6 +197,7 @@ class PlannerLoginView extends StatelessWidget {
                                   context: context,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,
+                                  fmcToken: plannerLoginController.fmcToken.value,
                                 );
                               } else {
                                 await plannerLoginController.plannerRememberMe();
@@ -204,6 +205,7 @@ class PlannerLoginView extends StatelessWidget {
                                   context: context,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,
+                                  fmcToken: plannerLoginController.fmcToken.value,
                                 );
                               }
                             }

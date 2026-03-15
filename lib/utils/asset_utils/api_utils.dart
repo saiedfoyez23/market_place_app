@@ -4,6 +4,7 @@ class ApiUtils {
   //static const baseUrl = "http://206.162.244.133:5020/api/v1";
   static const baseUrl = "http://72.244.153.29:5020/api/v1";
   static const socketUrl = "http://72.244.153.29:4020/";
+  //static const socketUrl = "http://206.162.244.133:4020/";
   //static const baseUrl = "http://10.10.10.16:5020/api/v1";
 
 
@@ -70,6 +71,8 @@ class ApiUtils {
   static const String getVendorHomePage = "$baseUrl/meta/vendor"; //done
   static const String getPlannerEventResponse = "$baseUrl/analysis/planer-event"; //done
   static const String getPlannerVendorResponse = "$baseUrl/analysis/planer-vendor"; //done
+  static const String getAllMessageResponseList = "$baseUrl/chats/my-chats?limit=1000000000"; //done
+  static const String createMessageResponseList = "$baseUrl/chats"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -142,6 +145,14 @@ class ApiUtils {
   static String getPlannerAnalyticResponse(String eventYear,String categoryYear,String revenueYear) {
     return "$baseUrl/analysis/planer-revenue?event_year=${eventYear}&category_year=${categoryYear}&revenue_year=${revenueYear}";
   }
+  static String getAllMessageResponseModelType(String modelType) {
+    return "$baseUrl/chats/my-chats?limit=1000000000&modelType=${modelType}";
+  }
+  static String getAllMessageResponseSearch(String modelType,String searchTerm) {
+    return "$baseUrl/chats/my-chats?searchTerm=${searchTerm}&limit=1000000000&modelType=${modelType}";
+  }
+
+
 
 
 }

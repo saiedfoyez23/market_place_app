@@ -105,6 +105,8 @@ export 'user/booking/controller/user_cancel_offer_controller.dart';
 export 'user/search_history/model/user_search_response_model.dart';
 export 'user/search_history/controller/user_search_controller.dart';
 export 'user/search_history/model/get_all_search_response_model.dart';
+export 'user/message/model/get_all_chat_response_model.dart';
+export 'user/message/controller/socket_service_controller.dart';
 export 'vendor/onboarding/view/vendor_onboarding_view.dart';
 export 'vendor/onboarding/controller/vendor_onboarding_controller.dart';
 export 'vendor/authorization/view/vendor_auth_splash_view.dart';
