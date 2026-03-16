@@ -115,14 +115,25 @@ class PlannerVendorWiseServiceDetailsView extends StatelessWidget {
 
                           SpaceHelperWidget.v(32.h(context)),
 
-
+                          plannerVendorWiseServiceDetailsController.isCreate.value == true ?
+                          LoadingHelperWidget.loadingHelperWidget(context: context) :
                           ButtonHelperWidget.customButtonWidgetAdventPro(
                             context: context,
                             onPressed: () async {
-                              Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                              plannerVendorWiseServiceDetailsController.isCreate.value = true;
+                              Map<String,dynamic> data = {
+                                "modelType": "User",
+                                "participants": [
+                                  plannerVendorWiseServiceDetailsController.getServiceDetailsResponseModel.value.data?.author?.sId // connected profile id
+                                ]
+                              };
+                              await plannerVendorWiseServiceDetailsController.createMessageController(context: context, data: data);
+
+
                             },
                             text: "Message",
                           ),
+
 
                           SpaceHelperWidget.v(32.h(context)),
 

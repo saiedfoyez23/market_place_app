@@ -27,7 +27,7 @@ class MessageController extends GetxController {
     Future.delayed(Duration(microseconds: 100),() async {
       await socketServiceController.init();
       socketServiceController.socket!.on('new-message', (data) async {
-        print("user data : ${data}");
+        print("newMessage data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
       socketServiceController.socket!.on('chat-list::${userLoginResponseModel.value.data?.user?.sId}', (data) async {
@@ -35,15 +35,15 @@ class MessageController extends GetxController {
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
       socketServiceController.socket!.on('onlineUser', (data) async {
-        print("user data : ${data}");
+        print("onLineUser data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
       socketServiceController.socket!.on('typing', (data) async {
-        print("user data : ${data}");
+        print("typing data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
       socketServiceController.socket!.on('stopTyping', (data) async {
-        print("user data : ${data}");
+        print("stopTyping data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
       await getAllChatMessageController(context: context,modelType: "User");
@@ -75,6 +75,28 @@ class MessageController extends GetxController {
     );
   }
 
+
+  Future<void> seenMessageController({
+    required BuildContext context,
+    required String chatId,
+  }) async {
+
+    BaseApiUtils.patch(
+      url: ApiUtils.seenAllMessage(chatId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        Get.off(()=>ChatView(chatId: chatId,),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+      },
+    );
+  }
+
   Future<void> getSearchChatMessageController({
     required BuildContext context,
     required String modelType,
@@ -97,6 +119,24 @@ class MessageController extends GetxController {
         isLoading.value = false;
       },
     );
+  }
+
+  String getDynamicTime(String start, String end) {
+    final diff = DateTime.parse(end).difference(DateTime.parse(start));
+
+    if (diff.inMinutes < 60) {
+      int m = diff.inMinutes;
+      return "$m minute${m == 1 ? '' : 's'}";
+    } else if (diff.inHours < 24) {
+      int h = diff.inHours;
+      return "$h hour${h == 1 ? '' : 's'}";
+    } else if (diff.inDays < 365) {
+      int d = diff.inDays;
+      return "$d day${d == 1 ? '' : 's'}";
+    } else {
+      int y = (diff.inDays / 365).floor();
+      return "$y year${y == 1 ? '' : 's'}";
+    }
   }
 
 

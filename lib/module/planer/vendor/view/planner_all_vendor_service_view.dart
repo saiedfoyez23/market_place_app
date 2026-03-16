@@ -418,20 +418,31 @@ class PlannerAllVendorServiceView extends StatelessWidget {
     required PlannerAllVendorServiceController plannerAllVendorServiceController,
   }) {
     var data = plannerAllVendorServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: plannerAllVendorServiceController.serviceId.value == plannerAllVendorServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].sId && plannerAllVendorServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardPlannerView(index: 3),preventDuplicates: false);
+                plannerAllVendorServiceController.serviceId.value = plannerAllVendorServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].sId;
+                plannerAllVendorServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    plannerAllVendorServiceController.getAllPlannerWiseServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await plannerAllVendorServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
           ),
+
 
           SpaceHelperWidget.h(16.w(context)),
 
@@ -457,7 +468,7 @@ class PlannerAllVendorServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 }
 

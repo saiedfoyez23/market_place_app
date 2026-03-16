@@ -13,6 +13,9 @@ class PlannerAllVendorServiceController extends GetxController {
   PlannerAllVendorServiceController({required this.context,required this.userId});
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<GetAllPlannerWiseServiceResponseModel> getAllPlannerWiseServiceResponseModel = GetAllPlannerWiseServiceResponseModel().obs;
+  RxBool isCreate = false.obs;
+  RxString serviceId = "".obs;
+
 
   @override
   void onInit() {
@@ -47,5 +50,31 @@ class PlannerAllVendorServiceController extends GetxController {
     );
 
   }
+
+  Future<void> createMessageController({
+    required BuildContext context,
+    required Map<String,dynamic> data,
+  }) async {
+    BaseApiUtils.post(
+      url: ApiUtils.createMessageResponseList,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: data,
+      onSuccess: (e,data) async {
+        isCreate.value = false;
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        Get.off(()=>DashboardPlannerView(index: 3),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isCreate.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isCreate.value = false;
+      },
+    );
+
+  }
+
 
 }

@@ -141,5 +141,14 @@ class ImageUtils {
   static const String dialogCloseImage = "image/dialog_close_image.png";
   static const String isFevorateImage = "image/is_fevorate_image.png";
   static const String isUnfevorateImage = "image/is_unfevorate_image.png";
+  static const String addAllUserImage = "image/message_image/add_all_user_image.png";
+  static const String addUserImage = "image/message_image/Add_user_image.png";
+  static const String clean = "image/message_image/clean.png";
+  static const String deleteImage = "image/message_image/delete_image.png";
+  static const String editGroupImage = "image/message_image/edit_group_image.png";
+  static const String editNameImage = "image/message_image/edit_name_image.png";
+  static const String removeUserImage = "image/message_image/remove_user_image.png";
+  static const String sendMessageImage = "image/message_image/send_message_image.png";
+  static const String viewUserImage = "image/message_image/view_user_image.png";
 }
 

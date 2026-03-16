@@ -151,8 +151,14 @@ class ApiUtils {
   static String getAllMessageResponseSearch(String modelType,String searchTerm) {
     return "$baseUrl/chats/my-chats?searchTerm=${searchTerm}&limit=1000000000&modelType=${modelType}";
   }
-
-
-
+  static String getChatDetails(String chatId) {
+    return "$baseUrl/chats/${chatId}";
+  }
+  static String getAllMessage(String chatId) {
+    return "$baseUrl/messages/chat/${chatId}?limit=10000000000";
+  }
+  static String seenAllMessage(String chatId) {
+    return "$baseUrl/messages/seen/${chatId}";
+  }
 
 }

@@ -557,21 +557,30 @@ class PlannerVendorView extends StatelessWidget {
     required int index,
   }) {
     var data = plannerVendorController.getAllVendorServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: plannerVendorController.serviceId.value == plannerVendorController.getAllVendorServiceResponseModel.value.data?[index].sId && plannerVendorController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardPlannerView(index: 3),preventDuplicates: false);
+                plannerVendorController.serviceId.value = plannerVendorController.getAllVendorServiceResponseModel.value.data?[index].sId;
+                plannerVendorController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    plannerVendorController.getAllVendorServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await plannerVendorController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
           ),
-
           SpaceHelperWidget.h(16.w(context)),
 
           Expanded(
@@ -594,6 +603,6 @@ class PlannerVendorView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 }

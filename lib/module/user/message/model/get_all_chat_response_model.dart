@@ -64,24 +64,18 @@ class GetAllChatResponseMeta {
 class GetAllChatResponse {
   var sId;
   var modelType;
-  var reference;
   var status;
-  var isDeleted;
   var createdAt;
-  var updatedAt;
   List<GetAllChatResponseParticipants>? participants;
-  var lastMessage;
+  GetAllChatResponseLastMessage? lastMessage;
   var unreadCount;
   var name;
 
   GetAllChatResponse({
     this.sId,
     this.modelType,
-    this.reference,
     this.status,
-    this.isDeleted,
     this.createdAt,
-    this.updatedAt,
     this.participants,
     this.lastMessage,
     this.unreadCount,
@@ -91,18 +85,17 @@ class GetAllChatResponse {
   GetAllChatResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     modelType = json['modelType'];
-    reference = json['reference'];
     status = json['status'];
-    isDeleted = json['isDeleted'];
     createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
     if (json['participants'] != null) {
       participants = <GetAllChatResponseParticipants>[];
       json['participants'].forEach((v) {
         participants!.add(new GetAllChatResponseParticipants.fromJson(v));
       });
     }
-    lastMessage = json['lastMessage'];
+    lastMessage = json['lastMessage'] != null
+        ? new GetAllChatResponseLastMessage.fromJson(json['lastMessage'])
+        : null;
     unreadCount = json['unreadCount'];
     name = json['name'];
   }
@@ -111,15 +104,14 @@ class GetAllChatResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['modelType'] = this.modelType;
-    data['reference'] = this.reference;
     data['status'] = this.status;
-    data['isDeleted'] = this.isDeleted;
     data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
     if (this.participants != null) {
       data['participants'] = this.participants!.map((v) => v.toJson()).toList();
     }
-    data['lastMessage'] = this.lastMessage;
+    if (this.lastMessage != null) {
+      data['lastMessage'] = this.lastMessage!.toJson();
+    }
     data['unreadCount'] = this.unreadCount;
     data['name'] = this.name;
     return data;
@@ -165,6 +157,66 @@ class GetAllChatResponseUser {
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['photoUrl'] = this.photoUrl;
+    return data;
+  }
+}
+
+class GetAllChatResponseLastMessage {
+  var sId;
+  var text;
+  List<String>? imageUrl;
+  var seen;
+  GetAllChatResponseSender? sender;
+  var createdAt;
+
+  GetAllChatResponseLastMessage({
+    this.sId,
+    this.text,
+    this.imageUrl,
+    this.seen,
+    this.sender,
+    this.createdAt,
+  });
+
+  GetAllChatResponseLastMessage.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    text = json['text'];
+    imageUrl = json['imageUrl'].cast<String>();
+    seen = json['seen'];
+    sender =
+    json['sender'] != null ? new GetAllChatResponseSender.fromJson(json['sender']) : null;
+    createdAt = json['createdAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['text'] = this.text;
+    data['imageUrl'] = this.imageUrl;
+    data['seen'] = this.seen;
+    if (this.sender != null) {
+      data['sender'] = this.sender!.toJson();
+    }
+    data['createdAt'] = this.createdAt;
+    return data;
+  }
+}
+
+class GetAllChatResponseSender {
+  var sId;
+  var name;
+
+  GetAllChatResponseSender({this.sId, this.name});
+
+  GetAllChatResponseSender.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
     return data;
   }
 }

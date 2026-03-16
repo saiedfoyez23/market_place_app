@@ -28,17 +28,17 @@ class MessageView extends StatelessWidget {
               actions: [
 
 
-                InkWell(
-                  onTap: () async {},
-                  child: ImageHelperWidget.assetImageWidget(
-                    context: context,
-                    height: 40.h(context),
-                    width: 40.w(context),
-                    imageString: ImageUtils.notificationBellImage,
-                  ),
-                ),
-
-                SpaceHelperWidget.h(15.w(context)),
+                // InkWell(
+                //   onTap: () async {},
+                //   child: ImageHelperWidget.assetImageWidget(
+                //     context: context,
+                //     height: 40.h(context),
+                //     width: 40.w(context),
+                //     imageString: ImageUtils.notificationBellImage,
+                //   ),
+                // ),
+                //
+                // SpaceHelperWidget.h(15.w(context)),
 
 
               ],
@@ -106,7 +106,7 @@ class MessageView extends StatelessWidget {
 
                     TextFormFieldWidget.build(
                       context: context,
-                      hintText: "Search Planner...",
+                      hintText: "Search Chat...",
                       controller: messageController.searchController.value,
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (value) async {
@@ -148,7 +148,7 @@ class MessageView extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                       child: InkWell(
                         onTap: () async {
-                          Get.off(()=>ChatView(),preventDuplicates: false);
+                          await messageController.seenMessageController(context: context, chatId: messageController.getAllChatResponseModel.value.data?[index].sId);
                         },
                         child: Container(
                           width: 428.w(context),
@@ -232,9 +232,11 @@ class MessageView extends StatelessWidget {
                                       context: context,
                                       alignment: Alignment.centerLeft,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      textColor: ColorUtils.black107,
-                                      text: messageController.getAllChatResponseModel.value.data?[index].lastMessage ?? "",
+                                      fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                      textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                      text: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
+                                      messageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
+                                      messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
                                     ),
 
                                   ],
@@ -250,14 +252,15 @@ class MessageView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
 
-
+                                  messageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
+                                  SizedBox.shrink() :
                                   TextHelperClass.headingTextWithoutWidth(
                                     context: context,
                                     alignment: Alignment.centerLeft,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     textColor: ColorUtils.black107,
-                                    text: "20 min",
+                                    text: messageController.getDynamicTime(messageController.getAllChatResponseModel.value.data?[index].lastMessage?.createdAt, DateTime.now().toString()),
                                   ),
 
 

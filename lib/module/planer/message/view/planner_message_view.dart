@@ -6,10 +6,11 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerMessageView extends StatelessWidget {
   PlannerMessageView({super.key});
 
-  final PlannerMessageController plannerMessageController = Get.put(PlannerMessageController());
+  final PlannerSocketServiceController plannerSocketServiceController = Get.put(PlannerSocketServiceController());
 
   @override
   Widget build(BuildContext context) {
+    final PlannerMessageController plannerMessageController = Get.put(PlannerMessageController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
         child: Container(
@@ -18,7 +19,9 @@ class PlannerMessageView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: CustomScrollView(
+          child: plannerMessageController.isLoading.value == true ?
+          LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+          CustomScrollView(
             slivers: [
 
               MainPageAppBarHelperWidget(
@@ -27,17 +30,17 @@ class PlannerMessageView extends StatelessWidget {
                 actions: [
 
 
-                  InkWell(
-                    onTap: () async {},
-                    child: ImageHelperWidget.assetImageWidget(
-                      context: context,
-                      height: 40.h(context),
-                      width: 40.w(context),
-                      imageString: ImageUtils.notificationBellImage,
-                    ),
-                  ),
-
-                  SpaceHelperWidget.h(15.w(context)),
+                  // InkWell(
+                  //   onTap: () async {},
+                  //   child: ImageHelperWidget.assetImageWidget(
+                  //     context: context,
+                  //     height: 40.h(context),
+                  //     width: 40.w(context),
+                  //     imageString: ImageUtils.notificationBellImage,
+                  //   ),
+                  // ),
+                  //
+                  // SpaceHelperWidget.h(15.w(context)),
 
 
                 ],
@@ -61,6 +64,11 @@ class PlannerMessageView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 plannerMessageController.isSingleChat.value = true;
+                                plannerMessageController.isOrderChat.value = false;
+                                plannerMessageController.isGroupChat.value = false;
+                                plannerMessageController.selectChatType.value = "User";
+                                plannerMessageController.isLoading.value = true;
+                                await plannerMessageController.getAllChatMessageController(context: context,modelType: "User");
                               },
                               text: "Single Chat",
                               padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
@@ -72,19 +80,49 @@ class PlannerMessageView extends StatelessWidget {
                             ),
                           ),
 
+                          SpaceHelperWidget.h(6.w(context)),
+
                           Expanded(
                             child: ButtonHelperWidget.customButtonWidgetAdventPro(
                               context: context,
                               onPressed: () async {
                                 plannerMessageController.isSingleChat.value = false;
+                                plannerMessageController.isOrderChat.value = true;
+                                plannerMessageController.isGroupChat.value = false;
+                                plannerMessageController.selectChatType.value = "Order";
+                                plannerMessageController.isLoading.value = true;
+                                await plannerMessageController.getAllChatMessageController(context: context,modelType: "Order");
+                              },
+                              text: "Order Chat",
+                              padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
+                              alignment: Alignment.center,
+                              textColor: plannerMessageController.isOrderChat.value == true ? ColorUtils.blue96 : ColorUtils.black48,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              backgroundColor: plannerMessageController.isOrderChat.value == true ? ColorUtils.blue173 : Colors.transparent,
+                            ),
+                          ),
+
+                          SpaceHelperWidget.h(6.w(context)),
+
+                          Expanded(
+                            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+                              context: context,
+                              onPressed: () async {
+                                plannerMessageController.isSingleChat.value = false;
+                                plannerMessageController.isOrderChat.value = false;
+                                plannerMessageController.isGroupChat.value = true;
+                                plannerMessageController.selectChatType.value = "Project";
+                                plannerMessageController.isLoading.value = true;
+                                await plannerMessageController.getAllChatMessageController(context: context,modelType: "Project");
                               },
                               text: "Group Chat",
                               padding: EdgeInsets.symmetric(vertical: 14.5.vpm(context)),
                               alignment: Alignment.center,
-                              textColor:plannerMessageController.isSingleChat.value == false ? ColorUtils.blue96 : ColorUtils.black48,
+                              textColor:plannerMessageController.isGroupChat.value == true ? ColorUtils.blue96 : ColorUtils.black48,
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              backgroundColor: plannerMessageController.isSingleChat.value == false ? ColorUtils.blue173 : Colors.transparent,
+                              fontSize: 24,
+                              backgroundColor: plannerMessageController.isGroupChat.value == true ? ColorUtils.blue173 : Colors.transparent,
                             ),
                           ),
 
@@ -97,9 +135,16 @@ class PlannerMessageView extends StatelessWidget {
 
                       TextFormFieldWidget.build(
                         context: context,
-                        hintText: "Search Planner...",
+                        hintText: "Search Chat...",
                         controller: plannerMessageController.searchController.value,
                         keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) async {
+                          await plannerMessageController.getSearchChatMessageController(
+                            context: context,
+                            modelType: plannerMessageController.selectChatType.value,
+                            searchTerm: value.toString(),
+                          );
+                        },
                         prefixIcon: Padding(
                           padding: EdgeInsets.fromLTRB(
                             20.lpm(context),
@@ -125,6 +170,8 @@ class PlannerMessageView extends StatelessWidget {
               ),
 
 
+
+              plannerMessageController.getAllChatResponseModel.value.data?.isNotEmpty == true ?
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context,int index) {
@@ -132,7 +179,7 @@ class PlannerMessageView extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                         child: InkWell(
                           onTap: () async {
-                            Get.off(()=>PlannerChatView(),preventDuplicates: false);
+                            await plannerMessageController.seenMessageController(context: context, chatId: plannerMessageController.getAllChatResponseModel.value.data?[index].sId);
                           },
                           child: Container(
                             width: 428.w(context),
@@ -154,15 +201,30 @@ class PlannerMessageView extends StatelessWidget {
 
                                 // Profile Image
 
-                                ImageHelperWidget.circleImageHelperWidget(
-                                  width: 50.w(context),
-                                  height: 50.h(context),
-                                  verticalPadding: 1.vpm(context),
-                                  horizontalPadding: 1.hpm(context),
-                                  backgroundColor: ColorUtils.orange213,
-                                  radius: 25.r(context),
-                                  imageAsset: ImageUtils.noImage,
-                                ),
+                                if(plannerMessageController.isSingleChat.value == false)...[
+                                  ImageHelperWidget.circleImageHelperWidget(
+                                    width: 50.w(context),
+                                    height: 50.h(context),
+                                    verticalPadding: 1.vpm(context),
+                                    horizontalPadding: 1.hpm(context),
+                                    backgroundColor: ColorUtils.orange213,
+                                    radius: 25.r(context),
+                                    imageAsset: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.first.user?.photoUrl == null ? ImageUtils.noImage : null,
+                                    imageUrl: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.first.user?.photoUrl,
+                                  ),
+                                ] else ...[
+                                  ImageHelperWidget.circleImageHelperWidget(
+                                    width: 50.w(context),
+                                    height: 50.h(context),
+                                    verticalPadding: 1.vpm(context),
+                                    horizontalPadding: 1.hpm(context),
+                                    backgroundColor: ColorUtils.orange213,
+                                    radius: 25.r(context),
+                                    imageAsset: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl == null ? ImageUtils.noImage : null,
+                                    imageUrl: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl,
+                                  ),
+                                ],
+
 
                                 SpaceHelperWidget.h(16.w(context)),
 
@@ -171,26 +233,41 @@ class PlannerMessageView extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
+                                      if(plannerMessageController.isSingleChat.value == false)...[
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.centerLeft,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorUtils.black64,
+                                          text: plannerMessageController.getAllChatResponseModel.value.data?[index].name ?? "",
+                                        ),
+                                      ] else...[
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.centerLeft,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorUtils.black64,
+                                          text: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.name ?? "",
+                                        ),
+                                      ],
 
-                                      TextHelperClass.headingTextWithoutWidth(
-                                        context: context,
-                                        alignment: Alignment.centerLeft,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        textColor: ColorUtils.black64,
-                                        text: "Shahid Hasan",
-                                      ),
+
 
                                       SpaceHelperWidget.v(6.h(context)),
 
-
+                                      plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
+                                      SizedBox.shrink() :
                                       TextHelperClass.headingTextWithoutWidth(
                                         context: context,
                                         alignment: Alignment.centerLeft,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        textColor: ColorUtils.black107,
-                                        text: "There are many variations of passages of Lorem Ipsum available...",
+                                        fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                        textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                        text: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
+                                        plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
+                                        plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
                                       ),
 
                                     ],
@@ -206,14 +283,15 @@ class PlannerMessageView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
 
-
+                                    plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
+                                    SizedBox.shrink() :
                                     TextHelperClass.headingTextWithoutWidth(
                                       context: context,
                                       alignment: Alignment.centerLeft,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       textColor: ColorUtils.black107,
-                                      text: "20 min",
+                                      text: plannerMessageController.getDynamicTime(plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.createdAt, DateTime.now().toString()),
                                     ),
 
 
@@ -221,6 +299,8 @@ class PlannerMessageView extends StatelessWidget {
 
 
                                     // Unread bubble
+                                    plannerMessageController.getAllChatResponseModel.value.data?[index].unreadCount == 0 ?
+                                    SizedBox.shrink() :
                                     Container(
                                       height: 30.h(context),
                                       width: 30.w(context),
@@ -235,7 +315,7 @@ class PlannerMessageView extends StatelessWidget {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         textColor: ColorUtils.white255,
-                                        text: "1",
+                                        text: plannerMessageController.getAllChatResponseModel.value.data?[index].unreadCount.toString() ?? "0",
                                       ),
                                     )
                                   ],
@@ -246,8 +326,29 @@ class PlannerMessageView extends StatelessWidget {
                         ),
                       );
                     },
-                    childCount: 12,
+                    childCount: plannerMessageController.getAllChatResponseModel.value.data?.length,
                   )
+              ) :
+              SliverFillRemaining(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                  child: SizedBox(
+                    height: 630.h(context),
+                    width: 428.w(context),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.start,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "No Chat Available",
+                      ),
+                    ),
+                  ),
+                ),
               ),
 
 

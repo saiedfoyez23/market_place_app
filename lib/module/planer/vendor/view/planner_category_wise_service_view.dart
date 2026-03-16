@@ -392,20 +392,32 @@ class PlannerCategoryWiseServiceView extends StatelessWidget {
     required PlannerCategoryWiseServiceController plannerCategoryWiseServiceController,
   }) {
     var data = plannerCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
+
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: plannerCategoryWiseServiceController.serviceId.value == plannerCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].sId && plannerCategoryWiseServiceController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardUserView(index: 2),preventDuplicates: false);
+                plannerCategoryWiseServiceController.serviceId.value = plannerCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].sId;
+                plannerCategoryWiseServiceController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    plannerCategoryWiseServiceController.getAllCategoryServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await plannerCategoryWiseServiceController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
           ),
+
 
           SpaceHelperWidget.h(16.w(context)),
 
@@ -429,6 +441,6 @@ class PlannerCategoryWiseServiceView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 }

@@ -421,21 +421,30 @@ class PlannerVendorProfileFeatureView extends StatelessWidget {
     required PlannerVendorProfileFeatureController plannerVendorProfileFeatureController,
   }) {
     var data = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index];
-    return Padding(
+    return Obx(()=>Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.hpm(context)),
       child: Row(
         children: [
 
           Expanded(
-            child: ButtonHelperWidget.customButtonWidgetAdventPro(
+            child: plannerVendorProfileFeatureController.serviceId.value == plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].sId && plannerVendorProfileFeatureController.isCreate.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context) :
+            ButtonHelperWidget.customButtonWidgetAdventPro(
               context: context,
               onPressed: () async {
-                Get.off(()=>DashboardPlannerView(index: 3),preventDuplicates: false);
+                plannerVendorProfileFeatureController.serviceId.value = plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].sId;
+                plannerVendorProfileFeatureController.isCreate.value = true;
+                Map<String,dynamic> data = {
+                  "modelType": "User",
+                  "participants": [
+                    plannerVendorProfileFeatureController.getAllFeaturedServiceResponseModel.value.data?[index].author?.sId // connected profile id
+                  ]
+                };
+                await plannerVendorProfileFeatureController.createMessageController(context: context, data: data);
               },
               text: "Message",
             ),
           ),
-
           SpaceHelperWidget.h(16.w(context)),
 
           Expanded(
@@ -451,18 +460,6 @@ class PlannerVendorProfileFeatureView extends StatelessWidget {
                   isHome: isHome,
                   categoryId: categoryId,
                 ),preventDuplicates: false,);
-                // Get.off(()=>UserPlannerWiseServiceDetailsView(
-                //   isWishlist: isWishlist,
-                //   isCategory: isCategory,
-                //   isPlanner: isPlanner,
-                //   isRecommended: isRecommended,
-                //   plannerWiseServiceId: data?.sId ?? "",
-                //   isHome: isHome,
-                //   isSearchBar: isSearchBar,
-                //   serviceId: serviceId,
-                //   userId: userId,
-                //   categoryId: categoryId,
-                // ),preventDuplicates: false);
               },
               text: "View Details",
               textColor: ColorUtils.blue96,
@@ -472,6 +469,6 @@ class PlannerVendorProfileFeatureView extends StatelessWidget {
 
         ],
       ),
-    );
+    ));
   }
 }

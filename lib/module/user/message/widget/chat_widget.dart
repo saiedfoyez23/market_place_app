@@ -5,10 +5,12 @@ import 'package:marketplaceapp/utils/utils.dart';
 class ChatWidget {
 
   static Widget chatWidget({
+    required int index,
     required BuildContext context,
-    required MessageModel messageModel,
+    required ChatController chatController,
   }) {
-    bool isSender = messageModel.isSender;
+    bool isSender = (chatController.userMyProfileDetailsResponseModel.value.data?.sId ==
+        chatController.getAllMessageResponseModel.value.data?[index].sender?.sId);
 
     return Container(
       margin: EdgeInsets.only(bottom: 16.bpm(context)),
@@ -24,7 +26,8 @@ class ChatWidget {
               horizontalPadding: 1.hpm(context),
               backgroundColor: ColorUtils.orange213,
               radius: 25.r(context),
-              imageAsset: ImageUtils.noImage,
+              imageAsset: chatController.getAllMessageResponseModel.value.data?[index].sender?.photoUrl == null ? ImageUtils.noImage : null,
+              imageUrl: chatController.getAllMessageResponseModel.value.data?[index].sender?.photoUrl
             ),
             
             SpaceHelperWidget.h(10.w(context)),
@@ -48,7 +51,7 @@ class ChatWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
-                text: messageModel.text,
+                text: chatController.getAllMessageResponseModel.value.data?[index].text,
               ),
             ),
           ),
@@ -64,7 +67,8 @@ class ChatWidget {
               horizontalPadding: 1.hpm(context),
               backgroundColor: ColorUtils.orange213,
               radius: 25.r(context),
-              imageAsset: ImageUtils.noImage,
+              imageAsset: chatController.getAllMessageResponseModel.value.data?[index].sender?.photoUrl == null ? ImageUtils.noImage : null,
+              imageUrl: chatController.getAllMessageResponseModel.value.data?[index].sender?.photoUrl,
             ),
           ],
         ],
