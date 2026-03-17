@@ -71,7 +71,7 @@ class PlannerChatView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.name,
+                                          text: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.name ?? "",
                                         ),
 
                                         // SpaceHelperWidget.v(3.h(context)),

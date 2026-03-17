@@ -6,10 +6,11 @@ import 'package:marketplaceapp/module/module.dart';
 class UserNotificationView extends StatelessWidget {
   UserNotificationView({super.key});
 
-  final UserNotificationController userNotificationController = Get.put(UserNotificationController());
+
 
   @override
   Widget build(BuildContext context) {
+    final UserNotificationController userNotificationController = Get.put(UserNotificationController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -25,44 +26,84 @@ class UserNotificationView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ColorUtils.white255,
               ),
-              child: CustomScrollView(
-                slivers: [
+              child: userNotificationController.isLoading.value == true ?
+              LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+              RefreshIndicator(
+                onRefresh: () async {
+                  Get.off(()=>UserNotificationView(),preventDuplicates: false);
+                  Get.delete<UserNotificationController>(force: true);
+                },
+                child: CustomScrollView(
+                  slivers: [
 
 
-                  AuthAppBarHelperWidget(
-                    onBackPressed: () async {
-                      Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
-                      Get.delete<UserNotificationController>(force: true);
-                    },
-                    title: "Notifications",
-                  ),
-
-
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-
-                        SpaceHelperWidget.v(16.h(context)),
-
-                      ],
+                    AuthAppBarHelperWidget(
+                      onBackPressed: () async {
+                        Get.off(()=>DashboardUserView(index: 0),preventDuplicates: false);
+                        Get.delete<UserNotificationController>(force: true);
+                      },
+                      title: "Notifications",
                     ),
-                  ),
 
 
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                            (context,int index) {
-                          return buildDismissibleNotificationCard(item: userNotificationController.notifications[index],context: context);
-                        },
-                        childCount: userNotificationController.notifications.length,
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                        child: Column(
+                          children: [
+
+                            SpaceHelperWidget.v(16.h(context)),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+
+                                ButtonHelperWidget.customButtonWidget(
+                                  context: context,
+                                  onPressed: () async {
+                                    await userNotificationController.markAllAsReadNotificationController(context: context);
+                                  },
+                                  text: "Mark all as read",
+                                  padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                  alignment: Alignment.center,
+                                  textColor: ColorUtils.blue96,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  backgroundColor: Colors.transparent,
+                                ),
+
+
+                              ],
+                            ),
+
+                            SpaceHelperWidget.v(16.h(context)),
+
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
 
-                ],
+
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                              (context,int index) {
+                            return buildDismissibleNotificationCard(
+                              index: index,
+                              userNotificationController: userNotificationController,
+                              context: context,
+                            );
+                          },
+                          childCount: userNotificationController.getAllNotificationResponseModel.value.data?.length,
+                        ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
               ),
             ),
           );
@@ -72,9 +113,16 @@ class UserNotificationView extends StatelessWidget {
   }
 
 
-  Widget buildDismissibleNotificationCard({required UserNotificationItem item,required BuildContext context}) {
+  Widget buildDismissibleNotificationCard({
+    required int index,
+    required BuildContext context,
+    required UserNotificationController userNotificationController,
+  }) {
+
+    var notification = userNotificationController.getAllNotificationResponseModel.value.data?[index];
+
     return Dismissible(
-      key: Key(item.id),
+      key: Key(notification!.sId!),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -95,7 +143,7 @@ class UserNotificationView extends StatelessWidget {
           context: context,
           barrierDismissible: false, // user must tap a button
           builder: (context) {
-            return Dialog(
+            return Obx(()=>Dialog(
               insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r(context)),
@@ -154,7 +202,7 @@ class UserNotificationView extends StatelessWidget {
                             child: ButtonHelperWidget.customButtonWidget(
                               context: context,
                               onPressed: () async {
-                                Get.off(()=>UserNotificationView(),preventDuplicates: false);
+                                Get.back();
                               },
                               text: "No",
                               borderRadius: 40,
@@ -170,11 +218,13 @@ class UserNotificationView extends StatelessWidget {
 
 
                           Expanded(
-                            child: ButtonHelperWidget.customButtonWidget(
+                            child: userNotificationController.isDelete.value == true ?
+                            LoadingHelperWidget.loadingHelperWidget(context: context) :
+                            ButtonHelperWidget.customButtonWidget(
                               context: context,
                               onPressed: () async {
-                                userNotificationController.removeNotification(item.id);
-                                Get.off(()=>UserNotificationView(),preventDuplicates: false);
+                                userNotificationController.isDelete.value = true;
+                                await userNotificationController.deleteNotificationController(context: context, notificationId: notification.sId!);
                               },
                               text: "Delete",
                               borderRadius: 40,
@@ -191,44 +241,79 @@ class UserNotificationView extends StatelessWidget {
                   ),
                 ),
               ),
-            );
+            ));
           },
         );
       },
-      child: buildNotificationCard(item: item,context: context),
+      child: buildNotificationCard(
+        index: index,
+        context: context,
+        userNotificationController: userNotificationController,
+      ),
     );
   }
 
-  Widget buildNotificationCard({required UserNotificationItem item, required BuildContext context}) {
+  Widget buildNotificationCard({
+    required int index,
+    required BuildContext context,
+    required UserNotificationController userNotificationController,
+  }) {
+
+    var notification = userNotificationController.getAllNotificationResponseModel.value.data?[index];
+
     return Container(
       margin: EdgeInsets.only(bottom: 20.bpm(context)),
       padding: EdgeInsets.symmetric(horizontal: 16.hpm(context),vertical: 10.vpm(context)),
       decoration: BoxDecoration(
-        color: item.isRead == false ? ColorUtils.blue231 : Colors.transparent,
+        color: notification?.read == false ? ColorUtils.blue231 : Colors.transparent,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          item.isRead == false ?
-          Padding(
-            padding: EdgeInsets.only(top: 10.tpm(context)),
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 50.h(context),
-              width: 50.w(context),
-              imageString: ImageUtils.readNotificationImage,
+          Container(
+            height: 50.h(context),
+            width: 50.w(context),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(243, 243, 245, 1),
+              shape: BoxShape.circle,
             ),
-          ) :
-          Padding(
-            padding: EdgeInsets.only(top: 10.tpm(context)),
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 50.h(context),
-              width: 50.w(context),
-              imageString: ImageUtils.unreadNotificationImage,
+            child: Align(
+              alignment: Alignment.center,
+              child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    notification?.modelType == "Withdraw" ?
+                    ImageUtils.withdrawNotificationImage :
+                    notification?.modelType == "Subscription" ?
+                    ImageUtils.subcriptionNotificationImage :
+                    notification?.modelType == "User" ?
+                    ImageUtils.userNotificationImage :
+                    notification?.modelType == "KYC" ?
+                    ImageUtils.kycNotificationImage :
+                    notification?.modelType == "Order" ?
+                    ImageUtils.orderNotificationImage :
+                    notification?.modelType == "Auth" ?
+                    ImageUtils.verifyKycNotificationImage :
+                    notification?.modelType == "Service" ?
+                    ImageUtils.serviceNotificationImage :
+                    notification?.modelType == "AssignProject" ?
+                    ImageUtils.projectNotificationImage :
+                    notification?.modelType == "Chat" ?
+                    ImageUtils.chatNotificationImage :
+                    notification?.modelType == "Payment" ?
+                    ImageUtils.paymentNotificationImage :
+                    ImageUtils.refundNotificationImage,
+                    height: 25.h(context),
+                    width: 25.w(context),
+                    fit: BoxFit.contain,
+                    color: Color.fromRGBO(252, 119, 87, 1),
+                  )
+              ),
             ),
           ),
+
+
 
           SpaceHelperWidget.h(10.w(context)),
 
@@ -248,7 +333,7 @@ class UserNotificationView extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         textColor: ColorUtils.black64,
-                        text: item.title,
+                        text: notification?.message ?? "",
                       ),
                     ),
 
@@ -262,7 +347,7 @@ class UserNotificationView extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       textColor: ColorUtils.blue181,
-                      text: item.time,
+                      text: userNotificationController.getDynamicTime(notification!.createdAt.toString(), DateTime.now().toString()),
                     ),
 
                   ],
@@ -276,7 +361,7 @@ class UserNotificationView extends StatelessWidget {
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black107,
-                  text: item.body,
+                  text: notification.description ?? "",
                 ),
               ],
             ),

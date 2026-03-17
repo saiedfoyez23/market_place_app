@@ -52,7 +52,7 @@ class PlannerChatWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
-                text: plannerChatController.getAllMessageResponseModel.value.data?[index].text,
+                text: plannerChatController.getAllMessageResponseModel.value.data?[index].text ?? "",
               ),
             ),
           ),

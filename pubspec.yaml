@@ -98,6 +98,7 @@ flutter:
     - image/user_dashboard_image/
     - image/feedback_image/
     - image/message_image/
+    - image/notification_image/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

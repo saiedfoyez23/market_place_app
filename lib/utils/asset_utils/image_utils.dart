@@ -150,5 +150,17 @@ class ImageUtils {
   static const String removeUserImage = "image/message_image/remove_user_image.png";
   static const String sendMessageImage = "image/message_image/send_message_image.png";
   static const String viewUserImage = "image/message_image/view_user_image.png";
+  static const String bookingNotificationImage = "image/notification_image/booking_notification_image.png";
+  static const String chatNotificationImage = "image/notification_image/chat_notification_image.png";
+  static const String kycNotificationImage = "image/notification_image/kyc_notification_image.png";
+  static const String orderNotificationImage = "image/notification_image/order_notification_image.png";
+  static const String paymentNotificationImage = "image/notification_image/payment_notification_image.png";
+  static const String projectNotificationImage = "image/notification_image/project_notification_image.png";
+  static const String refundNotificationImage = "image/notification_image/refund_notification_image.png";
+  static const String serviceNotificationImage = "image/notification_image/service_notification_image.png";
+  static const String subcriptionNotificationImage = "image/notification_image/subcription_notification_image.png";
+  static const String userNotificationImage = "image/notification_image/user_notification_image.png";
+  static const String verifyKycNotificationImage = "image/notification_image/verify_kyc_notification_image.png";
+  static const String withdrawNotificationImage = "image/notification_image/withdraw_notification_image.png";
 }
 

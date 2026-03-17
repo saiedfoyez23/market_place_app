@@ -73,6 +73,9 @@ class ApiUtils {
   static const String getPlannerVendorResponse = "$baseUrl/analysis/planer-vendor"; //done
   static const String getAllMessageResponseList = "$baseUrl/chats/my-chats?limit=1000000000"; //done
   static const String createMessageResponseList = "$baseUrl/chats"; //done
+  static const String getAllNotification = "$baseUrl/notifications?limit=10000000000"; //done
+  static const String markAllAsRead = "$baseUrl/notifications?limit=10000000000"; //done
+  static const String planerMeta = "$baseUrl/meta/planer"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -160,5 +163,9 @@ class ApiUtils {
   static String seenAllMessage(String chatId) {
     return "$baseUrl/messages/seen/${chatId}";
   }
+  static String deleteNotification(String notificationId) {
+    return "$baseUrl/notifications/${notificationId}";
+  }
+
 
 }

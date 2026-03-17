@@ -6,10 +6,10 @@ import 'package:marketplaceapp/utils/utils.dart';
 class VendorNotificationView extends StatelessWidget {
   VendorNotificationView({super.key});
 
-  final VendorNotificationController vendorNotificationController = Get.put(VendorNotificationController());
 
   @override
   Widget build(BuildContext context) {
+    final VendorNotificationController vendorNotificationController = Get.put(VendorNotificationController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -25,44 +25,83 @@ class VendorNotificationView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ColorUtils.white255,
               ),
-              child: CustomScrollView(
-                slivers: [
+              child: vendorNotificationController.isLoading.value == true ?
+              LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+              RefreshIndicator(
+                onRefresh: () async {
+                  Get.off(()=>VendorNotificationView(),preventDuplicates: false);
+                  Get.delete<VendorNotificationController>(force: true);
+                },
+                child: CustomScrollView(
+                  slivers: [
 
 
-                  AuthAppBarHelperWidget(
-                    onBackPressed: () async {
-                      Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
-                      Get.delete<VendorNotificationController>(force: true);
-                    },
-                    title: "Notifications",
-                  ),
-
-
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-
-                        SpaceHelperWidget.v(16.h(context)),
-
-                      ],
+                    AuthAppBarHelperWidget(
+                      onBackPressed: () async {
+                        Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
+                        Get.delete<VendorNotificationController>(force: true);
+                      },
+                      title: "Notifications",
                     ),
-                  ),
 
 
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                            (context,int index) {
-                              return buildDismissibleNotificationCard(item: vendorNotificationController.notifications[index],context: context);
-                            },
-                          childCount: vendorNotificationController.notifications.length,
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                        child: Column(
+                          children: [
+
+                            SpaceHelperWidget.v(16.h(context)),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+
+                                ButtonHelperWidget.customButtonWidget(
+                                  context: context,
+                                  onPressed: () async {
+                                    await vendorNotificationController.markAllAsReadNotificationController(context: context);
+                                  },
+                                  text: "Mark all as read",
+                                  padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                  alignment: Alignment.center,
+                                  textColor: ColorUtils.blue96,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  backgroundColor: Colors.transparent,
+                                ),
+
+
+                              ],
+                            ),
+
+                            SpaceHelperWidget.v(16.h(context)),
+
+                          ],
                         ),
+                      ),
                     ),
-                  ),
 
 
-                ],
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              (context,int index) {
+                                return buildDismissibleNotificationCard(
+                                  vendorNotificationController: vendorNotificationController,
+                                  index: index,
+                                  context: context,
+                                );
+                              },
+                            childCount: vendorNotificationController.getAllNotificationResponseModel.value.data?.length,
+                          ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
               ),
             ),
           );
@@ -72,9 +111,16 @@ class VendorNotificationView extends StatelessWidget {
   }
 
 
-  Widget buildDismissibleNotificationCard({required NotificationItem item,required BuildContext context}) {
+  Widget buildDismissibleNotificationCard({
+    required int index,
+    required BuildContext context,
+    required VendorNotificationController vendorNotificationController,
+  }) {
+
+    var notification = vendorNotificationController.getAllNotificationResponseModel.value.data?[index];
+
     return Dismissible(
-      key: Key(item.id),
+      key: Key(notification!.sId!),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -95,7 +141,7 @@ class VendorNotificationView extends StatelessWidget {
           context: context,
           barrierDismissible: false, // user must tap a button
           builder: (context) {
-            return Dialog(
+            return Obx(()=>Dialog(
               insetPadding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r(context)),
@@ -154,7 +200,7 @@ class VendorNotificationView extends StatelessWidget {
                             child: ButtonHelperWidget.customButtonWidget(
                               context: context,
                               onPressed: () async {
-                                Get.off(()=>VendorNotificationView(),preventDuplicates: false);
+                                Get.back();
                               },
                               text: "No",
                               borderRadius: 40,
@@ -170,11 +216,13 @@ class VendorNotificationView extends StatelessWidget {
 
 
                           Expanded(
-                            child: ButtonHelperWidget.customButtonWidget(
+                            child: vendorNotificationController.isDelete.value == true ?
+                            LoadingHelperWidget.loadingHelperWidget(context: context) :
+                            ButtonHelperWidget.customButtonWidget(
                               context: context,
                               onPressed: () async {
-                                vendorNotificationController.removeNotification(item.id);
-                                Get.off(()=>VendorNotificationView(),preventDuplicates: false);
+                                vendorNotificationController.isDelete.value = true;
+                                await vendorNotificationController.deleteNotificationController(context: context, notificationId: notification.sId!);
                               },
                               text: "Delete",
                               borderRadius: 40,
@@ -191,44 +239,79 @@ class VendorNotificationView extends StatelessWidget {
                   ),
                 ),
               ),
-            );
+            ));
           },
         );
       },
-      child: buildNotificationCard(item: item,context: context),
+      child: buildNotificationCard(
+        index: index,
+        context: context,
+        vendorNotificationController: vendorNotificationController,
+      ),
     );
   }
 
-  Widget buildNotificationCard({required NotificationItem item, required BuildContext context}) {
+  Widget buildNotificationCard({
+    required int index,
+    required BuildContext context,
+    required VendorNotificationController vendorNotificationController,
+  }) {
+
+    var notification = vendorNotificationController.getAllNotificationResponseModel.value.data?[index];
+
     return Container(
       margin: EdgeInsets.only(bottom: 20.bpm(context)),
       padding: EdgeInsets.symmetric(horizontal: 16.hpm(context),vertical: 10.vpm(context)),
       decoration: BoxDecoration(
-        color: item.isRead == false ? ColorUtils.blue231 : Colors.transparent,
+        color: notification?.read == false ? ColorUtils.blue231 : Colors.transparent,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          item.isRead == false ?
-          Padding(
-            padding: EdgeInsets.only(top: 10.tpm(context)),
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 50.h(context),
-              width: 50.w(context),
-              imageString: ImageUtils.readNotificationImage,
+          Container(
+            height: 50.h(context),
+            width: 50.w(context),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(243, 243, 245, 1),
+              shape: BoxShape.circle,
             ),
-          ) :
-          Padding(
-            padding: EdgeInsets.only(top: 10.tpm(context)),
-            child: ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: 50.h(context),
-              width: 50.w(context),
-              imageString: ImageUtils.unreadNotificationImage,
+            child: Align(
+              alignment: Alignment.center,
+              child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    notification?.modelType == "Withdraw" ?
+                    ImageUtils.withdrawNotificationImage :
+                    notification?.modelType == "Subscription" ?
+                    ImageUtils.subcriptionNotificationImage :
+                    notification?.modelType == "User" ?
+                    ImageUtils.userNotificationImage :
+                    notification?.modelType == "KYC" ?
+                    ImageUtils.kycNotificationImage :
+                    notification?.modelType == "Order" ?
+                    ImageUtils.orderNotificationImage :
+                    notification?.modelType == "Auth" ?
+                    ImageUtils.verifyKycNotificationImage :
+                    notification?.modelType == "Service" ?
+                    ImageUtils.serviceNotificationImage :
+                    notification?.modelType == "AssignProject" ?
+                    ImageUtils.projectNotificationImage :
+                    notification?.modelType == "Chat" ?
+                    ImageUtils.chatNotificationImage :
+                    notification?.modelType == "Payment" ?
+                    ImageUtils.paymentNotificationImage :
+                    ImageUtils.refundNotificationImage,
+                    height: 25.h(context),
+                    width: 25.w(context),
+                    fit: BoxFit.contain,
+                    color: Color.fromRGBO(252, 119, 87, 1),
+                  )
+              ),
             ),
           ),
+
+
 
           SpaceHelperWidget.h(10.w(context)),
 
@@ -248,12 +331,12 @@ class VendorNotificationView extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         textColor: ColorUtils.black64,
-                        text: item.title,
+                        text: notification?.message ?? "",
                       ),
                     ),
 
                     SpaceHelperWidget.h(8.w(context)),
-                    
+
                     SizedBox(width: 8),
 
                     TextHelperClass.headingTextWithoutWidth(
@@ -262,7 +345,7 @@ class VendorNotificationView extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       textColor: ColorUtils.blue181,
-                      text: item.time,
+                      text: vendorNotificationController.getDynamicTime(notification!.createdAt.toString(), DateTime.now().toString()),
                     ),
 
                   ],
@@ -276,7 +359,7 @@ class VendorNotificationView extends StatelessWidget {
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black107,
-                  text: item.body,
+                  text: notification.description ?? "",
                 ),
               ],
             ),

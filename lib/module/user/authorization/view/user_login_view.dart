@@ -215,73 +215,73 @@ class UserLoginView extends StatelessWidget {
                         SpaceHelperWidget.v(32.h(context)),
 
 
-                        Row(
-                          children: [
-
-                            Expanded(
-                              child: Container(
-                                height: 2.h(context),
-                                decoration: BoxDecoration(
-                                  color: ColorUtils.gray153,
-                                ),
-                              ),
-                            ),
-
-                            SpaceHelperWidget.h(10.w(context)),
-
-                            TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              textColor: ColorUtils.black96,
-                              text: "Continue with",
-                            ),
-
-                            SpaceHelperWidget.h(10.w(context)),
-
-                            Expanded(
-                              child: Container(
-                                height: 2.h(context),
-                                decoration: BoxDecoration(
-                                  color: ColorUtils.gray153,
-                                ),
-                              ),
-                            ),
-
-
-                          ],
-                        ),
-
-
-                        SpaceHelperWidget.v(32.h(context)),
-
-
-                        ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                          context: context,
-                          onPressed: () async {},
-                          iconPath: ImageUtils.appleImage,
-                          text: "Login with apple",
-                          borderColor: ColorUtils.orange119,
-                          borderWidth: 1,
-                          textSize: 24,
-                        ),
-
-
-                        SpaceHelperWidget.v(16.h(context)),
-
-                        ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                          context: context,
-                          onPressed: () async {},
-                          iconPath: ImageUtils.googleImage,
-                          text: "Login with Google",
-                          borderColor: ColorUtils.orange119,
-                          borderWidth: 1,
-                          textSize: 24
-                        ),
-
-
-                        SpaceHelperWidget.v(32.h(context)),
+                        // Row(
+                        //   children: [
+                        //
+                        //     Expanded(
+                        //       child: Container(
+                        //         height: 2.h(context),
+                        //         decoration: BoxDecoration(
+                        //           color: ColorUtils.gray153,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //
+                        //     SpaceHelperWidget.h(10.w(context)),
+                        //
+                        //     TextHelperClass.headingTextWithoutWidth(
+                        //       context: context,
+                        //       alignment: Alignment.centerLeft,
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.w500,
+                        //       textColor: ColorUtils.black96,
+                        //       text: "Continue with",
+                        //     ),
+                        //
+                        //     SpaceHelperWidget.h(10.w(context)),
+                        //
+                        //     Expanded(
+                        //       child: Container(
+                        //         height: 2.h(context),
+                        //         decoration: BoxDecoration(
+                        //           color: ColorUtils.gray153,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //
+                        //
+                        //   ],
+                        // ),
+                        //
+                        //
+                        // SpaceHelperWidget.v(32.h(context)),
+                        //
+                        //
+                        // ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                        //   context: context,
+                        //   onPressed: () async {},
+                        //   iconPath: ImageUtils.appleImage,
+                        //   text: "Login with apple",
+                        //   borderColor: ColorUtils.orange119,
+                        //   borderWidth: 1,
+                        //   textSize: 24,
+                        // ),
+                        //
+                        //
+                        // SpaceHelperWidget.v(16.h(context)),
+                        //
+                        // ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                        //   context: context,
+                        //   onPressed: () async {},
+                        //   iconPath: ImageUtils.googleImage,
+                        //   text: "Login with Google",
+                        //   borderColor: ColorUtils.orange119,
+                        //   borderWidth: 1,
+                        //   textSize: 24
+                        // ),
+                        //
+                        //
+                        // SpaceHelperWidget.v(32.h(context)),
 
 
                         RichTextHelperWidget.headingRichText(
