@@ -7,6 +7,7 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerProfileView extends StatelessWidget {
   const PlannerProfileView({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     final PlannerProfileViewController plannerProfileViewController = Get.put(PlannerProfileViewController(context: context));
@@ -18,7 +19,15 @@ class PlannerProfileView extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColorUtils.white251,
           ),
-          child: plannerProfileViewController.isLoading.value == true ?
+          child:
+          // plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.type != null && plannerProfileViewController.isLoading.value == false ?
+          // RefreshIndicator(
+          //   onRefresh: () async {
+          //     Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+          //   },
+          //   child: PlannerWithoutSubscriptionProfileWidget().plannerWithoutSubscriptionProfileWidget(context: context, plannerProfileViewController: plannerProfileViewController),
+          // ) :
+          plannerProfileViewController.isLoading.value == true ?
           LoadingHelperWidget.loadingHelperWidget(
             context: context,
             height: 930.h(context),
