@@ -162,5 +162,11 @@ class ImageUtils {
   static const String userNotificationImage = "image/notification_image/user_notification_image.png";
   static const String verifyKycNotificationImage = "image/notification_image/verify_kyc_notification_image.png";
   static const String withdrawNotificationImage = "image/notification_image/withdraw_notification_image.png";
+  static const String newLeadImage = "image/lead_image/new_lead_image.png";
+  static const String contactedLeadImage = "image/lead_image/contacted_lead_image.png";
+  static const String qualifiedLeadImage = "image/lead_image/qualified_lead_image.png";
+  static const String leftLeadImage = "image/lead_image/left_lead_image.png";
+  static const String leadDetailsCalenderImage = "image/lead_image/lead_details_calender_image.png";
+  static const String leadDetailsLocationImage = "image/lead_image/lead_details_location_image.png";
 }
 

@@ -334,7 +334,7 @@ class PlannerProjectView extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>PlannerOpenOrderDetailsView(orderID: projectModel.sid),preventDuplicates: false);
+              Get.off(()=>PlannerOpenOrderDetailsView(orderID: projectModel.sid,isHome: true,),preventDuplicates: false);
             },
             backgroundColor: ColorUtils.red20,
             textColor: ColorUtils.red202,

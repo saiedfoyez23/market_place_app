@@ -166,6 +166,9 @@ class ApiUtils {
   static String deleteNotification(String notificationId) {
     return "$baseUrl/notifications/${notificationId}";
   }
+  static String getAllPlannerLeads(String tab) {
+    return "$baseUrl/analysis/planer-leads?tab=${tab}&limit=1000000000";
+  }
 
 
 }

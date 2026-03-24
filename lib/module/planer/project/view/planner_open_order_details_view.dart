@@ -6,8 +6,8 @@ import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
 class PlannerOpenOrderDetailsView extends StatelessWidget {
-  const PlannerOpenOrderDetailsView({super.key,required this.orderID});
-
+  const PlannerOpenOrderDetailsView({super.key,required this.orderID,required this.isHome});
+  final bool isHome;
   final String orderID;
 
   @override
@@ -16,7 +16,11 @@ class PlannerOpenOrderDetailsView extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+        if(isHome == true) {
+          Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+        } else {
+          Get.off(()=>PlannerLeadView(),preventDuplicates: false);
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -36,7 +40,11 @@ class PlannerOpenOrderDetailsView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+                    if(isHome == true) {
+                      Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+                    } else {
+                      Get.off(()=>PlannerLeadView(),preventDuplicates: false);
+                    }
                   },
                   title: "Order Details",
                 ),

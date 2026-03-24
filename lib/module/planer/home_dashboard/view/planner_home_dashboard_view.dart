@@ -145,6 +145,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: buildStatCard(
+                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.plannerActiveProjectImage,
                                         title: 'Active Project',
@@ -158,6 +159,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
 
                                     Expanded(
                                       child: buildStatCard(
+                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.plannerUpcomingEventImage,
                                         title: 'Upcoming Event',
@@ -176,6 +178,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: buildStatCard(
+                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.plannerNewLeadsImage,
                                         title: 'New Leads',
@@ -188,6 +191,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
 
                                     Expanded(
                                       child: buildStatCard(
+                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.plannerTotalEarningsImage,
                                         title: 'Total Earnings',
@@ -333,6 +337,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
     required String title,
     required String value,
     required Color color,
+    required PlannerMyProfileDetailsResponseModel plannerMyProfileDetailsResponseModel,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 14.hpm(context)),
@@ -368,15 +373,38 @@ class PlannerHomeDashboardView extends StatelessWidget {
 
             ],
           ),
+
+
           SpaceHelperWidget.v(10.h(context)),
 
-          TextHelperClass.headingTextWithoutWidth(
-            context: context,
-            alignment: Alignment.centerLeft,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            textColor: ColorUtils.black64,
-            text: value,
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black64,
+                  text: value,
+                ),
+              ),
+
+              title == "New Leads" && plannerMyProfileDetailsResponseModel.data?.type != null ?
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                borderRadius: 100,
+                padding: EdgeInsets.symmetric(vertical: 5.vpm(context),horizontal: 12.hpm(context)),
+                height: 40.h(context),
+                onPressed: () async {
+                  Get.off(()=>PlannerLeadView(),preventDuplicates: false);
+                },
+                text: "View",
+              ) :
+              SizedBox.shrink(),
+
+            ],
           ),
 
         ],

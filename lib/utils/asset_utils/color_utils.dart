@@ -65,4 +65,9 @@ class ColorUtils {
   static const Color green139 = Color.fromRGBO(4, 139, 61, 1);
   static const Color green02 = Color.fromRGBO(4, 139, 61, 0.2);
   static const Color green213 = Color.fromRGBO(195, 255, 213, 1);
+
+  static const Color newLeads = Color.fromRGBO(195, 255, 213, 1);
+  static const Color contactedLeads = Color.fromRGBO(182, 206, 230, 1);
+  static const Color qualifiedLeads = Color.fromRGBO(195, 255, 213, 1);
+  static const Color leftLeads = Color.fromRGBO(254, 213, 203, 1);
 }
