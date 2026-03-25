@@ -130,27 +130,33 @@ class PlannerVendorProfileView extends StatelessWidget {
 
                             SpaceHelperWidget.h(12.w(context)),
 
+                            if(plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isKycVerified == true &&
+                                plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isActiveSubscription == true)...[
+                              ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 25.h(context),
+                                width: 25.w(context),
+                                imageString: ImageUtils.verifyPaymentImage,
+                              ),
+                            ] else if(plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isKycVerified == true)...[
+                              ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 25.h(context),
+                                width: 25.w(context),
+                                imageString: ImageUtils.verifyImage,
+                              )
+                            ] else if(plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isActiveSubscription == true) ...[
+                              ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 25.h(context),
+                                width: 25.w(context),
+                                imageString: ImageUtils.verifyPaymentImage,
+                              )
+                            ] else...[
+                              SizedBox.shrink()
+                            ],
 
-                            plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isKycVerified == true ?
-                            ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 25.h(context),
-                              width: 25.w(context),
-                              imageString: ImageUtils.verifyImage,
-                            ) : plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isActiveSubscription == true ?
-                            ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 25.h(context),
-                              width: 25.w(context),
-                              imageString: ImageUtils.verifyPaymentImage,
-                            ) : plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isKycVerified == true &&
-                                plannerVendorProfileController.getVendorProfileDetailsResponseModel.value.data?.isActiveSubscription == true ?
-                            ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 25.h(context),
-                              width: 25.w(context),
-                              imageString: ImageUtils.verifyPaymentImage,
-                            ) : SizedBox.shrink(),
+
 
                             SpaceHelperWidget.h(6.w(context)),
 

@@ -6,15 +6,20 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorOrderDetailsView extends StatelessWidget {
-  const VendorOrderDetailsView({super.key,required this.orderID});
+  const VendorOrderDetailsView({super.key,required this.orderID,required this.isLead});
   final String orderID;
+  final bool isLead;
   @override
   Widget build(BuildContext context) {
     final VendorOrderDetailsController vendorOrderDetailsController = Get.put(VendorOrderDetailsController(context: context, orderID: orderID));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+        if(isLead == true) {
+          Get.off(()=>VendorLeadView(),preventDuplicates: false);
+        } else {
+          Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -34,7 +39,11 @@ class VendorOrderDetailsView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+                    if(isLead == true) {
+                      Get.off(()=>VendorLeadView(),preventDuplicates: false);
+                    } else {
+                      Get.off(()=>DashboardVendorView(index: 2),preventDuplicates: false);
+                    }
                   },
                   title: "Order Details",
                 ),

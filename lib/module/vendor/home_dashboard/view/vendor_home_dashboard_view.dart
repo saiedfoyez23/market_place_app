@@ -145,6 +145,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: buildStatCard(
+                                        vendorMyProfileDetailsResponseModel: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.activeBookingsImage,
                                         title: 'Active Bookings',
@@ -158,6 +159,7 @@ class VendorHomeDashboardView extends StatelessWidget {
 
                                     Expanded(
                                       child: buildStatCard(
+                                        vendorMyProfileDetailsResponseModel: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.monthlyRevenueImage,
                                         title: 'Monthly Revenue',
@@ -176,6 +178,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: buildStatCard(
+                                        vendorMyProfileDetailsResponseModel: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.plannerNewLeadsImage,
                                         title: 'New Leads',
@@ -188,6 +191,7 @@ class VendorHomeDashboardView extends StatelessWidget {
 
                                     Expanded(
                                       child: buildStatCard(
+                                        vendorMyProfileDetailsResponseModel: vendorHomeDashboardController.vendorMyProfileDetailsResponseModel.value,
                                         context: context,
                                         icon: ImageUtils.totalEarningsImage,
                                         title: 'Total Earnings',
@@ -342,6 +346,7 @@ class VendorHomeDashboardView extends StatelessWidget {
     required String title,
     required String value,
     required Color color,
+    required VendorMyProfileDetailsResponseModel vendorMyProfileDetailsResponseModel,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 14.hpm(context)),
@@ -379,13 +384,34 @@ class VendorHomeDashboardView extends StatelessWidget {
           ),
           SpaceHelperWidget.v(10.h(context)),
 
-          TextHelperClass.headingTextWithoutWidth(
-            context: context,
-            alignment: Alignment.centerLeft,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            textColor: ColorUtils.black64,
-            text: value,
+          Row(
+            children: [
+
+              Expanded(
+                child: TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black64,
+                  text: value,
+                ),
+              ),
+
+              title == "New Leads" && vendorMyProfileDetailsResponseModel.data?.type != null ?
+              ButtonHelperWidget.customButtonWidget(
+                context: context,
+                borderRadius: 100,
+                padding: EdgeInsets.symmetric(vertical: 5.vpm(context),horizontal: 12.hpm(context)),
+                height: 40.h(context),
+                onPressed: () async {
+                  Get.off(()=>VendorLeadView(),preventDuplicates: false);
+                },
+                text: "View",
+              ) :
+              SizedBox.shrink(),
+
+            ],
           ),
 
         ],

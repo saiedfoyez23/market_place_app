@@ -85,7 +85,7 @@ class PlannerProfileServiceView extends StatelessWidget {
                               ),
                               child: InkWell(
                                   onTap: () async {
-                                  Get.off(()=>PlannerProfileServiceDetailsView(serviceId: item.sId),preventDuplicates: false);
+                                  Get.off(()=>PlannerProfileServiceDetailsView(serviceId: item.sId,isProfile: false,),preventDuplicates: false);
                                 },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -13,12 +13,15 @@ class PlannerAllVendorServiceView extends StatelessWidget {
     required this.isSearch,
     required this.categoryId,
   });
+
+
   final String serviceId;
   final String userId;
   final bool isCategory;
   final bool isHome;
   final bool isSearch;
   final String categoryId;
+
   @override
   Widget build(BuildContext context) {
     final PlannerAllVendorServiceController plannerAllVendorServiceController = Get.put(PlannerAllVendorServiceController(context: context,userId: userId));

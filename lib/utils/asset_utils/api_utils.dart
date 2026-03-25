@@ -169,6 +169,8 @@ class ApiUtils {
   static String getAllPlannerLeads(String tab) {
     return "$baseUrl/analysis/planer-leads?tab=${tab}&limit=1000000000";
   }
-
+  static String getAllVendorLeads(String tab) {
+    return "$baseUrl/analysis/vendor-leads?tab=${tab}&limit=1000000000";
+  }
 
 }

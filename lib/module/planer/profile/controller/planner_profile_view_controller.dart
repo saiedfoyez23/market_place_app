@@ -8,6 +8,7 @@ class PlannerProfileViewController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isDelete = false.obs;
+  Rx<GetAllFeaturedServiceResponseModel> getAllFeaturedServiceResponseModel = GetAllFeaturedServiceResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
   BuildContext context;
@@ -19,21 +20,30 @@ class PlannerProfileViewController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getPlannerProfileDetailsController(context: context);
+      await getPlannerProfileDetailsController(
+        context: context,
+        onComplete: (userId) async {
+          await getAllPlannerFeatureServiceDetailsController(
+            context: context,
+            userId: userId,
+          );
+        }
+      );
     });
   }
 
 
   Future<void> getPlannerProfileDetailsController({
     required BuildContext context,
+    required Function onComplete,
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.userProfileDetails,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         print(data);
-        isLoading.value = false;
         plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+        onComplete(plannerMyProfileDetailsResponseModel.value.data?.sId);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -45,6 +55,60 @@ class PlannerProfileViewController extends GetxController {
       },
     );
   }
+
+  Future<void> getAllPlannerFeatureServiceDetailsController({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.getUserFeaturedService(userId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = false;
+        getAllFeaturedServiceResponseModel.value = GetAllFeaturedServiceResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
+  }
+
+  Future<void> addFeaturedController({
+    required BuildContext context,
+    required String serviceId,
+  }) async {
+    BaseApiUtils.patch(
+      url: ApiUtils.addFeatureController(serviceId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isLoading.value = true;
+        await getPlannerProfileDetailsController(
+            context: context,
+            onComplete: (userId) async {
+              await getAllPlannerFeatureServiceDetailsController(
+                context: context,
+                userId: userId,
+              );
+            }
+        );
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDelete.value = false;
+      },
+    );
+  }
+
 
 
   Future<void> getPlannerProfileDeleteController({
@@ -76,4 +140,15 @@ class PlannerProfileViewController extends GetxController {
   }
 
 
+  Rx<PlannerProfileTab> selectedTab = PlannerProfileTab.overview.obs;
+
+  void changeTab(PlannerProfileTab selectTab) {
+    selectedTab.value = selectTab;
+  }
+
+
 }
+
+enum PlannerProfileTab { overview, settings }
+
+

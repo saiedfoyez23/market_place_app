@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class VendorWithSubscriptionProfileWidget {
+class PlannerWithSubscriptionProfileWidget {
 
-  Widget vendorWithSubscriptionProfileWidget({
+
+  Widget plannerWithSubscriptionProfileWidget({
     required BuildContext context,
-    required VendorProfileViewController vendorProfileViewController,
+    required PlannerProfileViewController plannerProfileViewController,
   }) {
-    return Obx(()=> vendorProfileViewController.isLoading.value == true ?
+    return Obx(()=> plannerProfileViewController.isLoading.value == true ?
     LoadingHelperWidget.loadingHelperWidget(
       context: context,
       height: 930.h(context),
@@ -39,7 +40,7 @@ class VendorWithSubscriptionProfileWidget {
                         height: 250.h(context),
                         width: 428.w(context),
                         fit: BoxFit.cover,
-                        imageUrl: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.coverPhoto,
+                        imageUrl: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.coverPhoto,
                       ),
 
 
@@ -53,8 +54,8 @@ class VendorWithSubscriptionProfileWidget {
                           horizontalPadding: 4.5.vpm(context),
                           backgroundColor: ColorUtils.orange213,
                           radius: 75.r(context),
-                          imageUrl: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl,
-                          imageAsset: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
+                          imageUrl: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
+                          imageAsset: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
                         ),
                       ),
 
@@ -75,27 +76,28 @@ class VendorWithSubscriptionProfileWidget {
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       textColor: ColorUtils.black48,
-                      text: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.name ?? "",
+                      text: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.name ?? "",
                     ),
 
                     SpaceHelperWidget.h(12.w(context)),
 
-                    if(vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.isKycVerified == true &&
-                        vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.isActiveSubscription == true)...[
-                          ImageHelperWidget.assetImageWidget(
-                            context: context,
-                            height: 25.h(context),
-                            width: 25.w(context),
-                            imageString: ImageUtils.verifyPaymentImage,
-                          ),
-                    ] else if(vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.isKycVerified == true)...[
+
+                    if(plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.isKycVerified == true &&
+                        plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.isActiveSubscription == true)...[
+                      ImageHelperWidget.assetImageWidget(
+                        context: context,
+                        height: 25.h(context),
+                        width: 25.w(context),
+                        imageString: ImageUtils.verifyPaymentImage,
+                      ),
+                    ] else if(plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.isKycVerified == true)...[
                       ImageHelperWidget.assetImageWidget(
                         context: context,
                         height: 25.h(context),
                         width: 25.w(context),
                         imageString: ImageUtils.verifyImage,
                       )
-                    ] else if(vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.isActiveSubscription == true) ...[
+                    ] else if(plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.isActiveSubscription == true) ...[
                       ImageHelperWidget.assetImageWidget(
                         context: context,
                         height: 25.h(context),
@@ -105,8 +107,6 @@ class VendorWithSubscriptionProfileWidget {
                     ] else...[
                       SizedBox.shrink()
                     ],
-
-
 
                     SpaceHelperWidget.h(6.w(context)),
 
@@ -143,7 +143,7 @@ class VendorWithSubscriptionProfileWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               textColor: ColorUtils.black48,
-                              text: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.address ?? "",
+                              text: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.address ?? "",
                             ),
                           ),
 
@@ -168,13 +168,13 @@ class VendorWithSubscriptionProfileWidget {
                           alignment: Alignment.centerLeft,
                           textSpans: [
                             CustomTextSpan(
-                              text: '${vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.avgRating} ',
+                              text: '${plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.avgRating} ',
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: ColorUtils.black10,
                             ).toTextSpan(),
                             CustomTextSpan(
-                              text: '(${vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.ratingCount} reviews)',
+                              text: '(${plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.ratingCount} reviews)',
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: ColorUtils.black10,
@@ -189,13 +189,13 @@ class VendorWithSubscriptionProfileWidget {
 
                 SpaceHelperWidget.v(20.h(context)),
 
-                _buildTabs(context: context,vendorProfileViewController: vendorProfileViewController),
+                _buildTabs(context: context,plannerProfileViewController: plannerProfileViewController),
 
                 SpaceHelperWidget.v(20.h(context)),
 
-                vendorProfileViewController.selectedTab.value == VendorProfileTab.overview ?
-                _overviewWidget(context: context, vendorProfileViewController: vendorProfileViewController) :
-                _settingsView(context: context, vendorProfileViewController: vendorProfileViewController),
+                plannerProfileViewController.selectedTab.value == PlannerProfileTab.overview ?
+                _overviewWidget(context: context, plannerProfileViewController: plannerProfileViewController) :
+                _settingsView(context: context, plannerProfileViewController: plannerProfileViewController),
 
 
 
@@ -214,22 +214,22 @@ class VendorWithSubscriptionProfileWidget {
 
   Widget _buildTabs({
     required BuildContext context,
-    required VendorProfileViewController vendorProfileViewController,
+    required PlannerProfileViewController plannerProfileViewController,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Expanded(child: _tabItem(
-          status: VendorProfileTab.overview,
+          status: PlannerProfileTab.overview,
           title: "Overview",
           context: context,
-          vendorProfileViewController: vendorProfileViewController,
+          plannerProfileViewController: plannerProfileViewController,
         )),
         Expanded(child: _tabItem(
-          status: VendorProfileTab.settings,
+          status: PlannerProfileTab.settings,
           title: "Settings",
           context: context,
-          vendorProfileViewController: vendorProfileViewController,)
+          plannerProfileViewController: plannerProfileViewController,)
         ),
       ],
     );
@@ -237,14 +237,14 @@ class VendorWithSubscriptionProfileWidget {
 
   Widget _tabItem({
     required String title,
-    required VendorProfileTab status,
+    required PlannerProfileTab status,
     required BuildContext context,
-    required VendorProfileViewController vendorProfileViewController,
+    required PlannerProfileViewController plannerProfileViewController,
   }) {
-    bool isSelected = vendorProfileViewController.selectedTab.value == status;
+    bool isSelected = plannerProfileViewController.selectedTab.value == status;
     return InkWell(
       onTap: () {
-        vendorProfileViewController.changeTab(status);
+        plannerProfileViewController.changeTab(status);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -272,7 +272,7 @@ class VendorWithSubscriptionProfileWidget {
 
   Widget _overviewWidget({
     required BuildContext context,
-    required VendorProfileViewController vendorProfileViewController,
+    required PlannerProfileViewController plannerProfileViewController,
   }) {
     return Column(
       children: [
@@ -308,7 +308,7 @@ class VendorWithSubscriptionProfileWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 textColor: ColorUtils.black95,
-                text: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.bio ?? "",
+                text: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.bio ?? "",
               ),
 
 
@@ -341,9 +341,9 @@ class VendorWithSubscriptionProfileWidget {
 
               SpaceHelperWidget.v(10.h(context)),
 
-              rowItem(title: "Phone: ",value: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.contractNumber ?? "",context: context),
-              rowItem(title: "Email: ",value: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.email ?? "",context: context),
-              rowItem(title: "Location",value: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.address ?? "",context: context),
+              rowItem(title: "Phone: ",value: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.contractNumber ?? "",context: context),
+              rowItem(title: "Email: ",value: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.email ?? "",context: context),
+              rowItem(title: "Location",value: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.address ?? "",context: context),
 
 
             ],
@@ -384,8 +384,8 @@ class VendorWithSubscriptionProfileWidget {
                   crossAxisAlignment: WrapCrossAlignment.start,
                   spacing: 8,
                   runSpacing: 8,
-                  children: List.generate(vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data!.categories!.length, (index) {
-                    return _serviceChip(text: vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data!.categories![index], context: context);
+                  children: List.generate(plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data!.categories!.length, (index) {
+                    return _serviceChip(text: plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data!.categories![index], context: context);
                   }),
                 ),
               ),
@@ -414,11 +414,11 @@ class VendorWithSubscriptionProfileWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            if(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true)...[
+            if(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true)...[
               ButtonHelperWidget.customButtonWidget(
                 context: context,
                 onPressed: () async {
-                  Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
+                  Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
                 },
                 text: "See All",
                 padding: EdgeInsets.only(left: 14.5.lpm(context)),
@@ -438,18 +438,18 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(10.h(context)),
 
 
-        if(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
-          if(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data!.length > 1) ...[
+        if(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?.isNotEmpty == true) ...[
+          if(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data!.length > 1) ...[
             Row(
               children: [
-                Expanded(child: _buildPlannerCard(service: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data![0], context: context)),
+                Expanded(child: _buildPlannerCard(service: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data![0], context: context)),
                 SpaceHelperWidget.h(12.w(context)),
-                Expanded(child: _buildPlannerCard(service: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data![1], context: context)),
+                Expanded(child: _buildPlannerCard(service: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data![1], context: context)),
               ],
             )
           ] else ...[
             Column(
-              children: List.generate(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data!.length, (index) {
+              children: List.generate(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data!.length, (index) {
                 return Container(
                   margin: EdgeInsets.only(bottom: 20.bpm(context)),
                   decoration: BoxDecoration(
@@ -462,7 +462,10 @@ class VendorWithSubscriptionProfileWidget {
                   ),
                   child: InkWell(
                     onTap: () async {
-                      Get.off(()=>VendorServiceDetailsView(serviceId: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].sId),preventDuplicates: false);
+                      Get.off(()=> PlannerProfileServiceDetailsView(
+                        serviceId: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].sId ?? "",
+                        isProfile: true,
+                      ), preventDuplicates: false,);
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,22 +478,25 @@ class VendorWithSubscriptionProfileWidget {
                                 topLeft: Radius.circular(12.r(context)),
                                 topRight: Radius.circular(12.r(context)),
                               ),
-                              child: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].images?.isEmpty == true ?
+                              child: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].images?.isEmpty == true ?
                               SpaceHelperWidget.sq(192.h(context), 428.w(context)) :
                               Image.network(
-                                vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data![index].images!.first,
+                                plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data![index].images!.first,
                                 height: 192.h(context),
                                 width: 428.w(context),
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            vendorProfileViewController.vendorMyProfileDetailsResponseModel.value.data?.type == "pro" ?
+                            plannerProfileViewController.plannerMyProfileDetailsResponseModel.value.data?.type != null ?
                             Positioned(
                               top: 12.h(context),
                               right: 12.w(context),
                               child: InkWell(
                                 onTap: () async {
-                                  await vendorProfileViewController.addFeaturedController(context: context, serviceId: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].sId);
+                                  await plannerProfileViewController.addFeaturedController(
+                                    context: context,
+                                    serviceId: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].sId,
+                                  );
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -516,7 +522,7 @@ class VendorWithSubscriptionProfileWidget {
                                         context: context,
                                         height: 16.h(context),
                                         width: 16.w(context),
-                                        imageString:vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].isFeatured == true ?
+                                        imageString: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].isFeatured == true ?
                                         ImageUtils.isFevorateImage : ImageUtils.isUnfevorateImage,
                                       ),
 
@@ -530,7 +536,7 @@ class VendorWithSubscriptionProfileWidget {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         textColor: ColorUtils.black96,
-                                        text: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].isFeatured == true ?
+                                        text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].isFeatured == true ?
                                         "Remove Featured" : "Add Featured",
                                       ),
                                     ],
@@ -554,7 +560,7 @@ class VendorWithSubscriptionProfileWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 textColor: ColorUtils.black48,
-                                text:  vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].title,
+                                text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].title,
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -567,7 +573,7 @@ class VendorWithSubscriptionProfileWidget {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black80,
-                                text:  vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].subtitle ?? "",
+                                text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].subtitle ?? "",
                               ),
 
 
@@ -575,8 +581,8 @@ class VendorWithSubscriptionProfileWidget {
 
                               InkWell(
                                 onTap: () async {
-                                  if (await canLaunchUrl(Uri.parse(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl))) {
-                                    await launchUrl(Uri.parse(vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl), mode: LaunchMode.externalApplication);
+                                  if (await canLaunchUrl(Uri.parse(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl))) {
+                                    await launchUrl(Uri.parse(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl), mode: LaunchMode.externalApplication);
                                   }
                                 },
                                 child: Row(
@@ -599,7 +605,7 @@ class VendorWithSubscriptionProfileWidget {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         textColor: ColorUtils.black94,
-                                        text: vendorProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].address,
+                                        text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].address,
                                       ),
                                     ),
 
@@ -633,14 +639,13 @@ class VendorWithSubscriptionProfileWidget {
 
 
 
-
-
         SpaceHelperWidget.v(15.h(context)),
 
 
       ],
     );
   }
+
 
   Widget _buildPlannerCard({required GetAllFeaturedServiceResponse service,required BuildContext context}) {
     return Container(
@@ -727,7 +732,7 @@ class VendorWithSubscriptionProfileWidget {
             borderRadius: 10,
             padding: EdgeInsets.symmetric(vertical: 2.5.vpm(context)),
             onPressed: () async {
-              Get.off(()=>VendorServiceDetailsView(serviceId: service.sId ?? ""),preventDuplicates: false);
+              Get.off(()=> PlannerProfileServiceDetailsView(serviceId: service.sId ?? "", isProfile: true,), preventDuplicates: false,);
             },
             text:'View Details',
           ),
@@ -808,17 +813,17 @@ class VendorWithSubscriptionProfileWidget {
 
   Widget _settingsView({
     required BuildContext context,
-    required VendorProfileViewController vendorProfileViewController,
+    required PlannerProfileViewController plannerProfileViewController,
   }) {
     return Column(
       children: [
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Edit Profile",
           imagePath: ImageUtils.plannerEditProfileImage,
           onTap: () async {
-            Get.off(()=>VendorProfileEditView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileEditView(),preventDuplicates: false);
           },
         ),
 
@@ -826,12 +831,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Change Password",
           imagePath: ImageUtils.plannerChangePasswordImage,
           onTap: () async {
-            Get.off(()=>VendorProfileChangePasswordView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileChangePasswordView(),preventDuplicates: false);
           },
         ),
 
@@ -839,12 +844,25 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
+          context: context,
+          title: "Services",
+          imagePath: ImageUtils.plannerServicesImage,
+          onTap: () async {
+            Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+          },
+        ),
+
+
+        SpaceHelperWidget.v(16.h(context)),
+
+
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Portfolio",
           imagePath: ImageUtils.plannerPortfolioImage,
           onTap: () async {
-            Get.off(()=>VendorProfilePortfolioView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfilePortfolioView(),preventDuplicates: false);
           },
         ),
 
@@ -852,12 +870,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Manage Subscription",
           imagePath: ImageUtils.plannerManageSubscriptionImage,
           onTap: () async {
-            Get.off(()=>VendorProfileManageSubscriptionView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileManageSubscriptionView(),preventDuplicates: false);
           },
         ),
 
@@ -865,12 +883,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "FAQ",
           imagePath: ImageUtils.plannerFaqImage,
           onTap: () async {
-            Get.off(()=>VendorProfileFaqView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileFaqView(),preventDuplicates: false);
           },
         ),
 
@@ -878,12 +896,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Notification Manage",
           imagePath: ImageUtils.plannerNotificationManageImage,
           onTap: () async {
-            Get.off(()=>VendorProfileNotificationView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileNotificationView(),preventDuplicates: false);
           },
         ),
 
@@ -891,12 +909,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Terms & Condition",
           imagePath: ImageUtils.plannerTermsAndConditionImage,
           onTap: () async {
-            Get.off(()=>VendorProfileTermsAndConditionView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfileTermsAndConditionView(),preventDuplicates: false);
           },
         ),
 
@@ -904,12 +922,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Privacy & Policy",
           imagePath: ImageUtils.plannerPrivacyAndPolicyImage,
           onTap: () async {
-            Get.off(()=>VendorProfilePrivacyAndPolicyView(),preventDuplicates: false);
+            Get.off(()=>PlannerProfilePrivacyAndPolicyView(),preventDuplicates: false);
           },
         ),
 
@@ -917,12 +935,15 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Delete Profile",
           imagePath: ImageUtils.plannerDeleteProfileImage,
           onTap: () async {
-            VendorProfileDialogBoxWidget().vendorDeleteProfileDialog(context: context,vendorProfileViewController: vendorProfileViewController);
+            PlannerProfileDialogBoxWidget().plannerDeleteProfileDialog(
+              context: context,
+              plannerProfileViewController: plannerProfileViewController,
+            );
           },
         ),
 
@@ -930,12 +951,12 @@ class VendorWithSubscriptionProfileWidget {
         SpaceHelperWidget.v(16.h(context)),
 
 
-        VendorProfileViewButton().vendorProfileViewButton(
+        PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
           title: "Log Out",
           imagePath: ImageUtils.plannerLogOutImage,
           onTap: () async {
-            VendorProfileDialogBoxWidget().vendorLogOutDialog(context: context);
+            PlannerProfileDialogBoxWidget().plannerLogOutDialog(context: context);
           },
         ),
 
@@ -945,5 +966,7 @@ class VendorWithSubscriptionProfileWidget {
       ],
     );
   }
+
+
 
 }

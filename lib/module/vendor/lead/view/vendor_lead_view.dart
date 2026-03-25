@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:marketplaceapp/utils/utils.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
-class PlannerLeadView extends StatelessWidget {
-  const PlannerLeadView({super.key});
+class VendorLeadView extends StatelessWidget {
+  const VendorLeadView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final PlannerLeadController plannerLeadController = Get.put(PlannerLeadController(context: context));
+    final VendorLeadController vendorLeadController = Get.put(VendorLeadController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
+        Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
       },
       child: Scaffold(
         body: Obx(()=>SafeArea(
@@ -22,14 +22,14 @@ class PlannerLeadView extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorUtils.white255,
             ),
-            child: plannerLeadController.isLoading.value == true ?
+            child: vendorLeadController.isLoading.value == true ?
             LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
             CustomScrollView(
               slivers: [
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
+                    Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
                   },
                   title: "Leads",
                 ),
@@ -54,25 +54,25 @@ class PlannerLeadView extends StatelessWidget {
                           children: [
                             SummaryCardWidget(
                               title: "New Leads",
-                              value: plannerLeadController.plannerLeadsResponseModel.value.data?.newLeads.toString() ?? "0",
+                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.newLeads.toString() ?? "0",
                               logo: ImageUtils.newLeadImage,
                               borderColor: ColorUtils.newLeads,
                             ),
                             SummaryCardWidget(
                               title: "Contacted",
-                              value: plannerLeadController.plannerLeadsResponseModel.value.data?.contracted.toString() ?? "0",
+                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.contracted.toString() ?? "0",
                               logo: ImageUtils.contactedLeadImage,
                               borderColor: ColorUtils.contactedLeads,
                             ),
                             SummaryCardWidget(
                               title: "Qualified",
-                              value: plannerLeadController.plannerLeadsResponseModel.value.data?.qualified.toString() ?? "0",
+                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.qualified.toString() ?? "0",
                               logo: ImageUtils.qualifiedLeadImage,
                               borderColor: ColorUtils.qualifiedLeads,
                             ),
                             SummaryCardWidget(
                               title: "Left",
-                              value: plannerLeadController.plannerLeadsResponseModel.value.data?.left.toString() ?? "0",
+                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.left.toString() ?? "0",
                               logo: ImageUtils.leftLeadImage,
                               borderColor: ColorUtils.leftLeads,
                             ),
@@ -84,10 +84,10 @@ class PlannerLeadView extends StatelessWidget {
 
                         /// Tabs
                         CustomTabBarWidget(
-                          selectedIndex: plannerLeadController.selectedTab.value,
+                          selectedIndex: vendorLeadController.selectedTab.value,
                           onTap: (context,index) async {
-                            plannerLeadController.isLoading.value = true;
-                            await plannerLeadController.changeTab(context: context,index: index);
+                            vendorLeadController.isLoading.value = true;
+                            await vendorLeadController.changeTab(context: context,index: index);
                           },
                         ),
 
@@ -101,16 +101,16 @@ class PlannerLeadView extends StatelessWidget {
 
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  sliver: plannerLeadController.plannerLeadsResponseModel.value.data?.leadList?.isNotEmpty == true ?
+                  sliver: vendorLeadController.plannerLeadsResponseModel.value.data?.leadList?.isNotEmpty == true ?
                   SliverList(
                     delegate: SliverChildBuilderDelegate((context,int index) {
                       return Obx(()=> LeadCardWidget(
-                        isVendor: false,
+                        isVendor: true,
                         index: index,
-                        selectedTab: plannerLeadController.selectedTab.value,
-                        plannerLeadsResponseModel: plannerLeadController.plannerLeadsResponseModel.value,
+                        selectedTab: vendorLeadController.selectedTab.value,
+                        plannerLeadsResponseModel: vendorLeadController.plannerLeadsResponseModel.value,
                       ));
-                    }, childCount: plannerLeadController.plannerLeadsResponseModel.value.data?.leadList?.length,),
+                    }, childCount: vendorLeadController.plannerLeadsResponseModel.value.data?.leadList?.length,),
                   ) :
                   SliverFillRemaining(
                     child: Align(
@@ -127,16 +127,6 @@ class PlannerLeadView extends StatelessWidget {
                     ),
                   ),
                 )
-
-
-
-
-
-
-
-
-
-
 
 
               ],

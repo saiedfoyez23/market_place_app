@@ -14,7 +14,7 @@ class VendorCancelOfferView extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>VendorOrderDetailsView(orderID: orderID),preventDuplicates: false);
+        Get.off(()=>VendorOrderDetailsView(orderID: orderID,isLead: false,),preventDuplicates: false);
       },
       child: Scaffold(
         body: Container(
@@ -29,7 +29,7 @@ class VendorCancelOfferView extends StatelessWidget {
 
               AuthAppBarHelperWidget(
                 onBackPressed: () async {
-                  Get.off(()=>VendorOrderDetailsView(orderID: orderID),preventDuplicates: false);
+                  Get.off(()=>VendorOrderDetailsView(orderID: orderID,isLead: false,),preventDuplicates: false);
                 },
                 title: "Cancel Reason",
               ),

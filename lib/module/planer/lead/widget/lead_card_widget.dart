@@ -7,10 +7,12 @@ import 'package:marketplaceapp/utils/utils.dart';
 class LeadCardWidget extends StatelessWidget {
   const LeadCardWidget({
     super.key,
+    required this.isVendor,
     required this.selectedTab,
     required this.index,
     required this.plannerLeadsResponseModel,
   });
+  final bool isVendor;
   final int selectedTab;
   final int index;
   final PlannerLeadsResponseModel plannerLeadsResponseModel;
@@ -197,7 +199,11 @@ class LeadCardWidget extends StatelessWidget {
           ButtonHelperWidget.customButtonWidgetAdventPro(
             context: context,
             onPressed: () async {
-              Get.off(()=>PlannerOpenOrderDetailsView(orderID: lead?.sId,isHome: false,),preventDuplicates: false);
+              if(isVendor == true) {
+                Get.off(()=>VendorOrderDetailsView(orderID: lead?.sId,isLead: true,),preventDuplicates: false);
+              } else {
+                Get.off(()=>PlannerOpenOrderDetailsView(orderID: lead?.sId,isHome: false),preventDuplicates: false);
+              }
             },
             text: "View Details",
           ),

@@ -7,17 +7,21 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class PlannerProfileServiceDetailsView extends StatelessWidget {
-  PlannerProfileServiceDetailsView({super.key,required this.serviceId});
+  PlannerProfileServiceDetailsView({super.key,required this.serviceId,required this.isProfile});
 
   final String serviceId;
-
+  final bool isProfile;
   @override
   Widget build(BuildContext context) {
     final PlannerProfileServiceDetailsController plannerProfileServiceDetailsController = Get.put(PlannerProfileServiceDetailsController(context: context, serviceId: serviceId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
-        Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+        if(isProfile == true) {
+          Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+        } else {
+          Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -37,7 +41,11 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
-                    Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+                    if(isProfile == true) {
+                      Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+                    } else {
+                      Get.off(()=>PlannerProfileServiceView(),preventDuplicates: false);
+                    }
                   },
                   title: "Service Details",
                 ),

@@ -13,12 +13,14 @@ class PlannerVendorProfilePortfolioView extends StatelessWidget {
     required this.isSearch,
     required this.categoryId,
   });
+
   final String serviceId;
   final String userId;
   final bool isHome;
   final bool isCategory;
   final bool isSearch;
   final String categoryId;
+
   @override
   Widget build(BuildContext context) {
     final PlannerVendorProfilePortfolioController plannerVendorProfilePortfolioController = Get.put(PlannerVendorProfilePortfolioController(context: context,userId: userId));

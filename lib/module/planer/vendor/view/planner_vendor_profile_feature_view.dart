@@ -20,6 +20,7 @@ class PlannerVendorProfileFeatureView extends StatelessWidget {
   final bool isCategory;
   final bool isSearch;
   final String categoryId;
+
   @override
   Widget build(BuildContext context) {
     final PlannerVendorProfileFeatureController plannerVendorProfileFeatureController = Get.put(PlannerVendorProfileFeatureController(

@@ -35,7 +35,7 @@ class VendorProfileView extends StatelessWidget {
           LoadingHelperWidget.loadingHelperWidget(
             context: context,
             height: 930.h(context),
-          ) ,
+          ),
         ),
       )),
     );
