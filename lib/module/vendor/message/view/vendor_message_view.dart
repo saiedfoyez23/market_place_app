@@ -11,7 +11,7 @@ class VendorMessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final VendorMessageController vendorMessageController = Get.put(VendorMessageController(context: context));
     return Scaffold(
-      body: Obx(()=>SafeArea(
+      body: Obx(()=> SafeArea(
         child: Container(
           height: 930.h(context),
           width: 428.w(context),

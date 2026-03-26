@@ -92,6 +92,19 @@ class ProfileView extends StatelessWidget {
 
                     ProfileViewButton().profileViewButton(
                       context: context,
+                      title: "Support",
+                      imagePath: ImageUtils.supportImage,
+                      onTap: () async {
+                        Get.off(()=>ProfileSupportView(),preventDuplicates: false);
+                      },
+                    ),
+
+
+                    SpaceHelperWidget.v(16.h(context)),
+
+
+                    ProfileViewButton().profileViewButton(
+                      context: context,
                       title: "FAQ",
                       imagePath: ImageUtils.faqImage,
                       onTap: () async {

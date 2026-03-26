@@ -861,6 +861,18 @@ class VendorWithSubscriptionProfileWidget {
           },
         ),
 
+        SpaceHelperWidget.v(16.h(context)),
+
+
+        PlannerProfileViewButton().plannerProfileViewButton(
+          context: context,
+          title: "Support",
+          imagePath: ImageUtils.supportImage,
+          onTap: () async {
+            Get.off(()=>VendorProfileSupportView(),preventDuplicates: false);
+          },
+        ),
+
 
         SpaceHelperWidget.v(16.h(context)),
 

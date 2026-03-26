@@ -299,7 +299,7 @@ class VendorLoginView extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: ColorUtils.blue96,
                               recognizer: TapGestureRecognizer()..onTap = () {
-                                Get.off(()=>VendorCreateAccountView(),preventDuplicates: false);
+                                Get.off(()=>ChooseUserView(),preventDuplicates: false);
                               },
                             ).toTextSpan(),
                           ],

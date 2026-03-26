@@ -253,6 +253,19 @@ class PlannerWithoutSubscriptionProfileWidget {
 
                 PlannerProfileViewButton().plannerProfileViewButton(
                   context: context,
+                  title: "Support",
+                  imagePath: ImageUtils.supportImage,
+                  onTap: () async {
+                    Get.off(()=>PlannerProfileSupportView(),preventDuplicates: false);
+                  },
+                ),
+
+
+                SpaceHelperWidget.v(16.h(context)),
+
+
+                PlannerProfileViewButton().plannerProfileViewButton(
+                  context: context,
                   title: "FAQ",
                   imagePath: ImageUtils.plannerFaqImage,
                   onTap: () async {

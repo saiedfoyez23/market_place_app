@@ -519,6 +519,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                       "latitude": vendorCreateNewOrderController.latitude.value,
                                       "address": vendorCreateNewOrderController.plannerOrderLocationController.value.text,
                                     };
+                                    print(data);
                                     await vendorCreateNewOrderController.createNewOrderController(context: context, data: data);
                                   }
                                 },
