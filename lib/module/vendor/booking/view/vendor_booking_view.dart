@@ -12,6 +12,8 @@ class VendorBookingView extends StatelessWidget {
     final VendorBookingController vendorBookingController = Get.put(VendorBookingController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
+        bottom: true,
+        top: true,
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
