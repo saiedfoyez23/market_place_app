@@ -33,52 +33,55 @@ class VendorAnalysisView extends StatelessWidget {
 
               vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == null ?
               SliverFillRemaining(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
 
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.center,
-                      textAlign: TextAlign.center,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      textColor: ColorUtils.black48,
-                      text: "Access Restricted",
-                    ),
-
-
-                    SpaceHelperWidget.v(20.h(context)),
-
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.center,
-                      textAlign: TextAlign.center,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      textColor: ColorUtils.black48,
-                      text: "Only subscribed members can see this feature",
-                    ),
-
-                    SpaceHelperWidget.v(20.h(context)),
-
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.center,
-                      textAlign: TextAlign.center,
-                      fontSize: 21,
-                      fontWeight: FontWeight.w500,
-                      textColor: ColorUtils.black48,
-                      text: "Subscribe now to unlock this feature.",
-                    ),
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.center,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "Access Restricted",
+                      ),
 
 
-                  ],
+                      SpaceHelperWidget.v(20.h(context)),
+
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.center,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        textColor: ColorUtils.black48,
+                        text: "Only subscribed members can see this feature",
+                      ),
+
+                      SpaceHelperWidget.v(20.h(context)),
+
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.center,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w500,
+                        textColor: ColorUtils.black48,
+                        text: "Subscribe now to unlock this feature.",
+                      ),
+
+
+                    ],
+                  ),
                 ),
               ) :
               SliverToBoxAdapter(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(16.r(context)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
