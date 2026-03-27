@@ -15,6 +15,7 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
   Rx<TextEditingController> bankNameController = TextEditingController().obs;
   Rx<TextEditingController> accountNumberController = TextEditingController().obs;
   Rx<TextEditingController> tinNidNumberController = TextEditingController().obs;
+  Rx<TextEditingController> bankCodeController = TextEditingController().obs;
   Rx<TextEditingController> permanentAddressController = TextEditingController().obs;
   Rx<TextEditingController> currentAddressController = TextEditingController().obs;
   Rx<TextEditingController> cityController = TextEditingController().obs;
@@ -96,9 +97,9 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
         "number": nidNumberController.value.text,
       },
       "bankInfo": {
-        "bankName": bankNameController.value.text,
+        "accountName": bankNameController.value.text,
         "accountNumber": accountNumberController.value.text,
-        "tinOrNID": tinNidNumberController.value.text,
+        "bankCode": bankCodeController.value.text,
       }
     };
 
@@ -150,6 +151,7 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
         isSubmit.value = false;
       },
       onExceptionFail: (e,data) {
+        print(data);
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isSubmit.value = false;
       },

@@ -63,7 +63,8 @@ class VendorServicesView extends StatelessWidget {
 
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  sliver: SliverList(
+                  sliver: vendorServiceController.vendorGetAllServiceModelResponse.value.data?.isNotEmpty == true ?
+                  SliverList(
                       delegate: SliverChildBuilderDelegate(
                             (context,int index) {
                           final item = vendorServiceController.vendorGetAllServiceModelResponse.value.data?[index];
@@ -362,8 +363,21 @@ class VendorServicesView extends StatelessWidget {
                         },
                         childCount: vendorServiceController.vendorGetAllServiceModelResponse.value.data?.length,
                       )
-                  ),
-                ),
+                  ) :
+                  SliverFillRemaining(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.start,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "No Service Available",
+                      ),
+                    ),
+                  )),
 
 
               ],

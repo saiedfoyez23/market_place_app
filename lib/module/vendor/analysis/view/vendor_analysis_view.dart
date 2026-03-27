@@ -10,9 +10,11 @@ class VendorAnalysisView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VendorAnalysisController vendorAnalysisController = Get.put(VendorAnalysisController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
+    return SafeArea(
+      top: true,
+      bottom: true,
+      child: Scaffold(
+        body: Obx(()=>Container(
           height: 930.h(context),
           width: 428.w(context),
           decoration: BoxDecoration(
@@ -29,7 +31,7 @@ class VendorAnalysisView extends StatelessWidget {
               ),
 
 
-              vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == "null" ?
+              vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == null ?
               SliverFillRemaining(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -146,8 +148,8 @@ class VendorAnalysisView extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

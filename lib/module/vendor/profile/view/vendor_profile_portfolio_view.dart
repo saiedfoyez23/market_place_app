@@ -76,7 +76,7 @@ class VendorProfilePortfolioView extends StatelessWidget {
 
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  sliver: vendorProfilePortfolioController.vendorMyProfileDetailsResponseModel.value.data?.type == "null" ?
+                  sliver: vendorProfilePortfolioController.vendorMyProfileDetailsResponseModel.value.data?.type == null ?
                   SliverFillRemaining(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

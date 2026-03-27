@@ -10,9 +10,11 @@ class VendorOnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Obx(()=>SafeArea(
-          child: Container(
+    return SafeArea(
+      top: true,
+      bottom: true,
+      child: Scaffold(
+          body: Obx(()=>Container(
             height: 930.h(context),
             width: 428.w(context),
             decoration: BoxDecoration(
@@ -149,8 +151,8 @@ class VendorOnboardingView extends StatelessWidget {
 
               ],
             ),
-          ),
-        ))
+          ))
+      ),
     );
   }
 }

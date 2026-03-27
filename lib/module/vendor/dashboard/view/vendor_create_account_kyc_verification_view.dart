@@ -615,7 +615,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "TIN/NID Number",
+                                text: "Bank Code",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -624,8 +624,8 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Enter your TIN/NID number",
-                                controller: vendorCreateAccountKycVerificationController.tinNidNumberController.value,
+                                hintText: "Enter your bank code",
+                                controller: vendorCreateAccountKycVerificationController.bankCodeController.value,
                                 keyboardType: TextInputType.emailAddress,
                               ),
 
@@ -670,8 +670,8 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank name");
                             } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
-                            } else if(vendorCreateAccountKycVerificationController.tinNidNumberController.value.text == "") {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your TIN/NID number");
+                            } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text == "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                             } else if(vendorCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");
                             } else if(vendorCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "") {

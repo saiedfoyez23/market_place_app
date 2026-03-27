@@ -12,8 +12,6 @@ class VendorBookingView extends StatelessWidget {
     final VendorBookingController vendorBookingController = Get.put(VendorBookingController(context: context));
     return Scaffold(
       body: Obx(()=>SafeArea(
-        bottom: true,
-        top: true,
         child: Container(
           height: 930.h(context),
           width: 428.w(context),
@@ -73,12 +71,25 @@ class VendorBookingView extends StatelessWidget {
                       SpaceHelperWidget.v(26.h(context)),
 
                       Expanded(
-                        child: ListView.builder(
+                        child: vendorBookingController.filteredBookings.isNotEmpty == true ?
+                        ListView.builder(
                           itemCount: vendorBookingController.filteredBookings.length,
                           itemBuilder: (context, index) {
                             return bookingCard(booking: vendorBookingController.filteredBookings[index],context: context);
                           },
-                        )
+                        ) :
+                        Align(
+                        alignment: Alignment.center,
+                        child: TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.start,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black48,
+                          text: "No Booking Available",
+                        ),
+                      ),
                       ),
                     ],
                   ),

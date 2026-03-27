@@ -14,102 +14,107 @@ class DashboardVendorView extends StatelessWidget {
     return Obx(()=>Scaffold(
       body: dashboardVendorController.pages[dashboardVendorController.selectedIndex.value],
       bottomNavigationBar: Container(
-        height: 74.h(context),
-        width: 428.w(context),
-        padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-        decoration: BoxDecoration(
-          color: ColorUtils.white243,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewPadding.bottom, // ✅ key fix
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(dashboardVendorController.items.length, (index) {
-            final item = dashboardVendorController.items[index];
-            final bool isSelected = dashboardVendorController.selectedIndex.value == index;
-
-            return InkWell(
-              onTap: () {
-                dashboardVendorController.selectedIndex.value = index;
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Optional orange underline above active icon
-                  AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
-                      height: 6.h(context),
-                      width: 44.w(context),
-                      decoration: isSelected ?
-                      BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            ColorUtils.orange42,
-                            ColorUtils.orange119,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8.r(context)),
-                          bottomRight: Radius.circular(8.r(context)),
-                        ),
-                      ) :
-                      BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8.r(context)),
-                          bottomRight: Radius.circular(8.r(context)),
-                        ),
-                      )
-                  ),
-
-
-                  SpaceHelperWidget.v(8.h(context)),
-
-
-
-                  isSelected ?
-                  ImageHelperWidget.assetImageWidget(
-                    context: context,
-                    height: 24.h(context),
-                    width: 24.w(context),
-                    imageString: item['select'],
-                  ) :
-                  ImageHelperWidget.assetImageWidget(
-                    context: context,
-                    height: 24.h(context),
-                    width: 24.w(context),
-                    imageString: item['unselected'],
-                  ),
-
-
-                  SpaceHelperWidget.v(4.h(context)),
-
-                  isSelected ?
-                  TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    textColor: isSelected ? ColorUtils.orange119 : ColorUtils.black64,
-                    text: item['label'],
-                  ) :
-                  SizedBox.shrink(),
-
-                  SpaceHelperWidget.v(8.h(context)),
-
-
-                ],
+        child: Container(
+          height: 74.h(context),
+          width: 428.w(context),
+          padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+          decoration: BoxDecoration(
+            color: ColorUtils.white243,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, -2),
               ),
-            );
-          }),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(dashboardVendorController.items.length, (index) {
+              final item = dashboardVendorController.items[index];
+              final bool isSelected = dashboardVendorController.selectedIndex.value == index;
+
+              return InkWell(
+                onTap: () {
+                  dashboardVendorController.selectedIndex.value = index;
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Optional orange underline above active icon
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        height: 6.h(context),
+                        width: 44.w(context),
+                        decoration: isSelected ?
+                        BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              ColorUtils.orange42,
+                              ColorUtils.orange119,
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8.r(context)),
+                            bottomRight: Radius.circular(8.r(context)),
+                          ),
+                        ) :
+                        BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8.r(context)),
+                            bottomRight: Radius.circular(8.r(context)),
+                          ),
+                        )
+                    ),
+
+
+                    SpaceHelperWidget.v(8.h(context)),
+
+
+
+                    isSelected ?
+                    ImageHelperWidget.assetImageWidget(
+                      context: context,
+                      height: 24.h(context),
+                      width: 24.w(context),
+                      imageString: item['select'],
+                    ) :
+                    ImageHelperWidget.assetImageWidget(
+                      context: context,
+                      height: 24.h(context),
+                      width: 24.w(context),
+                      imageString: item['unselected'],
+                    ),
+
+
+                    SpaceHelperWidget.v(4.h(context)),
+
+                    isSelected ?
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      textColor: isSelected ? ColorUtils.orange119 : ColorUtils.black64,
+                      text: item['label'],
+                    ) :
+                    SizedBox.shrink(),
+
+                    SpaceHelperWidget.v(8.h(context)),
+
+
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       ),
     ));
