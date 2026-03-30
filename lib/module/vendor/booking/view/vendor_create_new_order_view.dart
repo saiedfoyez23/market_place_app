@@ -213,7 +213,6 @@ class VendorCreateNewOrderView extends StatelessWidget {
 
                               SpaceHelperWidget.v(6.h(context)),
 
-
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
@@ -222,9 +221,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 keyboardType: TextInputType.number,
                               ),
 
-
                               SpaceHelperWidget.v(20.h(context)),
-
 
                               TextHelperClass.headingTextWithoutWidth(
                                 context: context,

@@ -14,6 +14,7 @@ class VendorCreateAccountView extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.delete<VendorCreateAccountController>(force: true);
         Get.off(()=>VendorAuthSplashView(),preventDuplicates: false);
       },
       child: Scaffold(
@@ -29,6 +30,7 @@ class VendorCreateAccountView extends StatelessWidget {
 
                 AuthAppBarHelperWidget(
                   onBackPressed: () async {
+                    Get.delete<VendorCreateAccountController>(force: true);
                     Get.off(()=>VendorAuthSplashView(),preventDuplicates: false);
                   },
                 ),

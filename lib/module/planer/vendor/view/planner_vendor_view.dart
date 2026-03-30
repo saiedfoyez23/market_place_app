@@ -205,16 +205,34 @@ class PlannerVendorView extends StatelessWidget {
                         ),
                       ),
 
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                              (context,int index) {
-                            return vendorCard(
-                              index: index,
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                        sliver: plannerVendorController.getAllVendorServiceResponseModel.value.data?.isNotEmpty == true ?
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                                (context,int index) {
+                              return vendorCard(
+                                index: index,
+                                context: context,
+                                plannerVendorController: plannerVendorController,
+                              );
+                            },
+                            childCount: plannerVendorController.getAllVendorServiceResponseModel.value.data?.length,
+                          ),
+                        ) :
+                        SliverFillRemaining(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: TextHelperClass.headingTextWithoutWidth(
                               context: context,
-                              plannerVendorController: plannerVendorController,
-                            );
-                          },
-                          childCount: plannerVendorController.getAllVendorServiceResponseModel.value.data?.length,
+                              alignment: Alignment.center,
+                              textAlign: TextAlign.start,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              textColor: ColorUtils.black48,
+                              text: "No Vendor Service Available",
+                            ),
+                          ),
                         ),
                       ),
 
@@ -240,50 +258,47 @@ class PlannerVendorView extends StatelessWidget {
   }) {
     var data = plannerVendorController.getAllVendorServiceResponseModel.value.data?[index];
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20.bpm(context)),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r(context)),
-          color: ColorUtils.white243,
-          border: Border.all(
-              color: ColorUtils.white215,
-              width: 1
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.bpm(context)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r(context)),
+        color: ColorUtils.white243,
+        border: Border.all(
+            color: ColorUtils.white215,
+            width: 1
+        ),
+      ),
+      child: Column(
+        children: [
+          imageSection(
+            plannerVendorController: plannerVendorController,
+            img: data!.images!.first,
+            index: index,
+            context: context,
           ),
-        ),
-        child: Column(
-          children: [
-            imageSection(
-              plannerVendorController: plannerVendorController,
-              img: data!.images!.first,
-              index: index,
-              context: context,
+
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.vpm(context)),
+            child: Column(
+              children: [
+
+                infoSection(
+                  context: context,
+                  plannerVendorController: plannerVendorController,
+                  index: index,
+                ),
+
+                buttons(
+                  context: context,
+                  plannerVendorController: plannerVendorController,
+                  index: index,
+                ),
+
+              ],
             ),
+          )
 
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.vpm(context)),
-              child: Column(
-                children: [
-
-                  infoSection(
-                    context: context,
-                    plannerVendorController: plannerVendorController,
-                    index: index,
-                  ),
-
-                  buttons(
-                    context: context,
-                    plannerVendorController: plannerVendorController,
-                    index: index,
-                  ),
-
-                ],
-              ),
-            )
-
-          ],
-        ),
+        ],
       ),
     );
   }

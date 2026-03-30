@@ -224,7 +224,7 @@ class VendorMessageView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.name ?? "",
+                                          text: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.first.user?.name ?? "",
                                         ),
                                       ],
 

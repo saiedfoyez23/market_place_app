@@ -203,15 +203,15 @@ class PlannerOrderDetailsView extends StatelessWidget {
                             children: [
 
                               Expanded(
-                                child: plannerAllVendorOrderDetailsController.isUpdate.value == true ?
+                                child: plannerAllVendorOrderDetailsController.isDenied.value == true ?
                                 LoadingHelperWidget.loadingHelperWidget(
                                   context: context,
                                 ) :
                                 ButtonHelperWidget.customButtonWidgetAdventPro(
                                   context: context,
                                   onPressed: () async {
-                                    plannerAllVendorOrderDetailsController.isUpdate.value = true;
-                                    plannerAllVendorOrderDetailsController.updateOrderStatusController(
+                                    plannerAllVendorOrderDetailsController.isDenied.value = true;
+                                    plannerAllVendorOrderDetailsController.deniedOrderStatusController(
                                       context: context,
                                       orderId: orderID,
                                       orderStatus: "denied",

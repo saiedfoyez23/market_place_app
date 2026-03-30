@@ -121,6 +121,7 @@ class VendorProfilePortfolioView extends StatelessWidget {
                       ],
                     ),
                   ) :
+                  vendorProfilePortfolioController.vendorUserWisePortfolioModel.value.data?.isNotEmpty == true ?
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                             (context,int index) {
@@ -143,7 +144,7 @@ class VendorProfilePortfolioView extends StatelessWidget {
                                             color: ColorUtils.white255,
                                             borderRadius: BorderRadius.circular(20.r(context)),
                                             image: DecorationImage(
-                                              image: AssetImage(vendorProfilePortfolioController.imageString[index]),
+                                              image: NetworkImage(vendorProfilePortfolioController.vendorUserWisePortfolioModel.value.data?[index].url),
                                               fit: BoxFit.cover,
                                             )
                                         ),
@@ -289,6 +290,20 @@ class VendorProfilePortfolioView extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: 10.h(context),
                       crossAxisSpacing: 15.w(context),
+                    ),
+                  ) :
+                  SliverFillRemaining(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.start,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "No Portfolio Available",
+                      ),
                     ),
                   ),
                 ),

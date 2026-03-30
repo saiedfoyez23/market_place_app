@@ -11,6 +11,7 @@ class PlannerProfileServiceController extends GetxController {
   RxBool isDelete = false.obs;
   Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
   Rx<PlannerGetAllServiceModelResponse> plannerGetAllServiceModelResponse = PlannerGetAllServiceModelResponse().obs;
+  RxList<PlannerGetAllServiceModel> plannerGetAllServiceModelList = <PlannerGetAllServiceModel>[].obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   BuildContext context;
   PlannerProfileServiceController({required this.context});
@@ -24,6 +25,20 @@ class PlannerProfileServiceController extends GetxController {
       await getPlannerProfileDetailsController(context: context);
       await getPlannerAllServiceController(context: context);
     });
+  }
+
+  Rx<PlannerProfileServiceStatus> selectedTab = PlannerProfileServiceStatus.all.obs;
+
+  RxList<PlannerGetAllServiceModel> get filteredService {
+    if (selectedTab.value == PlannerProfileServiceStatus.all) {
+      return plannerGetAllServiceModelList;
+    } else {
+      return plannerGetAllServiceModelList.where((b) => b.status == selectedTab.value.name).toList().obs;
+    }
+  }
+
+  void changeTab(PlannerProfileServiceStatus status) {
+    selectedTab.value = status;
   }
 
   Future<void> getPlannerProfileDetailsController({
@@ -57,6 +72,9 @@ class PlannerProfileServiceController extends GetxController {
         print(data);
         isLoading.value = false;
         plannerGetAllServiceModelResponse.value = PlannerGetAllServiceModelResponse.fromJson(data);
+        plannerGetAllServiceModelResponse.value.data?.forEach((value) {
+          plannerGetAllServiceModelList.add(value);
+        });
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -118,3 +136,6 @@ class PlannerProfileServiceController extends GetxController {
 
 
 }
+
+
+enum PlannerProfileServiceStatus {all, active, pending, denied}

@@ -118,11 +118,11 @@ class PlannerProjectDetailsController extends GetxController {
         getAllProjectTaskResponseModel.value = GetAllProjectTaskResponseModel.fromJson(data);
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );
@@ -310,11 +310,11 @@ class PlannerProjectDetailsController extends GetxController {
         getAllFileResponseModel.value = GetAllFileResponseModel.fromJson(data);
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+       // MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );
@@ -480,11 +480,11 @@ class PlannerProjectDetailsController extends GetxController {
         getAllProjectVendorQuotesResponseModel.value = GetAllProjectVendorQuotesResponseModel.fromJson(data);
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );
@@ -547,14 +547,18 @@ class PlannerProjectDetailsController extends GetxController {
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isPayment.value = false;
+        Get.back();
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
         await getAllProjectPaymentController(context: context, projectId: plannerGetProjectDetailsResponseModel.value.data?.sId);
       },
       onFail: (e,data) {
+        Get.back();
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isPayment.value = false;
       },
       onExceptionFail: (e,data) {
+        print(data);
+        Get.back();
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isPayment.value = false;
       },

@@ -7,6 +7,7 @@ import 'package:marketplaceapp/module/module.dart';
 class VendorServiceController extends GetxController {
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   Rx<VendorGetAllServiceModelResponse> vendorGetAllServiceModelResponse = VendorGetAllServiceModelResponse().obs;
+  RxList<VendorGetAllServiceModel> vendorGetAllServiceModelList = <VendorGetAllServiceModel>[].obs;
   Rx<VendorMyProfileDetailsResponseModel> vendorMyProfileDetailsResponseModel = VendorMyProfileDetailsResponseModel().obs;
   RxBool isLoading = false.obs;
   RxBool isDelete = false.obs;
@@ -22,6 +23,20 @@ class VendorServiceController extends GetxController {
       await getVendorProfileDetailsController(context: context);
       await getVendorAllServiceController(context: context);
     });
+  }
+
+  Rx<VendorServiceStatus> selectedTab = VendorServiceStatus.all.obs;
+
+  RxList<VendorGetAllServiceModel> get filteredService {
+    if (selectedTab.value == VendorServiceStatus.all) {
+      return vendorGetAllServiceModelList;
+    } else {
+      return vendorGetAllServiceModelList.where((b) => b.status == selectedTab.value.name).toList().obs;
+    }
+  }
+
+  void changeTab(VendorServiceStatus status) {
+    selectedTab.value = status;
   }
 
   Future<void> getVendorProfileDetailsController({
@@ -54,6 +69,9 @@ class VendorServiceController extends GetxController {
         print(data);
         isLoading.value = false;
         vendorGetAllServiceModelResponse.value = VendorGetAllServiceModelResponse.fromJson(data);
+        vendorGetAllServiceModelResponse.value.data?.forEach((value) {
+          vendorGetAllServiceModelList.add(value);
+        });
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -114,30 +132,7 @@ class VendorServiceController extends GetxController {
   }
 
 
-  RxList<Map<String, dynamic>> serviceList = <Map<String, dynamic>>[
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-    {
-      "image": ImageUtils.wishlistImage,
-      "title": "Kids Birthday Party Extravaganza",
-      "description":
-      "Colorful themed decorations with games, entertainment, and birthday cake arrangement.",
-      "location": "Mohakhali, gulsan 01",
-    },
-  ].obs;
-
-
-
 }
+
+
+enum VendorServiceStatus {all, active, pending, denied}

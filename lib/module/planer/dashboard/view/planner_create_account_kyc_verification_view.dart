@@ -666,8 +666,12 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank name");
                           } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
+                          } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length > 10) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must less than 10 digit");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
+                          } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text.length > 3) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "") {

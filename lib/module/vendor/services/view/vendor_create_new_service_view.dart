@@ -194,29 +194,34 @@ class VendorCreateNewServiceView extends StatelessWidget {
 
                             SpaceHelperWidget.v(6.h(context)),
 
-                            Wrap(
-                              runSpacing: 10.h(context),
-                              spacing: 10.w(context),
-                              children: List.generate(vendorCreateNewServiceController.categoryResponseModel.value.data!.length, (index) {
-                                return Obx(()=>IntrinsicWidth(
-                                  child: ButtonHelperWidget.customButtonWidget(
-                                    context: context,
-                                    height: 56.h(context),
-                                    padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                    backgroundColor: vendorCreateNewServiceController.selectCategory.value == vendorCreateNewServiceController.categoryResponseModel.value.data![index] ?
-                                    ColorUtils.orange119 :
-                                    ColorUtils.white243,
-                                    textColor: vendorCreateNewServiceController.selectCategory.value == vendorCreateNewServiceController.categoryResponseModel.value.data![index] ?
-                                    ColorUtils.white255 :
-                                    ColorUtils.black89,
-                                    fontWeight: FontWeight.w500,
-                                    onPressed: () async {
-                                      vendorCreateNewServiceController.selectCategory.value = vendorCreateNewServiceController.categoryResponseModel.value.data![index];
-                                    },
-                                    text: vendorCreateNewServiceController.categoryResponseModel.value.data?[index].title ?? "",
-                                  ),
-                                ));
-                              }),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(vendorCreateNewServiceController.categoryResponseModel.value.data!.length, (index) {
+                                  return Obx(()=>IntrinsicWidth(
+                                    child: ButtonHelperWidget.customButtonWidget(
+                                      context: context,
+                                      height: 56.h(context),
+                                      padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
+                                      backgroundColor: vendorCreateNewServiceController.selectCategory.value == vendorCreateNewServiceController.categoryResponseModel.value.data![index] ?
+                                      ColorUtils.orange119 :
+                                      ColorUtils.white243,
+                                      textColor: vendorCreateNewServiceController.selectCategory.value == vendorCreateNewServiceController.categoryResponseModel.value.data![index] ?
+                                      ColorUtils.white255 :
+                                      ColorUtils.black89,
+                                      fontWeight: FontWeight.w500,
+                                      onPressed: () async {
+                                        vendorCreateNewServiceController.selectCategory.value = vendorCreateNewServiceController.categoryResponseModel.value.data![index];
+                                      },
+                                      text: vendorCreateNewServiceController.categoryResponseModel.value.data?[index].title ?? "",
+                                    ),
+                                  ));
+                                }),
+                              ),
                             ),
 
                           ],

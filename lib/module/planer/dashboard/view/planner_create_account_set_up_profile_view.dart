@@ -81,39 +81,44 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
 
                           SpaceHelperWidget.v(6.h(context)),
 
-                          Wrap(
-                            runSpacing: 10.h(context),
-                            spacing: 10.w(context),
-                            children: List.generate(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data!.length, (index) {
-                              return Obx(()=>IntrinsicWidth(
-                                child: ButtonHelperWidget.customButtonWidget(
-                                  context: context,
-                                  height: 56.h(context),
-                                  padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                  backgroundColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
-                                  ColorUtils.white243 :
-                                  plannerCreateAccountSetUpProfileController.selectCategory.where((value)=> value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
-                                  ColorUtils.orange119 :
-                                  ColorUtils.white243,
-                                  textColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
-                                  ColorUtils.black89 :
-                                  plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
-                                  ColorUtils.white255 :
-                                  ColorUtils.black89,
-                                  fontWeight: FontWeight.w500,
-                                  onPressed: () async {
-                                    if(plannerCreateAccountSetUpProfileController.selectCategory.contains(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]) == true) {
-                                      plannerCreateAccountSetUpProfileController.selectCategory.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
-                                      plannerCreateAccountSetUpProfileController.selectCategoryString.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
-                                    } else {
-                                      plannerCreateAccountSetUpProfileController.selectCategory.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
-                                      plannerCreateAccountSetUpProfileController.selectCategoryString.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
-                                    }
-                                  },
-                                  text: plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data?[index].title ?? "",
-                                ),
-                              ));
-                            }),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Wrap(
+                              runAlignment: WrapAlignment.start,
+                              alignment: WrapAlignment.start,
+                              runSpacing: 10.h(context),
+                              spacing: 10.w(context),
+                              children: List.generate(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data!.length, (index) {
+                                return Obx(()=>IntrinsicWidth(
+                                  child: ButtonHelperWidget.customButtonWidget(
+                                    context: context,
+                                    height: 56.h(context),
+                                    padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
+                                    backgroundColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                    ColorUtils.white243 :
+                                    plannerCreateAccountSetUpProfileController.selectCategory.where((value)=> value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                    ColorUtils.orange119 :
+                                    ColorUtils.white243,
+                                    textColor: plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).isEmpty == true ?
+                                    ColorUtils.black89 :
+                                    plannerCreateAccountSetUpProfileController.selectCategory.where((value)=>value == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]).first == plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index] ?
+                                    ColorUtils.white255 :
+                                    ColorUtils.black89,
+                                    fontWeight: FontWeight.w500,
+                                    onPressed: () async {
+                                      if(plannerCreateAccountSetUpProfileController.selectCategory.contains(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]) == true) {
+                                        plannerCreateAccountSetUpProfileController.selectCategory.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                        plannerCreateAccountSetUpProfileController.selectCategoryString.remove(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
+                                      } else {
+                                        plannerCreateAccountSetUpProfileController.selectCategory.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index]);
+                                        plannerCreateAccountSetUpProfileController.selectCategoryString.add(plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data![index].title);
+                                      }
+                                    },
+                                    text: plannerCreateAccountSetUpProfileController.categoryResponseModel.value.data?[index].title ?? "",
+                                  ),
+                                ));
+                              }),
+                            ),
                           ),
 
                         ],

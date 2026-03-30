@@ -46,12 +46,10 @@ class ImageHelperWidget {
       provider = AssetImage(imageAsset);
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: containerColor,
-        borderRadius: BorderRadius.circular(borderRadius.r(context)),
-      ),
-      child: provider != null ? ClipRRect(
+    Widget? child;
+
+    if (provider != null) {
+      child = ClipRRect(
         clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.circular(borderRadius.r(context)),
         child: Image(
@@ -60,7 +58,17 @@ class ImageHelperWidget {
           image: provider,
           fit: fit,
         ),
-      ) : const SizedBox(), // Empty placeholder if no image
+      );
+    }
+
+    return Container(
+      height: height?.h(context),
+      width: width?.w(context),
+      decoration: BoxDecoration(
+        color: containerColor,
+        borderRadius: BorderRadius.circular(borderRadius.r(context)),
+      ),
+      child: child,
     );
   }
 

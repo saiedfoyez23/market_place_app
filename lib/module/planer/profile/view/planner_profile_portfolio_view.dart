@@ -121,6 +121,7 @@ class PlannerProfilePortfolioView extends StatelessWidget {
                       ],
                     ),
                   ) :
+                  plannerProfilePortfolioController.plannerUserWisePortfolioModel.value.data?.isNotEmpty == true ?
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                             (context,int index) {
@@ -286,6 +287,20 @@ class PlannerProfilePortfolioView extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: 10.h(context),
                       crossAxisSpacing: 15.w(context),
+                    ),
+                  ) :
+                  SliverFillRemaining(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.center,
+                        textAlign: TextAlign.start,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textColor: ColorUtils.black48,
+                        text: "No Portfolio Available",
+                      ),
                     ),
                   ),
                 ),

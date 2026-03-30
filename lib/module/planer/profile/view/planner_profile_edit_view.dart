@@ -317,9 +317,6 @@ class PlannerProfileEditView extends StatelessWidget {
                         ),
 
 
-                        SpaceHelperWidget.v(20.h(context)),
-
-
                         plannerProfileEditController.categoryResponseModel.value.data != null ?
                         Column(
                           children: [
@@ -338,37 +335,42 @@ class PlannerProfileEditView extends StatelessWidget {
 
                             SpaceHelperWidget.v(6.h(context)),
 
-                            Wrap(
-                              runSpacing: 10.h(context),
-                              spacing: 10.w(context),
-                              children: List.generate(plannerProfileEditController.categoryResponseModel.value.data!.length, (index) {
-                                return Obx(()=>IntrinsicWidth(
-                                  child: ButtonHelperWidget.customButtonWidget(
-                                    context: context,
-                                    height: 56.h(context),
-                                    padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                    backgroundColor: plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == false ?
-                                    ColorUtils.white243 :
-                                    plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true ?
-                                    ColorUtils.orange119 :
-                                    ColorUtils.white243,
-                                    textColor: plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == false ?
-                                    ColorUtils.black89 :
-                                    plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true ?
-                                    ColorUtils.white255 :
-                                    ColorUtils.black89,
-                                    fontWeight: FontWeight.w500,
-                                    onPressed: () async {
-                                      if(plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true) {
-                                        plannerProfileEditController.selectCategoryString.remove(plannerProfileEditController.categoryResponseModel.value.data![index].title);
-                                      } else {
-                                        plannerProfileEditController.selectCategoryString.add(plannerProfileEditController.categoryResponseModel.value.data![index].title);
-                                      }
-                                    },
-                                    text: plannerProfileEditController.categoryResponseModel.value.data?[index].title ?? "",
-                                  ),
-                                ));
-                              }),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                runAlignment: WrapAlignment.start,
+                                alignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(plannerProfileEditController.categoryResponseModel.value.data!.length, (index) {
+                                  return Obx(()=>IntrinsicWidth(
+                                    child: ButtonHelperWidget.customButtonWidget(
+                                      context: context,
+                                      height: 56.h(context),
+                                      padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
+                                      backgroundColor: plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == false ?
+                                      ColorUtils.white243 :
+                                      plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true ?
+                                      ColorUtils.orange119 :
+                                      ColorUtils.white243,
+                                      textColor: plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == false ?
+                                      ColorUtils.black89 :
+                                      plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true ?
+                                      ColorUtils.white255 :
+                                      ColorUtils.black89,
+                                      fontWeight: FontWeight.w500,
+                                      onPressed: () async {
+                                        if(plannerProfileEditController.selectCategoryString.contains(plannerProfileEditController.categoryResponseModel.value.data![index].title) == true) {
+                                          plannerProfileEditController.selectCategoryString.remove(plannerProfileEditController.categoryResponseModel.value.data![index].title);
+                                        } else {
+                                          plannerProfileEditController.selectCategoryString.add(plannerProfileEditController.categoryResponseModel.value.data![index].title);
+                                        }
+                                      },
+                                      text: plannerProfileEditController.categoryResponseModel.value.data?[index].title ?? "",
+                                    ),
+                                  ));
+                                }),
+                              ),
                             ),
 
                           ],

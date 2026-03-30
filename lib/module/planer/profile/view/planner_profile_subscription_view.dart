@@ -61,7 +61,7 @@ class PlannerProfileSubscriptionView extends StatelessWidget {
 
                         SpaceHelperWidget.v(16.h(context)),
 
-
+                        plannerProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?.isNotEmpty == true ?
                         Column(
                           children: List.generate(plannerProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data!.length, (index) {
                             return Column(
@@ -108,6 +108,18 @@ class PlannerProfileSubscriptionView extends StatelessWidget {
                               ],
                             );
                           }),
+                        ) :
+                        Align(
+                          alignment: Alignment.center,
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Plan Available",
+                          ),
                         ),
 
 

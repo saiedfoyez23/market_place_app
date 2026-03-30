@@ -315,8 +315,6 @@ class VendorProfileEditView extends StatelessWidget {
                           keyboardType: TextInputType.emailAddress,
                         ),
 
-                        SpaceHelperWidget.v(20.h(context)),
-
 
                         vendorProfileEditController.categoryResponseModel.value.data != null ?
                         Column(
@@ -336,37 +334,42 @@ class VendorProfileEditView extends StatelessWidget {
 
                             SpaceHelperWidget.v(6.h(context)),
 
-                            Wrap(
-                              runSpacing: 10.h(context),
-                              spacing: 10.w(context),
-                              children: List.generate(vendorProfileEditController.categoryResponseModel.value.data!.length, (index) {
-                                return Obx(()=>IntrinsicWidth(
-                                  child: ButtonHelperWidget.customButtonWidget(
-                                    context: context,
-                                    height: 56.h(context),
-                                    padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
-                                    backgroundColor: vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == false ?
-                                    ColorUtils.white243 :
-                                    vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true ?
-                                    ColorUtils.orange119 :
-                                    ColorUtils.white243,
-                                    textColor: vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == false ?
-                                    ColorUtils.black89 :
-                                    vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true ?
-                                    ColorUtils.white255 :
-                                    ColorUtils.black89,
-                                    fontWeight: FontWeight.w500,
-                                    onPressed: () async {
-                                      if(vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true) {
-                                        vendorProfileEditController.selectCategoryString.remove(vendorProfileEditController.categoryResponseModel.value.data![index].title);
-                                      } else {
-                                        vendorProfileEditController.selectCategoryString.add(vendorProfileEditController.categoryResponseModel.value.data![index].title);
-                                      }
-                                    },
-                                    text: vendorProfileEditController.categoryResponseModel.value.data?[index].title ?? "",
-                                  ),
-                                ));
-                              }),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(vendorProfileEditController.categoryResponseModel.value.data!.length, (index) {
+                                  return Obx(()=>IntrinsicWidth(
+                                    child: ButtonHelperWidget.customButtonWidget(
+                                      context: context,
+                                      height: 56.h(context),
+                                      padding: EdgeInsets.symmetric(horizontal: 8.5.hpm(context),vertical: 8.5.vpm(context)),
+                                      backgroundColor: vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == false ?
+                                      ColorUtils.white243 :
+                                      vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true ?
+                                      ColorUtils.orange119 :
+                                      ColorUtils.white243,
+                                      textColor: vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == false ?
+                                      ColorUtils.black89 :
+                                      vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true ?
+                                      ColorUtils.white255 :
+                                      ColorUtils.black89,
+                                      fontWeight: FontWeight.w500,
+                                      onPressed: () async {
+                                        if(vendorProfileEditController.selectCategoryString.contains(vendorProfileEditController.categoryResponseModel.value.data![index].title) == true) {
+                                          vendorProfileEditController.selectCategoryString.remove(vendorProfileEditController.categoryResponseModel.value.data![index].title);
+                                        } else {
+                                          vendorProfileEditController.selectCategoryString.add(vendorProfileEditController.categoryResponseModel.value.data![index].title);
+                                        }
+                                      },
+                                      text: vendorProfileEditController.categoryResponseModel.value.data?[index].title ?? "",
+                                    ),
+                                  ));
+                                }),
+                              ),
                             ),
 
                           ],

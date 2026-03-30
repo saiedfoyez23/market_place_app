@@ -13,6 +13,7 @@ class PlannerAllVendorOrderDetailsController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isUpdate = false.obs;
+  RxBool isDenied = false.obs;
   BuildContext context;
   String orderID;
   PlannerAllVendorOrderDetailsController({required this.orderID,required this.context});
@@ -76,6 +77,35 @@ class PlannerAllVendorOrderDetailsController extends GetxController {
       onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isUpdate.value = false;
+      },
+    );
+  }
+
+
+  Future<void> deniedOrderStatusController({
+    required BuildContext context,
+    required String orderId,
+    required String orderStatus
+  }) async {
+
+    BaseApiUtils.patch(
+      url: "${ApiUtils.updatePlannerOrderStatus}/$orderId",
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      data: {
+        "status": orderStatus // running | denied
+      },
+      onSuccess: (e,data) async {
+        isDenied.value = false;
+        isLoading.value = true;
+        Get.off(()=>PlannerOfferView(),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDenied.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDenied.value = false;
       },
     );
   }

@@ -78,11 +78,24 @@ class PlannerProjectView extends StatelessWidget {
                         /// PROJECT LIST
                         Expanded(
                           child: Obx(() {
-                            return ListView.builder(
+                            return plannerProjectController.filterProjects.isNotEmpty == true ?
+                            ListView.builder(
                               itemCount: plannerProjectController.filterProjects.length,
                               itemBuilder: (context, i) {
                                 return projectCard(context: context,projectModel: plannerProjectController.filterProjects[i]);
                               },
+                            ) :
+                            Align(
+                              alignment: Alignment.center,
+                              child: TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.center,
+                                textAlign: TextAlign.start,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: "No Order Available",
+                              ),
                             );
                           }),
                         )
