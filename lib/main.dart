@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
       ],
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(MediaQuery.of(context).size.width / (MediaQuery.of(context).orientation == Orientation.portrait ? 428 : 930))),
           child: child!,
         );
       },
