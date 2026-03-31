@@ -70,9 +70,9 @@ class GetAllVendorSearchResponse {
 }
 
 class GetAllVendorSearchResponsePlanner {
-  String? sId;
-  String? name;
-  String? photoUrl;
+  var sId;
+  var name;
+  var photoUrl;
 
   GetAllVendorSearchResponsePlanner({this.sId, this.name, this.photoUrl});
 
@@ -92,8 +92,8 @@ class GetAllVendorSearchResponsePlanner {
 }
 
 class GetAllVendorSearchResponseService {
-  String? sId;
-  String? title;
+  var sId;
+  var title;
   List<String>? images;
 
   GetAllVendorSearchResponseService({this.sId, this.title, this.images});
@@ -114,9 +114,9 @@ class GetAllVendorSearchResponseService {
 }
 
 class GetAllVendorSearchResponseCategories {
-  String? sId;
-  String? title;
-  String? logo;
+  var sId;
+  var title;
+  var logo;
 
   GetAllVendorSearchResponseCategories({this.sId, this.title, this.logo});
 

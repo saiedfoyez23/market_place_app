@@ -609,7 +609,7 @@ class UserSearchDialogBox extends StatelessWidget {
                   Column(
                     children: [
 
-                      if(userSearchController.getAllSearchResponseModel.value.data?.planner?.toList().isNotEmpty == true)...[
+                      if(userSearchController.getAllSearchResponseModel.value.data?.user?.toList().isNotEmpty == true)...[
                         Column(
                           children: [
 
@@ -625,7 +625,7 @@ class UserSearchDialogBox extends StatelessWidget {
                             Divider(thickness: .5,color: ColorUtils.gray170,),
 
                             Obx(() {
-                              final userList = userSearchController.getAllSearchResponseModel.value.data?.planner?.toList();
+                              final userList = userSearchController.getAllSearchResponseModel.value.data?.user?.toList();
 
                               return Column(
                                 children: List.generate(userList!.length, (index) {

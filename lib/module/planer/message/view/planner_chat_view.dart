@@ -155,14 +155,14 @@ class PlannerChatView extends StatelessWidget {
                           ],
                         ),
                         actions: [
-                          InkWell(
-                            onTap: () async {},
-                            child: Icon(
-                              Icons.more_vert_rounded,
-                              color: ColorUtils.black14,
-                              size: 30.r(context),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () async {},
+                          //   child: Icon(
+                          //     Icons.more_vert_rounded,
+                          //     color: ColorUtils.black14,
+                          //     size: 30.r(context),
+                          //   ),
+                          // ),
 
                           SpaceHelperWidget.h(15.w(context)),
                         ],
@@ -229,41 +229,37 @@ class PlannerChatView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
 
-                            if(plannerChatController.isTyping.value == false)...[
 
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {},
-                                    child: ImageHelperWidget.assetImageWidget(
-                                      context: context,
-                                      height: 30.h(context),
-                                      width: 30.w(context),
-                                      imageString: ImageUtils.chatIconImage,
-                                    ),
-                                  ),
-
-                                  SpaceHelperWidget.h(16.h(context)),
-
-
-                                  InkWell(
-                                    onTap: () async {},
-                                    child: ImageHelperWidget.assetImageWidget(
-                                      context: context,
-                                      height: 30.h(context),
-                                      width: 30.w(context),
-                                      imageString: ImageUtils.chatDocumentImage,
-                                    ),
-                                  ),
-
-
-                                  SpaceHelperWidget.h(16.h(context)),
-
-                                ],
-                              ),
-
-
-                            ],
+                            // Row(
+                            //   children: [
+                            //     InkWell(
+                            //       onTap: () async {},
+                            //       child: ImageHelperWidget.assetImageWidget(
+                            //         context: context,
+                            //         height: 30.h(context),
+                            //         width: 30.w(context),
+                            //         imageString: ImageUtils.chatIconImage,
+                            //       ),
+                            //     ),
+                            //
+                            //     SpaceHelperWidget.h(16.h(context)),
+                            //
+                            //
+                            //     InkWell(
+                            //       onTap: () async {},
+                            //       child: ImageHelperWidget.assetImageWidget(
+                            //         context: context,
+                            //         height: 30.h(context),
+                            //         width: 30.w(context),
+                            //         imageString: ImageUtils.chatDocumentImage,
+                            //       ),
+                            //     ),
+                            //
+                            //
+                            //     SpaceHelperWidget.h(16.h(context)),
+                            //
+                            //   ],
+                            // ),
 
 
                             Expanded(
@@ -273,55 +269,44 @@ class PlannerChatView extends StatelessWidget {
                                 hintText: "Type your message",
                                 controller:  plannerChatController.chatController.value,
                                 keyboardType: TextInputType.emailAddress,
-                                onChanged: (value) {
-                                  if(value?.isEmpty == true) {
-                                    plannerChatController.isTyping.value = false;
-                                  } else {
-                                    plannerChatController.isTyping.value = true;
-                                  }
-                                },
                               ),
                             ),
 
-                            if(plannerChatController.isTyping.value == true)...[
+                            Row(
+                              children: [
 
-                              Row(
-                                children: [
-
-                                  SpaceHelperWidget.h(16.h(context)),
-                                  InkWell(
-                                    onTap: () async {
-                                      if( plannerChatController.chatController.value.text == "") {
-                                        MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter a message");
-                                      } else {
-                                        Map<String,dynamic> data = {
-                                          "chatId": plannerChatController.getChatDetailsResponseModel.value.data?.sId ?? "",
-                                          "text": plannerChatController.chatController.value.text,
-                                          "imageUrl": []
-                                        };
-                                        //
-                                        print(data);
-                                        final ack = await plannerSocketServiceController.emitWithAck('send-message', data);
-                                        print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
-                                        print("send dddd");
-                                        plannerChatController.chatController.value.clear();
-                                        FocusScope.of(context).unfocus();
-                                        await plannerChatController.getAllMessageController(context: context, chatId: chatId);
-                                      }
-                                    },
-                                    child: ImageHelperWidget.assetImageWidget(
-                                      context: context,
-                                      height: 30.h(context),
-                                      width: 30.w(context),
-                                      imageString: ImageUtils.sendMessageImage,
-                                    ),
+                                SpaceHelperWidget.h(16.h(context)),
+                                InkWell(
+                                  onTap: () async {
+                                    if( plannerChatController.chatController.value.text == "") {
+                                      MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter a message");
+                                    } else {
+                                      Map<String,dynamic> data = {
+                                        "chatId": plannerChatController.getChatDetailsResponseModel.value.data?.sId ?? "",
+                                        "text": plannerChatController.chatController.value.text,
+                                        "imageUrl": []
+                                      };
+                                      //
+                                      print(data);
+                                      final ack = await plannerSocketServiceController.emitWithAck('send-message', data);
+                                      print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                      print("send dddd");
+                                      plannerChatController.chatController.value.clear();
+                                      plannerChatController.isTyping.value = false;
+                                      FocusScope.of(context).unfocus();
+                                      await plannerChatController.getAllMessageController(context: context, chatId: chatId);
+                                    }
+                                  },
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 30.h(context),
+                                    width: 30.w(context),
+                                    imageString: ImageUtils.sendMessageImage,
                                   ),
+                                ),
 
-                                ],
-                              ),
-
-
-                            ],
+                              ],
+                            ),
 
                           ],
                         ),

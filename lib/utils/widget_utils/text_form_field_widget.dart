@@ -22,6 +22,7 @@ class TextFormFieldWidget {
     void Function(String?)? onChanged,
     void Function(String?)? onSaved,
     void Function()? onTap,
+    void Function()? onEditingComplete,
   }) {
     return TextFormField(
       controller: controller,
@@ -31,6 +32,7 @@ class TextFormFieldWidget {
       onChanged: onChanged,
       onSaved: onSaved,
       onTap: onTap,
+      onEditingComplete: onEditingComplete,
       obscuringCharacter: "*",
       style: GoogleFonts.poppins(
         fontStyle: FontStyle.normal,

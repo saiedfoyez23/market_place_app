@@ -33,6 +33,27 @@ class ChatWidget {
             SpaceHelperWidget.h(10.w(context)),
           ],
 
+          chatController.getAllMessageResponseModel.value.data![index].text.toString().length < 35 ?
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
+            decoration: BoxDecoration(
+              color: isSender ? ColorUtils.blue181 : ColorUtils.white241,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r(context)),
+                topRight: Radius.circular(16.r(context)),
+                bottomLeft: Radius.circular(isSender ? 16.r(context) : 0),
+                bottomRight: Radius.circular(isSender ? 0 : 16.r(context)),
+              ),
+            ),
+            child: TextHelperClass.headingTextWithoutWidth(
+              context: context,
+              alignment: Alignment.centerLeft,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
+              text: chatController.getAllMessageResponseModel.value.data?[index].text ?? "",
+            ),
+          ) :
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
@@ -51,10 +72,11 @@ class ChatWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
-                text: chatController.getAllMessageResponseModel.value.data?[index].text,
+                text: chatController.getAllMessageResponseModel.value.data?[index].text ?? "",
               ),
             ),
           ),
+
 
           if (isSender) ...[
 

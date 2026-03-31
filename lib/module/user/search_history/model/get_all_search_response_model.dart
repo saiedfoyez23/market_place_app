@@ -27,17 +27,17 @@ class GetAllSearchResponseModel {
 }
 
 class GetAllSearchResponse {
-  List<GetAllSearchResponsePlanner>? planner;
+  List<GetAllSearchResponsePlanner>? user;
   List<GetAllSearchResponseService>? service;
   List<GetAllSearchResponseCategories>? categories;
 
-  GetAllSearchResponse({this.planner, this.service, this.categories});
+  GetAllSearchResponse({this.user, this.service, this.categories});
 
   GetAllSearchResponse.fromJson(Map<String, dynamic> json) {
-    if (json['planner'] != null) {
-      planner = <GetAllSearchResponsePlanner>[];
-      json['planner'].forEach((v) {
-        planner!.add(new GetAllSearchResponsePlanner.fromJson(v));
+    if (json['user'] != null) {
+      user = <GetAllSearchResponsePlanner>[];
+      json['user'].forEach((v) {
+        user!.add(new GetAllSearchResponsePlanner.fromJson(v));
       });
     }
     if (json['service'] != null) {
@@ -56,8 +56,8 @@ class GetAllSearchResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.planner != null) {
-      data['planner'] = this.planner!.map((v) => v.toJson()).toList();
+    if (this.user != null) {
+      data['planner'] = this.user!.map((v) => v.toJson()).toList();
     }
     if (this.service != null) {
       data['service'] = this.service!.map((v) => v.toJson()).toList();
@@ -70,9 +70,9 @@ class GetAllSearchResponse {
 }
 
 class GetAllSearchResponsePlanner {
-  String? sId;
-  String? name;
-  String? photoUrl;
+  var sId;
+  var name;
+  var photoUrl;
 
   GetAllSearchResponsePlanner({this.sId, this.name, this.photoUrl});
 
@@ -92,8 +92,8 @@ class GetAllSearchResponsePlanner {
 }
 
 class GetAllSearchResponseService {
-  String? sId;
-  String? title;
+  var sId;
+  var title;
   List<String>? images;
 
   GetAllSearchResponseService({this.sId, this.title, this.images});
@@ -114,9 +114,9 @@ class GetAllSearchResponseService {
 }
 
 class GetAllSearchResponseCategories {
-  String? sId;
-  String? title;
-  String? logo;
+  var sId;
+  var title;
+  var logo;
 
   GetAllSearchResponseCategories({this.sId, this.title, this.logo});
 
