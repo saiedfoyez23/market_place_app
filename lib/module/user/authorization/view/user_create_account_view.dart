@@ -238,7 +238,8 @@ class UserCreateAccountView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
+                        userCreateAccountController.isLoading.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
@@ -246,6 +247,8 @@ class UserCreateAccountView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your user name");
                             } else if(userCreateAccountController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email");
+                            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch(userCreateAccountController.emailController.value.text)) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else if(userCreateAccountController.passwordController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your password");
                             } else if(userCreateAccountController.passwordController.value.text.length < 8 ) {
@@ -257,7 +260,15 @@ class UserCreateAccountView extends StatelessWidget {
                             } else if( userCreateAccountController.isCheck.value == false) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "If you not agree with terms and conditions. You can not sign up");
                             } else {
-                              Get.to(()=>UserCreateAccountPickImageView());
+                              userCreateAccountController.isLoading.value = true;
+                              await userCreateAccountController.createUserAccountController(
+                                context: context,
+                                userName: userCreateAccountController.userNameController.value.text,
+                                email: userCreateAccountController.emailController.value.text,
+                                password: userCreateAccountController.passwordController.value.text,
+                                confirmPassword: userCreateAccountController.confirmPasswordController.value.text,
+                                imageFile: userCreateAccountController.profileImageFile.value,
+                              );
                             }
                           },
                           text: "Sign Up",

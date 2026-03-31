@@ -189,6 +189,8 @@ class PlannerLoginView extends StatelessWidget {
                           onPressed: () async {
                             if(plannerLoginController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
+                            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch((plannerLoginController.emailController.value.text))) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else if(plannerLoginController.passwordController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
                             } else {

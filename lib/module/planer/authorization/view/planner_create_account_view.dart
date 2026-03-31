@@ -238,7 +238,8 @@ class PlannerCreateAccountView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
+                        plannerCreateAccountController.isLoading.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
@@ -246,6 +247,8 @@ class PlannerCreateAccountView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your user name");
                             } else if(plannerCreateAccountController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email");
+                            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch((plannerCreateAccountController.emailController.value.text))) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else if(plannerCreateAccountController.passwordController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your password");
                             } else if(plannerCreateAccountController.passwordController.value.text.length < 8 ) {
@@ -257,7 +260,16 @@ class PlannerCreateAccountView extends StatelessWidget {
                             } else if(plannerCreateAccountController.isCheck.value == false) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "If you not agree with terms and conditions. You can not sign up");
                             } else {
-                              Get.to(()=>PlannerCreateAccountPickImageView());
+                              plannerCreateAccountController.isLoading.value = true;
+                              await plannerCreateAccountController.createPlannerAccountController(
+                                context: context,
+                                userName: plannerCreateAccountController.userNameController.value.text,
+                                email: plannerCreateAccountController.emailController.value.text,
+                                password: plannerCreateAccountController.passwordController.value.text,
+                                confirmPassword: plannerCreateAccountController.confirmPasswordController.value.text,
+                                imageFile: plannerCreateAccountController.profileImageFile.value,
+                                coverImageFile: plannerCreateAccountController.coverImageFile.value,
+                              );
                             }
                           },
                           text: "Sign Up",

@@ -47,7 +47,8 @@ class UserNotificationView extends StatelessWidget {
 
 
                     SliverToBoxAdapter(
-                      child: Padding(
+                      child: userNotificationController.getAllNotificationResponseModel.value.data?.isNotEmpty == true ?
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                         child: Column(
                           children: [
@@ -80,14 +81,15 @@ class UserNotificationView extends StatelessWidget {
 
                           ],
                         ),
-                      ),
+                      ) : SizedBox.shrink(),
                     ),
 
 
 
                     SliverPadding(
                       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                      sliver: SliverList(
+                      sliver: userNotificationController.getAllNotificationResponseModel.value.data?.isNotEmpty == true ?
+                      SliverList(
                         delegate: SliverChildBuilderDelegate(
                               (context,int index) {
                             return buildDismissibleNotificationCard(
@@ -97,6 +99,20 @@ class UserNotificationView extends StatelessWidget {
                             );
                           },
                           childCount: userNotificationController.getAllNotificationResponseModel.value.data?.length,
+                        ),
+                      ) :
+                      SliverFillRemaining(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Notification Available",
+                          ),
                         ),
                       ),
                     ),

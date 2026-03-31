@@ -188,6 +188,8 @@ class UserLoginView extends StatelessWidget {
                           onPressed: () async {
                             if(userLoginController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
+                            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch((userLoginController.emailController.value.text))) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else if(userLoginController.passwordController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your password");
                             } else {

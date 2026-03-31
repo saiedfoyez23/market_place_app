@@ -54,8 +54,6 @@ class VendorCreateAccountController extends GetxController {
     required File imageFile,
     required File coverImageFile,
   }) async {
-    isLoading.value = true;
-
     final Map<String, dynamic> jsonData = {
       "name": userName,
       "email": email,

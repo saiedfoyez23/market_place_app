@@ -40,7 +40,6 @@ class UserCreateAccountController extends GetxController {
     required String confirmPassword,
     required File imageFile,
   }) async {
-    isLoading.value = true;
 
     final Map<String, dynamic> jsonData = {
       "name": userName,

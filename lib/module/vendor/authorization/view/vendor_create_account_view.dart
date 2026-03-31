@@ -239,7 +239,8 @@ class VendorCreateAccountView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
+                        vendorCreateAccountController.isLoading.value == true ?
+                        LoadingHelperWidget.loadingHelperWidget(context: context) :
                         ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
@@ -247,6 +248,8 @@ class VendorCreateAccountView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your user name");
                             } else if(vendorCreateAccountController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email");
+                            }  else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch((vendorCreateAccountController.emailController.value.text))) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else if(vendorCreateAccountController.passwordController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your password");
                             } else if(vendorCreateAccountController.passwordController.value.text.length < 8 ) {
@@ -258,7 +261,16 @@ class VendorCreateAccountView extends StatelessWidget {
                             } else if(vendorCreateAccountController.isCheck.value == false) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "If you not agree with terms and conditions. You can not sign up");
                             } else {
-                              Get.to(()=>VendorCreateAccountPickImageView());
+                              vendorCreateAccountController.isLoading.value = true;
+                              await vendorCreateAccountController.createVendorAccountController(
+                                context: context,
+                                userName: vendorCreateAccountController.userNameController.value.text,
+                                email: vendorCreateAccountController.emailController.value.text,
+                                password: vendorCreateAccountController.passwordController.value.text,
+                                confirmPassword: vendorCreateAccountController.confirmPasswordController.value.text,
+                                imageFile: vendorCreateAccountController.profileImageFile.value,
+                                coverImageFile: vendorCreateAccountController.coverImageFile.value,
+                              );
                             }
                           },
                           text: "Sign Up",

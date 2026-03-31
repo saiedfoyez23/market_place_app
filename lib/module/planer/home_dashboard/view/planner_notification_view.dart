@@ -45,7 +45,8 @@ class PlannerNotificationView extends StatelessWidget {
 
 
                     SliverToBoxAdapter(
-                      child: Padding(
+                      child: plannerNotificationController.getAllNotificationResponseModel.value.data?.isNotEmpty == true ?
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                         child: Column(
                           children: [
@@ -78,13 +79,15 @@ class PlannerNotificationView extends StatelessWidget {
 
                           ],
                         ),
-                      ),
+                      ) :
+                      SizedBox.shrink(),
                     ),
 
 
                     SliverPadding(
                       padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                      sliver: SliverList(
+                      sliver: plannerNotificationController.getAllNotificationResponseModel.value.data?.isNotEmpty == true ?
+                      SliverList(
                         delegate: SliverChildBuilderDelegate(
                               (context,int index) {
                             return buildDismissibleNotificationCard(
@@ -94,6 +97,20 @@ class PlannerNotificationView extends StatelessWidget {
                             );
                           },
                           childCount: plannerNotificationController.getAllNotificationResponseModel.value.data?.length,
+                        ),
+                      ) :
+                      SliverFillRemaining(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Notification Available",
+                          ),
                         ),
                       ),
                     ),
