@@ -47,6 +47,7 @@ class PlannerSearchController extends GetxController {
     );
   }
 
+
   Future<void> getVendorSearchController({required BuildContext context,required String search}) async {
     BaseApiUtils.get(
       url: ApiUtils.getSearchResponse(search),

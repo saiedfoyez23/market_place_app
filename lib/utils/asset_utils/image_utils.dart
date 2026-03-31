@@ -169,5 +169,6 @@ class ImageUtils {
   static const String leadDetailsCalenderImage = "image/lead_image/lead_details_calender_image.png";
   static const String leadDetailsLocationImage = "image/lead_image/lead_details_location_image.png";
   static const String supportImage = "image/planner_profile_image/support_image.png";
+  static const String myWalletImage = "image/planner_profile_image/my_wallet_image.png";
 }
 

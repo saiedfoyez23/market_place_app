@@ -512,7 +512,7 @@ class PlannerVendorProfileView extends StatelessWidget {
                 alignment: Alignment.center,
                 textColor: ColorUtils.blue96,
                 fontWeight: FontWeight.w600,
-                fontSize: 24,
+                fontSize: 20,
                 backgroundColor: Colors.transparent,
               ),
             ] else ...[
@@ -594,7 +594,7 @@ class PlannerVendorProfileView extends StatelessWidget {
                 alignment: Alignment.center,
                 textColor: ColorUtils.blue96,
                 fontWeight: FontWeight.w600,
-                fontSize: 24,
+                fontSize: 20,
                 backgroundColor: Colors.transparent,
               ),
             ] else ...[
@@ -675,7 +675,7 @@ class PlannerVendorProfileView extends StatelessWidget {
                 alignment: Alignment.center,
                 textColor: ColorUtils.blue96,
                 fontWeight: FontWeight.w600,
-                fontSize: 24,
+                fontSize: 20,
                 backgroundColor: Colors.transparent,
               ),
             ] else...[

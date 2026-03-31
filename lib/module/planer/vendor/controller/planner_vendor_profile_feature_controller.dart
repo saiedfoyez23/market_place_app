@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
-
 import '../../../../utils/utils.dart';
 
 class PlannerVendorProfileFeatureController extends GetxController {
@@ -12,7 +10,7 @@ class PlannerVendorProfileFeatureController extends GetxController {
   BuildContext context;
   String userId;
   PlannerVendorProfileFeatureController({required this.context,required this.userId});
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<GetAllFeaturedServiceResponseModel> getAllFeaturedServiceResponseModel = GetAllFeaturedServiceResponseModel().obs;
   RxBool isCreate = false.obs;
   RxString serviceId = "".obs;
