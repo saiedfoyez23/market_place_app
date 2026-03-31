@@ -357,7 +357,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
 
                               CustomDropdownHelperClass(
                                 value: vendorCreateAccountKycVerificationController.selectIdType.value == "" ? null : vendorCreateAccountKycVerificationController.selectIdType.value,
-                                items: ["NID","Driving License","Working Permit","TIN Certificate"],
+                                items: ["South African ID","Passport","Driver's License"],
                                 onChanged: (value) {
                                   vendorCreateAccountKycVerificationController.selectIdType.value = value!;
                                 },

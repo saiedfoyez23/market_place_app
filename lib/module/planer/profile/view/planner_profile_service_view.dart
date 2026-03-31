@@ -104,37 +104,6 @@ class PlannerProfileServiceView extends StatelessWidget {
                   ),
 
 
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    sliver: plannerProfileServiceController.plannerGetAllServiceModelResponse.value.data?.isNotEmpty == true ?
-                    SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                              (context,int index) {
-                            final item = plannerProfileServiceController.plannerGetAllServiceModelResponse.value.data?[index];
-
-                            return ;
-                          },
-                          childCount: plannerProfileServiceController.plannerGetAllServiceModelResponse.value.data?.length,
-                        ),
-                    ) :
-                    SliverFillRemaining(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.center,
-                          textAlign: TextAlign.start,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "No Service Available",
-                        ),
-                      ),
-                    ),
-                  ),
-
-
-
                 ],
               ),
             ),
@@ -243,7 +212,7 @@ class PlannerProfileServiceView extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () async {
-          Get.off(()=>VendorServiceDetailsView(serviceId: service.sId),preventDuplicates: false);
+          Get.off(()=>PlannerProfileServiceDetailsView(serviceId: service.sId, isProfile: false,),preventDuplicates: false);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

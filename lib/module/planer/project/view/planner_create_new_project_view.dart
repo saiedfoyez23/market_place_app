@@ -152,11 +152,8 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                 htmlEditorOptions: const HtmlEditorOptions(
                                   hint: "Write something...",
                                   autoAdjustHeight: true,
-                                ),
-                                callbacks: Callbacks(
-                                    onFocus: () {
-                                      FocusScope.of(context).unfocus();
-                                    }
+                                  shouldEnsureVisible: true,        // ← Important for scroll behavior
+                                  adjustHeightForKeyboard: true,
                                 ),
                                 htmlToolbarOptions: const HtmlToolbarOptions(
                                   toolbarPosition: ToolbarPosition.aboveEditor,
@@ -207,7 +204,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "Deadline",
+                                text: "Order duration",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -216,7 +213,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Enter deadline",
+                                hintText: "Enter order duration",
                                 controller: plannerCreateNewProjectController.deadlineController.value,
                                 keyboardType: TextInputType.number,
                               ),
@@ -361,7 +358,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                     fontSize: 18.sp(context),
                                     textColor: ColorUtils.black48,
                                     fontWeight: FontWeight.w700,
-                                    text: v.name,
+                                    text: "${v.name} (${v.email})",
                                   );
                                 },
                                 controller: plannerCreateNewProjectController.dropdownController,
@@ -409,7 +406,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "Phone",
+                                text: "Phone (Optional)",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -444,10 +441,8 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                 fillColor: ColorUtils.white255,
                                 hintText: "Enter client location",
                                 controller: plannerCreateNewProjectController.plannerOrderLocationController.value,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                               ),
-
-
 
 
 

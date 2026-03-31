@@ -63,12 +63,11 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
                         SpaceHelperWidget.v(6.h(context)),
 
-
                         TextFormFieldWidget.build(
                           context: context,
                           hintText: "Enter title",
                           controller: plannerProfileCreateNewServiceController.titleController.value,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.text,
                         ),
 
 
@@ -372,6 +371,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                               /// Editor
                               Expanded(
                                 child: QuillEditor.basic(
+                                  focusNode: plannerProfileCreateNewServiceController.quillFocusNode.value,
                                   controller: plannerProfileCreateNewServiceController.serviceQuillController,
                                   config: const QuillEditorConfig(),
                                 ),

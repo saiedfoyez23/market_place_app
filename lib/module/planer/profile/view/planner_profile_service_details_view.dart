@@ -383,19 +383,19 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
 
             SpaceHelperWidget.h(12.w(context)),
 
-            ButtonHelperWidget.customButtonWidget(
-              context: context,
-              onPressed: () async {
-                Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
-              },
-              text: "See All",
-              padding: EdgeInsets.only(left: 14.5.lpm(context)),
-              alignment: Alignment.center,
-              textColor: ColorUtils.orange119,
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              backgroundColor: Colors.transparent,
-            ),
+            // ButtonHelperWidget.customButtonWidget(
+            //   context: context,
+            //   onPressed: () async {
+            //     Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+            //   },
+            //   text: "See All",
+            //   padding: EdgeInsets.only(left: 14.5.lpm(context)),
+            //   alignment: Alignment.center,
+            //   textColor: ColorUtils.orange119,
+            //   fontWeight: FontWeight.w600,
+            //   fontSize: 24,
+            //   backgroundColor: Colors.transparent,
+            // ),
           ],
         ),
 

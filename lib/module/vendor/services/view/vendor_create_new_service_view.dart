@@ -373,6 +373,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
                               /// Editor
                               Expanded(
                                 child: QuillEditor.basic(
+                                  focusNode: vendorCreateNewServiceController.quillFocusNode.value,
                                   controller: vendorCreateNewServiceController.serviceQuillController,
                                   config: const QuillEditorConfig(),
                                 ),

@@ -872,6 +872,19 @@ class PlannerWithSubscriptionProfileWidget {
 
         PlannerProfileViewButton().plannerProfileViewButton(
           context: context,
+          title: "My Wallet",
+          imagePath: ImageUtils.myWalletImage,
+          onTap: () async {
+            Get.off(()=>PlannerWithdrawView(),preventDuplicates: false);
+          },
+        ),
+
+
+        SpaceHelperWidget.v(16.h(context)),
+
+
+        PlannerProfileViewButton().plannerProfileViewButton(
+          context: context,
           title: "Manage Subscription",
           imagePath: ImageUtils.plannerManageSubscriptionImage,
           onTap: () async {

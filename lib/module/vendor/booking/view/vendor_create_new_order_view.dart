@@ -154,11 +154,8 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 htmlEditorOptions: const HtmlEditorOptions(
                                   hint: "Write something...",
                                   autoAdjustHeight: true,
-                                ),
-                                callbacks: Callbacks(
-                                  onFocus: () {
-                                    FocusScope.of(context).unfocus();
-                                  }
+                                  shouldEnsureVisible: true,        // ← Important for scroll behavior
+                                  adjustHeightForKeyboard: true,
                                 ),
                                 htmlToolbarOptions: const HtmlToolbarOptions(
                                   toolbarPosition: ToolbarPosition.aboveEditor,
@@ -208,7 +205,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "Deadline",
+                                text: "Order duration",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -216,7 +213,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Enter deadline",
+                                hintText: "Enter order duration",
                                 controller: vendorCreateNewOrderController.deadlineController.value,
                                 keyboardType: TextInputType.number,
                               ),
@@ -355,7 +352,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                     fontSize: 18.sp(context),
                                     textColor: ColorUtils.black48,
                                     fontWeight: FontWeight.w700,
-                                    text: v.name,
+                                    text: "${v.name} (${v.email})",
                                   );
                                 },
                                 controller: vendorCreateNewOrderController.dropdownController,

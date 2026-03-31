@@ -77,6 +77,7 @@ class ApiUtils {
   static const String markAllAsRead = "$baseUrl/notifications?limit=10000000000"; //done
   static const String planerMeta = "$baseUrl/meta/planer"; //done
   static const String createSupport = "$baseUrl/supports"; //done
+  static const String getWithdraw = "$baseUrl/withdraw/my-withdraw"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }

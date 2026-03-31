@@ -16,6 +16,7 @@ class PlannerProfileCreateNewServiceController extends GetxController {
   Rx<TextEditingController> addressController = TextEditingController().obs;
   Rx<TextEditingController> eventDetailsController = TextEditingController().obs;
   Rx<TextEditingController> priceController = TextEditingController().obs;
+  Rx<FocusNode> quillFocusNode = FocusNode().obs;
   Rx<TextEditingController> serviceDetailsController = TextEditingController().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<CategoryResponseModel> categoryResponseModel = CategoryResponseModel().obs;

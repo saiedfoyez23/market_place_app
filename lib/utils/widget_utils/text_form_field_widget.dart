@@ -21,6 +21,7 @@ class TextFormFieldWidget {
     EdgeInsetsGeometry? contentPadding,
     void Function(String?)? onChanged,
     void Function(String?)? onSaved,
+    void Function(PointerDownEvent event)? onTapOutside,
     void Function()? onTap,
     void Function()? onEditingComplete,
   }) {
@@ -32,6 +33,7 @@ class TextFormFieldWidget {
       onChanged: onChanged,
       onSaved: onSaved,
       onTap: onTap,
+      onTapOutside: onTapOutside,
       onEditingComplete: onEditingComplete,
       obscuringCharacter: "*",
       style: GoogleFonts.poppins(
@@ -87,6 +89,7 @@ class TextFormFieldWidget {
     double fontSize = 18,
     int? maxLines = 1,
     int? minLines,
+    void Function(PointerDownEvent event)? onTapOutside,
     FontWeight fontWeight = FontWeight.w400,
     EdgeInsetsGeometry? contentPadding,
     void Function(String?)? onChanged,
@@ -101,6 +104,7 @@ class TextFormFieldWidget {
       maxLines: maxLines,
       minLines: minLines,
       onSaved: onSaved,
+      onTapOutside: onTapOutside,
       onTap: onTap,
       style: GoogleFonts.poppins(
         fontStyle: FontStyle.normal,
