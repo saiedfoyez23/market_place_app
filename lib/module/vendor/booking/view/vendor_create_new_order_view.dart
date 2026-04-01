@@ -157,6 +157,12 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                   shouldEnsureVisible: true,        // ← Important for scroll behavior
                                   adjustHeightForKeyboard: true,
                                 ),
+                                callbacks: Callbacks(
+                                    onFocus: () async {
+                                      print("call");
+                                      FocusScope.of(context).unfocus();
+                                    }
+                                ),
                                 htmlToolbarOptions: const HtmlToolbarOptions(
                                   toolbarPosition: ToolbarPosition.aboveEditor,
                                   defaultToolbarButtons: [
@@ -408,7 +414,6 @@ class VendorCreateNewOrderView extends StatelessWidget {
 
                               TextFormFieldWidget.build(
                                 context: context,
-                                readOnly: true,
                                 fillColor: ColorUtils.white255,
                                 hintText: "Enter planner phone",
                                 controller: vendorCreateNewOrderController.plannerPhoneController.value,

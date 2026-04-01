@@ -223,7 +223,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                             child: TextHelperClass.headingTextWithoutWidth(
                                               context: context,
                                               alignment: Alignment.centerLeft,
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               fontWeight: FontWeight.w600,
                                               textColor: ColorUtils.black48,
                                               text: "Upcoming Booking",
@@ -242,7 +242,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                             alignment: Alignment.center,
                                             textColor: ColorUtils.orange119,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 20,
+                                            fontSize: 14,
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ],
@@ -282,7 +282,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                       TextHelperClass.headingTextWithoutWidth(
                                         context: context,
                                         alignment: Alignment.centerLeft,
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         textColor: ColorUtils.black48,
                                         text: "Top Partnerships",
@@ -293,7 +293,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                                       TextHelperClass.headingTextWithoutWidth(
                                         context: context,
                                         alignment: Alignment.centerLeft,
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         textColor: ColorUtils.black48,
                                         text: "Your most collaborated Planer",
@@ -364,7 +364,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                 child: TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: title,
@@ -392,7 +392,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                   context: context,
                   alignment: Alignment.centerLeft,
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: value,
                 ),
@@ -401,7 +401,9 @@ class VendorHomeDashboardView extends StatelessWidget {
               title == "New Leads" && vendorMyProfileDetailsResponseModel.data?.type != null ?
               ButtonHelperWidget.customButtonWidget(
                 context: context,
+                fontSize: 14,
                 borderRadius: 100,
+                fontWeight: FontWeight.w500,
                 padding: EdgeInsets.symmetric(vertical: 5.vpm(context),horizontal: 12.hpm(context)),
                 height: 40.h(context),
                 onPressed: () async {
@@ -540,7 +542,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: partnership.plannerName ?? "",
@@ -552,7 +554,7 @@ class VendorHomeDashboardView extends StatelessWidget {
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   textColor: ColorUtils.black96,
                   text: "${partnership.orderCount} projects together",

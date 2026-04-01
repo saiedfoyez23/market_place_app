@@ -43,7 +43,7 @@ class ChooseUserView extends StatelessWidget {
                       TextHelperClass.headingTextWithoutWidth(
                         context: context,
                         alignment: Alignment.centerLeft,
-                        fontSize: 32,
+                        fontSize: 26,
                         fontWeight: FontWeight.w600,
                         textColor: ColorUtils.black48,
                         text: "Choose your role",
@@ -65,8 +65,6 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
-                        descriptionFontSize: 20,
-                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Customer");
                         },
@@ -83,8 +81,6 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
-                        descriptionFontSize: 20,
-                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Planner");
                         },
@@ -101,8 +97,6 @@ class ChooseUserView extends StatelessWidget {
 
                       ButtonHelperWidget.userChooseButtonWidget(
                         context: context,
-                        descriptionFontSize: 20,
-                        titleFontSize: 24,
                         onPressed: () {
                           chooseUserController.chooseUser(useRole: "Vendor");
                         },

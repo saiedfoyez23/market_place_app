@@ -225,7 +225,6 @@ class WishlistView extends StatelessWidget {
                                             alignment: Alignment.centerRight,
                                             textColor: ColorUtils.red237,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 20,
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ],

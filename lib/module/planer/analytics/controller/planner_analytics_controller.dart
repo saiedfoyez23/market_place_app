@@ -97,11 +97,11 @@ class PlannerAnalyticsController extends GetxController {
         }
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );
@@ -118,11 +118,11 @@ class PlannerAnalyticsController extends GetxController {
         plannerEventAnalysisResponseModel.value = PlannerEventAnalysisResponseModel.fromJson(data);
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );
@@ -140,11 +140,11 @@ class PlannerAnalyticsController extends GetxController {
         isLoading.value = false;
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );

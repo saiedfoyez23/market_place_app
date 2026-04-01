@@ -42,40 +42,58 @@ class VendorLeadView extends StatelessWidget {
                     child: Column(
                       children: [
 
-
-                        /// Summary Cards
-                        GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1.8,
-                          physics: NeverScrollableScrollPhysics(),
+                        Row(
                           children: [
-                            SummaryCardWidget(
-                              title: "New Leads",
-                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.newLeads.toString() ?? "0",
-                              logo: ImageUtils.newLeadImage,
-                              borderColor: ColorUtils.newLeads,
+
+                            Expanded(
+                              child: SummaryCardWidget(
+                                title: "New Leads",
+                                value: vendorLeadController.plannerLeadsResponseModel.value.data?.newLeads.toString() ?? "0",
+                                logo: ImageUtils.newLeadImage,
+                                borderColor: ColorUtils.newLeads,
+                              ),
                             ),
-                            SummaryCardWidget(
-                              title: "Contacted",
-                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.contracted.toString() ?? "0",
-                              logo: ImageUtils.contactedLeadImage,
-                              borderColor: ColorUtils.contactedLeads,
+
+                            SpaceHelperWidget.h(16.w(context)),
+
+                            Expanded(
+                              child: SummaryCardWidget(
+                                title: "Contacted",
+                                value: vendorLeadController.plannerLeadsResponseModel.value.data?.contracted.toString() ?? "0",
+                                logo: ImageUtils.contactedLeadImage,
+                                borderColor: ColorUtils.contactedLeads,
+                              ),
                             ),
-                            SummaryCardWidget(
-                              title: "Qualified",
-                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.qualified.toString() ?? "0",
-                              logo: ImageUtils.qualifiedLeadImage,
-                              borderColor: ColorUtils.qualifiedLeads,
+
+                          ],
+                        ),
+
+
+                        SpaceHelperWidget.v(16.h(context)),
+
+                        Row(
+                          children: [
+
+                            Expanded(
+                              child: SummaryCardWidget(
+                                title: "Qualified",
+                                value: vendorLeadController.plannerLeadsResponseModel.value.data?.qualified.toString() ?? "0",
+                                logo: ImageUtils.qualifiedLeadImage,
+                                borderColor: ColorUtils.qualifiedLeads,
+                              ),
                             ),
-                            SummaryCardWidget(
-                              title: "Left",
-                              value: vendorLeadController.plannerLeadsResponseModel.value.data?.left.toString() ?? "0",
-                              logo: ImageUtils.leftLeadImage,
-                              borderColor: ColorUtils.leftLeads,
+
+                            SpaceHelperWidget.h(16.w(context)),
+
+                            Expanded(
+                              child: SummaryCardWidget(
+                                title: "Left",
+                                value: vendorLeadController.plannerLeadsResponseModel.value.data?.left.toString() ?? "0",
+                                logo: ImageUtils.leftLeadImage,
+                                borderColor: ColorUtils.leftLeads,
+                              ),
                             ),
+
                           ],
                         ),
 

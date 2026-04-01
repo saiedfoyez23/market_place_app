@@ -90,11 +90,11 @@ class VendorAnalysisController extends GetxController {
         }
       },
       onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        //MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },
     );

@@ -512,7 +512,7 @@ class PlannerServiceDetailsView extends StatelessWidget {
                 alignment: Alignment.center,
                 textColor: ColorUtils.orange119,
                 fontWeight: FontWeight.w600,
-                fontSize: 24,
+                fontSize: 14,
                 backgroundColor: Colors.transparent,
               ),
             ] else...[

@@ -219,7 +219,7 @@ class PlannerAnalyticsView extends StatelessWidget {
           TextHelperClass.headingTextWithoutWidth(
             context: context,
             alignment: Alignment.centerLeft,
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: title,
@@ -231,7 +231,7 @@ class PlannerAnalyticsView extends StatelessWidget {
           TextHelperClass.headingTextWithoutWidth(
             context: context,
             alignment: Alignment.centerLeft,
-            fontSize: 26,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: value,
@@ -312,8 +312,8 @@ class PlannerAnalyticsView extends StatelessWidget {
                   SpaceHelperWidget.v(10.h(context)),
 
                   Obx(() {
-                    int fullStars = controller.plannerRevenueResponseModel.value.data?.review?.avgRating.floor();
-                    num fractional = controller.plannerRevenueResponseModel.value.data?.review?.avgRating - fullStars;
+                    int fullStars = controller.plannerRevenueResponseModel.value.data?.review?.avgRating.floor() ?? 0;
+                    num fractional = controller.plannerRevenueResponseModel.value.data?.review?.avgRating ?? 0 - fullStars;
                     bool showHalf = fractional > 0.0; // Show half star if there's any fraction
 
                     return Row(

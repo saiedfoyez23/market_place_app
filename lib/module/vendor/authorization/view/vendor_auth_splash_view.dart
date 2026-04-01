@@ -70,7 +70,6 @@ class VendorAuthSplashView extends StatelessWidget {
                       onPressed: () async {
                         Get.off(()=>VendorLoginView(),preventDuplicates: false);
                       },
-                      textSize: 24,
                       iconPath: "",
                       text: "Sign In",
                       isIcon: false,

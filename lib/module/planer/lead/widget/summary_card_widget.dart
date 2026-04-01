@@ -36,7 +36,7 @@ class SummaryCardWidget extends StatelessWidget {
                 child: TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: title,
@@ -62,8 +62,8 @@ class SummaryCardWidget extends StatelessWidget {
           TextHelperClass.headingTextWithoutWidth(
             context: context,
             alignment: Alignment.centerLeft,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: value,
           ),

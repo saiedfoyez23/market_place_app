@@ -254,7 +254,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black48,
-                  text: "\$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0} / \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0}",
+                  text: "\$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.received ?? 0} / \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.budget ?? 0}",
                 ),
               ),
             ],
@@ -266,7 +266,7 @@ class OverViewPage {
           ClipRRect(
             borderRadius: BorderRadius.circular(2.r(context)),
             child: LinearProgressIndicator(
-              value: (int.parse("${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.received ?? 0}") / int.parse("${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.budget ?? 0}")),
+              value: (int.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.received.toString()) / int.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.budget.toString())),
               backgroundColor: ColorUtils.white217,
               minHeight: 8.h(context),
               valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),

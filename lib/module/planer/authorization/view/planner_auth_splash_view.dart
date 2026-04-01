@@ -65,12 +65,12 @@ class PlannerAuthSplashView extends StatelessWidget {
                     SpaceHelperWidget.v(16.h(context)),
 
 
+
                     ButtonHelperWidget.customIconButtonWidgetAdventPro(
                       context: context,
                       onPressed: () async {
                         Get.off(()=>PlannerLoginView(),preventDuplicates: false);
                       },
-                      textSize: 24,
                       iconPath: "",
                       text: "Sign In",
                       isIcon: false,

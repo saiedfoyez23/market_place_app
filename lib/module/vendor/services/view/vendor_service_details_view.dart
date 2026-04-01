@@ -179,7 +179,7 @@ class VendorServiceDetailsView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        vendorServiceDetailsController.vendorMyProfileDetailsResponseModel.value.data?.type == "pro" ?
+        vendorServiceDetailsController.vendorMyProfileDetailsResponseModel.value.data?.type == "pro" && vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.status == "active" ?
         Positioned(
           top: 12.h(context),
           right: 12.w(context),
@@ -232,7 +232,7 @@ class VendorServiceDetailsView extends StatelessWidget {
               ),
             ),
           ),
-        ) : SizedBox.shrink(),
+        ) : SizedBox.shrink()
       ],
     );
   }

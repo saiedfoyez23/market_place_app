@@ -6,8 +6,6 @@ import 'package:marketplaceapp/module/module.dart';
 class UserNotificationView extends StatelessWidget {
   UserNotificationView({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     final UserNotificationController userNotificationController = Get.put(UserNotificationController(context: context));

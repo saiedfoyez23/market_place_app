@@ -155,6 +155,12 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                   shouldEnsureVisible: true,        // ← Important for scroll behavior
                                   adjustHeightForKeyboard: true,
                                 ),
+                                callbacks: Callbacks(
+                                  onFocus: () async {
+                                    print("call");
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                ),
                                 htmlToolbarOptions: const HtmlToolbarOptions(
                                   toolbarPosition: ToolbarPosition.aboveEditor,
                                   defaultToolbarButtons: [
@@ -299,9 +305,6 @@ class PlannerCreateNewProjectView extends StatelessWidget {
 
 
 
-
-
-
                             ],
                           ),
                         ),
@@ -414,7 +417,6 @@ class PlannerCreateNewProjectView extends StatelessWidget {
 
                               TextFormFieldWidget.build(
                                 context: context,
-                                readOnly: true,
                                 fillColor: ColorUtils.white255,
                                 hintText: "Enter client phone",
                                 controller: plannerCreateNewProjectController.plannerPhoneController.value,

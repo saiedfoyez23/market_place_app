@@ -46,7 +46,7 @@ class PlannerProjectController extends GetxController {
               clientName: value.receiver?.name ?? "",
               serviceName: value.title ?? "",
               days: int.parse(value.duration.toString()),
-              budgetUsed: double.parse(value.pendingAmount.toString()),
+              budgetUsed: value.pendingAmount.toString() == "0" ? double.parse(value.totalAmount.toString()) : double.parse(value.pendingAmount.toString()),
               budgetTotal: double.parse(value.totalAmount.toString()),
               startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
               endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",

@@ -188,7 +188,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type != "null" ?
+        plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type != "null" && plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.status == "active" ?
         Positioned(
           top: 12.h(context),
           right: 12.w(context),

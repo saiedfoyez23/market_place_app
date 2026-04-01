@@ -97,6 +97,7 @@ class PlannerProfileServiceController extends GetxController {
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = true;
+        plannerGetAllServiceModelList.clear();
         await getPlannerAllServiceController(context: context);
       },
       onFail: (e,data) {

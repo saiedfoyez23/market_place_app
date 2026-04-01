@@ -265,7 +265,7 @@ class PaymentPage {
                 child: TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: title,
@@ -289,7 +289,7 @@ class PaymentPage {
             context: context,
             alignment: Alignment.centerLeft,
             fontSize: 20,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: value,
           ),

@@ -370,6 +370,7 @@ class PlannerOfferView extends StatelessWidget {
                   onPressed: () async {
                     plannerOfferController.isUpdate.value = true;
                     plannerOfferController.selectId.value = booking.sid;
+                    plannerOfferController.allBookings.clear();
                     await plannerOfferController.updateOrderStatusController(context: context, orderId: booking.sid);
                     //Get.off(()=>OfferPaymentSuccessView(),preventDuplicates: false);
                   },

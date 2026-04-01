@@ -58,7 +58,7 @@ class ProfileViewButton {
               child: TextHelperClass.headingTextWithoutWidth(
                 context: context,
                 alignment: Alignment.centerLeft,
-                fontSize: fontSize?.sp(context) ?? 20.sp(context),
+                fontSize: fontSize ?? 16,
                 fontWeight: fontWeight ?? FontWeight.w400,
                 textColor: textColor ?? ColorUtils.black64,
                 text: title,

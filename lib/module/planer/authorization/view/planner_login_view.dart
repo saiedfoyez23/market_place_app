@@ -173,7 +173,6 @@ class PlannerLoginView extends StatelessWidget {
                               alignment: Alignment.center,
                               textColor: ColorUtils.blue96,
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
                               backgroundColor: Colors.transparent,
                             ),
 

@@ -223,7 +223,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                             child: TextHelperClass.headingTextWithoutWidth(
                                               context: context,
                                               alignment: Alignment.centerLeft,
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               fontWeight: FontWeight.w600,
                                               textColor: ColorUtils.black48,
                                               text: "Upcoming Booking",
@@ -242,11 +242,12 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                             alignment: Alignment.center,
                                             textColor: ColorUtils.orange119,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 24,
+                                            fontSize: 14,
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ],
                                       ),
+
                                       SpaceHelperWidget.v(12.h(context)),
 
                                       if(plannerHomeDashboardController.getPlannerMetaResponseModel.value.data?.upcomingEvents?.isNotEmpty == true)...[
@@ -285,7 +286,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                       TextHelperClass.headingTextWithoutWidth(
                                         context: context,
                                         alignment: Alignment.centerLeft,
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         textColor: ColorUtils.black48,
                                         text: "Recent Activities",
@@ -355,7 +356,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                 child: TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: title,
@@ -385,7 +386,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                   context: context,
                   alignment: Alignment.centerLeft,
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: value,
                 ),
@@ -395,6 +396,8 @@ class PlannerHomeDashboardView extends StatelessWidget {
               ButtonHelperWidget.customButtonWidget(
                 context: context,
                 borderRadius: 100,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
                 padding: EdgeInsets.symmetric(vertical: 5.vpm(context),horizontal: 12.hpm(context)),
                 height: 40.h(context),
                 onPressed: () async {
@@ -580,7 +583,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                   textColor: ColorUtils.black64,
                   text: partnership.message,
@@ -592,7 +595,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                 TextHelperClass.headingTextWithoutWidth(
                   context: context,
                   alignment: Alignment.centerLeft,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   textColor: ColorUtils.black96,
                   text: plannerHomeDashboardController.getDynamicTime(partnership.createdAt.toString(), DateTime.now().toString()),

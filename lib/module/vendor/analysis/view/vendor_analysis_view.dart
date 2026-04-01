@@ -174,7 +174,7 @@ class VendorAnalysisView extends StatelessWidget {
           TextHelperClass.headingTextWithoutWidth(
             context: context,
             alignment: Alignment.centerLeft,
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: title,
@@ -186,7 +186,7 @@ class VendorAnalysisView extends StatelessWidget {
           TextHelperClass.headingTextWithoutWidth(
             context: context,
             alignment: Alignment.centerLeft,
-            fontSize: 26,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
             textColor: ColorUtils.black64,
             text: value,

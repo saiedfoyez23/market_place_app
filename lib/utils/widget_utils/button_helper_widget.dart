@@ -74,7 +74,7 @@ class ButtonHelperWidget {
                   TextHelperClass.headingTextWithoutWidth(
                     context: context,
                     alignment: Alignment.centerLeft,
-                    fontSize: titleFontSize.sp(context),
+                    fontSize: titleFontSize,
                     fontWeight: titleFontWeight,
                     textColor: textColor,
                     text: title,
@@ -85,7 +85,7 @@ class ButtonHelperWidget {
                   TextHelperClass.headingTextWithoutWidth(
                     context: context,
                     alignment: Alignment.centerLeft,
-                    fontSize: descriptionFontSize.sp(context),
+                    fontSize: descriptionFontSize,
                     fontWeight: descriptionFontWeight,
                     textColor: textColor,
                     text: description,
@@ -134,7 +134,7 @@ class ButtonHelperWidget {
         child: TextHelperClass.headingTextWithoutWidthAdventPro(
           context: context,
           alignment: alignment ?? Alignment.center,
-          fontSize: fontSize?.sp(context) ?? 24.sp(context),
+          fontSize: fontSize ?? 18,
           fontWeight: fontWeight ?? FontWeight.w700,
           textColor: textColor ?? ColorUtils.white251,
           text: text,
@@ -179,7 +179,7 @@ class ButtonHelperWidget {
         child: TextHelperClass.headingTextWithoutWidth(
           context: context,
           alignment: alignment ?? Alignment.center,
-          fontSize: fontSize?.sp(context) ?? 20.sp(context),
+          fontSize: fontSize ?? 18,
           fontWeight: fontWeight ?? FontWeight.w700,
           textColor: textColor ?? ColorUtils.white251,
           text: text,
@@ -201,7 +201,7 @@ class ButtonHelperWidget {
     Color? borderColor,
     double? borderWidth,
     Color textColor = ColorUtils.black61,
-    double textSize = 18,
+    double? textSize,
     FontWeight fontWeight = FontWeight.w700,
     double iconSize = 24,
     Color? backgroundColor,
@@ -243,7 +243,7 @@ class ButtonHelperWidget {
             textWidget ?? TextHelperClass.headingTextWithoutWidthAdventPro(
               context: context,
               alignment: Alignment.centerLeft,
-              fontSize: textSize.sp(context),
+              fontSize: textSize ?? 18,
               fontWeight: fontWeight,
               textColor: textColor,
               text: text,

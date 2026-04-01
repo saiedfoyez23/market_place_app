@@ -42,7 +42,6 @@ class PlannerProjectView extends StatelessWidget {
                     ButtonHelperWidget.customIconButtonWidgetAdventPro(
                       context: context,
                       backgroundColor: ColorUtils.blue96,
-                      textSize: 20,
                       iconSize: 20,
                       height: 40,
                       padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
