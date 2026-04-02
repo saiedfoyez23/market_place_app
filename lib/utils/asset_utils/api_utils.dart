@@ -78,6 +78,8 @@ class ApiUtils {
   static const String planerMeta = "$baseUrl/meta/planer"; //done
   static const String createSupport = "$baseUrl/supports"; //done
   static const String getWithdraw = "$baseUrl/withdraw/my-withdraw"; //done
+  static const String createPaystack = "$baseUrl/paystack-recipients/connect"; //done
+  static const String getAllPaystack = "$baseUrl/paystack-recipients/my-recipients"; //done
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
@@ -173,6 +175,9 @@ class ApiUtils {
   }
   static String getAllVendorLeads(String tab) {
     return "$baseUrl/analysis/vendor-leads?tab=${tab}&limit=1000000000";
+  }
+  static String deletePaystack(String bankInformationId) {
+    return "$baseUrl/paystack-recipients/${bankInformationId}";
   }
 
 }

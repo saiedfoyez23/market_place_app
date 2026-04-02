@@ -165,7 +165,7 @@ class PlannerVendorView extends StatelessWidget {
                               // Search Bar
                               TextFormFieldWidget.build(
                                 context: context,
-                                hintText: "Search Planner...",
+                                hintText: "Search Vendor...",
                                 controller: plannerVendorController.searchController.value,
                                 keyboardType: TextInputType.emailAddress,
                                 readOnly: true,

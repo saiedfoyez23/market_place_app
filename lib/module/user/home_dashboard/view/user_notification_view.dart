@@ -67,7 +67,6 @@ class UserNotificationView extends StatelessWidget {
                                   alignment: Alignment.center,
                                   textColor: ColorUtils.blue96,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 24,
                                   backgroundColor: Colors.transparent,
                                 ),
 

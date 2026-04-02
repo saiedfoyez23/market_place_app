@@ -95,7 +95,7 @@ class OverViewPage {
                   context: context,
                   alignment: Alignment.center,
                   textAlign: TextAlign.center,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "completed" ? ColorUtils.blue96 :
                   plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.status == "cancelled" ? ColorUtils.red202 : ColorUtils.green139,

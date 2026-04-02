@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 
 
 class PlannerWithdrawView extends StatelessWidget {
@@ -10,157 +11,238 @@ class PlannerWithdrawView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GetAllWithdrawController getAllWithdrawController = Get.put(GetAllWithdrawController(context: context));
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Get.back(),
-        ),
-        title: const Text(
-          'My Wallet',
-          style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
-        ),
-      ),
-      body: Obx(() => getAllWithdrawController.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Total Balance Card
-            Container(
-              width: double.infinity,
-              height: 160,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF6B4A), Color(0xFFFF8A65)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: Obx(() => SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white251,
+            ),
+            child: getAllWithdrawController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
+              slivers: [
+
+
+                AuthAppBarHelperWidget(
+                  onBackPressed: () async {
+                    Get.off(()=>DashboardPlannerView(index: 5),preventDuplicates: false);
+                  },
+                  title: 'My Wallet',
                 ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Stack(
-                children: [
-                  const Positioned(
-                    top: 24,
-                    left: 24,
+
+
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Total Balance',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          '\$23,105.00',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
+
+                        SpaceHelperWidget.v(16.h(context)),
+                            // Total Balance Card
+                        Container(
+                          height: 160.h(context),
+                          padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                ColorUtils.orange96,
+                                ColorUtils.orange119,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(12.r(context)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ColorUtils.white255,
+                                    text: 'Total Balance',
+                                  ),
+
+                                  SpaceHelperWidget.v(14.h(context)),
+
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w600,
+                                    textColor: ColorUtils.white255,
+                                    text: '\$${getAllWithdrawController.getAllWithdrawResponseModel.value.data?.totalWithdraw}',
+                                  ),
+
+
+                                ],
+                              ),
+
+
+                              ButtonHelperWidget.customIconButtonWidget(
+                                context: context,
+                                backgroundColor: ColorUtils.white255,
+                                textSize: 16,
+                                iconSize: 20,
+                                height: 38,
+                                padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 10.hpm(context)),
+                                borderRadius: 8,
+                                textColor: ColorUtils.black64,
+                                fontWeight: FontWeight.w500,
+                                onPressed: () async {
+                                  Get.off(()=>PlannerBankDetailsView(),preventDuplicates: false);
+                                },
+                                iconPath: ImageUtils.myWalletImage,
+                                text: 'Withdraw',
+                              ),
+
+                            ],
                           ),
                         ),
+
+
+                        SpaceHelperWidget.v(32.h(context)),
+
+                            // Header
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+
+                            Expanded(
+                              child: TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                textAlign: TextAlign.start,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                textColor: ColorUtils.black48,
+                                text: 'Withdrawal History',
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(10.w(context)),
+
+
+                            Expanded(
+                              child: CustomDropdownHelperClass(
+                                fillColor: ColorUtils.white243,
+                                value: getAllWithdrawController.selectType.value,
+                                items: ["All","Proceed","Complete","Hold","Pending","Reject"],
+                                onChanged: (value) async {
+                                  getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList;
+                                  getAllWithdrawController.selectType.value = value!;
+                                  if(value == "All") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList;
+                                  } else if(value == "Proceed") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList.where((value)=> value.status == "proceed").toList();
+                                  } else if(value == "Pending") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList.where((value)=> value.status == "pending").toList();
+                                  } else if(value == "Hold") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList.where((value)=> value.status == "hold").toList();
+                                  } else if(value == "Complete") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList.where((value)=> value.status == "completed").toList();
+                                  } else if(value == "Reject") {
+                                    getAllWithdrawController.filterWithdrawList.value = getAllWithdrawController.getAllWithdrawResponseWithdrawList.where((value)=> value.status == "failed").toList();
+                                  }
+                                },
+                                hintText: "select",
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                            // List of Withdrawals
+
+                        Expanded(
+                          child: Obx(() {
+                              final dataList = getAllWithdrawController.filterWithdrawList;
+                              if (dataList.isEmpty) {
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.center,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                    textColor: ColorUtils.black48,
+                                    text: "No Withdrawal History Available",
+                                  ),
+                                );
+                              }
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: getAllWithdrawController.filterWithdrawList.length,
+                                itemBuilder: (context, index) {
+                                  final item = dataList[index];
+                                  return _buildWithdrawItem(item: item,context: context);
+                                },
+                              );
+                            }),
+                        ),
+
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: 24,
-                    right: 24,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // TODO: Handle Withdraw
-                        Get.snackbar('Withdraw', 'Withdraw feature coming soon');
-                      },
-                      icon: const Icon(Icons.account_balance_wallet, size: 18),
-                      label: const Text('Withdraw'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFFFF6B4A),
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                )
 
-            const SizedBox(height: 24),
 
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Withdrawal History',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Row(
-                    children: [
-                      Text('All', style: TextStyle(fontWeight: FontWeight.w500)),
-                      Icon(Icons.arrow_drop_down_rounded),
-                    ],
-                  ),
-                ),
               ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // List of Withdrawals
-            Obx(() {
-              final dataList = getAllWithdrawController.getAllWithdrawResponseModel.value.data?.withdrawList ?? [];
-              if (dataList.isEmpty) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(40),
-                    child: Text('No withdrawal history yet', style: TextStyle(color: Colors.grey)),
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: getAllWithdrawController.getAllWithdrawResponseModel.value.data?.withdrawList?.length,
-                itemBuilder: (context, index) {
-                  final item = dataList[index];
-                  return _buildWithdrawItem(item);
-                },
-              );
-            }),
-          ],
+            )
+          ),
+        )
         ),
-      ),
       ),
     );
   }
 
-  Widget _buildWithdrawItem(GetAllWithdrawResponseWithdrawList item) {
+  Widget _buildWithdrawItem({
+    required GetAllWithdrawResponseWithdrawList item,
+    required BuildContext context,
+  }) {
     final amount = item.amount; // Adjust if amount is in cents
     final status = item.status;
 
     Color statusColor = Colors.grey;
-    if (status == 'completed') statusColor = Colors.green;
-    if (status == 'pending') statusColor = Colors.orange;
-    if (status == 'reject' || status == 'rejected') statusColor = Colors.red;
+    if (status == 'proceed') statusColor = ColorUtils.yellow95;
+    if (status == 'completed') statusColor = ColorUtils.green139;
+    if (status == "hold") statusColor = ColorUtils.blue206;
+    if (status == 'pending') statusColor = ColorUtils.yellow177;
+    if (status == 'reject' || status == 'failed') statusColor = ColorUtils.red181;
+
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 10.bpm(context)),
+      padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 8.hpm(context)),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: ColorUtils.white243,
+        borderRadius: BorderRadius.circular(8.r(context)),
       ),
       child: Row(
         children: [
@@ -168,35 +250,54 @@ class PlannerWithdrawView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  (item.method ?? 'Unknown').toUpperCase(),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  textAlign: TextAlign.start,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  textColor: ColorUtils.black64,
+                  text: (item.method ?? '').toString().toUpperCase(),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  _formatDate(item.createdAt),
-                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                SpaceHelperWidget.v(4.h(context)),
+                TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerLeft,
+                  textAlign: TextAlign.start,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  textColor: ColorUtils.black74,
+                  text: _formatDate(item.createdAt)
                 ),
               ],
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '\$${NumberFormat('#,###.00').format(amount)}',
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                (item.status ?? 'Pending').toUpperCase(),
-                style: TextStyle(
-                  color: statusColor,
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerRight,
+                  textAlign: TextAlign.end,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  fontSize: 13,
+                  textColor: ColorUtils.black64,
+                  text: '\$${NumberFormat('#,###.00').format(amount)}',
                 ),
-              ),
-            ],
+                SpaceHelperWidget.v(4.h(context)),
+                TextHelperClass.headingTextWithoutWidth(
+                  context: context,
+                  alignment: Alignment.centerRight,
+                  textAlign: TextAlign.end,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  textColor: statusColor,
+                  text:  (item.status ?? 'Pending').toUpperCase(),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -14,6 +14,7 @@ class MessageController extends GetxController {
   Rx<GetAllChatResponseModel> getAllChatResponseModel = GetAllChatResponseModel().obs;
   RxBool isLoading = false.obs;
   final SocketServiceController socketServiceController = Get.put(SocketServiceController());
+  Rx<UserMyProfileDetailsResponseModel> userMyProfileDetailsResponseModel = UserMyProfileDetailsResponseModel().obs;
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
   BuildContext context;
   MessageController({required this.context});
@@ -46,8 +47,37 @@ class MessageController extends GetxController {
         print("stopTyping data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
-      await getAllChatMessageController(context: context,modelType: "User");
+      await getProfileController(
+        context: context,
+        onComplete: () async {
+          await getAllChatMessageController(context: context,modelType: "User");
+        },
+      );
     });
+  }
+
+
+  Future<void> getProfileController({
+    required BuildContext context,
+    required Function onComplete,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        userMyProfileDetailsResponseModel.value = UserMyProfileDetailsResponseModel.fromJson(data);
+        onComplete();
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+
   }
 
 

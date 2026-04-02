@@ -276,7 +276,7 @@ class UserSearchDialogBox extends StatelessWidget {
                             alignment: Alignment.center,
                             textColor: ColorUtils.blue96,
                             fontWeight: FontWeight.w600,
-                            fontSize: 20,
+                            fontSize: 14,
                             backgroundColor: Colors.transparent,
                           ),
 

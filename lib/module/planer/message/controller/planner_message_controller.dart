@@ -11,6 +11,7 @@ class PlannerMessageController extends GetxController {
   RxBool isOrderChat = false.obs;
   RxBool isGroupChat = false.obs;
   RxString selectChatType = "".obs;
+  Rx<PlannerMyProfileDetailsResponseModel> plannerMyProfileDetailsResponseModel = PlannerMyProfileDetailsResponseModel().obs;
   Rx<GetAllChatResponseModel> getAllChatResponseModel = GetAllChatResponseModel().obs;
   RxBool isLoading = false.obs;
   final PlannerSocketServiceController plannerSocketServiceController = Get.put(PlannerSocketServiceController());
@@ -46,8 +47,37 @@ class PlannerMessageController extends GetxController {
         print("stopTyping data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
-      await getAllChatMessageController(context: context,modelType: "User");
+      await getPlannerProfileDetailsController(
+        context: context,
+        onComplete: () async {
+          await getAllChatMessageController(context: context,modelType: "User");
+        },
+      );
     });
+  }
+
+
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+    required Function onComplete,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+        onComplete();
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
 

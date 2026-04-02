@@ -83,7 +83,7 @@ class LeadCardWidget extends StatelessWidget {
                   context: context,
                   alignment: Alignment.center,
                   textAlign: TextAlign.center,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: selectedTab == 0 ? ColorUtils.blue96 : selectedTab == 1 ? ColorUtils.green139 : selectedTab == 2 ? ColorUtils.yellow95 : ColorUtils.red202,
                   text: selectedTab == 0 ? "Corporate" : selectedTab == 1 ? "Contacted" : selectedTab == 2 ? "Qualified" : "Left",

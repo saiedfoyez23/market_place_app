@@ -14,6 +14,7 @@ class VendorMessageController extends GetxController {
   RxString selectChatType = "".obs;
   Rx<GetAllChatResponseModel> getAllChatResponseModel = GetAllChatResponseModel().obs;
   RxBool isLoading = false.obs;
+  Rx<VendorMyProfileDetailsResponseModel> vendorMyProfileDetailsResponseModel = VendorMyProfileDetailsResponseModel().obs;
   final VendorSocketServiceController vendorSocketServiceController = Get.put(VendorSocketServiceController());
   Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   BuildContext context;
@@ -47,8 +48,37 @@ class VendorMessageController extends GetxController {
         print("stopTyping data : ${data}");
         print("Socket new message received >>>>>>>>>>>>>>>>>>>>>>>");
       });
-      await getAllChatMessageController(context: context,modelType: "User");
+      await getVendorProfileDetailsController(
+        context: context,
+        onComplete: () async {
+          await getAllChatMessageController(context: context,modelType: "User");
+        },
+      );
     });
+  }
+
+
+  Future<void> getVendorProfileDetailsController({
+    required BuildContext context,
+    required Function onComplete,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        vendorMyProfileDetailsResponseModel.value = VendorMyProfileDetailsResponseModel.fromJson(data);
+        onComplete();
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
   }
 
 

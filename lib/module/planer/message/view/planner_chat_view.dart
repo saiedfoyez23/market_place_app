@@ -53,8 +53,8 @@ class PlannerChatView extends StatelessWidget {
                                     horizontalPadding: 1.hpm(context),
                                     backgroundColor: ColorUtils.orange213,
                                     radius: 25.r(context),
-                                    imageAsset: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.photoUrl ==  null ? ImageUtils.noImage : null,
-                                    imageUrl: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.photoUrl,
+                                    imageAsset: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != plannerChatController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl ==  null ? ImageUtils.noImage : null,
+                                    imageUrl: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != plannerChatController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl,
                                   ),
 
                                   SpaceHelperWidget.h(12.w(context)),
@@ -71,7 +71,7 @@ class PlannerChatView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.name ?? "",
+                                          text: plannerChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != plannerChatController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.name ?? "",
                                         ),
 
                                         // SpaceHelperWidget.v(3.h(context)),

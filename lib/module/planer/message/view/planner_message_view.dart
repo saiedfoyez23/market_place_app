@@ -217,8 +217,8 @@ class PlannerMessageView extends StatelessWidget {
                                     horizontalPadding: 1.hpm(context),
                                     backgroundColor: ColorUtils.orange213,
                                     radius: 25.r(context),
-                                    imageAsset: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl == null ? ImageUtils.noImage : null,
-                                    imageUrl: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl,
+                                    imageAsset: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != plannerMessageController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl == null ? ImageUtils.noImage : null,
+                                    imageUrl: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != plannerMessageController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl,
                                   ),
                                 ],
 
@@ -246,7 +246,7 @@ class PlannerMessageView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.name ?? "",
+                                          text: plannerMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != plannerMessageController.plannerMyProfileDetailsResponseModel.value.data?.sId).first.user?.name ?? "",
                                         ),
                                       ],
 
@@ -260,6 +260,7 @@ class PlannerMessageView extends StatelessWidget {
                                         context: context,
                                         alignment: Alignment.centerLeft,
                                         fontSize: 16,
+                                        textOverFlow: TextOverflow.ellipsis,
                                         fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
                                         textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
                                         text: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?

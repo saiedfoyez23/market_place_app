@@ -58,7 +58,7 @@ class PlannerOfferView extends StatelessWidget {
 
                           TextFormFieldWidget.build(
                             context: context,
-                            hintText: "Search Planner...",
+                            hintText: "Search Order...",
                             controller: plannerOfferController.searchController.value,
                             keyboardType: TextInputType.emailAddress,
                             onChanged: (value) async {
@@ -275,7 +275,7 @@ class PlannerOfferView extends StatelessWidget {
                   context: context,
                   alignment: Alignment.center,
                   textAlign: TextAlign.center,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: textColor,
                   text: text,

@@ -37,7 +37,7 @@ class PlannerSearchDialogBox extends StatelessWidget {
                   /// Search Field
                   TextFormFieldWidget.build(
                     context: context,
-                    hintText: "Search Planner Or Category....",
+                    hintText: "Search Vendor...",
                     controller: plannerSearchController.searchController.value,
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) async {
@@ -273,7 +273,7 @@ class PlannerSearchDialogBox extends StatelessWidget {
                             alignment: Alignment.center,
                             textColor: ColorUtils.blue96,
                             fontWeight: FontWeight.w600,
-                            fontSize: 20,
+                            fontSize: 14,
                             backgroundColor: Colors.transparent,
                           ),
 

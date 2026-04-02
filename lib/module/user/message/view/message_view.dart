@@ -187,8 +187,8 @@ class MessageView extends StatelessWidget {
                                   horizontalPadding: 1.hpm(context),
                                   backgroundColor: ColorUtils.orange213,
                                   radius: 25.r(context),
-                                  imageAsset: messageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl == null ? ImageUtils.noImage : null,
-                                  imageUrl: messageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl,
+                                  imageAsset: messageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != messageController.userMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl == null ? ImageUtils.noImage : null,
+                                  imageUrl: messageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != messageController.userMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl,
                                 ),
                               ],
 
@@ -216,7 +216,7 @@ class MessageView extends StatelessWidget {
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         textColor: ColorUtils.black64,
-                                        text: messageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.name,
+                                        text: messageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != messageController.userMyProfileDetailsResponseModel.value.data?.sId).first.user?.name,
                                       ),
                                     ],
 
@@ -230,6 +230,7 @@ class MessageView extends StatelessWidget {
                                       context: context,
                                       alignment: Alignment.centerLeft,
                                       fontSize: 16,
+                                      textOverFlow: TextOverflow.ellipsis,
                                       fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
                                       textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
                                       text: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?

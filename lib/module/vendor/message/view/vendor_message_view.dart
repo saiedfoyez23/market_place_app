@@ -193,8 +193,8 @@ class VendorMessageView extends StatelessWidget {
                                     horizontalPadding: 1.hpm(context),
                                     backgroundColor: ColorUtils.orange213,
                                     radius: 25.r(context),
-                                    imageAsset: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl == null ? ImageUtils.noImage : null,
-                                    imageUrl: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.last.user?.photoUrl,
+                                    imageAsset: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != vendorMessageController.vendorMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl == null ? ImageUtils.noImage : null,
+                                    imageUrl: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != vendorMessageController.vendorMyProfileDetailsResponseModel.value.data?.sId).first.user?.photoUrl,
                                   ),
                                 ],
 
@@ -222,7 +222,7 @@ class VendorMessageView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.first.user?.name ?? "",
+                                          text: vendorMessageController.getAllChatResponseModel.value.data?[index].participants?.where((value) => value.user?.sId != vendorMessageController.vendorMyProfileDetailsResponseModel.value.data?.sId).first.user?.name ?? "",
                                         ),
                                       ],
 
@@ -236,6 +236,7 @@ class VendorMessageView extends StatelessWidget {
                                         context: context,
                                         alignment: Alignment.centerLeft,
                                         fontSize: 16,
+                                        textOverFlow: TextOverflow.ellipsis,
                                         fontWeight: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
                                         textColor: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
                                         text: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?

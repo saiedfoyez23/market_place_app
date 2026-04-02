@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
+class VendorBankDetailsDialogBox {
 
-class PaymentDialogBoxWidget {
-
-  void makePaymentDialog({
+  void deleteBankDetailsDialog({
     required BuildContext context,
-    required String paymentId,
-    required PlannerProjectDetailsController plannerProjectDetailsController,
+    required String bankInformationId,
+    required VendorBankDetailsController vendorBankDetailsController,
   }) {
     showDialog(
       context: context,
@@ -45,11 +44,14 @@ class PaymentDialogBoxWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     textColor: ColorUtils.black21,
-                    text: "Are you sure you want make payment? ",
+                    text: "Are you sure you want to delete the bank information ",
                   ),
 
 
                   SpaceHelperWidget.v(32.h(context)),
+
+
+
 
 
                   /// ===== Buttons Row =====
@@ -76,19 +78,21 @@ class PaymentDialogBoxWidget {
 
 
                       Expanded(
-                        child: plannerProjectDetailsController.isPayment.value == true ?
+                        child: vendorBankDetailsController.isDelete.value == true ?
                         LoadingHelperWidget.loadingHelperWidget(
                           context: context,
                         ) :
                         ButtonHelperWidget.customButtonWidget(
                           context: context,
                           onPressed: () async {
-                            plannerProjectDetailsController.isPayment.value = true;
-                            await plannerProjectDetailsController.makePaymentController(context: context, paymentId: paymentId);
+                            vendorBankDetailsController.isDelete.value = true;
+                            await vendorBankDetailsController.deleteVendorBankInformationController(context: context, bankInformationId: bankInformationId);
                           },
-                          text: "Payment",
+                          text: "Delete",
                           borderRadius: 40,
+                          backgroundColor: ColorUtils.red191,
                           fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.white255,
                         ),
                       ),
 

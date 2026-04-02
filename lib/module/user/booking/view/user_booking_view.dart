@@ -246,7 +246,7 @@ class UserBookingView extends StatelessWidget {
                   context: context,
                   alignment: Alignment.center,
                   textAlign: TextAlign.center,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   textColor: textColor,
                   text: text,

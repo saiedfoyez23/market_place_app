@@ -52,8 +52,8 @@ class VendorChatView extends StatelessWidget {
                                     horizontalPadding: 1.hpm(context),
                                     backgroundColor: ColorUtils.orange213,
                                     radius: 25.r(context),
-                                    imageAsset: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.photoUrl ==  null ? ImageUtils.noImage : null,
-                                    imageUrl: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.photoUrl,
+                                    imageAsset: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != vendorChatController.vendorMyProfileDetailsResponseModel.value.data?.sId).last.user?.photoUrl ==  null ? ImageUtils.noImage : null,
+                                    imageUrl: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != vendorChatController.vendorMyProfileDetailsResponseModel.value.data?.sId).last.user?.photoUrl,
                                   ),
 
                                   SpaceHelperWidget.h(12.w(context)),
@@ -70,7 +70,7 @@ class VendorChatView extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorUtils.black64,
-                                          text: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.last.user?.name,
+                                          text: vendorChatController.getChatDetailsResponseModel.value.data?.participants?.where((value) => value.user?.sId != vendorChatController.vendorMyProfileDetailsResponseModel.value.data?.sId).last.user?.name,
                                         ),
 
                                         // SpaceHelperWidget.v(3.h(context)),

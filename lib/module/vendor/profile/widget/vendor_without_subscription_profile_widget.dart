@@ -114,6 +114,18 @@ class VendorWithoutSubscriptionProfileWidget {
                   },
                 ),
 
+                SpaceHelperWidget.v(16.h(context)),
+
+
+                PlannerProfileViewButton().plannerProfileViewButton(
+                  context: context,
+                  title: "My Wallet",
+                  imagePath: ImageUtils.myWalletImage,
+                  onTap: () async {
+                    Get.off(()=>VendorWithdrawView(),preventDuplicates: false);
+                  },
+                ),
+
 
                 SpaceHelperWidget.v(16.h(context)),
 

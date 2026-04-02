@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
+import 'package:marketplaceapp/module/module.dart';
 
-class GetAllWithdrawController extends GetxController {
-
+class VendorGetAllWithdrawController extends GetxController {
 
   RxBool isLoading = false.obs;
   BuildContext context;
-  GetAllWithdrawController({required this.context});
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  VendorGetAllWithdrawController({required this.context});
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   Rx<GetAllWithdrawResponseModel> getAllWithdrawResponseModel = GetAllWithdrawResponseModel().obs;
   RxList<GetAllWithdrawResponseWithdrawList> filterWithdrawList = <GetAllWithdrawResponseWithdrawList>[].obs;
   RxList<GetAllWithdrawResponseWithdrawList> getAllWithdrawResponseWithdrawList = <GetAllWithdrawResponseWithdrawList>[].obs;
@@ -25,12 +24,12 @@ class GetAllWithdrawController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getAllWithdrawController(context: context);
+      await vendorGetAllWithdrawController(context: context);
     });
   }
 
 
-  Future<void> getAllWithdrawController({
+  Future<void> vendorGetAllWithdrawController({
     required BuildContext context,
   }) async {
     BaseApiUtils.get(
@@ -55,6 +54,7 @@ class GetAllWithdrawController extends GetxController {
     );
 
   }
+
 
 
 }

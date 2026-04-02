@@ -59,8 +59,8 @@ class ButtonHelperWidget {
           children: [
             ImageHelperWidget.assetImageWidget(
               context: context,
-              height: imageHeight.h(context),
-              width: imageWidth.w(context),
+              height: imageHeight,
+              width: imageWidth,
               imageString: imagePath,
             ),
 

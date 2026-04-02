@@ -56,6 +56,27 @@ class PlannerChatController extends GetxController {
     });
   }
 
+  Future<void> getPlannerProfileDetailsController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        print(data);
+        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isLoading.value = false;
+      },
+    );
+  }
+
   Future<void> getChatDetailsController({
     required BuildContext context,
     required String chatId,
@@ -75,27 +96,6 @@ class PlannerChatController extends GetxController {
       },
       onExceptionFail: (e,data) {
         print(data);
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
-      },
-    );
-  }
-
-  Future<void> getPlannerProfileDetailsController({
-    required BuildContext context,
-  }) async {
-    BaseApiUtils.get(
-      url: ApiUtils.userProfileDetails,
-      authorization: userLoginResponseModel.value.data?.accessToken,
-      onSuccess: (e,data) async {
-        print(data);
-        plannerMyProfileDetailsResponseModel.value = PlannerMyProfileDetailsResponseModel.fromJson(data);
-      },
-      onFail: (e,data) {
-        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isLoading.value = false;
-      },
-      onExceptionFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },

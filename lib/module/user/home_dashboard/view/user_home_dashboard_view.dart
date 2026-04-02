@@ -513,8 +513,8 @@ class UserHomeDashboardView extends StatelessWidget {
         children: [
           ImageHelperWidget.styledImage(
             context: context,
-            height: 60.h(context),
-            width: 60.w(context),
+            height: 48,
+            width: 48,
             imageUrl: image,
             borderRadius: 8
           ),
@@ -527,8 +527,8 @@ class UserHomeDashboardView extends StatelessWidget {
               context: context,
               alignment: Alignment.center,
               textAlign: TextAlign.center,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               textColor: ColorUtils.black48,
               text: title,
             ),
