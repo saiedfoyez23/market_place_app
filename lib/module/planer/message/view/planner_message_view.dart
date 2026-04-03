@@ -253,21 +253,51 @@ class PlannerMessageView extends StatelessWidget {
 
 
                                       SpaceHelperWidget.v(6.h(context)),
-
-                                      plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
-                                      SizedBox.shrink() :
-                                      TextHelperClass.headingTextWithoutWidth(
-                                        context: context,
-                                        alignment: Alignment.centerLeft,
-                                        fontSize: 16,
-                                        textOverFlow: TextOverflow.ellipsis,
-                                        fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
-                                        textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
-                                        text: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
-                                        plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
-                                        plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
-                                      ),
-
+                                      
+                                      if(plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null) ...[
+                                        SizedBox.shrink()
+                                      ] else...[
+                                        
+                                        if(plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true)...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.centerLeft,
+                                            fontSize: 16,
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                            textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                            text: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
+                                            plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
+                                            plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
+                                          ),
+                                        ] else...[
+                                          if(plannerMessageController.isImage(plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first) == true)...[
+                                            TextHelperClass.headingTextWithoutWidth(
+                                              context: context,
+                                              alignment: Alignment.centerLeft,
+                                              fontSize: 16,
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                              textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                              text: plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.length > 1 ?
+                                              "${plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photos" :
+                                              "${plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photo",
+                                            ),
+                                          ] else...[
+                                            TextHelperClass.headingTextWithoutWidth(
+                                              context: context,
+                                              alignment: Alignment.centerLeft,
+                                              fontSize: 16,
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                              textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                              text: plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.toString().split('/').last,
+                                            ),
+                                          ]
+                                        ]
+                                       
+                                      ]
+                                      
                                     ],
                                   ),
                                 ),

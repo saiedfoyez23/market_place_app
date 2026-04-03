@@ -31,6 +31,7 @@ class PlannerChatView extends StatelessWidget {
                   child: plannerChatController.isLoading.value == true ?
                   LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
                   CustomScrollView(
+                    controller: plannerChatController.scrollController.value,
                     slivers: [
 
 
@@ -229,37 +230,78 @@ class PlannerChatView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
 
+                            plannerChatController.isSubmit.value == true ?
+                            Expanded(child: LoadingHelperWidget.loadingHelperWidget(context: context)) :
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    await plannerChatController.pickImage(
+                                      context: context,
+                                      onComplete: () async {
+                                        print(plannerChatController.selectFile);
+                                        Map<String,dynamic> data = {
+                                          "chatId": plannerChatController.getChatDetailsResponseModel.value.data?.sId ?? "",
+                                          "text": "",
+                                          "imageUrl": plannerChatController.selectFile,
+                                        };
+                                        //
+                                        print(data);
+                                        final ack = await plannerSocketServiceController.emitWithAck('send-message', data);
+                                        print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                        print("send dddd");
+                                        plannerChatController.chatController.value.clear();
+                                        FocusScope.of(context).unfocus();
+                                        await plannerChatController.getAllMessageController(context: context, chatId: chatId);
+                                      },
+                                    );
+                                  },
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 30.h(context),
+                                    width: 30.w(context),
+                                    imageString: ImageUtils.chatIconImage,
+                                  ),
+                                ),
 
-                            // Row(
-                            //   children: [
-                            //     InkWell(
-                            //       onTap: () async {},
-                            //       child: ImageHelperWidget.assetImageWidget(
-                            //         context: context,
-                            //         height: 30.h(context),
-                            //         width: 30.w(context),
-                            //         imageString: ImageUtils.chatIconImage,
-                            //       ),
-                            //     ),
-                            //
-                            //     SpaceHelperWidget.h(16.h(context)),
-                            //
-                            //
-                            //     InkWell(
-                            //       onTap: () async {},
-                            //       child: ImageHelperWidget.assetImageWidget(
-                            //         context: context,
-                            //         height: 30.h(context),
-                            //         width: 30.w(context),
-                            //         imageString: ImageUtils.chatDocumentImage,
-                            //       ),
-                            //     ),
-                            //
-                            //
-                            //     SpaceHelperWidget.h(16.h(context)),
-                            //
-                            //   ],
-                            // ),
+                                SpaceHelperWidget.h(16.h(context)),
+
+
+                                InkWell(
+                                  onTap: () async {
+                                    await plannerChatController.pickFile(
+                                      context: context,
+                                      onComplete: () async {
+                                        print(plannerChatController.selectFile);
+                                        Map<String,dynamic> data = {
+                                          "chatId": plannerChatController.getChatDetailsResponseModel.value.data?.sId ?? "",
+                                          "text": "",
+                                          "imageUrl": plannerChatController.selectFile,
+                                        };
+                                        //
+                                        print(data);
+                                        final ack = await plannerSocketServiceController.emitWithAck('send-message', data);
+                                        print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                        print("send dddd");
+                                        plannerChatController.chatController.value.clear();
+                                        FocusScope.of(context).unfocus();
+                                        await plannerChatController.getAllMessageController(context: context, chatId: chatId);
+                                      },
+                                    );
+                                  },
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 30.h(context),
+                                    width: 30.w(context),
+                                    imageString: ImageUtils.chatDocumentImage,
+                                  ),
+                                ),
+
+
+                                SpaceHelperWidget.h(16.h(context)),
+
+                              ],
+                            ),
 
 
                             Expanded(
@@ -292,7 +334,6 @@ class PlannerChatView extends StatelessWidget {
                                       print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
                                       print("send dddd");
                                       plannerChatController.chatController.value.clear();
-                                      plannerChatController.isTyping.value = false;
                                       FocusScope.of(context).unfocus();
                                       await plannerChatController.getAllMessageController(context: context, chatId: chatId);
                                     }

@@ -106,6 +106,12 @@ class PlannerMessageController extends GetxController {
   }
 
 
+  bool isImage(String url) {
+    final ext = url.split('.').last.toLowerCase();
+    return ['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(ext);
+  }
+
+
   Future<void> seenMessageController({
     required BuildContext context,
     required String chatId,

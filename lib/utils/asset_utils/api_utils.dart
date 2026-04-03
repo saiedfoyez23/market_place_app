@@ -80,6 +80,7 @@ class ApiUtils {
   static const String getWithdraw = "$baseUrl/withdraw/my-withdraw"; //done
   static const String createPaystack = "$baseUrl/paystack-recipients/connect"; //done
   static const String getAllPaystack = "$baseUrl/paystack-recipients/my-recipients"; //done
+  static const String uploadFile = "$baseUrl/uploads/multiple";
   static String getUserOrderDetails(String orderId) {
     return "$baseUrl/orders/${orderId}";
   }
