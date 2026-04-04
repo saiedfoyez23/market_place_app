@@ -230,19 +230,49 @@ class VendorMessageView extends StatelessWidget {
 
                                       SpaceHelperWidget.v(6.h(context)),
 
-                                      vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
-                                      SizedBox.shrink() :
-                                      TextHelperClass.headingTextWithoutWidth(
-                                        context: context,
-                                        alignment: Alignment.centerLeft,
-                                        fontSize: 16,
-                                        textOverFlow: TextOverflow.ellipsis,
-                                        fontWeight: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
-                                        textColor: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
-                                        text: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
-                                        vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
-                                        vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
-                                      ),
+                                      if(vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage == null) ...[
+                                        SizedBox.shrink()
+                                      ] else...[
+
+                                        if(vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true)...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.centerLeft,
+                                            fontSize: 16,
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontWeight: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                            textColor: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                            text: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
+                                            vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
+                                            vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
+                                          ),
+                                        ] else...[
+                                          if(vendorMessageController.isImage(vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first) == true)...[
+                                            TextHelperClass.headingTextWithoutWidth(
+                                              context: context,
+                                              alignment: Alignment.centerLeft,
+                                              fontSize: 16,
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              fontWeight: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                              textColor: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                              text: vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.length > 1 ?
+                                              "${vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photos" :
+                                              "${vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photo",
+                                            ),
+                                          ] else...[
+                                            TextHelperClass.headingTextWithoutWidth(
+                                              context: context,
+                                              alignment: Alignment.centerLeft,
+                                              fontSize: 16,
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              fontWeight: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                              textColor: vendorMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                              text: vendorMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.toString().split('/').last,
+                                            ),
+                                          ]
+                                        ]
+
+                                      ]
 
                                     ],
                                   ),

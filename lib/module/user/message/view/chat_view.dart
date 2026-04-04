@@ -32,6 +32,7 @@ class ChatView extends StatelessWidget {
                   child: chatController.isLoading.value == true ?
                   LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
                   CustomScrollView(
+                    controller: chatController.scrollController.value,
                     slivers: [
 
 
@@ -225,41 +226,84 @@ class ChatView extends StatelessWidget {
 
                         SpaceHelperWidget.v(12.h(context)),
 
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
 
-                            // Row(
-                            //   children: [
-                            //     InkWell(
-                            //       onTap: () async {},
-                            //       child: ImageHelperWidget.assetImageWidget(
-                            //         context: context,
-                            //         height: 30.h(context),
-                            //         width: 30.w(context),
-                            //         imageString: ImageUtils.chatIconImage,
-                            //       ),
-                            //     ),
-                            //
-                            //     SpaceHelperWidget.h(16.h(context)),
-                            //
-                            //
-                            //     InkWell(
-                            //       onTap: () async {},
-                            //       child: ImageHelperWidget.assetImageWidget(
-                            //         context: context,
-                            //         height: 30.h(context),
-                            //         width: 30.w(context),
-                            //         imageString: ImageUtils.chatDocumentImage,
-                            //       ),
-                            //     ),
-                            //
-                            //
-                            //     SpaceHelperWidget.h(16.h(context)),
-                            //
-                            //   ],
-                            // ),
+                            chatController.isSubmit.value == true ?
+                            Expanded(child: LoadingHelperWidget.loadingHelperWidget(context: context)) :
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    await chatController.pickImage(
+                                      context: context,
+                                      onComplete: () async {
+                                        print(chatController.selectFile);
+                                        Map<String,dynamic> data = {
+                                          "chatId": chatController.getChatDetailsResponseModel.value.data?.sId ?? "",
+                                          "text": "",
+                                          "imageUrl": chatController.selectFile,
+                                        };
+                                        //
+                                        print(data);
+                                        final ack = await socketServiceController.emitWithAck('send-message', data);
+                                        print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                        print("send dddd");
+                                        chatController.chatController.value.clear();
+                                        FocusScope.of(context).unfocus();
+                                        await chatController.getAllMessageController(context: context, chatId: chatId);
+                                      },
+                                    );
+                                  },
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 30.h(context),
+                                    width: 30.w(context),
+                                    imageString: ImageUtils.chatIconImage,
+                                  ),
+                                ),
+
+                                SpaceHelperWidget.h(16.h(context)),
+
+
+                                InkWell(
+                                  onTap: () async {
+                                    await chatController.pickFile(
+                                      context: context,
+                                      onComplete: () async {
+                                        print(chatController.selectFile);
+                                        Map<String,dynamic> data = {
+                                          "chatId": chatController.getChatDetailsResponseModel.value.data?.sId ?? "",
+                                          "text": "",
+                                          "imageUrl": chatController.selectFile,
+                                        };
+                                        //
+                                        print(data);
+                                        final ack = await socketServiceController.emitWithAck('send-message', data);
+                                        print('Acknowledgment received: $ack, type: ${ack.runtimeType}');
+                                        print("send dddd");
+                                        chatController.chatController.value.clear();
+                                        FocusScope.of(context).unfocus();
+                                        await chatController.getAllMessageController(context: context, chatId: chatId);
+                                      },
+                                    );
+                                  },
+                                  child: ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 30.h(context),
+                                    width: 30.w(context),
+                                    imageString: ImageUtils.chatDocumentImage,
+                                  ),
+                                ),
+
+
+                                SpaceHelperWidget.h(16.h(context)),
+
+                              ],
+                            ),
 
 
                             Expanded(

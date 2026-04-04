@@ -184,7 +184,10 @@ class PlannerChatController extends GetxController {
   }) async {
     selectedFile.clear();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,       // allow all file types
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'rtf',
+      ],
       withData: false,
       allowMultiple: true,
     );

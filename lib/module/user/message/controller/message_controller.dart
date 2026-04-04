@@ -80,6 +80,11 @@ class MessageController extends GetxController {
 
   }
 
+  bool isImage(String url) {
+    final ext = url.split('.').last.toLowerCase();
+    return ['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(ext);
+  }
+
 
   Future<void> getAllChatMessageController({
     required BuildContext context,

@@ -195,6 +195,7 @@ class ButtonHelperWidget {
     required String iconPath,
     required String text,
     Widget? textWidget,
+    bool isLeading = true,
     bool isIcon = true,
     double height = 56,
     double borderRadius = 10,
@@ -231,14 +232,18 @@ class ButtonHelperWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            isIcon == true ? ImageHelperWidget.assetImageWidget(
-              context: context,
-              height: iconSize.h(context),
-              width: iconSize.w(context),
-              imageString: iconPath,
-            ) : SizedBox.shrink(),
 
-            isIcon == true ? SpaceHelperWidget.h(10.w(context)) : SizedBox.shrink(),
+            if(isLeading == true)...[
+              isIcon == true ? ImageHelperWidget.assetImageWidget(
+                context: context,
+                height: iconSize.h(context),
+                width: iconSize.w(context),
+                imageString: iconPath,
+              ) : SizedBox.shrink(),
+
+              isIcon == true ? SpaceHelperWidget.h(10.w(context)) : SizedBox.shrink(),
+            ],
+
 
             textWidget ?? TextHelperClass.headingTextWithoutWidthAdventPro(
               context: context,
@@ -248,6 +253,20 @@ class ButtonHelperWidget {
               textColor: textColor,
               text: text,
             ),
+
+
+            if(isLeading == false)...[
+
+              isIcon == true ? SpaceHelperWidget.h(10.w(context)) : SizedBox.shrink(),
+
+              isIcon == true ? ImageHelperWidget.assetImageWidget(
+                context: context,
+                height: iconSize.h(context),
+                width: iconSize.w(context),
+                imageString: iconPath,
+              ) : SizedBox.shrink(),
+
+            ],
           ],
         ),
       ),

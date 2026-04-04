@@ -224,19 +224,51 @@ class MessageView extends StatelessWidget {
 
                                     SpaceHelperWidget.v(6.h(context)),
 
-                                    messageController.getAllChatResponseModel.value.data?[index].lastMessage == null ?
-                                    SizedBox.shrink() :
-                                    TextHelperClass.headingTextWithoutWidth(
-                                      context: context,
-                                      alignment: Alignment.centerLeft,
-                                      fontSize: 16,
-                                      textOverFlow: TextOverflow.ellipsis,
-                                      fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
-                                      textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
-                                      text: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
-                                      messageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
-                                      messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
-                                    ),
+
+
+                                    if(messageController.getAllChatResponseModel.value.data?[index].lastMessage == null) ...[
+                                      SizedBox.shrink()
+                                    ] else...[
+
+                                      if(messageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true)...[
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.centerLeft,
+                                          fontSize: 16,
+                                          textOverFlow: TextOverflow.ellipsis,
+                                          fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                          textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                          text: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.imageUrl?.isEmpty == true ?
+                                          messageController.getAllChatResponseModel.value.data![index].lastMessage!.text :
+                                          messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.split("/").last,
+                                        ),
+                                      ] else...[
+                                        if(messageController.isImage(messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first) == true)...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.centerLeft,
+                                            fontSize: 16,
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                            textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                            text: messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.length > 1 ?
+                                            "${messageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photos" :
+                                            "${messageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Photo",
+                                          ),
+                                        ] else...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.centerLeft,
+                                            fontSize: 16,
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontWeight: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
+                                            textColor: messageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
+                                            text: messageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.toString().split('/').last,
+                                          ),
+                                        ]
+                                      ]
+
+                                    ]
 
                                   ],
                                 ),

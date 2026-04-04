@@ -156,14 +156,21 @@ class PlannerChatView extends StatelessWidget {
                           ],
                         ),
                         actions: [
-                          // InkWell(
-                          //   onTap: () async {},
-                          //   child: Icon(
-                          //     Icons.more_vert_rounded,
-                          //     color: ColorUtils.black14,
-                          //     size: 30.r(context),
-                          //   ),
-                          // ),
+                          InkWell(
+                            onTap: () async {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                builder: (_) => PlannerDeleteBottomSheet(isConversation: true,),
+                              );
+                            },
+                            child: Icon(
+                              Icons.more_vert_rounded,
+                              color: ColorUtils.black14,
+                              size: 30.r(context),
+                            ),
+                          ),
 
                           SpaceHelperWidget.h(15.w(context)),
                         ],
