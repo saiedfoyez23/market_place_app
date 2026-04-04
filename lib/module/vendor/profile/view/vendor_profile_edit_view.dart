@@ -182,7 +182,6 @@ class VendorProfileEditView extends StatelessWidget {
                                                             backgroundColor: ColorUtils.white255,
                                                             fontWeight: FontWeight.w600,
                                                             textColor: ColorUtils.black48,
-                                                            fontSize: 20,
                                                           ),
 
 
@@ -199,7 +198,6 @@ class VendorProfileEditView extends StatelessWidget {
                                                             backgroundColor: ColorUtils.white255,
                                                             fontWeight: FontWeight.w600,
                                                             textColor: ColorUtils.black48,
-                                                            fontSize: 20,
                                                           ),
 
 

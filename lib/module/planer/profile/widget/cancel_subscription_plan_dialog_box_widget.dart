@@ -68,7 +68,6 @@ class CancelSubscriptionPlanDialogBoxWidget {
                           backgroundColor: ColorUtils.white243,
                           fontWeight: FontWeight.w600,
                           textColor: ColorUtils.black89,
-                          fontSize: 20,
                         ),
                       ),
 
@@ -92,7 +91,6 @@ class CancelSubscriptionPlanDialogBoxWidget {
                           backgroundColor: ColorUtils.red191,
                           fontWeight: FontWeight.w600,
                           textColor: ColorUtils.white255,
-                          fontSize: 20,
                         ),
                       ),
 
