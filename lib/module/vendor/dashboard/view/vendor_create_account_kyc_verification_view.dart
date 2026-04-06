@@ -297,7 +297,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                           fillColor: ColorUtils.white255,
                                           hintText: "Postal Code",
                                           controller: vendorCreateAccountKycVerificationController.postalCodeController.value,
-                                          keyboardType: TextInputType.emailAddress,
+                                          keyboardType: TextInputType.number,
                                         ),
 
                                       ],
@@ -385,7 +385,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Enter your nid number",
+                                hintText: "Enter your id number",
                                 controller: vendorCreateAccountKycVerificationController.nidNumberController.value,
                                 keyboardType: TextInputType.emailAddress,
                               ),
@@ -602,7 +602,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                 fillColor: ColorUtils.white255,
                                 hintText: "Enter your account number",
                                 controller: vendorCreateAccountKycVerificationController.accountNumberController.value,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.number,
                               ),
 
 
@@ -626,7 +626,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                                 fillColor: ColorUtils.white255,
                                 hintText: "Enter your bank code",
                                 controller: vendorCreateAccountKycVerificationController.bankCodeController.value,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.number,
                               ),
 
 
@@ -672,9 +672,13 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
                             } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text.length > 10) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must less than 10 digit");
+                            } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text.length < 10) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must less than 10 digit");
                             } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                             } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text.length > 3) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
+                            } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text.length < 3) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
                             } else if(vendorCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");
@@ -686,6 +690,7 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                           },
                           text: "Next",
                         ),
+
 
                         SpaceHelperWidget.v(32.h(context)),
 

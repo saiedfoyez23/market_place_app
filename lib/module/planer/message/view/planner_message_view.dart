@@ -291,7 +291,9 @@ class PlannerMessageView extends StatelessWidget {
                                               textOverFlow: TextOverflow.ellipsis,
                                               fontWeight: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? FontWeight.w600 : FontWeight.w400,
                                               textColor: plannerMessageController.getAllChatResponseModel.value.data?[index].lastMessage?.seen == false ? ColorUtils.black21 : ColorUtils.black107,
-                                              text: plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.first.toString().split('/').last,
+                                              text: plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage!.imageUrl!.length > 1 ?
+                                              "${plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} Files" :
+                                              "${plannerMessageController.getAllChatResponseModel.value.data![index].lastMessage?.imageUrl?.length} File",
                                             ),
                                           ]
                                         ]

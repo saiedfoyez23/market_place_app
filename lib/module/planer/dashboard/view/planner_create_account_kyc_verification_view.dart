@@ -293,7 +293,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                                         fillColor: ColorUtils.white255,
                                         hintText: "Postal Code",
                                         controller: plannerCreateAccountKycVerificationController.postalCodeController.value,
-                                        keyboardType: TextInputType.emailAddress,
+                                        keyboardType: TextInputType.number,
                                       ),
 
                                     ],
@@ -381,7 +381,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                             TextFormFieldWidget.build(
                               context: context,
                               fillColor: ColorUtils.white255,
-                              hintText: "Enter your nid number",
+                              hintText: "Enter your id number",
                               controller: plannerCreateAccountKycVerificationController.nidNumberController.value,
                               keyboardType: TextInputType.emailAddress,
                             ),
@@ -598,7 +598,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your account number",
                               controller: plannerCreateAccountKycVerificationController.accountNumberController.value,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.number,
                             ),
 
 
@@ -622,7 +622,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                               fillColor: ColorUtils.white255,
                               hintText: "Enter your Bank Code",
                               controller: plannerCreateAccountKycVerificationController.bankCodeController.value,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.number,
                             ),
 
 
@@ -633,9 +633,7 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                         ),
                       ),
 
-
                       SpaceHelperWidget.v(32.h(context)),
-
 
                       plannerCreateAccountKycVerificationController.isSubmit.value == true ?
                       LoadingHelperWidget.loadingHelperWidget(
@@ -666,11 +664,15 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank name");
                           } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
-                          } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length > 10) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must less than 10 digit");
+                          } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length > 10 ) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must be at least 10 digits");
+                          } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length < 10) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must be at least 10 digits");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text.length > 3) {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
+                          } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text.length < 3) {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");

@@ -162,7 +162,12 @@ class PlannerChatView extends StatelessWidget {
                                 context: context,
                                 backgroundColor: Colors.transparent,
                                 isScrollControlled: true,
-                                builder: (_) => PlannerDeleteBottomSheet(isConversation: true,),
+                                builder: (_) => PlannerDeleteBottomSheet(
+                                  isConversation: true,
+                                  messageId: "",
+                                  chatId: chatId,
+                                  plannerChatController: plannerChatController,
+                                ),
                               );
                             },
                             child: Icon(

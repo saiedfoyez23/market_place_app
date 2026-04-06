@@ -48,50 +48,25 @@ class PlannerChatWidget {
 
             SpaceHelperWidget.h(10.w(context)),
           ],
+          
 
 
           if(plannerChatController.getAllMessageResponseModel.value.data![index].text.toString().isNotEmpty == true)...[
-            plannerChatController.getAllMessageResponseModel.value.data![index].text.toString().length < 35 ?
-            InkWell(
-              onLongPress: () async {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (_) => PlannerDeleteBottomSheet(isConversation: false,),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
-                decoration: BoxDecoration(
-                  color: isSender ? ColorUtils.blue181 : ColorUtils.white241,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.r(context)),
-                    topRight: Radius.circular(16.r(context)),
-                    bottomLeft: Radius.circular(isSender ? 16.r(context) : 0),
-                    bottomRight: Radius.circular(isSender ? 0 : 16.r(context)),
-                  ),
-                ),
-                child: TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
-                  text: plannerChatController.getAllMessageResponseModel.value.data?[index].text ?? "",
-                ),
-              ),
-            ) :
-            InkWell(
-              onLongPress: () async {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (_) => PlannerDeleteBottomSheet(isConversation: false,),
-                );
-              },
-              child: Expanded(
+            if(plannerChatController.getAllMessageResponseModel.value.data![index].text.toString().length < 35) ...[
+              InkWell(
+                onLongPress: () async {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    builder: (_) => PlannerDeleteBottomSheet(
+                      isConversation: false,
+                      chatId: "",
+                      messageId: plannerChatController.getAllMessageResponseModel.value.data?[index].sId,
+                      plannerChatController: plannerChatController,
+                    ),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
                   decoration: BoxDecoration(
@@ -112,8 +87,46 @@ class PlannerChatWidget {
                     text: plannerChatController.getAllMessageResponseModel.value.data?[index].text ?? "",
                   ),
                 ),
+              )
+            ] else...[
+              Expanded(
+                child: InkWell(
+                  onLongPress: () async {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (_) => PlannerDeleteBottomSheet(
+                        isConversation: false,
+                        chatId: "",
+                        messageId: plannerChatController.getAllMessageResponseModel.value.data?[index].sId,
+                        plannerChatController: plannerChatController,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 12.hpm(context)),
+                    decoration: BoxDecoration(
+                      color: isSender ? ColorUtils.blue181 : ColorUtils.white241,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r(context)),
+                        topRight: Radius.circular(16.r(context)),
+                        bottomLeft: Radius.circular(isSender ? 16.r(context) : 0),
+                        bottomRight: Radius.circular(isSender ? 0 : 16.r(context)),
+                      ),
+                    ),
+                    child: TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      textColor: isSender ? ColorUtils.white255 : ColorUtils.black80,
+                      text: plannerChatController.getAllMessageResponseModel.value.data?[index].text ?? "",
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ]
           ] else...[
             Flexible(
               child: Column(
@@ -126,7 +139,12 @@ class PlannerChatWidget {
                           context: context,
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
-                          builder: (_) => PlannerDeleteBottomSheet(isConversation: false,),
+                          builder: (_) => PlannerDeleteBottomSheet(
+                            isConversation: false,
+                            chatId: "",
+                            messageId: plannerChatController.getAllMessageResponseModel.value.data?[index].sId,
+                            plannerChatController: plannerChatController,
+                          ),
                         );
                       },
                       child: Wrap(
@@ -190,7 +208,12 @@ class PlannerChatWidget {
                           context: context,
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
-                          builder: (_) => PlannerDeleteBottomSheet(isConversation: false,),
+                          builder: (_) => PlannerDeleteBottomSheet(
+                            isConversation: false,
+                            chatId: "",
+                            messageId: plannerChatController.getAllMessageResponseModel.value.data?[index].sId,
+                            plannerChatController: plannerChatController,
+                          ),
                         );
                       },
                       child: Column(

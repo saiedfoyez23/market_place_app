@@ -22,7 +22,7 @@ class VendorCreateAccountKycVerificationController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> postalCodeController = TextEditingController().obs;
   Rx<TextEditingController> nidNumberController = TextEditingController().obs;
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
+  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorVerifyUserResponse)!)).obs;
   RxString selectIdType = "".obs;
   RxString selectGender = "".obs;
   RxBool isSubmit = false.obs;
@@ -138,7 +138,7 @@ class VendorCreateAccountKycVerificationController extends GetxController {
     await BaseApiUtils.post(
       url: ApiUtils.userKycVerification,
       formData: formData,
-      authorization: userLoginResponseModel.value.data?.accessToken,
+      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);

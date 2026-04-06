@@ -180,5 +180,11 @@ class ApiUtils {
   static String deletePaystack(String bankInformationId) {
     return "$baseUrl/paystack-recipients/${bankInformationId}";
   }
+  static String deleteMessage(String messageId) {
+    return "$baseUrl/messages/${messageId}";
+  }
+  static String deleteChatIdMessage(String chatId) {
+    return "$baseUrl/messages/chat/${chatId}";
+  }
 
 }

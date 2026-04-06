@@ -25,6 +25,8 @@ class PlannerChatController extends GetxController {
   RxBool isSubmit = false.obs;
   RxList<String> selectFile = <String>[].obs;
   BuildContext context;
+  RxBool isDeleteMessage = false.obs;
+  RxBool isDeleteChatMessage = false.obs;
 
   PlannerChatController({required this.chatId,required this.context});
 
@@ -148,6 +150,64 @@ class PlannerChatController extends GetxController {
     );
   }
 
+
+  Future<void> deleteMessageController({
+    required BuildContext context,
+    required String messageId,
+  }) async {
+    BaseApiUtils.delete(
+      url: ApiUtils.deleteMessage(messageId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isDeleteMessage.value = false;
+        await getAllMessageController(context: context,chatId: chatId);
+        await scrollToBottom();
+        Navigator.pop(context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDeleteMessage.value = false;
+        Navigator.pop(context);
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDeleteMessage.value = false;
+        Navigator.pop(context);
+      },
+    );
+  }
+
+
+  Future<void> deleteChatWiseMessageController({
+    required BuildContext context,
+    required String chatId,
+  }) async {
+    BaseApiUtils.delete(
+      url: ApiUtils.deleteChatIdMessage(chatId),
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        isDeleteChatMessage.value = false;
+        await getAllMessageController(context: context,chatId: chatId);
+        await scrollToBottom();
+        Navigator.pop(context);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDeleteChatMessage.value = false;
+        Navigator.pop(context);
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isDeleteChatMessage.value = false;
+        Navigator.pop(context);
+      },
+    );
+  }
+
+
+
   Future<void> pickImage({
     required BuildContext context,
     required Function onComplete,
@@ -264,60 +324,6 @@ class PlannerChatController extends GetxController {
   }
 
 
-  RxList<PlannerMessageModel> messages = [
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made a major break-through... I'll need your assistance.",
-      isSender: true,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made",
-      isSender: false,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines",
-      isSender: true,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made a major break-through... I'll need your assistance. tonight at 1:15? I've made a major break-thro",
-      isSender: false,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made a major break-through... I'll need your assistance.",
-      isSender: true,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made",
-      isSender: false,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines",
-      isSender: true,
-      time: DateTime.now(),
-    ),
-    PlannerMessageModel(
-      text: "Listen, can you meet me at Twin Pines Mall tonight at 1:15? I've made a major break-through... I'll need your assistance. tonight at 1:15? I've made a major break-thro",
-      isSender: false,
-      time: DateTime.now(),
-    ),
-  ].obs;
-
-}
 
 
-class PlannerMessageModel {
-  final String text;
-  final bool isSender;
-  final DateTime time;
-
-  PlannerMessageModel({
-    required this.text,
-    required this.isSender,
-    required this.time,
-  });
 }

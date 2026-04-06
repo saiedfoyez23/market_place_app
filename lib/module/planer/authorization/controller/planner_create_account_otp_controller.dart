@@ -95,9 +95,10 @@ class PlannerCreateAccountOtpController extends GetxController {
       authorization: userCreateAccountResponseModel.value.data?.otpToken?.token,
       data: data,
       onSuccess: (e,data) async {
+        await LocalStorageUtils.setString(AppConstantUtils.plannerVerifyUserResponse, jsonEncode(data));
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
         isSubmit.value = false;
-        Get.off(()=>PlannerLoginView(),preventDuplicates: false);
+        Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

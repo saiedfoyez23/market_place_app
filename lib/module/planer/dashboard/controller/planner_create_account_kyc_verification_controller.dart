@@ -25,7 +25,7 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
   RxString selectGender = "".obs;
   RxBool isSubmit = false.obs;
   Rx<DateTime> dateOfBirth = DateTime.now().obs;
-  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerVerifyUserResponse)!)).obs;
 
 
 
@@ -139,11 +139,11 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
     await BaseApiUtils.post(
       url: ApiUtils.userKycVerification,
       formData: formData,
-      authorization: userLoginResponseModel.value.data?.accessToken,
+      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await LocalStorageUtils.remove(AppConstantUtils.plannerLoginResponse);
+        await LocalStorageUtils.remove(AppConstantUtils.plannerVerifyUserResponse);
         Get.offAll(()=>PlannerLoginView());
       },
       onFail: (e,data) {
