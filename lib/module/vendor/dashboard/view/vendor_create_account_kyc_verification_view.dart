@@ -671,9 +671,9 @@ class VendorCreateAccountKycVerificationView extends StatelessWidget {
                             } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
                             } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text.length > 10) {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must 10 digit");
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
                             } else if(vendorCreateAccountKycVerificationController.accountNumberController.value.text.length < 10) {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must 10 digit");
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
                             } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                             } else if(vendorCreateAccountKycVerificationController.bankCodeController.value.text.length > 3) {
