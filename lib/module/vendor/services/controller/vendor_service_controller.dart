@@ -118,6 +118,7 @@ class VendorServiceController extends GetxController {
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isLoading.value = true;
+        vendorGetAllServiceModelList.clear();
         await getVendorAllServiceController(context: context);
       },
       onFail: (e,data) {

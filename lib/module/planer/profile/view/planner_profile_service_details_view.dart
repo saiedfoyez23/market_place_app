@@ -124,7 +124,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                               ),
                               rowItem(
                                 title: "Price: ",
-                                value: "${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.price} / ${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.priceType}" ,
+                                value: "R${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.price} / ${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.priceType}" ,
                                 context: context,
                               ),
                               InkWell(

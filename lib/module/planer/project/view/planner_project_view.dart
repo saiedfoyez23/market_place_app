@@ -287,10 +287,10 @@ class PlannerProjectView extends StatelessWidget {
           SpaceHelperWidget.v(12.h(context)),
 
 
-          rowItem(title: "${projectModel.days} Days", value: "From \$${projectModel.budgetTotal.toInt()}",context: context),
+          rowItem(title: "${projectModel.days} Days", value: "From R${projectModel.budgetTotal.toInt()}",context: context),
           rowItem(title: "Start Date:", value: projectModel.startDate,context: context),
           rowItem(title: "End Date:", value: projectModel.endDate, context: context),
-          rowItem(title: "Budget", value: "\$${projectModel.budgetUsed.toInt()} / \$${projectModel.budgetTotal.toInt()}",context: context),
+          rowItem(title: "Budget", value: "R${projectModel.budgetUsed.toInt()} / R${projectModel.budgetTotal.toInt()}",context: context),
 
 
           // Row(

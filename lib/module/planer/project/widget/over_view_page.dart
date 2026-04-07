@@ -121,7 +121,7 @@ class OverViewPage {
 
           SpaceHelperWidget.v(20.h(context)),
 
-          _rowItem(title: "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.duration ?? 0} Days", value: "Form \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0}", context: context),
+          _rowItem(title: "${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.duration ?? 0} Days", value: "Form R${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.totalAmount ?? 0}", context: context),
           _rowItem(title: 'Start date:', value: DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.startDate)), context: context),
           _rowItem(title: "End date:", value: DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.endDate)), context: context),
           _rowItem(title: "Location", value: plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.order?.address ?? "", context: context),
@@ -254,7 +254,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black48,
-                  text: "\$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.received ?? 0} / \$${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.budget ?? 0}",
+                  text: "R${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.received ?? 0} / R${plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data?.budget ?? 0}",
                 ),
               ),
             ],
@@ -286,7 +286,7 @@ class OverViewPage {
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   textColor: ColorUtils.black48,
-                  text: "Progress ",
+                  text: "Task Progress ",
                 ),
               ),
 

@@ -205,7 +205,7 @@ class WishlistView extends StatelessWidget {
                                                     color: ColorUtils.black94
                                                 ).toTextSpan(),
                                                 CustomTextSpan(
-                                                  text: '\$${data?.service?.price ?? ""}',
+                                                  text: 'R${data?.service?.price ?? ""}',
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
                                                   color: ColorUtils.black48,

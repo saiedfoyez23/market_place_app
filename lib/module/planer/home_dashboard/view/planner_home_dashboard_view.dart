@@ -195,7 +195,7 @@ class PlannerHomeDashboardView extends StatelessWidget {
                                         context: context,
                                         icon: ImageUtils.plannerTotalEarningsImage,
                                         title: 'Total Earnings',
-                                        value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.totalEarnings.toString(),
+                                        value: "R${plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.totalEarnings.toString()}",
                                         color: ColorUtils.orange213,
                                       ),
                                     ),

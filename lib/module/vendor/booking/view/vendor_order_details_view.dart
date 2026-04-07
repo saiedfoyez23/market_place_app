@@ -284,7 +284,7 @@ Widget buildInfoCard({required BuildContext context,required VendorOrderDetailsC
         infoRow(title: "Program Start Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.startDate))}", context: context),
         infoRow(title: "Program End Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.endDate))}", context: context),
         //infoRow(title: "First Payment",value: "\$150", context: context),
-        infoRow(title: "Total Price", value: "\$${vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.totalAmount ?? 0}", context: context),
+        infoRow(title: "Total Price", value: "R${vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.totalAmount ?? 0}", context: context),
       ],
     ),
   );

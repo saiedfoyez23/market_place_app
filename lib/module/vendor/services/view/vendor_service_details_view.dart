@@ -115,7 +115,7 @@ class VendorServiceDetailsView extends StatelessWidget {
                               ),
                               rowItem(
                                 title: "Price: ",
-                                value: "${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.price} / ${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.priceType}" ,
+                                value: "R${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.price} / ${vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.priceType}" ,
                                 context: context,
                               ),
                               InkWell(

@@ -105,7 +105,7 @@ class VendorAnalysisView extends StatelessWidget {
                               vendorAnalysisController: vendorAnalysisController,
                               context: context,
                               title: 'Total Earnings',
-                              value: '${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalEarnings ?? "0"}',
+                              value: 'R${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalEarnings ?? "0"}',
                             ),
                           ),
                         ],

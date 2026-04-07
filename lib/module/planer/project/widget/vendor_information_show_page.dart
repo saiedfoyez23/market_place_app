@@ -208,7 +208,7 @@ class VendorInformationShowPage {
 
           _rowItem(title: "Email", value: vendor.vendor?.email, context: context),
           _rowItem(title: "Phone", value: vendor.vendor?.contractNumber, context: context),
-          _rowItem(title: "Quote", value: "\$${vendor.agreedAmount}", context: context),
+          _rowItem(title: "Quote", value: "R${vendor.agreedAmount}", context: context),
           _rowItem(title: "Location", value: vendor.vendor?.address, context: context),
 
         ],

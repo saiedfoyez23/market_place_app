@@ -94,7 +94,7 @@ class VendorWithdrawView extends StatelessWidget {
                                       fontSize: 32,
                                       fontWeight: FontWeight.w600,
                                       textColor: ColorUtils.white255,
-                                      text: '\$${vendorGetAllWithdrawController.getAllWithdrawResponseModel.value.data?.totalWithdraw}',
+                                      text: 'R${vendorGetAllWithdrawController.getAllWithdrawResponseModel.value.data?.totalWithdraw}',
                                     ),
 
 
@@ -284,7 +284,7 @@ class VendorWithdrawView extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ColorUtils.black64,
-                  text: '\$${NumberFormat('#,###.00').format(amount)}',
+                  text: 'R${NumberFormat('#,###.00').format(amount)}',
                 ),
                 SpaceHelperWidget.v(4.h(context)),
                 TextHelperClass.headingTextWithoutWidth(

@@ -133,7 +133,7 @@ class PlannerAnalyticsView extends StatelessWidget {
                               plannerAnalyticsController: plannerAnalyticsController,
                               context: context,
                               title: 'Total Earnings',
-                              value: '\$${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.totalEarning ?? "0"}',
+                              value: 'R${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.totalEarning ?? "0"}',
                             ),
                           ),
                         ],

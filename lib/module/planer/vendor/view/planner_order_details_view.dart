@@ -383,7 +383,7 @@ class PlannerOrderDetailsView extends StatelessWidget {
           infoRow(title: "Program Start Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.startDate))}", context: context),
           infoRow(title: "Program End Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.endDate))}", context: context),
           infoRow(title: "Location",value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.address}", context: context),
-          infoRow(title: "Total Price", value: "\$${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.totalAmount}", context: context),
+          infoRow(title: "Total Price", value: "R${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.totalAmount}", context: context),
         ],
       ),
     );
