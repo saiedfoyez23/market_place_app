@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/module/vendor/authorization/controller/jwt_validator_controller.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorLoginController extends GetxController {
@@ -76,14 +77,30 @@ class VendorLoginController extends GetxController {
       url: ApiUtils.userLogin,
       data: data,
       onSuccess: (e,data) async {
-        await LocalStorageUtils.setString(AppConstantUtils.vendorLoginResponse, jsonEncode(data));
-        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        isSubmit.value = false;
-        if(data['data']['user']['isKYCSubmit'] == false) {
-          Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+        final result = JwtValidatorController.validateToken(
+          token: data["data"]["accessToken"],
+          allowedRoles: ['vendor'],
+        );
+        if (result['isValid'] == true) {
+          isSubmit.value = false;
+          await LocalStorageUtils.setString(AppConstantUtils.vendorLoginResponse, jsonEncode(data));
+          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+          if(data['data']['user']['isKYCSubmit'] == false) {
+            Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+          } else {
+            Get.off(()=>DashboardVendorView(index: 0,),preventDuplicates: false);
+          }
+          print("Vendor Email: ${result['data']['email']}");
         } else {
-          Get.off(()=>DashboardVendorView(index: 0,),preventDuplicates: false);
+          isSubmit.value = false;
+          MessageSnackBarWidget.errorSnackBarWidget(context: context, message: result['message']);
         }
+        // isSubmit.value = false;
+        // if(data['data']['user']['isKYCSubmit'] == false) {
+        //   Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+        // } else {
+        //   Get.off(()=>DashboardVendorView(index: 0,),preventDuplicates: false);
+        // }
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

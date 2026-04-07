@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/module/vendor/authorization/controller/jwt_validator_controller.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class UserLoginController extends GetxController {
@@ -75,10 +76,20 @@ class UserLoginController extends GetxController {
       url: ApiUtils.userLogin,
       data: data,
       onSuccess: (e,data) async {
-        await LocalStorageUtils.setString(AppConstantUtils.userLoginResponse, jsonEncode(data));
-        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        isSubmit.value = false;
-        Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+        final result = JwtValidatorController.validateToken(
+          token: data["data"]["accessToken"],
+          allowedRoles: ['user'],
+        );
+        if (result['isValid'] == true) {
+          await LocalStorageUtils.setString(AppConstantUtils.userLoginResponse, jsonEncode(data));
+          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+          isSubmit.value = false;
+          Get.off(()=>DashboardUserView(index: 0,),preventDuplicates: false);
+          print("User Email: ${result['data']['email']}");
+        } else {
+          isSubmit.value = false;
+          MessageSnackBarWidget.errorSnackBarWidget(context: context, message: result['message']);
+        }
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

@@ -665,15 +665,15 @@ class PlannerCreateAccountKycVerificationView extends StatelessWidget {
                           } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
                           } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length > 10 ) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must be at least 10 digits");
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
                           } else if(plannerCreateAccountKycVerificationController.accountNumberController.value.text.length < 10) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must be at least 10 digits");
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text.length > 3) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must 3 digit");
                           } else if(plannerCreateAccountKycVerificationController.bankCodeController.value.text.length < 3) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must 3 digit");
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadFrontSideFile.value.path == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please upload front side iD image");
                           } else if(plannerCreateAccountKycVerificationController.selectedUploadBackSideFile.value.path == "") {
