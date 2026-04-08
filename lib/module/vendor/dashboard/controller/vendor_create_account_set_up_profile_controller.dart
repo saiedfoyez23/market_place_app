@@ -12,7 +12,7 @@ class VendorCreateAccountSetUpProfileController extends GetxController {
   Rx<TextEditingController> businessNameController = TextEditingController().obs;
   Rx<TextEditingController> aboutYouController = TextEditingController().obs;
   Rx<TextEditingController> locationController = TextEditingController().obs;
-  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorVerifyUserResponse)!)).obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   RxList<CategoryResponseData> selectCategory = <CategoryResponseData>[].obs;
   RxList<String> selectCategoryString = <String>[].obs;
   Rx<CategoryResponseModel> categoryResponseModel = CategoryResponseModel().obs;
@@ -80,7 +80,7 @@ class VendorCreateAccountSetUpProfileController extends GetxController {
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.categoryResponse,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         print(data);
         isLoading.value = false;
@@ -121,7 +121,7 @@ class VendorCreateAccountSetUpProfileController extends GetxController {
     await BaseApiUtils.put(
       url: ApiUtils.userUpdateMyProfile,
       formData: formData,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);

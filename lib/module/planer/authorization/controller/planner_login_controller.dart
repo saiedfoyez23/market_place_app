@@ -71,9 +71,8 @@ class PlannerLoginController extends GetxController {
       "password": password,
       "fcmToken": fmcToken,
     };
-
     print(data);
-
+    await LocalStorageUtils.setString(AppConstantUtils.plannerLoginLocalData, jsonEncode(data));
     BaseApiUtils.post(
       url: ApiUtils.userLogin,
       data: data,

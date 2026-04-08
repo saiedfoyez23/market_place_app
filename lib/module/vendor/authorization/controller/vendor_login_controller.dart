@@ -70,9 +70,8 @@ class VendorLoginController extends GetxController {
       "password": password,
       "fcmToken": fcmToken,
     };
-
     print(data);
-
+    await LocalStorageUtils.setString(AppConstantUtils.vendorLoginLocalData, jsonEncode(data));
     BaseApiUtils.post(
       url: ApiUtils.userLogin,
       data: data,
@@ -95,12 +94,6 @@ class VendorLoginController extends GetxController {
           isSubmit.value = false;
           MessageSnackBarWidget.errorSnackBarWidget(context: context, message: result['message']);
         }
-        // isSubmit.value = false;
-        // if(data['data']['user']['isKYCSubmit'] == false) {
-        //   Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
-        // } else {
-        //   Get.off(()=>DashboardVendorView(index: 0,),preventDuplicates: false);
-        // }
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

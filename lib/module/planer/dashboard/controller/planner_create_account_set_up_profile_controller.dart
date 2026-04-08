@@ -9,7 +9,7 @@ import '../../../../utils/utils.dart';
 
 class PlannerCreateAccountSetUpProfileController extends GetxController {
 
-  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerVerifyUserResponse)!)).obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
   Rx<CategoryResponseModel> categoryResponseModel = CategoryResponseModel().obs;
   Rx<TextEditingController> businessNameController = TextEditingController().obs;
   Rx<TextEditingController> aboutYouController = TextEditingController().obs;
@@ -35,8 +35,8 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await plannerGetAddressFromLatLng();
       await plannerGetCategoryController(context: context);
+      await plannerGetAddressFromLatLng();
     });
   }
 
@@ -83,7 +83,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.categoryResponse,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         print(data);
         isLoading.value = false;
@@ -127,7 +127,7 @@ class PlannerCreateAccountSetUpProfileController extends GetxController {
     await BaseApiUtils.put(
       url: ApiUtils.userUpdateMyProfile,
       formData: formData,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);

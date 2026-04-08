@@ -392,4 +392,3 @@ export 'vendor/withdraw/view/vendor_create_bank_account_view.dart';
 export 'vendor/withdraw/controller/vendor_create_bank_account_controller.dart';
 export 'planer/message/model/get_all_message_file_response_model.dart';
 export 'planer/message/widget/planner_delete_bottom_sheet.dart';
-export 'planer/authorization/model/verify_otp_access_token_response_model.dart';

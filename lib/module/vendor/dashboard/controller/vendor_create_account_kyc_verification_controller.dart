@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:marketplaceapp/module/vendor/authorization/controller/jwt_validator_controller.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
@@ -22,7 +23,7 @@ class VendorCreateAccountKycVerificationController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> postalCodeController = TextEditingController().obs;
   Rx<TextEditingController> nidNumberController = TextEditingController().obs;
-  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorVerifyUserResponse)!)).obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginResponse)!)).obs;
   RxString selectIdType = "".obs;
   RxString selectGender = "".obs;
   RxBool isSubmit = false.obs;
@@ -138,12 +139,12 @@ class VendorCreateAccountKycVerificationController extends GetxController {
     await BaseApiUtils.post(
       url: ApiUtils.userKycVerification,
       formData: formData,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
         await LocalStorageUtils.remove(AppConstantUtils.vendorLoginResponse);
-        Get.offAll(()=>VendorLoginView());
+        await vendorAuthorizationController(context: context);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -155,6 +156,67 @@ class VendorCreateAccountKycVerificationController extends GetxController {
         isSubmit.value = false;
       },
     );
+  }
+
+
+  Future<void> vendorAuthorizationController({required BuildContext context}) async {
+    if(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData) != null) {
+      await vendorUserLoginController(
+        context: context,
+        password: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["password"],
+        email: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["email"],
+        fcmToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["fmcToken"],
+      );
+    }
+  }
+
+
+  Future<void> vendorUserLoginController({
+    required BuildContext context,
+    required String password,
+    required String email,
+    required String fcmToken,
+  }) async {
+
+    Map<String,dynamic> data = {
+      "email": email,
+      "password": password,
+      "fcmToken": fcmToken,
+    };
+
+    BaseApiUtils.post(
+      url: ApiUtils.userLogin,
+      data: data,
+      onSuccess: (e,data) async {
+        final result = JwtValidatorController.validateToken(
+          token: data["data"]["accessToken"],
+          allowedRoles: ['vendor'],
+        );
+        if (result['isValid'] == true) {
+          isSubmit.value = false;
+          await LocalStorageUtils.setString(AppConstantUtils.vendorLoginResponse, jsonEncode(data));
+          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+          if(data['data']['user']['isKYCSubmit'] == false) {
+            Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+          } else {
+            Get.off(()=>DashboardVendorView(index: 0,),preventDuplicates: false);
+          }
+          print("Vendor Email: ${result['data']['email']}");
+        } else {
+          isSubmit.value = false;
+          MessageSnackBarWidget.errorSnackBarWidget(context: context, message: result['message']);
+        }
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+    );
+
   }
 
 

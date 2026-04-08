@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marketplaceapp/module/module.dart';
+import 'package:marketplaceapp/module/vendor/authorization/controller/jwt_validator_controller.dart';
 import '../../../../utils/utils.dart';
 
 class PlannerCreateAccountKycVerificationController extends GetxController {
@@ -25,7 +26,8 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
   RxString selectGender = "".obs;
   RxBool isSubmit = false.obs;
   Rx<DateTime> dateOfBirth = DateTime.now().obs;
-  Rx<VerifyOtpAccessTokenResponseModel> verifyOtpAccessTokenResponseModel = VerifyOtpAccessTokenResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerVerifyUserResponse)!)).obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginResponse)!)).obs;
+
 
 
 
@@ -139,12 +141,11 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
     await BaseApiUtils.post(
       url: ApiUtils.userKycVerification,
       formData: formData,
-      authorization: verifyOtpAccessTokenResponseModel.value.data?.accessToken,
+      authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
-        await LocalStorageUtils.remove(AppConstantUtils.plannerVerifyUserResponse);
-        Get.offAll(()=>PlannerLoginView());
+        await LocalStorageUtils.remove(AppConstantUtils.plannerLoginResponse);
+        await plannerAuthorizationController(context: context);
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -156,6 +157,66 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
         isSubmit.value = false;
       },
     );
+  }
+
+
+  Future<void> plannerAuthorizationController({required BuildContext context}) async {
+    if(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData) != null) {
+      await plannerUserLoginController(
+        context: context,
+        password: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["password"],
+        email: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["email"],
+        fmcToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["fmcToken"],
+      );
+    }
+  }
+
+  Future<void> plannerUserLoginController({
+    required BuildContext context,
+    required String password,
+    required String email,
+    required String fmcToken,
+  }) async {
+
+    Map<String,dynamic> data = {
+      "email": email,
+      "password": password,
+      "fcmToken": fmcToken,
+    };
+    print(data);
+    BaseApiUtils.post(
+      url: ApiUtils.userLogin,
+      data: data,
+      onSuccess: (e,data) async {
+        final result = JwtValidatorController.validateToken(
+          token: data["data"]["accessToken"],
+          allowedRoles: ['planer'],
+        );
+        if (result['isValid'] == true) {
+          await LocalStorageUtils.setString(AppConstantUtils.plannerLoginResponse, jsonEncode(data));
+          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+          isSubmit.value = false;
+          if(data['data']['user']['isKYCSubmit'] == false) {
+            Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);
+          } else {
+            Get.off(()=>DashboardPlannerView(index: 0,),preventDuplicates: false);
+          }
+          print("Planner Email: ${result['data']['email']}");
+        } else {
+          isSubmit.value = false;
+          MessageSnackBarWidget.errorSnackBarWidget(context: context, message: result['message']);
+        }
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+    );
+
   }
 
 

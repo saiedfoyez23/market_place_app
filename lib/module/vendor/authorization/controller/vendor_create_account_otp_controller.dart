@@ -95,10 +95,9 @@ class VendorCreateAccountOtpController extends GetxController {
       authorization: userCreateAccountResponseModel.value.data?.otpToken?.token,
       data: data,
       onSuccess: (e,data) async {
-        await LocalStorageUtils.setString(AppConstantUtils.vendorVerifyUserResponse, jsonEncode(data));
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
         isSubmit.value = false;
-        Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
+        Get.offAll(()=>VendorLoginView());
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
