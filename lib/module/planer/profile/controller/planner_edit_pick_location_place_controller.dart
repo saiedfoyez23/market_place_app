@@ -39,7 +39,7 @@ class PlannerEditPickLocationPlaceController extends GetxController {
         context: context,
         serviceId: serviceId,
         onCompleted: () async {
-          await plannerPickLocationPlaceLatLng();
+          await plannerPickLocationPlaceLatLng(context: context);
         },
       );
     });
@@ -94,7 +94,7 @@ class PlannerEditPickLocationPlaceController extends GetxController {
   }
 
   /// Check & request permission
-  static Future<void> _handlePermission() async {
+  static Future<void> _handlePermission({required BuildContext context}) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw 'Location services are disabled.';
@@ -109,19 +109,19 @@ class PlannerEditPickLocationPlaceController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw 'Location permission permanently denied';
+      LocationPermissionDeniedBox().locationPermissionDeniedBox(context: context);
     }
   }
 
   /// Get current position
-  static Future<Position> getCurrentPosition() async {
-    await _handlePermission();
+  static Future<Position> getCurrentPosition({required BuildContext context}) async {
+    await _handlePermission(context: context);
     return await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
   }
 
   /// Get address from latitude & longitude
-  Future<void> plannerPickLocationPlaceLatLng() async {
-    await getCurrentPosition().then((position) async {
+  Future<void> plannerPickLocationPlaceLatLng({required BuildContext context}) async {
+    await getCurrentPosition(context: context).then((position) async {
       latitude.value = plannerGetServiceDetailsResponseModel.value.data?.location?.coordinates?.last ?? 0.0;
       longitude.value = plannerGetServiceDetailsResponseModel.value.data?.location?.coordinates?.first ?? 0.0;
       searchController.value.text = plannerGetServiceDetailsResponseModel.value.data?.address ?? "";

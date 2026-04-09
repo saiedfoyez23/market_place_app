@@ -154,10 +154,14 @@ class VendorCreateBankAccountView extends StatelessWidget {
                             } else if(vendorCreateBankAccountController.accountNumberController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number");
                             } else if(vendorCreateBankAccountController.accountNumberController.value.text.length > 10) {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank account number must less than 10 digit");
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
+                            } else if(vendorCreateBankAccountController.accountNumberController.value.text.length < 10) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Account number must 10 digits");
                             } else if(vendorCreateBankAccountController.bankCodeController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code");
                             } else if(vendorCreateBankAccountController.bankCodeController.value.text.length > 3) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
+                            } else if(vendorCreateBankAccountController.bankCodeController.value.text.length < 3) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your bank code must less than 3 digit");
                             } else {
                               vendorCreateBankAccountController.isSubmit.value = true;

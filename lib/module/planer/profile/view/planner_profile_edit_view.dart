@@ -481,9 +481,15 @@ class PlannerProfileEditView extends StatelessWidget {
                             } else if(plannerProfileEditController.selectCategoryString.isEmpty == true) {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select minimum one category");
                             } else if(plannerProfileEditController.latitude.value == 0.0 && plannerProfileEditController.latitude.value == 0.0) {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                              LocationPermissionDeniedBox().locationPermissionDeniedBox(context: context);
                             } else if(plannerProfileEditController.locationController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                            } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerProfileEditController.addInstagramController.value.text) == false && plannerProfileEditController.addInstagramController.value.text != "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
+                            } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerProfileEditController.addLinkedInController.value.text) == false && plannerProfileEditController.addLinkedInController.value.text != "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
+                            } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerProfileEditController.addWebsiteController.value.text) == false && plannerProfileEditController.addWebsiteController.value.text != "") {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
                             } else {
                               await plannerProfileEditController.plannerUpdateUserAccountController(context: context);
                             }

@@ -494,7 +494,7 @@ class PlannerProfileServiceView extends StatelessWidget {
                         child: ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            Get.off(()=>VendorEditPickLocationPlaceView(serviceId: service.sId),preventDuplicates: false);
+                            Get.off(()=>PlannerEditPickLocationPlaceView(serviceId: service.sId),preventDuplicates: false);
                           },
                           text: "Edit",
                           textColor: ColorUtils.blue96,

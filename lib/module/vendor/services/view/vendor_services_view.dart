@@ -11,98 +11,104 @@ class VendorServicesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VendorServiceController vendorServiceController = Get.put(VendorServiceController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white251,
-          ),
-          child: vendorServiceController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(
-            context: context,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
             height: 930.h(context),
-          ) :
-          RefreshIndicator(
-            onRefresh: () async {
-              Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
-            },
-            child: CustomScrollView(
-              slivers: [
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white251,
+            ),
+            child: vendorServiceController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            RefreshIndicator(
+              onRefresh: () async {
+                Get.off(()=>DashboardVendorView(index: 1),preventDuplicates: false);
+              },
+              child: CustomScrollView(
+                slivers: [
 
-                MainPageAppBarHelperWidget(
-                  centerTitle: false,
-                  title: "My Services",
-                  actions: [
-
-
-                    ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                      context: context,
-                      backgroundColor: ColorUtils.blue96,
-                      iconSize: 20,
-                      height: 40,
-                      padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
-                      borderRadius: 8,
-                      textColor: ColorUtils.white255,
-                      fontWeight: FontWeight.w700,
-                      onPressed: () async {
-                        Get.off(()=>VendorPickLocationPlaceView(),preventDuplicates: false);
-                      },
-                      iconPath: ImageUtils.addImage,
-                      text: "Add Service",
-                    ),
-
-                    SpaceHelperWidget.h(15.w(context))
-
-                  ],
-                ),
+                  MainPageAppBarHelperWidget(
+                    centerTitle: false,
+                    title: "My Services",
+                    actions: [
 
 
-                SliverFillRemaining(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    child: Column(
-                      children: [
+                      ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                        context: context,
+                        backgroundColor: ColorUtils.blue96,
+                        iconSize: 20,
+                        height: 40,
+                        padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
+                        borderRadius: 8,
+                        textColor: ColorUtils.white255,
+                        fontWeight: FontWeight.w700,
+                        onPressed: () async {
+                          Get.off(()=>VendorPickLocationPlaceView(),preventDuplicates: false);
+                        },
+                        iconPath: ImageUtils.addImage,
+                        text: "Add Service",
+                      ),
 
-                        SpaceHelperWidget.v(16.h(context)),
+                      SpaceHelperWidget.h(15.w(context))
 
-                        buildTabs(context: context,vendorServiceController: vendorServiceController),
+                    ],
+                  ),
 
-                        SpaceHelperWidget.v(26.h(context)),
 
-                        Expanded(
-                          child: vendorServiceController.filteredService.isNotEmpty == true ?
-                          ListView.builder(
-                            itemCount: vendorServiceController.filteredService.length,
-                            itemBuilder: (context, index) {
-                              return serviceCard(service: vendorServiceController.filteredService[index], context: context,vendorServiceController: vendorServiceController);
-                            },
-                          ) :
-                          Align(
-                            alignment: Alignment.center,
-                            child: TextHelperClass.headingTextWithoutWidth(
-                              context: context,
+                  SliverFillRemaining(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: Column(
+                        children: [
+
+                          SpaceHelperWidget.v(16.h(context)),
+
+                          buildTabs(context: context,vendorServiceController: vendorServiceController),
+
+                          SpaceHelperWidget.v(26.h(context)),
+
+                          Expanded(
+                            child: vendorServiceController.filteredService.isNotEmpty == true ?
+                            ListView.builder(
+                              itemCount: vendorServiceController.filteredService.length,
+                              itemBuilder: (context, index) {
+                                return serviceCard(service: vendorServiceController.filteredService[index], context: context,vendorServiceController: vendorServiceController);
+                              },
+                            ) :
+                            Align(
                               alignment: Alignment.center,
-                              textAlign: TextAlign.start,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              textColor: ColorUtils.black48,
-                              text: "No Service Available",
+                              child: TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.center,
+                                textAlign: TextAlign.start,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: "No Service Available",
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
 
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

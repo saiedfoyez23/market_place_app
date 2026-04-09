@@ -141,7 +141,6 @@ class VendorCreateAccountKycVerificationController extends GetxController {
       formData: formData,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isSubmit.value = false;
         MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
         await LocalStorageUtils.remove(AppConstantUtils.vendorLoginResponse);
         await vendorAuthorizationController(context: context);
@@ -165,7 +164,7 @@ class VendorCreateAccountKycVerificationController extends GetxController {
         context: context,
         password: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["password"],
         email: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["email"],
-        fcmToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["fmcToken"],
+        fcmToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.vendorLoginLocalData)!)["fcmToken"],
       );
     }
   }
@@ -195,7 +194,6 @@ class VendorCreateAccountKycVerificationController extends GetxController {
         if (result['isValid'] == true) {
           isSubmit.value = false;
           await LocalStorageUtils.setString(AppConstantUtils.vendorLoginResponse, jsonEncode(data));
-          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
           if(data['data']['user']['isKYCSubmit'] == false) {
             Get.off(()=>VendorCreateAccountSetUpProfileView(),preventDuplicates: false);
           } else {

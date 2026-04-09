@@ -29,7 +29,7 @@ class PlannerProfileEditController extends GetxController {
   PlannerProfileEditController({required this.context});
 
   /// Check & request permission
-  static Future<void> _handlePermission() async {
+  static Future<void> _handlePermission({required BuildContext context}) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw 'Location services are disabled.';
@@ -44,19 +44,19 @@ class PlannerProfileEditController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw 'Location permission permanently denied';
+      LocationPermissionDeniedBox().locationPermissionDeniedBox(context: context);
     }
   }
 
   /// Get current position
-  static Future<Position> getCurrentPosition() async {
-    await _handlePermission();
+  static Future<Position> getCurrentPosition({required BuildContext context}) async {
+    await _handlePermission(context: context);
     return await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
   }
 
   /// Get address from latitude & longitude
-  Future<void> plannerGetAddressFromLatLng() async {
-    await getCurrentPosition().then((position) async {
+  Future<void> plannerGetAddressFromLatLng({required BuildContext context}) async {
+    await getCurrentPosition(context: context).then((position) async {
       latitude.value = position.latitude;
       longitude.value = position.longitude;
       List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
@@ -71,9 +71,9 @@ class PlannerProfileEditController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await plannerGetAddressFromLatLng();
       await plannerGetCategoryController(context: context);
       await getPlannerProfileDetailsController(context: context);
+      await plannerGetAddressFromLatLng(context: context);
     });
   }
 

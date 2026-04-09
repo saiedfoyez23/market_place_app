@@ -166,7 +166,7 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
         context: context,
         password: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["password"],
         email: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["email"],
-        fmcToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["fmcToken"],
+        fmcToken: jsonDecode(LocalStorageUtils.getString(AppConstantUtils.plannerLoginLocalData)!)["fcmToken"],
       );
     }
   }
@@ -194,7 +194,6 @@ class PlannerCreateAccountKycVerificationController extends GetxController {
         );
         if (result['isValid'] == true) {
           await LocalStorageUtils.setString(AppConstantUtils.plannerLoginResponse, jsonEncode(data));
-          MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
           isSubmit.value = false;
           if(data['data']['user']['isKYCSubmit'] == false) {
             Get.off(()=>PlannerCreateAccountSetUpProfileView(),preventDuplicates: false);

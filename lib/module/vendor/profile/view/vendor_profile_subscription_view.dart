@@ -75,7 +75,7 @@ class VendorProfileSubscriptionView extends StatelessWidget {
                                 ) :
                                 planCard(
                                   title: "${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].title ?? ""} (${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].type ?? ""})",
-                                  price: "\$${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].price ?? 0.0}/${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].billingCycle}",
+                                  price: "R${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].price ?? 0.0}/${vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].billingCycle}",
                                   context: context,
                                   features: vendorProfileSubscriptionController.getAllPlannerPackagesResponseModel.value.data?[index].description ?? [],
                                   onPressed: () async {

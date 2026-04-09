@@ -10,94 +10,100 @@ class VendorBookingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VendorBookingController vendorBookingController = Get.put(VendorBookingController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: vendorBookingController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(
-            context: context,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
             height: 930.h(context),
-          ) :
-          CustomScrollView(
-            slivers : [
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: vendorBookingController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
+              slivers : [
 
 
-              MainPageAppBarHelperWidget(
-                centerTitle: false,
-                title: "Bookings",
-                actions: [
+                MainPageAppBarHelperWidget(
+                  centerTitle: false,
+                  title: "Bookings",
+                  actions: [
 
 
-                  ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                    context: context,
-                    backgroundColor: ColorUtils.blue96,
-                    iconSize: 20,
-                    height: 40,
-                    padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
-                    borderRadius: 8,
-                    textColor: ColorUtils.white255,
-                    fontWeight: FontWeight.w700,
-                    onPressed: () async {
-                      Get.off(()=>VendorCreateOrderPickLocationPlaceView(),preventDuplicates: false);
-                    },
-                    iconPath: ImageUtils.addImage,
-                    text: "Create Order",
-                  ),
+                    ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                      context: context,
+                      backgroundColor: ColorUtils.blue96,
+                      iconSize: 20,
+                      height: 40,
+                      padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
+                      borderRadius: 8,
+                      textColor: ColorUtils.white255,
+                      fontWeight: FontWeight.w700,
+                      onPressed: () async {
+                        Get.off(()=>VendorCreateOrderPickLocationPlaceView(),preventDuplicates: false);
+                      },
+                      iconPath: ImageUtils.addImage,
+                      text: "Create Order",
+                    ),
 
-                  SpaceHelperWidget.h(15.w(context))
-
-
-                ],
-              ),
+                    SpaceHelperWidget.h(15.w(context))
 
 
+                  ],
+                ),
 
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
 
-                      SpaceHelperWidget.v(16.h(context)),
 
-                      buildTabs(context: context,vendorBookingController: vendorBookingController),
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
 
-                      SpaceHelperWidget.v(26.h(context)),
+                        SpaceHelperWidget.v(16.h(context)),
 
-                      Expanded(
-                        child: vendorBookingController.filteredBookings.isNotEmpty == true ?
-                        ListView.builder(
-                          itemCount: vendorBookingController.filteredBookings.length,
-                          itemBuilder: (context, index) {
-                            return bookingCard(booking: vendorBookingController.filteredBookings[index],context: context);
-                          },
-                        ) :
-                        Align(
-                        alignment: Alignment.center,
-                        child: TextHelperClass.headingTextWithoutWidth(
-                          context: context,
+                        buildTabs(context: context,vendorBookingController: vendorBookingController),
+
+                        SpaceHelperWidget.v(26.h(context)),
+
+                        Expanded(
+                          child: vendorBookingController.filteredBookings.isNotEmpty == true ?
+                          ListView.builder(
+                            itemCount: vendorBookingController.filteredBookings.length,
+                            itemBuilder: (context, index) {
+                              return bookingCard(booking: vendorBookingController.filteredBookings[index],context: context);
+                            },
+                          ) :
+                          Align(
                           alignment: Alignment.center,
-                          textAlign: TextAlign.start,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "No Booking Available",
+                          child: TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.center,
+                            textAlign: TextAlign.start,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            textColor: ColorUtils.black48,
+                            text: "No Booking Available",
+                          ),
                         ),
-                      ),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

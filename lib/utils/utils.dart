@@ -21,3 +21,5 @@ export 'package:marketplaceapp/utils/widget_utils/search_bar_widget_utils/search
 export 'package:marketplaceapp/utils/widget_utils/search_bar_widget_utils/search_able_dropdown_overlay_widget.dart';
 export 'package:marketplaceapp/utils/widget_utils/radio_list_tile_helper_widget.dart';
 export 'package:marketplaceapp/utils/notification_utils/push_notification_utils.dart';
+export 'package:marketplaceapp/utils/widget_utils/exit_form_the_app_dialog_box.dart';
+export 'package:marketplaceapp/utils/widget_utils/location_permission_denied_box.dart';

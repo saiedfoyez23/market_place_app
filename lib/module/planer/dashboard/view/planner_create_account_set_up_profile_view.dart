@@ -253,9 +253,15 @@ class PlannerCreateAccountSetUpProfileView extends StatelessWidget {
                           } else if(plannerCreateAccountSetUpProfileController.selectCategory.isEmpty == true) {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please select minimum one category");
                           } else if(plannerCreateAccountSetUpProfileController.latitude.value == 0.0 && plannerCreateAccountSetUpProfileController.latitude.value == 0.0) {
-                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                            LocationPermissionDeniedBox().locationPermissionDeniedBox(context: context);
                           } else if(plannerCreateAccountSetUpProfileController.locationController.value.text == "") {
                             MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your location is not able pick. Please able the location permission");
+                          } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerCreateAccountSetUpProfileController.addInstagramController.value.text) == false && plannerCreateAccountSetUpProfileController.addInstagramController.value.text != "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
+                          } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerCreateAccountSetUpProfileController.addLinkedInController.value.text) == false && plannerCreateAccountSetUpProfileController.addLinkedInController.value.text != "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
+                          } else if(RegExp(r'^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w\-.~:?#[\]@!$&()*+,;=]*)?$').hasMatch(plannerCreateAccountSetUpProfileController.addWebsiteController.value.text) == false && plannerCreateAccountSetUpProfileController.addWebsiteController.value.text != "") {
+                            MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please put a valid url");
                           } else {
                             await plannerCreateAccountSetUpProfileController.plannerUpdateUserAccountController(context: context);
                           }

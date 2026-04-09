@@ -31,8 +31,8 @@ class VendorCreateAccountSetUpProfileController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await vendorGetAddressFromLatLng();
       await vendorGetCategoryController(context: context);
+      await vendorGetAddressFromLatLng();
     });
   }
 
