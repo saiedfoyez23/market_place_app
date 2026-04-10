@@ -11,193 +11,199 @@ class PlannerAnalyticsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlannerAnalyticsController plannerAnalyticsController = Get.put(PlannerAnalyticsController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: plannerAnalyticsController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(
-            context: context,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
             height: 930.h(context),
-          ) :
-          CustomScrollView(
-            slivers: [
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: plannerAnalyticsController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            CustomScrollView(
+              slivers: [
 
 
-              MainPageAppBarHelperWidget(
-                centerTitle: true,
-                title: "Analytics",
-              ),
+                MainPageAppBarHelperWidget(
+                  centerTitle: true,
+                  title: "Analytics",
+                ),
 
-              plannerAnalyticsController.plannerMyProfileDetailsResponseModel.value.data?.type == null ?
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                plannerAnalyticsController.plannerMyProfileDetailsResponseModel.value.data?.type == null ?
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
 
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        textColor: ColorUtils.black48,
-                        text: "Access Restricted",
-                      ),
-
-
-                      SpaceHelperWidget.v(20.h(context)),
-
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black48,
-                        text: "Only subscribed members can see this feature",
-                      ),
-
-                      SpaceHelperWidget.v(20.h(context)),
-
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black48,
-                        text: "Subscribe now to unlock this feature.",
-                      ),
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black48,
+                          text: "Access Restricted",
+                        ),
 
 
-                    ],
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Only subscribed members can see this feature",
+                        ),
+
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Subscribe now to unlock this feature.",
+                        ),
+
+
+                      ],
+                    ),
+                  ),
+                ) :
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
+                        // Top Stats Row
+                        Row(
+                          children: [
+                            Expanded(
+                              child: buildStatCard(
+                                plannerAnalyticsController: plannerAnalyticsController,
+                                context: context,
+                                title: 'Events Managed',
+                                value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.eventManaged ?? "0"}',
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(16.w(context)),
+
+
+                            Expanded(
+                              child: buildStatCard(
+                                plannerAnalyticsController: plannerAnalyticsController,
+                                context: context,
+                                title: 'Active Clients',
+                                value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.activeClient ?? "0"}',
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SpaceHelperWidget.v(16.h(context)),
+
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: buildStatCard(
+                                plannerAnalyticsController: plannerAnalyticsController,
+                                context: context,
+                                title: 'Vendor Partnerships',
+                                value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.vendorPartnership ?? "0"}',
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(16.w(context)),
+
+                            Expanded(
+                              child: buildStatCard(
+                                plannerAnalyticsController: plannerAnalyticsController,
+                                context: context,
+                                title: 'Total Earnings',
+                                value: 'R${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.totalEarning ?? "0"}',
+                              ),
+                            ),
+                          ],
+                        ),
+
+
+                        SpaceHelperWidget.v(24.h(context)),
+
+                        // Rating Card
+                        buildRatingCard(context: context,controller: plannerAnalyticsController),
+
+                        SpaceHelperWidget.v(24.h(context)),
+
+
+                        // Tab Buttons
+
+                        buildTabs(context: context,plannerAnalyticsController: plannerAnalyticsController),
+
+
+                        plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.eventTypes ?
+                        Column(
+                          children: [
+                            SpaceHelperWidget.v(24.h(context)),
+                            // Event Distribution (for Event Types tab)
+                            buildEventDistribution(controller: plannerAnalyticsController,context: context),
+                          ],
+                        ) :
+                        SizedBox.shrink(),
+
+
+
+                        plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.revenueTrends ?
+                        Column(
+                          children: [
+                            SpaceHelperWidget.v(24.h(context)),
+                            // Charts Section (Events Managed, Vendor Usage, Revenue Growth)
+                            buildChartsSection(controller: plannerAnalyticsController,context: context),
+                          ],
+                        ) :
+                        SizedBox.shrink(),
+
+
+                        plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.topVendors ?
+                        Column(
+                          children: [
+                            SpaceHelperWidget.v(24.h(context)),
+                            // Top Vendors List
+                            buildTopVendorsList(controller: plannerAnalyticsController,context: context),
+                          ],
+                        ) :
+                        SizedBox.shrink(),
+
+
+                        SpaceHelperWidget.v(24.h(context)),
+
+
+                      ],
+                    ),
                   ),
                 ),
-              ) :
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
-                      // Top Stats Row
-                      Row(
-                        children: [
-                          Expanded(
-                            child: buildStatCard(
-                              plannerAnalyticsController: plannerAnalyticsController,
-                              context: context,
-                              title: 'Events Managed',
-                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.eventManaged ?? "0"}',
-                            ),
-                          ),
-
-                          SpaceHelperWidget.h(16.w(context)),
-
-
-                          Expanded(
-                            child: buildStatCard(
-                              plannerAnalyticsController: plannerAnalyticsController,
-                              context: context,
-                              title: 'Active Clients',
-                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.activeClient ?? "0"}',
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SpaceHelperWidget.v(16.h(context)),
-
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: buildStatCard(
-                              plannerAnalyticsController: plannerAnalyticsController,
-                              context: context,
-                              title: 'Vendor Partnerships',
-                              value: '${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.vendorPartnership ?? "0"}',
-                            ),
-                          ),
-
-                          SpaceHelperWidget.h(16.w(context)),
-
-                          Expanded(
-                            child: buildStatCard(
-                              plannerAnalyticsController: plannerAnalyticsController,
-                              context: context,
-                              title: 'Total Earnings',
-                              value: 'R${plannerAnalyticsController.plannerRevenueResponseModel.value.data?.totalEarning ?? "0"}',
-                            ),
-                          ),
-                        ],
-                      ),
-
-
-                      SpaceHelperWidget.v(24.h(context)),
-
-                      // Rating Card
-                      buildRatingCard(context: context,controller: plannerAnalyticsController),
-
-                      SpaceHelperWidget.v(24.h(context)),
-
-
-                      // Tab Buttons
-
-                      buildTabs(context: context,plannerAnalyticsController: plannerAnalyticsController),
-
-
-                      plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.eventTypes ?
-                      Column(
-                        children: [
-                          SpaceHelperWidget.v(24.h(context)),
-                          // Event Distribution (for Event Types tab)
-                          buildEventDistribution(controller: plannerAnalyticsController,context: context),
-                        ],
-                      ) :
-                      SizedBox.shrink(),
-
-
-
-                      plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.revenueTrends ?
-                      Column(
-                        children: [
-                          SpaceHelperWidget.v(24.h(context)),
-                          // Charts Section (Events Managed, Vendor Usage, Revenue Growth)
-                          buildChartsSection(controller: plannerAnalyticsController,context: context),
-                        ],
-                      ) :
-                      SizedBox.shrink(),
-
-
-                      plannerAnalyticsController.selectedTab.value == PlannerAnalyticTab.topVendors ?
-                      Column(
-                        children: [
-                          SpaceHelperWidget.v(24.h(context)),
-                          // Top Vendors List
-                          buildTopVendorsList(controller: plannerAnalyticsController,context: context),
-                        ],
-                      ) :
-                      SizedBox.shrink(),
-
-
-                      SpaceHelperWidget.v(24.h(context)),
-
-
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

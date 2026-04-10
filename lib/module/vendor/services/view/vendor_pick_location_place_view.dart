@@ -8,10 +8,10 @@ import 'package:marketplaceapp/module/module.dart';
 class VendorPickLocationPlaceView extends StatelessWidget {
   VendorPickLocationPlaceView({super.key});
 
-  final VendorPickLocationPlaceController vendorPickLocationPlaceController = Get.put(VendorPickLocationPlaceController());
 
   @override
   Widget build(BuildContext context) {
+    final VendorPickLocationPlaceController vendorPickLocationPlaceController = Get.put(VendorPickLocationPlaceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {

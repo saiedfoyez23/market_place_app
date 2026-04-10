@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class VendorCreateOrderPickLocationPlaceController extends GetxController {
@@ -21,13 +22,16 @@ class VendorCreateOrderPickLocationPlaceController extends GetxController {
     mapController = controller;
   }
 
+  BuildContext context;
+  VendorCreateOrderPickLocationPlaceController({required this.context});
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(microseconds: 120),() async {
-      await plannerPickLocationPlaceLatLng();
+      await plannerPickLocationPlaceLatLng(context: context);
     });
   }
 
@@ -56,7 +60,7 @@ class VendorCreateOrderPickLocationPlaceController extends GetxController {
   }
 
   /// Check & request permission
-  static Future<void> _handlePermission() async {
+  static Future<void> _handlePermission({required BuildContext context}) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw 'Location services are disabled.';
@@ -71,19 +75,19 @@ class VendorCreateOrderPickLocationPlaceController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw 'Location permission permanently denied';
+      LocationPermissionDeniedBox().locationPermissionDeniedBox(context: context);
     }
   }
 
   /// Get current position
-  static Future<Position> getCurrentPosition() async {
-    await _handlePermission();
+  static Future<Position> getCurrentPosition({required BuildContext context}) async {
+    await _handlePermission(context: context);
     return await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
   }
 
   /// Get address from latitude & longitude
-  Future<void> plannerPickLocationPlaceLatLng() async {
-    await getCurrentPosition().then((position) async {
+  Future<void> plannerPickLocationPlaceLatLng({required BuildContext context}) async {
+    await getCurrentPosition(context: context).then((position) async {
       latitude.value = position.latitude;
       longitude.value = position.longitude;
       List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);

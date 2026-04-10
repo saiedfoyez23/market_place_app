@@ -9,104 +9,110 @@ class PlannerProjectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlannerProjectController plannerProjectController = Get.put(PlannerProjectController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: plannerProjectController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(
-            context: context,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
             height: 930.h(context),
-          ) :
-          RefreshIndicator(
-            onRefresh: () async {
-              plannerProjectController.allProjects.clear();
-              plannerProjectController.isLoading.value = true;
-              Future.delayed(Duration(seconds: 1),() async {
-                await plannerProjectController.getAllClientOrderController(context: context);
-              });
-            },
-            child: CustomScrollView(
-              slivers: [
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: plannerProjectController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            RefreshIndicator(
+              onRefresh: () async {
+                plannerProjectController.allProjects.clear();
+                plannerProjectController.isLoading.value = true;
+                Future.delayed(Duration(seconds: 1),() async {
+                  await plannerProjectController.getAllClientOrderController(context: context);
+                });
+              },
+              child: CustomScrollView(
+                slivers: [
 
-                MainPageAppBarHelperWidget(
-                  centerTitle: false,
-                  title: "Projects",
-                  actions: [
-
-
-                    ButtonHelperWidget.customIconButtonWidgetAdventPro(
-                      context: context,
-                      backgroundColor: ColorUtils.blue96,
-                      iconSize: 20,
-                      height: 40,
-                      padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
-                      borderRadius: 8,
-                      textColor: ColorUtils.white255,
-                      fontWeight: FontWeight.w700,
-                      onPressed: () async {
-                        Get.off(()=>PlannerCreateNewProjectPickLocationPlaceView(),preventDuplicates: false);
-                      },
-                      iconPath: ImageUtils.addImage,
-                      text: "Create Project",
-                    ),
-
-                    SpaceHelperWidget.h(15.w(context)),
+                  MainPageAppBarHelperWidget(
+                    centerTitle: false,
+                    title: "Projects",
+                    actions: [
 
 
-                  ],
-                ),
+                      ButtonHelperWidget.customIconButtonWidgetAdventPro(
+                        context: context,
+                        backgroundColor: ColorUtils.blue96,
+                        iconSize: 20,
+                        height: 40,
+                        padding: EdgeInsets.symmetric(vertical: 5.5.vpm(context),horizontal: 16.hpm(context)),
+                        borderRadius: 8,
+                        textColor: ColorUtils.white255,
+                        fontWeight: FontWeight.w700,
+                        onPressed: () async {
+                          Get.off(()=>PlannerCreateNewProjectPickLocationPlaceView(),preventDuplicates: false);
+                        },
+                        iconPath: ImageUtils.addImage,
+                        text: "Create Project",
+                      ),
+
+                      SpaceHelperWidget.h(15.w(context)),
 
 
-                SliverFillRemaining(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.r(context)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SpaceHelperWidget.v(16.h(context)),
+                    ],
+                  ),
 
-                        buildTabs(context: context,plannerProjectController: plannerProjectController),
 
-                        SpaceHelperWidget.v(26.h(context)),
+                  SliverFillRemaining(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.r(context)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SpaceHelperWidget.v(16.h(context)),
 
-                        /// PROJECT LIST
-                        Expanded(
-                          child: Obx(() {
-                            return plannerProjectController.filterProjects.isNotEmpty == true ?
-                            ListView.builder(
-                              itemCount: plannerProjectController.filterProjects.length,
-                              itemBuilder: (context, i) {
-                                return projectCard(context: context,projectModel: plannerProjectController.filterProjects[i]);
-                              },
-                            ) :
-                            Align(
-                              alignment: Alignment.center,
-                              child: TextHelperClass.headingTextWithoutWidth(
-                                context: context,
+                          buildTabs(context: context,plannerProjectController: plannerProjectController),
+
+                          SpaceHelperWidget.v(26.h(context)),
+
+                          /// PROJECT LIST
+                          Expanded(
+                            child: Obx(() {
+                              return plannerProjectController.filterProjects.isNotEmpty == true ?
+                              ListView.builder(
+                                itemCount: plannerProjectController.filterProjects.length,
+                                itemBuilder: (context, i) {
+                                  return projectCard(context: context,projectModel: plannerProjectController.filterProjects[i]);
+                                },
+                              ) :
+                              Align(
                                 alignment: Alignment.center,
-                                textAlign: TextAlign.start,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                textColor: ColorUtils.black48,
-                                text: "No Order Available",
-                              ),
-                            );
-                          }),
-                        )
-                      ],
+                                child: TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.center,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black48,
+                                  text: "No Order Available",
+                                ),
+                              );
+                            }),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

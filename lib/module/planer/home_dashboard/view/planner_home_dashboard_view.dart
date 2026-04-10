@@ -10,325 +10,331 @@ class PlannerHomeDashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlannerHomeDashboardController plannerHomeDashboardController = Get.put(PlannerHomeDashboardController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: plannerHomeDashboardController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
-          CustomScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            slivers: [
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
+            height: 930.h(context),
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: plannerHomeDashboardController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
+            CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              slivers: [
 
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                  child: Column(
-                    children: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                    child: Column(
+                      children: [
 
-                      SpaceHelperWidget.v(15.h(context)),
-                      // app bar
-                      Row(
-                        children: [
+                        SpaceHelperWidget.v(15.h(context)),
+                        // app bar
+                        Row(
+                          children: [
 
-                          ImageHelperWidget.circleImageHelperWidget(
-                            width: 50.w(context),
-                            height: 50.h(context),
-                            verticalPadding: 1.vpm(context),
-                            horizontalPadding: 1.hpm(context),
-                            backgroundColor: ColorUtils.orange213,
-                            radius: 25.r(context),
-                            imageAsset: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
-                            imageUrl: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
-                          ),
-
-                          SpaceHelperWidget.h(12.w(context)),
-
-
-                          Expanded(
-                            child: Column(
-                              children: [
-
-                                RichTextHelperWidget.headingRichText(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  textSpans: [
-                                    CustomTextSpan(
-                                      text: 'Good Morning! ',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: ColorUtils.black64,
-                                    ).toTextSpan(),
-                                    CustomTextSpan(
-                                      text: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.name.toString().split(" ").first ?? "",
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: ColorUtils.orange119,
-                                    ).toTextSpan(),
-                                  ],
-                                ),
-
-
-                                SpaceHelperWidget.v(3.h(context)),
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.centerLeft,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  textColor: ColorUtils.black107,
-                                  text: "Qualisha Creations",
-                                ),
-
-
-
-                              ],
-                            ),
-                          ),
-
-
-                          SpaceHelperWidget.h(15.w(context)),
-
-                          InkWell(
-                            onTap: () async {
-                              Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
-                            },
-                            child: ImageHelperWidget.assetImageWidget(
-                              context: context,
-                              height: 50.h(context),
+                            ImageHelperWidget.circleImageHelperWidget(
                               width: 50.w(context),
-                              imageString: ImageUtils.notificationBellImage,
+                              height: 50.h(context),
+                              verticalPadding: 1.vpm(context),
+                              horizontalPadding: 1.hpm(context),
+                              backgroundColor: ColorUtils.orange213,
+                              radius: 25.r(context),
+                              imageAsset: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl == null ? ImageUtils.noImage : null,
+                              imageUrl: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.photoUrl,
                             ),
-                          ),
 
-                          SpaceHelperWidget.h(15.w(context)),
-
+                            SpaceHelperWidget.h(12.w(context)),
 
 
-                        ],
-                      ),
+                            Expanded(
+                              child: Column(
+                                children: [
 
-                      SpaceHelperWidget.v(15.h(context)),
-
-                    ],
-                  ),
-                ),
-              ),
-
-
-              SliverFillRemaining(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
-                  },
-                  child: CustomScrollView(
-                    slivers: [
-
-
-
-                      SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                SpaceHelperWidget.v(15.h(context)),
-
-
-                                // Stats Row 1: Active Bookings & Monthly Revenue
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: buildStatCard(
-                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
-                                        context: context,
-                                        icon: ImageUtils.plannerActiveProjectImage,
-                                        title: 'Active Project',
-                                        value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.activeProjectCount.toString(),
-                                        color: ColorUtils.cyan199,
-                                      ),
-                                    ),
-
-                                    SpaceHelperWidget.h(16.w(context)),
-
-
-                                    Expanded(
-                                      child: buildStatCard(
-                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
-                                        context: context,
-                                        icon: ImageUtils.plannerUpcomingEventImage,
-                                        title: 'Upcoming Event',
-                                        value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.upcomingEventCount.toString(),
-                                        color: ColorUtils.blue206,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-
-                                SpaceHelperWidget.v(16.h(context)),
-
-                                // Stats Row 2: Total Bookings & Total Earnings
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: buildStatCard(
-                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
-                                        context: context,
-                                        icon: ImageUtils.plannerNewLeadsImage,
-                                        title: 'New Leads',
-                                        value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.newLeadCount.toString(),
-                                        color: ColorUtils.green213,
-                                      ),
-                                    ),
-
-                                    SpaceHelperWidget.h(16.w(context)),
-
-                                    Expanded(
-                                      child: buildStatCard(
-                                        plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
-                                        context: context,
-                                        icon: ImageUtils.plannerTotalEarningsImage,
-                                        title: 'Total Earnings',
-                                        value: "R${plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.totalEarnings.toString()}",
-                                        color: ColorUtils.orange213,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-
-                                // Upcoming Bookings Section
-
-                                Container(
-                                  margin: EdgeInsets.only(top: 32.tpm(context),bottom: 32.bpm(context)),
-                                  padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
-                                  decoration: BoxDecoration(
-                                    color: ColorUtils.white247,
-                                    borderRadius: BorderRadius.circular(20.r(context)),
-                                  ),
-                                  child: Column(
-                                    children: [
-
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-
-                                          Expanded(
-                                            child: TextHelperClass.headingTextWithoutWidth(
-                                              context: context,
-                                              alignment: Alignment.centerLeft,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              textColor: ColorUtils.black48,
-                                              text: "Upcoming Booking",
-                                            ),
-                                          ),
-
-                                          SpaceHelperWidget.h(12.w(context)),
-
-                                          ButtonHelperWidget.customButtonWidget(
-                                            context: context,
-                                            onPressed: () async {
-                                              Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
-                                            },
-                                            text: "See All",
-                                            padding: EdgeInsets.only(left: 14.5.lpm(context)),
-                                            alignment: Alignment.center,
-                                            textColor: ColorUtils.orange119,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                            backgroundColor: Colors.transparent,
-                                          ),
-                                        ],
-                                      ),
-
-                                      SpaceHelperWidget.v(12.h(context)),
-
-                                      if(plannerHomeDashboardController.getPlannerMetaResponseModel.value.data?.upcomingEvents?.isNotEmpty == true)...[
-                                        ...plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.upcomingEvents!.map((booking) => buildBookingCard(booking: booking,context: context)).toList(),
-                                      ] else...[
-                                        TextHelperClass.headingTextWithoutWidth(
-                                          context: context,
-                                          alignment: Alignment.center,
-                                          textAlign: TextAlign.start,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorUtils.black48,
-                                          text: "No Upcoming Event Available",
-                                        ),
-                                      ]
-
-
-
-
-                                    ],
-                                  ),
-                                ),
-
-
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 32.bpm(context)),
-                                  padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
-                                  decoration: BoxDecoration(
-                                    color: ColorUtils.white247,
-                                    borderRadius: BorderRadius.circular(20.r(context)),
-                                  ),
-                                  child: Column(
-                                    children: [
-
-
-                                      TextHelperClass.headingTextWithoutWidth(
-                                        context: context,
-                                        alignment: Alignment.centerLeft,
-                                        fontSize: 18,
+                                  RichTextHelperWidget.headingRichText(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    textSpans: [
+                                      CustomTextSpan(
+                                        text: 'Good Morning! ',
+                                        fontSize: 20,
                                         fontWeight: FontWeight.w600,
-                                        textColor: ColorUtils.black48,
-                                        text: "Recent Activities",
-                                      ),
-
-
-                                      SpaceHelperWidget.v(12.h(context)),
-
-                                      if(plannerHomeDashboardController.getPlannerMetaResponseModel.value.data?.recentNotification?.isNotEmpty == true)...[
-                                        ...plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.recentNotification!.map((partnership) => buildPartnershipCard(partnership: partnership,context: context,plannerHomeDashboardController: plannerHomeDashboardController)),
-                                      ] else...[
-                                        TextHelperClass.headingTextWithoutWidth(
-                                          context: context,
-                                          alignment: Alignment.center,
-                                          textAlign: TextAlign.start,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorUtils.black48,
-                                          text: "No Recent Activities Available",
-                                        ),
-                                      ]
-
-
-
+                                        color: ColorUtils.black64,
+                                      ).toTextSpan(),
+                                      CustomTextSpan(
+                                        text: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value.data?.name.toString().split(" ").first ?? "",
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorUtils.orange119,
+                                      ).toTextSpan(),
                                     ],
                                   ),
-                                ),
 
-                                // Top Partnerships Section
 
-                              ],
+                                  SpaceHelperWidget.v(3.h(context)),
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    textColor: ColorUtils.black107,
+                                    text: "Qualisha Creations",
+                                  ),
+
+
+
+                                ],
+                              ),
                             ),
-                          )
-                      ),
-                    ],
+
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+                            InkWell(
+                              onTap: () async {
+                                Get.off(()=>PlannerNotificationView(),preventDuplicates: false);
+                              },
+                              child: ImageHelperWidget.assetImageWidget(
+                                context: context,
+                                height: 50.h(context),
+                                width: 50.w(context),
+                                imageString: ImageUtils.notificationBellImage,
+                              ),
+                            ),
+
+                            SpaceHelperWidget.h(15.w(context)),
+
+
+
+                          ],
+                        ),
+
+                        SpaceHelperWidget.v(15.h(context)),
+
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+
+
+                SliverFillRemaining(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      Get.off(()=>DashboardPlannerView(index: 0),preventDuplicates: false);
+                    },
+                    child: CustomScrollView(
+                      slivers: [
+
+
+
+                        SliverToBoxAdapter(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  SpaceHelperWidget.v(15.h(context)),
+
+
+                                  // Stats Row 1: Active Bookings & Monthly Revenue
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: buildStatCard(
+                                          plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
+                                          context: context,
+                                          icon: ImageUtils.plannerActiveProjectImage,
+                                          title: 'Active Project',
+                                          value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.activeProjectCount.toString(),
+                                          color: ColorUtils.cyan199,
+                                        ),
+                                      ),
+
+                                      SpaceHelperWidget.h(16.w(context)),
+
+
+                                      Expanded(
+                                        child: buildStatCard(
+                                          plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
+                                          context: context,
+                                          icon: ImageUtils.plannerUpcomingEventImage,
+                                          title: 'Upcoming Event',
+                                          value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.upcomingEventCount.toString(),
+                                          color: ColorUtils.blue206,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+
+                                  SpaceHelperWidget.v(16.h(context)),
+
+                                  // Stats Row 2: Total Bookings & Total Earnings
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: buildStatCard(
+                                          plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
+                                          context: context,
+                                          icon: ImageUtils.plannerNewLeadsImage,
+                                          title: 'New Leads',
+                                          value: plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.newLeadCount.toString(),
+                                          color: ColorUtils.green213,
+                                        ),
+                                      ),
+
+                                      SpaceHelperWidget.h(16.w(context)),
+
+                                      Expanded(
+                                        child: buildStatCard(
+                                          plannerMyProfileDetailsResponseModel: plannerHomeDashboardController.plannerMyProfileDetailsResponseModel.value,
+                                          context: context,
+                                          icon: ImageUtils.plannerTotalEarningsImage,
+                                          title: 'Total Earnings',
+                                          value: "R${plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.totalEarnings.toString()}",
+                                          color: ColorUtils.orange213,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+
+                                  // Upcoming Bookings Section
+
+                                  Container(
+                                    margin: EdgeInsets.only(top: 32.tpm(context),bottom: 32.bpm(context)),
+                                    padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
+                                    decoration: BoxDecoration(
+                                      color: ColorUtils.white247,
+                                      borderRadius: BorderRadius.circular(20.r(context)),
+                                    ),
+                                    child: Column(
+                                      children: [
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+
+                                            Expanded(
+                                              child: TextHelperClass.headingTextWithoutWidth(
+                                                context: context,
+                                                alignment: Alignment.centerLeft,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                textColor: ColorUtils.black48,
+                                                text: "Upcoming Booking",
+                                              ),
+                                            ),
+
+                                            SpaceHelperWidget.h(12.w(context)),
+
+                                            ButtonHelperWidget.customButtonWidget(
+                                              context: context,
+                                              onPressed: () async {
+                                                Get.off(()=>DashboardPlannerView(index: 1),preventDuplicates: false);
+                                              },
+                                              text: "See All",
+                                              padding: EdgeInsets.only(left: 14.5.lpm(context)),
+                                              alignment: Alignment.center,
+                                              textColor: ColorUtils.orange119,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
+                                              backgroundColor: Colors.transparent,
+                                            ),
+                                          ],
+                                        ),
+
+                                        SpaceHelperWidget.v(12.h(context)),
+
+                                        if(plannerHomeDashboardController.getPlannerMetaResponseModel.value.data?.upcomingEvents?.isNotEmpty == true)...[
+                                          ...plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.upcomingEvents!.map((booking) => buildBookingCard(booking: booking,context: context)).toList(),
+                                        ] else...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.center,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            textColor: ColorUtils.black48,
+                                            text: "No Upcoming Event Available",
+                                          ),
+                                        ]
+
+
+
+
+                                      ],
+                                    ),
+                                  ),
+
+
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 32.bpm(context)),
+                                    padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 14.hpm(context)),
+                                    decoration: BoxDecoration(
+                                      color: ColorUtils.white247,
+                                      borderRadius: BorderRadius.circular(20.r(context)),
+                                    ),
+                                    child: Column(
+                                      children: [
+
+
+                                        TextHelperClass.headingTextWithoutWidth(
+                                          context: context,
+                                          alignment: Alignment.centerLeft,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorUtils.black48,
+                                          text: "Recent Activities",
+                                        ),
+
+
+                                        SpaceHelperWidget.v(12.h(context)),
+
+                                        if(plannerHomeDashboardController.getPlannerMetaResponseModel.value.data?.recentNotification?.isNotEmpty == true)...[
+                                          ...plannerHomeDashboardController.getPlannerMetaResponseModel.value.data!.recentNotification!.map((partnership) => buildPartnershipCard(partnership: partnership,context: context,plannerHomeDashboardController: plannerHomeDashboardController)),
+                                        ] else...[
+                                          TextHelperClass.headingTextWithoutWidth(
+                                            context: context,
+                                            alignment: Alignment.center,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            textColor: ColorUtils.black48,
+                                            text: "No Recent Activities Available",
+                                          ),
+                                        ]
+
+
+
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Top Partnerships Section
+
+                                ],
+                              ),
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

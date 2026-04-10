@@ -10,92 +10,98 @@ class UserBookingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserBookingController userBookingController = Get.put(UserBookingController(context: context));
-    return Scaffold(
-      body: Obx(()=>SafeArea(
-        child: Container(
-          height: 930.h(context),
-          width: 428.w(context),
-          decoration: BoxDecoration(
-            color: ColorUtils.white255,
-          ),
-          child: userBookingController.isLoading.value == true ?
-          LoadingHelperWidget.loadingHelperWidget(
-            context: context,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
+      },
+      child: Scaffold(
+        body: Obx(()=>SafeArea(
+          child: Container(
             height: 930.h(context),
-          ) :
-          RefreshIndicator(
-            onRefresh: () async {
-              userBookingController.allBookings.clear();
-              userBookingController.isLoading.value = true;
-              Future.delayed(Duration(seconds: 1),() async {
-                await  userBookingController.getAllPlannerOrderController(context: context);
-              });
-            },
-            child: CustomScrollView(
-              slivers : [
+            width: 428.w(context),
+            decoration: BoxDecoration(
+              color: ColorUtils.white255,
+            ),
+            child: userBookingController.isLoading.value == true ?
+            LoadingHelperWidget.loadingHelperWidget(
+              context: context,
+              height: 930.h(context),
+            ) :
+            RefreshIndicator(
+              onRefresh: () async {
+                userBookingController.allBookings.clear();
+                userBookingController.isLoading.value = true;
+                Future.delayed(Duration(seconds: 1),() async {
+                  await  userBookingController.getAllPlannerOrderController(context: context);
+                });
+              },
+              child: CustomScrollView(
+                slivers : [
 
 
-                MainPageAppBarHelperWidget(
-                  centerTitle: false,
-                  title: "My Bookings",
-                ),
+                  MainPageAppBarHelperWidget(
+                    centerTitle: false,
+                    title: "My Bookings",
+                  ),
 
 
 
-                SliverFillRemaining(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    child: Column(
-                      children: [
+                  SliverFillRemaining(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                      child: Column(
+                        children: [
 
-                        SpaceHelperWidget.v(16.h(context)),
+                          SpaceHelperWidget.v(16.h(context)),
 
-                        buildTabs(
-                          context: context,
-                          userBookingController: userBookingController,
-                        ),
+                          buildTabs(
+                            context: context,
+                            userBookingController: userBookingController,
+                          ),
 
-                        SpaceHelperWidget.v(26.h(context)),
+                          SpaceHelperWidget.v(26.h(context)),
 
 
-                        Expanded(
-                          child: userBookingController.filteredBookings.isNotEmpty == true ?
-                          ListView.builder(
-                            itemCount: userBookingController.filteredBookings.length,
-                            itemBuilder: (context, index) {
-                              return Obx(()=>bookingCard(
-                                userBookingController: userBookingController,
-                                booking: userBookingController.filteredBookings[index],
-                                context: context,
-                              ));
-                            },
-                          ) :
-                          SizedBox(
-                              height: 630.h(context),
-                              width: 428.w(context),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: TextHelperClass.headingTextWithoutWidth(
+                          Expanded(
+                            child: userBookingController.filteredBookings.isNotEmpty == true ?
+                            ListView.builder(
+                              itemCount: userBookingController.filteredBookings.length,
+                              itemBuilder: (context, index) {
+                                return Obx(()=>bookingCard(
+                                  userBookingController: userBookingController,
+                                  booking: userBookingController.filteredBookings[index],
                                   context: context,
+                                ));
+                              },
+                            ) :
+                            SizedBox(
+                                height: 630.h(context),
+                                width: 428.w(context),
+                                child: Align(
                                   alignment: Alignment.center,
-                                  textAlign: TextAlign.start,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  textColor: ColorUtils.black48,
-                                  text: "No Booking Available",
+                                  child: TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.center,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                    textColor: ColorUtils.black48,
+                                    text: "No Booking Available",
+                                  ),
                                 ),
                               ),
-                            ),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

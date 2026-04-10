@@ -10,7 +10,7 @@ class VendorCreateOrderPickLocationPlaceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final VendorCreateOrderPickLocationPlaceController vendorCreateOrderPickLocationPlaceController = Get.put(VendorCreateOrderPickLocationPlaceController());
+    final VendorCreateOrderPickLocationPlaceController vendorCreateOrderPickLocationPlaceController = Get.put(VendorCreateOrderPickLocationPlaceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {

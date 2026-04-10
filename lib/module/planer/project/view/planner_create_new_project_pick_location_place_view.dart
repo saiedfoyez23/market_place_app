@@ -8,10 +8,9 @@ import 'package:marketplaceapp/utils/utils.dart';
 class PlannerCreateNewProjectPickLocationPlaceView extends StatelessWidget {
   PlannerCreateNewProjectPickLocationPlaceView({super.key});
 
-  final PlannerCreateNewProjectPickLocationPlaceController plannerCreateNewProjectPickLocationPlaceController = Get.put(PlannerCreateNewProjectPickLocationPlaceController());
-
   @override
   Widget build(BuildContext context) {
+    final PlannerCreateNewProjectPickLocationPlaceController plannerCreateNewProjectPickLocationPlaceController = Get.put(PlannerCreateNewProjectPickLocationPlaceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
