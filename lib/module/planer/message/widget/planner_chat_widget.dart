@@ -54,7 +54,7 @@ class PlannerChatWidget {
           if(plannerChatController.getAllMessageResponseModel.value.data![index].text.toString().isNotEmpty == true)...[
             if(plannerChatController.getAllMessageResponseModel.value.data![index].text.toString().length < 35) ...[
               InkWell(
-                onLongPress: () async {
+                onLongPress: isSender == false ? null : () async {
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.transparent,
@@ -91,7 +91,7 @@ class PlannerChatWidget {
             ] else...[
               Expanded(
                 child: InkWell(
-                  onLongPress: () async {
+                  onLongPress: isSender == false ? null : () async {
                     showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.transparent,
@@ -134,7 +134,7 @@ class PlannerChatWidget {
                 children: [
                   if (imageList.isNotEmpty)... [
                     InkWell(
-                      onLongPress: () async {
+                      onLongPress: isSender == false ? null : () async {
                         showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.transparent,
@@ -203,7 +203,7 @@ class PlannerChatWidget {
                     ),
                   ] else if(fileList.isNotEmpty)...[
                     InkWell(
-                      onLongPress: () async {
+                      onLongPress: isSender == false ? null : () async {
                         showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.transparent,

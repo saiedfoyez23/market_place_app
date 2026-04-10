@@ -57,6 +57,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // removed
+
   // await PushNotificationUtils.getAccessToken().then((value){
   //   print(value);
   // });
