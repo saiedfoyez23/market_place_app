@@ -430,101 +430,109 @@ class VendorHomeDashboardView extends StatelessWidget {
   Widget buildBookingCard({required VendorHomePageResponseUpcomingBooking booking,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.bpm(context)),
-      padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: ColorUtils.white204,width: 1)),
       ),
-      child: Row(
-        children: [
-          ImageHelperWidget.assetImageWidget(
-            context: context,
-            height: 40.h(context),
-            width: 40.w(context),
-            imageString: ImageUtils.upcomingBookingImage,
-          ),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
+          overlayColor: Colors.transparent
+        ),
+        onPressed: () async {
+          Get.off(()=>VendorOrderDetailsView(orderID: booking.sId,isLead: false,),preventDuplicates: false);
+        },
+        child: Row(
+          children: [
+            ImageHelperWidget.assetImageWidget(
+              context: context,
+              height: 40.h(context),
+              width: 40.w(context),
+              imageString: ImageUtils.upcomingBookingImage,
+            ),
 
-          SpaceHelperWidget.h(12.w(context)),
+            SpaceHelperWidget.h(12.w(context)),
 
-          Expanded(
-            child: Column(
-              children: [
+            Expanded(
+              child: Column(
+                children: [
 
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  textColor: ColorUtils.black64,
-                  text: "${booking.title} - ${booking.type}",
-                ),
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    textColor: ColorUtils.black64,
+                    text: "${booking.title} - ${booking.type}",
+                  ),
 
-                SpaceHelperWidget.v(8.h(context)),
-
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-                    Expanded(
-                      child: TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.centerLeft,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black74,
-                        text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
-                      ),
-                    ),
+                  SpaceHelperWidget.v(8.h(context)),
 
 
-                    booking.status == "completed" ?
-                    Row(
-                      children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
 
-                        ImageHelperWidget.assetImageWidget(
-                          context: context,
-                          height: 20.h(context),
-                          width: 20.w(context),
-                          imageString: ImageUtils.confirmedImage,
-                        ),
-
-                        SpaceHelperWidget.h(8.w(context)),
-
-                        TextHelperClass.headingTextWithoutWidth(
+                      Expanded(
+                        child: TextHelperClass.headingTextWithoutWidth(
                           context: context,
                           alignment: Alignment.centerLeft,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          textColor: ColorUtils.green139,
-                          text: booking.status,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black74,
+                          text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
                         ),
-
-                      ],
-                    ) :
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      textColor: ColorUtils.yellow177,
-                      text: booking.status == "running" ? "In Process" : booking.status,
-                    ),
+                      ),
 
 
+                      booking.status == "completed" ?
+                      Row(
+                        children: [
 
-                  ],
-                ),
+                          ImageHelperWidget.assetImageWidget(
+                            context: context,
+                            height: 20.h(context),
+                            width: 20.w(context),
+                            imageString: ImageUtils.confirmedImage,
+                          ),
 
-              ],
+                          SpaceHelperWidget.h(8.w(context)),
+
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            textColor: ColorUtils.green139,
+                            text: booking.status,
+                          ),
+
+                        ],
+                      ) :
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        textColor: ColorUtils.yellow177,
+                        text: booking.status == "running" ? "In Process" : booking.status,
+                      ),
+
+
+
+                    ],
+                  ),
+
+                ],
+              ),
             ),
-          ),
 
 
 
 
 
 
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 class GetPlannerMetaResponseModel {
-  bool? success;
-  int? statusCode;
-  String? message;
+  var success;
+  var statusCode;
+  var message;
   GetPlannerMetaResponse? data;
 
   GetPlannerMetaResponseModel(
@@ -27,10 +27,10 @@ class GetPlannerMetaResponseModel {
 }
 
 class GetPlannerMetaResponse {
-  int? activeProjectCount;
-  int? upcomingEventCount;
-  int? newLeadCount;
-  int? totalEarnings;
+  var activeProjectCount;
+  var upcomingEventCount;
+  var newLeadCount;
+  var totalEarnings;
   List<GetPlannerMetaResponseUpcomingEvents>? upcomingEvents;
   List<GetPlannerMetaResponseRecentNotification>? recentNotification;
 

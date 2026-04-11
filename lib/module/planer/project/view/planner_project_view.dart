@@ -296,7 +296,7 @@ class PlannerProjectView extends StatelessWidget {
           rowItem(title: "${projectModel.days} Days", value: "From R${projectModel.budgetTotal.toInt()}",context: context),
           rowItem(title: "Start Date:", value: projectModel.startDate,context: context),
           rowItem(title: "End Date:", value: projectModel.endDate, context: context),
-          rowItem(title: "Budget", value: "R${projectModel.budgetUsed.toInt()} / R${projectModel.budgetTotal.toInt()}",context: context),
+          rowItem(title: "Budget", value: "R${projectModel.totalPayment.toInt()} / R${projectModel.budgetTotal.toInt()}",context: context),
 
 
           // Row(

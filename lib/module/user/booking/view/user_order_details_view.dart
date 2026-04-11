@@ -215,7 +215,7 @@ class UserOrderDetailsView extends StatelessWidget {
                                       "user": userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.sender?.sId ?? "",
                                       "reference": userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.sId ?? "",
                                     };
-                                    await userBookingDetailsController.createPaymentController(context: context, data: data);
+                                    await userBookingDetailsController.createConfirmPaymentController(context: context, data: data);
                                   },
                                   text: "Complete Order",
                                 ),

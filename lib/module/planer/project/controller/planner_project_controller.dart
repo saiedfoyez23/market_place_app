@@ -55,6 +55,7 @@ class PlannerProjectController extends GetxController {
               value.status == "cancelled" ?PlannerProjectStatus.cancelled :
               PlannerProjectStatus.active,
               userImage: value.receiver?.photoUrl ?? "",
+              totalPayment: (double.parse(value.initialPayment?.amountPaid.toString() ?? "0.0") + double.parse(value.finalPayment?.amountPaid.toString() ?? "0.0")),
             ),
           );
         });
@@ -72,74 +73,7 @@ class PlannerProjectController extends GetxController {
   }
 
 
-  RxList<ProjectModel> allProjects = <ProjectModel>[
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.complete,
-    //   days: 5,
-    //   budgetUsed: 300,
-    //   budgetTotal: 300,
-    //   progress: 100,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=3",
-    // ),
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.complete,
-    //   days: 5,
-    //   budgetUsed: 300,
-    //   budgetTotal: 300,
-    //   progress: 100,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=3",
-    // ),
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.cancelled,
-    //   days: 5,
-    //   budgetUsed: 300,
-    //   budgetTotal: 300,
-    //   progress: 100,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=3",
-    // ),
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.active,
-    //   days: 5,
-    //   budgetUsed: 150,
-    //   budgetTotal: 300,
-    //   progress: 70,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=4",
-    // ),
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.pending,
-    //   days: 5,
-    //   budgetUsed: 0,
-    //   budgetTotal: 0,
-    //   progress: 0,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=5",
-    // ),
-    // ProjectModel(
-    //   title: "Kids Birthday Party Extravaganza",
-    //   status: PlannerProjectStatus.cancelled,
-    //   days: 5,
-    //   budgetUsed: 150,
-    //   budgetTotal: 300,
-    //   progress: 20,
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   userImage: "https://i.pravatar.cc/150?img=6",
-    // ),
-  ].obs;
+  RxList<ProjectModel> allProjects = <ProjectModel>[].obs;
 
   List<String> tabs = ["All", "Active", "Completed", "Pending", "Cancelled"];
 
@@ -177,6 +111,7 @@ class ProjectModel {
   final String startDate;
   final String endDate;
   final String userImage;
+  final double totalPayment;
 
 
   ProjectModel({
@@ -190,5 +125,6 @@ class ProjectModel {
     required this.startDate,
     required this.endDate,
     required this.userImage,
+    required this.totalPayment,
   });
 }

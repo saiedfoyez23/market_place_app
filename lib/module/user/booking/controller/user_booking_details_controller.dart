@@ -78,6 +78,31 @@ class UserBookingDetailsController extends GetxController {
     );
   }
 
+  Future<void> createConfirmPaymentController({
+    required BuildContext context,
+    required Map<String,dynamic> data,
+  }) async {
+    BaseApiUtils.post(
+      url: ApiUtils.createPayments,
+      data: data,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        MessageSnackBarWidget.successSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+        Get.off(()=>UserPaymentView(paymentUrl: data["data"]),preventDuplicates: false);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+      onExceptionFail: (e,data) {
+        print(data);
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+        isSubmit.value = false;
+      },
+    );
+  }
+
 
   Future<void> deniedOfferController({
     required BuildContext context,

@@ -266,7 +266,7 @@ class OverViewPage {
           ClipRRect(
             borderRadius: BorderRadius.circular(2.r(context)),
             child: LinearProgressIndicator(
-              value: (int.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.received.toString()) / int.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.budget.toString())),
+              value: (double.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.received.toString()) / double.parse(plannerProjectDetailsController.plannerGetProjectDetailsResponseModel.value.data!.budget.toString())),
               backgroundColor: ColorUtils.white217,
               minHeight: 8.h(context),
               valueColor: const AlwaysStoppedAnimation<Color>(ColorUtils.blue96),

@@ -178,6 +178,9 @@ class UserHomeDashboardView extends StatelessWidget {
 
                           SpaceHelperWidget.v(32.h(context)),
 
+
+                          userHomeDashboardController.clientHomeResponseModel.value.data?.banners == null || userHomeDashboardController.clientHomeResponseModel.value.data?.banners?.isEmpty == true ?
+                          SizedBox.shrink() :
                           SizedBox(
                             height: 200.h(context),
                             child: PageView(
@@ -201,7 +204,8 @@ class UserHomeDashboardView extends StatelessWidget {
                           SpaceHelperWidget.v(20.h(context)),
 
 
-
+                          userHomeDashboardController.clientHomeResponseModel.value.data?.banners == null || userHomeDashboardController.clientHomeResponseModel.value.data?.banners?.isEmpty == true ?
+                          SizedBox.shrink() :
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,42 +240,52 @@ class UserHomeDashboardView extends StatelessWidget {
 
                           // Categories
 
-                          TextHelperClass.headingTextWithoutWidth(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            textColor: ColorUtils.black48,
-                            text: "Categories",
-                          ),
+                          userHomeDashboardController.clientHomeResponseModel.value.data?.categories == null || userHomeDashboardController.clientHomeResponseModel.value.data?.categories?.isEmpty == true ?
+                          SizedBox.shrink() :
+                          Column(
+                            children: [
 
-                          SpaceHelperWidget.v(16.h(context)),
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: "Categories",
+                              ),
 
-                          Container(
-                            height: 90.h(context),
-                            width: 428.w(context),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent
-                            ),
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?.length,
-                              itemBuilder: (context,int index) {
-                                return InkWell(
-                                  onTap: () async {
-                                    Get.off(()=>UserCategoryWiseServiceView(categoryId: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].sId),preventDuplicates: false);
+                              SpaceHelperWidget.v(16.h(context)),
+
+                              Container(
+                                height: 90.h(context),
+                                width: 428.w(context),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent
+                                ),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?.length,
+                                  itemBuilder: (context,int index) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        Get.off(()=>UserCategoryWiseServiceView(categoryId: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].sId),preventDuplicates: false);
+                                      },
+                                      child: buildCategoryCard(
+                                        title: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].title,
+                                        image: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].logo,
+                                        context: context,
+                                      ),
+                                    );
                                   },
-                                  child: buildCategoryCard(
-                                    title: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].title,
-                                    image: userHomeDashboardController.clientHomeResponseModel.value.data?.categories?[index].logo,
-                                    context: context,
-                                  ),
-                                );
-                              },
-                            ),
+                                ),
+                              ),
+
+                            ],
                           ),
+
+
 
 
                           SpaceHelperWidget.v(32.h(context)),
@@ -366,7 +380,7 @@ class UserHomeDashboardView extends StatelessWidget {
 
                               SpaceHelperWidget.h(12.w(context)),
 
-                              if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices?.isNotEmpty == true)...[
+                              if(userHomeDashboardController.clientHomeResponseModel.value.data?.recommendServices?.isNotEmpty == true)...[
                                 ButtonHelperWidget.customButtonWidget(
                                   context: context,
                                   onPressed: () async {
@@ -390,7 +404,7 @@ class UserHomeDashboardView extends StatelessWidget {
 
                           SpaceHelperWidget.v(20.h(context)),
 
-                          if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices?.isNotEmpty == true)...[
+                          if(userHomeDashboardController.clientHomeResponseModel.value.data?.recommendServices?.isNotEmpty == true)...[
                             if(userHomeDashboardController.clientHomeResponseModel.value.data!.recommendServices!.length > 1)...[
                               Row(
                                 children: [
@@ -441,7 +455,7 @@ class UserHomeDashboardView extends StatelessWidget {
 
                               SpaceHelperWidget.h(12.w(context)),
 
-                              if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService?.isNotEmpty == true)...[
+                              if(userHomeDashboardController.clientHomeResponseModel.value.data?.planerService?.isNotEmpty == true)...[
                                 ButtonHelperWidget.customButtonWidget(
                                   context: context,
                                   onPressed: () async {
@@ -465,7 +479,7 @@ class UserHomeDashboardView extends StatelessWidget {
                           SpaceHelperWidget.v(20.h(context)),
 
 
-                          if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService?.isNotEmpty == true)...[
+                          if(userHomeDashboardController.clientHomeResponseModel.value.data?.planerService?.isNotEmpty == true)...[
                             if(userHomeDashboardController.clientHomeResponseModel.value.data!.planerService!.length > 1)...[
                               Row(
                                 children: [
@@ -512,7 +526,7 @@ class UserHomeDashboardView extends StatelessWidget {
     );
   }
 
-  Widget buildCategoryCard({required String title, required String image,required BuildContext context}) {
+  Widget buildCategoryCard({required String title, required String? image,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(right: 24.rpm(context)),
       child: Column(
@@ -522,6 +536,7 @@ class UserHomeDashboardView extends StatelessWidget {
             height: 48,
             width: 48,
             imageUrl: image,
+            imageAsset: image == null ? ImageUtils.noImage : null,
             borderRadius: 8
           ),
 
@@ -642,101 +657,109 @@ class UserHomeDashboardView extends StatelessWidget {
   Widget buildBookingCard({required ClientHomeResponseUpcomingBooking booking,required BuildContext context}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.bpm(context)),
-      padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: ColorUtils.white204,width: 1)),
       ),
-      child: Row(
-        children: [
-          ImageHelperWidget.assetImageWidget(
-            context: context,
-            height: 40.h(context),
-            width: 40.w(context),
-            imageString: ImageUtils.upcomingBookingImage,
-          ),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.only(top: 8.tpm(context),bottom: 12.bpm(context)),
+          overlayColor: Colors.transparent,
+        ),
+        onPressed: () async {
+          Get.off(()=>UserOrderDetailsView(orderId: booking.sId,),preventDuplicates: false);
+        },
+        child: Row(
+          children: [
+            ImageHelperWidget.assetImageWidget(
+              context: context,
+              height: 40.h(context),
+              width: 40.w(context),
+              imageString: ImageUtils.upcomingBookingImage,
+            ),
 
-          SpaceHelperWidget.h(12.w(context)),
+            SpaceHelperWidget.h(12.w(context)),
 
-          Expanded(
-            child: Column(
-              children: [
+            Expanded(
+              child: Column(
+                children: [
 
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  textColor: ColorUtils.black64,
-                  text: "${booking.title} - ${booking.type}",
-                ),
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    textColor: ColorUtils.black64,
+                    text: "${booking.title} - ${booking.type}",
+                  ),
 
-                SpaceHelperWidget.v(8.h(context)),
-
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-                    Expanded(
-                      child: TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.centerLeft,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black74,
-                        text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
-                      ),
-                    ),
+                  SpaceHelperWidget.v(8.h(context)),
 
 
-                    booking.status == "completed" ?
-                    Row(
-                      children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
 
-                        ImageHelperWidget.assetImageWidget(
-                          context: context,
-                          height: 20.h(context),
-                          width: 20.w(context),
-                          imageString: ImageUtils.confirmedImage,
-                        ),
-
-                        SpaceHelperWidget.h(8.w(context)),
-
-                        TextHelperClass.headingTextWithoutWidth(
+                      Expanded(
+                        child: TextHelperClass.headingTextWithoutWidth(
                           context: context,
                           alignment: Alignment.centerLeft,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          textColor: ColorUtils.green139,
-                          text: booking.status,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black74,
+                          text: DateFormat("MMM dd,yyyy").format(DateTime.parse(booking.startDate)),
                         ),
-
-                      ],
-                    ) :
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      textColor: ColorUtils.yellow177,
-                      text: booking.status == "running" ? "In Process" : booking.status,
-                    ),
+                      ),
 
 
+                      booking.status == "completed" ?
+                      Row(
+                        children: [
 
-                  ],
-                ),
+                          ImageHelperWidget.assetImageWidget(
+                            context: context,
+                            height: 20.h(context),
+                            width: 20.w(context),
+                            imageString: ImageUtils.confirmedImage,
+                          ),
 
-              ],
+                          SpaceHelperWidget.h(8.w(context)),
+
+                          TextHelperClass.headingTextWithoutWidth(
+                            context: context,
+                            alignment: Alignment.centerLeft,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            textColor: ColorUtils.green139,
+                            text: booking.status,
+                          ),
+
+                        ],
+                      ) :
+                      TextHelperClass.headingTextWithoutWidth(
+                        context: context,
+                        alignment: Alignment.centerLeft,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        textColor: ColorUtils.yellow177,
+                        text: booking.status == "running" ? "In Process" : booking.status,
+                      ),
+
+
+
+                    ],
+                  ),
+
+                ],
+              ),
             ),
-          ),
 
 
 
 
 
 
-        ],
+          ],
+        ),
       ),
     );
   }
