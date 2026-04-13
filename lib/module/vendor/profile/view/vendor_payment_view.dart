@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplaceapp/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:marketplaceapp/module/module.dart';
 
 
 class VendorPaymentView extends StatefulWidget {
-  const VendorPaymentView({super.key,required this.paymentUrl});
+  const VendorPaymentView({super.key, required this.paymentUrl});
   final String paymentUrl;
+
   @override
   State<VendorPaymentView> createState() => _VendorPaymentViewState();
 }
@@ -15,49 +17,99 @@ class _VendorPaymentViewState extends State<VendorPaymentView> {
   late final WebViewController _controller;
   final VendorPaymentController vendorPaymentController = Get.put(VendorPaymentController());
 
+  String? _processedPaymentId; // ✅ Track processed payment
+  bool _isLoading = true; // ✅ Optional loader
 
   @override
   void initState() {
     super.initState();
-    // Initialize WebViewController
+
     _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted) // Enable JavaScript
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (String url) {
-            // Show loading indicator if needed
-            print('Page started loading: $url');
+          onPageStarted: (url) {
+            setState(() => _isLoading = true);
+            debugPrint("Loading: $url");
           },
-          onPageFinished: (String url) {
-            // Page loaded
-            print('Page finished loading: $url');
-          },
-          onWebResourceError: (WebResourceError error) {
-            // Handle errors
-            print('Error: ${error.description}');
-          },
-          onNavigationRequest: (NavigationRequest request) async {
-            print("hello ${request.url}");
-            //Handle redirects or specific URLs (e.g., success/failure callbacks)
-            await vendorPaymentController.getPaymentDetailsController(context: context,paymentUrl: request.url);
-            if (request.url.contains('success') || request.url.contains('failure')) {
-              //Handle payment result
-              //_handlePaymentResult(request.url);
 
-              return NavigationDecision.prevent; // Prevent navigation in WebView
+          onPageFinished: (url) {
+            setState(() => _isLoading = false);
+            debugPrint("Finished: $url");
+          },
+
+          onWebResourceError: (error) {
+            debugPrint("Error: ${error.description}");
+          },
+
+          onNavigationRequest: (NavigationRequest request) async {
+            final uri = Uri.parse(request.url);
+
+            debugPrint("URL HIT: ${request.url}");
+
+            // ✅ Detect confirm payment URL
+            if (uri.path.contains('/confirm-payment')) {
+              final paymentId = uri.queryParameters['paymentId'];
+
+              // ✅ Prevent duplicate API call
+              if (paymentId != null && paymentId != _processedPaymentId) {
+                _processedPaymentId = paymentId;
+
+                await vendorPaymentController.getPaymentDetailsController(
+                  context: context,
+                  paymentUrl: request.url,
+                );
+
+                return NavigationDecision.prevent; // ✅ stop reload
+              }
             }
+
             return NavigationDecision.navigate;
           },
         ),
       )
-      ..loadRequest(Uri.parse(widget.paymentUrl)); // Load the Paymob URL
+      ..loadRequest(Uri.parse(widget.paymentUrl));
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: WebViewWidget(controller: _controller),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,onPopInvoked) {
+        Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
+      },
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+
+
+            AuthAppBarHelperWidget(
+              onBackPressed: () async {
+                Get.off(()=>DashboardVendorView(index: 0),preventDuplicates: false);
+              },
+              title: "Subscription Payment",
+            ),
+
+
+            SliverFillRemaining(
+              child: Stack(
+                children: [
+                  // ✅ Loader
+                  if (_isLoading)...[
+                    LoadingHelperWidget.loadingHelperWidget(
+                      context: context,
+                      height: 930.h(context),
+                    )
+                  ] else...[
+                    WebViewWidget(controller: _controller),
+                  ]
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
+
