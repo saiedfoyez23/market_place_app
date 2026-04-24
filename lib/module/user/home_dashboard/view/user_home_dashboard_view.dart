@@ -147,7 +147,7 @@ class UserHomeDashboardView extends StatelessWidget {
                           // Search Bar
                           TextFormFieldWidget.build(
                             context: context,
-                            hintText: "Search Planner Or Category....",
+                            hintText: 'Search for service provides',
                             controller: userHomeDashboardController.searchController.value,
                             keyboardType: TextInputType.emailAddress,
                             readOnly: true,

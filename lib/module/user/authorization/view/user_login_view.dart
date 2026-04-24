@@ -147,7 +147,7 @@ class UserLoginView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 if(userLoginController.isCheck.value == true) {
-                                  await userLoginController.removeRememberMe();
+                                  await userLoginController.clearRememberMe(role: "user");
                                 } else {
                                   userLoginController.isCheck.value = true;
                                 }
@@ -195,14 +195,15 @@ class UserLoginView extends StatelessWidget {
                               if(userLoginController.isCheck.value == false) {
                                 await userLoginController.userLoginController(
                                   context: context,
+                                  isChecked: userLoginController.isCheck.value,
                                   password: userLoginController.passwordController.value.text,
                                   email: userLoginController.emailController.value.text,
                                   fcmToken: userLoginController.fcmToken.value
                                 );
                               } else {
-                                await userLoginController.rememberMe();
                                 await userLoginController.userLoginController(
                                   context: context,
+                                  isChecked: userLoginController.isCheck.value,
                                   password: userLoginController.passwordController.value.text,
                                   email: userLoginController.emailController.value.text,
                                   fcmToken: userLoginController.fcmToken.value,

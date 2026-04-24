@@ -265,6 +265,16 @@ class TasksPage {
                 text: "Subscribe now to unlock this feature.",
               ),
 
+              SpaceHelperWidget.v(20.h(context)),
+
+              ButtonHelperWidget.customButtonWidgetAdventPro(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=>PlannerProfileSubscriptionView(),preventDuplicates: false);
+                },
+                text: "Subscribe Now",
+              ),
+
 
             ],
           ),

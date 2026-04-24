@@ -71,139 +71,139 @@ class FilesPage {
           ),
         ),
 
-        plannerProjectDetailsController.getAllFileResponseModel.value.data?.isEmpty == true ?
-        SliverFillRemaining(
-          child: Align(
-            alignment: Alignment.center,
-            child: TextHelperClass.headingTextWithoutWidth(
-              context: context,
+        if(plannerProjectDetailsController.getAllFileResponseModel.value.data?.isEmpty == true)...[
+          SliverFillRemaining(
+            child: Align(
               alignment: Alignment.center,
-              textAlign: TextAlign.start,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              textColor: ColorUtils.black48,
-              text: "No File Available",
+              child: TextHelperClass.headingTextWithoutWidth(
+                context: context,
+                alignment: Alignment.center,
+                textAlign: TextAlign.start,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                textColor: ColorUtils.black48,
+                text: "No File Available",
+              ),
             ),
-          ),
-        ) :
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-                (context,int index) {
-              return Container(
-                margin: EdgeInsets.only(bottom: 20.bpm(context)),
-                padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 8.hpm(context)),
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorUtils.white215,width: .5),
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10.r(context)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+          )
+        ] else...[
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context,int index) {
+                return Container(
+                  margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                  padding: EdgeInsets.symmetric(vertical: 14.vpm(context),horizontal: 8.hpm(context)),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorUtils.white215,width: .5),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10.r(context)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
 
 
-                    ImageHelperWidget.assetImageWidget(
-                      context: context,
-                      height: 24.h(context),
-                      width: 24.w(context),
-                      imageString: ImageUtils.fileTypeImage,
-                    ),
-
-                    SpaceHelperWidget.h(16.w(context)),
-
-
-                    Expanded(
-                      child: Column(
-                        children: [
-
-                          TextHelperClass.headingTextWithoutWidth(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            textAlign: TextAlign.start,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            textColor: ColorUtils.black48,
-                            text: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url == null ? "" :
-                            plannerProjectDetailsController.getAllFileResponseModel.value.data![index].url.toString().split("/").last,
-                          ),
-
-                          SpaceHelperWidget.v(6.h(context)),
-
-
-                          RichTextHelperWidget.headingRichText(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            textSpans: [
-                              CustomTextSpan(
-                                text: "${plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].fileSize} MB . ",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: ColorUtils.black74,
-                              ).toTextSpan(),
-                              CustomTextSpan(
-                                text: "Uploaded  ${DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].createdAt))}",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: ColorUtils.black74,
-                              ).toTextSpan(),
-                            ],
-                          ),
-
-
-                        ],
-                      ),
-                    ),
-
-
-                    SpaceHelperWidget.h(6.w(context)),
-
-
-                    InkWell(
-                      onTap: () async {
-                        await plannerProjectDetailsController.downloadAndOpenFile(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url);
-                      },
-                      child: ImageHelperWidget.assetImageWidget(
+                      ImageHelperWidget.assetImageWidget(
                         context: context,
-                        height: 32.h(context),
-                        width: 32.w(context),
-                        imageString: ImageUtils.fileDownloadImage,
+                        height: 24.h(context),
+                        width: 24.w(context),
+                        imageString: ImageUtils.fileTypeImage,
                       ),
-                    ),
 
-                    SpaceHelperWidget.h(12.w(context)),
+                      SpaceHelperWidget.h(16.w(context)),
 
 
-                    InkWell(
-                      onTap: () async {
-                        FileDialogBoxWidget().fileDeleteDialog(
+                      Expanded(
+                        child: Column(
+                          children: [
+
+                            TextHelperClass.headingTextWithoutWidth(
+                              context: context,
+                              alignment: Alignment.centerLeft,
+                              textAlign: TextAlign.start,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              textColor: ColorUtils.black48,
+                              text: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url == null ? "" :
+                              plannerProjectDetailsController.getAllFileResponseModel.value.data![index].url.toString().split("/").last,
+                            ),
+
+                            SpaceHelperWidget.v(6.h(context)),
+
+
+                            RichTextHelperWidget.headingRichText(
+                              context: context,
+                              alignment: Alignment.centerLeft,
+                              textSpans: [
+                                CustomTextSpan(
+                                  text: "${plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].fileSize} MB . ",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorUtils.black74,
+                                ).toTextSpan(),
+                                CustomTextSpan(
+                                  text: "Uploaded  ${DateFormat('dd MMM yyyy').format(DateTime.parse(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].createdAt))}",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorUtils.black74,
+                                ).toTextSpan(),
+                              ],
+                            ),
+
+
+                          ],
+                        ),
+                      ),
+
+
+                      SpaceHelperWidget.h(6.w(context)),
+
+
+                      InkWell(
+                        onTap: () async {
+                          await plannerProjectDetailsController.downloadAndOpenFile(plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].url);
+                        },
+                        child: ImageHelperWidget.assetImageWidget(
                           context: context,
-                          fileId: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].sId,
-                          plannerProjectDetailsController: plannerProjectDetailsController,
-                        );
-                      },
-                      child: ImageHelperWidget.assetImageWidget(
-                        context: context,
-                        height: 32.h(context),
-                        width: 32.w(context),
-                        imageString: ImageUtils.fileDeleteImage,
+                          height: 32.h(context),
+                          width: 32.w(context),
+                          imageString: ImageUtils.fileDownloadImage,
+                        ),
                       ),
-                    ),
+
+                      SpaceHelperWidget.h(12.w(context)),
+
+
+                      InkWell(
+                        onTap: () async {
+                          FileDialogBoxWidget().fileDeleteDialog(
+                            context: context,
+                            fileId: plannerProjectDetailsController.getAllFileResponseModel.value.data?[index].sId,
+                            plannerProjectDetailsController: plannerProjectDetailsController,
+                          );
+                        },
+                        child: ImageHelperWidget.assetImageWidget(
+                          context: context,
+                          height: 32.h(context),
+                          width: 32.w(context),
+                          imageString: ImageUtils.fileDeleteImage,
+                        ),
+                      ),
 
 
 
 
 
 
-                  ],
-                ),
-              );
-            },
-            childCount: plannerProjectDetailsController.getAllFileResponseModel.value.data?.length,
-          ),
-        )
-
-
+                    ],
+                  ),
+                );
+              },
+              childCount: plannerProjectDetailsController.getAllFileResponseModel.value.data?.length,
+            ),
+          )
+        ]
 
       ],
     ) :
@@ -249,6 +249,17 @@ class FilesPage {
                 fontWeight: FontWeight.w500,
                 textColor: ColorUtils.black48,
                 text: "Subscribe now to unlock this feature.",
+              ),
+
+
+              SpaceHelperWidget.v(20.h(context)),
+
+              ButtonHelperWidget.customButtonWidgetAdventPro(
+                context: context,
+                onPressed: () async {
+                  Get.off(()=>PlannerProfileSubscriptionView(),preventDuplicates: false);
+                },
+                text: "Subscribe Now",
               ),
 
 

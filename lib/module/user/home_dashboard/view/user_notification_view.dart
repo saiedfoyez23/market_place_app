@@ -280,106 +280,111 @@ class UserNotificationView extends StatelessWidget {
       decoration: BoxDecoration(
         color: notification?.read == false ? ColorUtils.blue231 : Colors.transparent,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: InkWell(
+        onTap: notification?.modelType == "Order" ? () async {
+          Get.off(()=>UserOrderDetailsView(orderId: notification?.reference ?? "",),preventDuplicates: false);
+        } : null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-          Container(
-            height: 50.h(context),
-            width: 50.w(context),
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(243, 243, 245, 1),
-              shape: BoxShape.circle,
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: ClipRRect(
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    notification?.modelType == "Withdraw" ?
-                    ImageUtils.withdrawNotificationImage :
-                    notification?.modelType == "Subscription" ?
-                    ImageUtils.subcriptionNotificationImage :
-                    notification?.modelType == "User" ?
-                    ImageUtils.userNotificationImage :
-                    notification?.modelType == "KYC" ?
-                    ImageUtils.kycNotificationImage :
-                    notification?.modelType == "Order" ?
-                    ImageUtils.orderNotificationImage :
-                    notification?.modelType == "Auth" ?
-                    ImageUtils.verifyKycNotificationImage :
-                    notification?.modelType == "Service" ?
-                    ImageUtils.serviceNotificationImage :
-                    notification?.modelType == "AssignProject" ?
-                    ImageUtils.projectNotificationImage :
-                    notification?.modelType == "Chat" ?
-                    ImageUtils.chatNotificationImage :
-                    notification?.modelType == "Payment" ?
-                    ImageUtils.paymentNotificationImage :
-                    ImageUtils.refundNotificationImage,
-                    height: 25.h(context),
-                    width: 25.w(context),
-                    fit: BoxFit.contain,
-                    color: Color.fromRGBO(252, 119, 87, 1),
-                  )
+            Container(
+              height: 50.h(context),
+              width: 50.w(context),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(243, 243, 245, 1),
+                shape: BoxShape.circle,
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: ClipRRect(
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset(
+                      notification?.modelType == "Withdraw" ?
+                      ImageUtils.withdrawNotificationImage :
+                      notification?.modelType == "Subscription" ?
+                      ImageUtils.subcriptionNotificationImage :
+                      notification?.modelType == "User" ?
+                      ImageUtils.userNotificationImage :
+                      notification?.modelType == "KYC" ?
+                      ImageUtils.kycNotificationImage :
+                      notification?.modelType == "Order" ?
+                      ImageUtils.orderNotificationImage :
+                      notification?.modelType == "Auth" ?
+                      ImageUtils.verifyKycNotificationImage :
+                      notification?.modelType == "Service" ?
+                      ImageUtils.serviceNotificationImage :
+                      notification?.modelType == "AssignProject" ?
+                      ImageUtils.projectNotificationImage :
+                      notification?.modelType == "Chat" ?
+                      ImageUtils.chatNotificationImage :
+                      notification?.modelType == "Payment" ?
+                      ImageUtils.paymentNotificationImage :
+                      ImageUtils.refundNotificationImage,
+                      height: 25.h(context),
+                      width: 25.w(context),
+                      fit: BoxFit.contain,
+                      color: Color.fromRGBO(252, 119, 87, 1),
+                    )
+                ),
               ),
             ),
-          ),
 
 
 
-          SpaceHelperWidget.h(10.w(context)),
+            SpaceHelperWidget.h(10.w(context)),
 
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
 
-                    Expanded(
-                      child: TextHelperClass.headingTextWithoutWidth(
+                      Expanded(
+                        child: TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.centerLeft,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black64,
+                          text: notification?.message ?? "",
+                        ),
+                      ),
+
+                      SpaceHelperWidget.h(8.w(context)),
+
+                      SizedBox(width: 8),
+
+                      TextHelperClass.headingTextWithoutWidth(
                         context: context,
                         alignment: Alignment.centerLeft,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        textColor: ColorUtils.black64,
-                        text: notification?.message ?? "",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        textColor: ColorUtils.blue181,
+                        text: userNotificationController.getDynamicTime(notification!.createdAt.toString(), DateTime.now().toString()),
                       ),
-                    ),
 
-                    SpaceHelperWidget.h(8.w(context)),
+                    ],
+                  ),
 
-                    SizedBox(width: 8),
+                  SpaceHelperWidget.v(6.h(context)),
 
-                    TextHelperClass.headingTextWithoutWidth(
-                      context: context,
-                      alignment: Alignment.centerLeft,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      textColor: ColorUtils.blue181,
-                      text: userNotificationController.getDynamicTime(notification!.createdAt.toString(), DateTime.now().toString()),
-                    ),
-
-                  ],
-                ),
-
-                SpaceHelperWidget.v(6.h(context)),
-
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  textColor: ColorUtils.black107,
-                  text: notification.description ?? "",
-                ),
-              ],
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    textColor: ColorUtils.black107,
+                    text: notification.description ?? "",
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

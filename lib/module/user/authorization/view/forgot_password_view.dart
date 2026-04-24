@@ -85,6 +85,8 @@ class ForgotPasswordView extends StatelessWidget {
                           onPressed: () async {
                             if(forgotPasswordController.emailController.value.text == "") {
                               MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your email name");
+                            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$',).hasMatch((forgotPasswordController.emailController.value.text))) {
+                              MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter a valid email");
                             } else {
                               await forgotPasswordController.forgotPasswordController(context: context, email: forgotPasswordController.emailController.value.text);
                             }

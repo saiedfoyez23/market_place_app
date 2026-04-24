@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,159 +8,195 @@ import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorAnalysisView extends StatelessWidget {
   VendorAnalysisView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final VendorAnalysisController vendorAnalysisController = Get.put(VendorAnalysisController(context: context));
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop,onPopInvoked) {
+      onPopInvokedWithResult: (didPop, onPopInvoked) {
         ExitFormTheAppDialogBox().exitFormTheAppDialogBox(context: context);
       },
       child: Scaffold(
-        body: Obx(()=>SafeArea(
-          child: Container(
-            height: 930.h(context),
-            width: 428.w(context),
-            decoration: BoxDecoration(
+        body: Obx(() {
+          final bool isLocked = vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == null;
+          return SafeArea(
+            child: Container(
+              height: 930.h(context),
+              width: 428.w(context),
               color: ColorUtils.white255,
-            ),
-            child: vendorAnalysisController.isLoading.value == true ?
-            LoadingHelperWidget.loadingHelperWidget(context: context,height: 930.h(context)) :
-            CustomScrollView(
-              slivers: [
+              child: vendorAnalysisController.isLoading.value ?
+              LoadingHelperWidget.loadingHelperWidget(context: context, height: 930.h(context)) :
+              Stack(
+                children: [
+                  /// ---------------- MAIN CONTENT ----------------
+                  IgnorePointer(
+                    ignoring: isLocked,
+                    child: CustomScrollView(
+                      physics: isLocked ?
+                      const NeverScrollableScrollPhysics() :
+                      const BouncingScrollPhysics(),
+                      slivers: [
 
-                MainPageAppBarHelperWidget(
-                  centerTitle: false,
-                  title: "Analytics",
-                ),
-
-
-                vendorAnalysisController.vendorMyProfileDetailsResponseModel.value.data?.type == null ?
-                SliverFillRemaining(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.center,
-                          textAlign: TextAlign.center,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorUtils.black48,
-                          text: "Access Restricted",
+                        MainPageAppBarHelperWidget(
+                          centerTitle: false,
+                          title: "Analytics",
                         ),
 
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: buildStatCard(
+                                        vendorAnalysisController:
+                                        vendorAnalysisController,
+                                        context: context,
+                                        title: 'Total Booking',
+                                        value:
+                                        '${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalBookingCount ?? "0"}',
+                                      ),
+                                    ),
+                                    SpaceHelperWidget.h(16.w(context)),
+                                    Expanded(
+                                      child: buildStatCard(
+                                        vendorAnalysisController:
+                                        vendorAnalysisController,
+                                        context: context,
+                                        title: 'Total Earnings',
+                                        value:
+                                        'R${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalEarnings ?? "0"}',
+                                      ),
+                                    ),
+                                  ],
+                                ),
 
-                        SpaceHelperWidget.v(20.h(context)),
+                                SpaceHelperWidget.v(20.h(context)),
 
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.center,
-                          textAlign: TextAlign.center,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          textColor: ColorUtils.black48,
-                          text: "Only subscribed members can see this feature",
-                        ),
+                                buildBarChart(
+                                  vendorAnalysisController: vendorAnalysisController,
+                                  context: context,
+                                ),
 
-                        SpaceHelperWidget.v(20.h(context)),
+                                SpaceHelperWidget.v(20.h(context)),
 
-                        TextHelperClass.headingTextWithoutWidth(
-                          context: context,
-                          alignment: Alignment.center,
-                          textAlign: TextAlign.center,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w500,
-                          textColor: ColorUtils.black48,
-                          text: "Subscribe now to unlock this feature.",
-                        ),
+                                buildLineChart(
+                                  vendorAnalysisController: vendorAnalysisController,
+                                  context: context,
+                                ),
 
+                                SpaceHelperWidget.v(20.h(context)),
 
-                      ],
-                    ),
-                  ),
-                ) :
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.hpm(context)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                                buildPieChart(
+                                  vendorAnalysisController: vendorAnalysisController,
+                                  context: context,
+                                ),
 
-                        Row(
-                          children: [
-                            Expanded(
-                              child: buildStatCard(
-                                vendorAnalysisController: vendorAnalysisController,
-                                context: context,
-                                title: 'Total Booking',
-                                value: '${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalBookingCount ?? "0"}',
-                              ),
+                                SpaceHelperWidget.v(20.h(context)),
+
+                                buildBlueTrendChart(
+                                  vendorAnalysisController: vendorAnalysisController,
+                                  context: context,
+                                ),
+                              ],
                             ),
-
-                            SpaceHelperWidget.h(16.w(context)),
-
-
-                            Expanded(
-                              child: buildStatCard(
-                                vendorAnalysisController: vendorAnalysisController,
-                                context: context,
-                                title: 'Total Earnings',
-                                value: 'R${vendorAnalysisController.vendorAnalysisResponseModel.value.data?.totalEarnings ?? "0"}',
-                              ),
-                            ),
-                          ],
-                        ),
-
-
-                        SpaceHelperWidget.v(20.h(context)),
-
-                        // Monthly Revenue
-
-                        buildBarChart(
-                          vendorAnalysisController: vendorAnalysisController,
-                          context: context,
-                        ),
-
-
-                        SpaceHelperWidget.v(20.h(context)),
-
-                        // Client Satisfaction
-                        buildLineChart(
-                          vendorAnalysisController: vendorAnalysisController,
-                          context: context,
-                        ),
-
-                        SpaceHelperWidget.v(20.h(context)),
-
-                        // Service Popularity
-                        buildPieChart(
-                            vendorAnalysisController: vendorAnalysisController,
-                            context: context
-                        ),
-
-                        SpaceHelperWidget.v(20.h(context)),
-
-                        // Booking Trends
-                        buildBlueTrendChart(
-                            vendorAnalysisController: vendorAnalysisController,
-                            context: context
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+
+                  /// ---------------- BLUR OVERLAY ----------------
+                  if (isLocked)...[
+                    Positioned.fill(
+                      child: ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                          child: Container(
+                            color: Colors.black.withOpacity(0.2),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20.hpm(context)),
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+
+                                    Icon(Icons.lock, size: 80.r(context), color: Colors.white),
+
+                                    SpaceHelperWidget.v(20.h(context)),
+
+                                    TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.center,
+                                      textAlign: TextAlign.center,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                      textColor: ColorUtils.black48,
+                                      text: "Access Restricted",
+                                    ),
+
+
+                                    SpaceHelperWidget.v(12.h(context)),
+
+                                    TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.center,
+                                      textAlign: TextAlign.center,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ColorUtils.black48,
+                                      text: "Only subscribed members can see this feature",
+                                    ),
+
+                                    SpaceHelperWidget.v(12.h(context)),
+
+                                    TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.center,
+                                      textAlign: TextAlign.center,
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ColorUtils.black48,
+                                      text: "Subscribe now to unlock this feature.",
+                                    ),
+
+                                    SpaceHelperWidget.v(20.h(context)),
+
+                                    ButtonHelperWidget.customButtonWidgetAdventPro(
+                                      context: context,
+                                      onPressed: () async {
+                                        Get.off(()=>VendorProfileSubscriptionView(),preventDuplicates: false);
+                                      },
+                                      text: "Subscribe Now",
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]
+
+                ],
+              ),
             ),
-          ),
-        )),
+          );
+        }),
       ),
     );
   }
+
+
+
 
   Widget buildStatCard({
     required BuildContext context,

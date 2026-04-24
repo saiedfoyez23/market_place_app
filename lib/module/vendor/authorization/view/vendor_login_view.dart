@@ -147,7 +147,7 @@ class VendorLoginView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 if(vendorLoginController.isCheck.value == true) {
-                                  await vendorLoginController.vendorRemoveRememberMe();
+                                  await vendorLoginController.clearRememberMe(role: 'vendor');
                                 } else {
                                   vendorLoginController.isCheck.value = true;
                                 }
@@ -195,14 +195,15 @@ class VendorLoginView extends StatelessWidget {
                               if(vendorLoginController.isCheck.value == false) {
                                 await vendorLoginController.vendorUserLoginController(
                                   context: context,
+                                  isChecked: vendorLoginController.isCheck.value,
                                   fcmToken: vendorLoginController.fmcToken.value,
                                   password: vendorLoginController.passwordController.value.text,
                                   email: vendorLoginController.emailController.value.text,
                                 );
                               } else {
-                                await vendorLoginController.vendorRememberMe();
                                 await vendorLoginController.vendorUserLoginController(
                                   context: context,
+                                  isChecked: vendorLoginController.isCheck.value,
                                   fcmToken: vendorLoginController.fmcToken.value,
                                   password: vendorLoginController.passwordController.value.text,
                                   email: vendorLoginController.emailController.value.text,

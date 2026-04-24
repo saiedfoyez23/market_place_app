@@ -367,114 +367,125 @@ class VendorAddDialogBoxWidget {
 
                   SpaceHelperWidget.v(10.h(context)),
 
-                  plannerProjectDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type == "elite" ?
-                  Column(
-                    children: List.generate(plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList!.length, (index) {
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 15.bpm(context)),
-                        padding: EdgeInsets.symmetric(horizontal: 14.hpm(context),vertical: 12.vpm(context)),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r(context)),
-                          border: Border.all(width: .75,color: ColorUtils.white215),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-
-
-                            Expanded(
-                              child: Column(
-                                children: [
-
-                                  TextHelperClass.headingTextWithoutWidth(
-                                    context: context,
-                                    alignment: Alignment.centerLeft,
-                                    textAlign: TextAlign.start,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    textColor: ColorUtils.black64,
-                                    text: plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].vendor?.name ?? "",
-                                  ),
-
-                                  SpaceHelperWidget.v(9.h(context)),
-
-                                  TextHelperClass.headingTextWithoutWidth(
-                                    context: context,
-                                    alignment: Alignment.centerLeft,
-                                    textAlign: TextAlign.start,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    textColor: ColorUtils.black113,
-                                    text: plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].serviceType?.first ?? "",
-                                  ),
-
-                                ],
-                              ),
+                  if(plannerProjectDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type == "elite")...[
+                    Column(
+                        children: List.generate(plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList!.length, (index) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 15.bpm(context)),
+                            padding: EdgeInsets.symmetric(horizontal: 14.hpm(context),vertical: 12.vpm(context)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r(context)),
+                              border: Border.all(width: .75,color: ColorUtils.white215),
                             ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
 
-                            SpaceHelperWidget.h(10.w(context)),
 
-                            TextHelperClass.headingTextWithoutWidth(
-                              context: context,
-                              alignment: Alignment.centerLeft,
-                              textAlign: TextAlign.start,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              textColor: ColorUtils.black64,
-                              text: "\$${plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].agreedAmount}",
+                                Expanded(
+                                  child: Column(
+                                    children: [
+
+                                      TextHelperClass.headingTextWithoutWidth(
+                                        context: context,
+                                        alignment: Alignment.centerLeft,
+                                        textAlign: TextAlign.start,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        textColor: ColorUtils.black64,
+                                        text: plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].vendor?.name ?? "",
+                                      ),
+
+                                      SpaceHelperWidget.v(9.h(context)),
+
+                                      TextHelperClass.headingTextWithoutWidth(
+                                        context: context,
+                                        alignment: Alignment.centerLeft,
+                                        textAlign: TextAlign.start,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        textColor: ColorUtils.black113,
+                                        text: plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].serviceType?.first ?? "",
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+
+                                SpaceHelperWidget.h(10.w(context)),
+
+                                TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.centerLeft,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  textColor: ColorUtils.black64,
+                                  text: "\$${plannerProjectDetailsController.getAllProjectVendorQuotesResponseModel.value.data!.vendorList?[index].agreedAmount}",
+                                ),
+
+
+
+                              ],
                             ),
+                          );
+                        })
+                    )
+                  ] else...[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
 
-
-
-                          ],
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorUtils.black48,
+                          text: "Access Restricted",
                         ),
-                      );
-                    })
-                  ) :
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        textColor: ColorUtils.black48,
-                        text: "Access Restricted",
-                      ),
 
 
-                      SpaceHelperWidget.v(20.h(context)),
+                        SpaceHelperWidget.v(20.h(context)),
 
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black48,
-                        text: "Only subscribed members can see this feature",
-                      ),
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Only subscribed members can see this feature",
+                        ),
 
-                      SpaceHelperWidget.v(20.h(context)),
+                        SpaceHelperWidget.v(20.h(context)),
 
-                      TextHelperClass.headingTextWithoutWidth(
-                        context: context,
-                        alignment: Alignment.center,
-                        textAlign: TextAlign.center,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w500,
-                        textColor: ColorUtils.black48,
-                        text: "Subscribe now to unlock this feature.",
-                      ),
+                        TextHelperClass.headingTextWithoutWidth(
+                          context: context,
+                          alignment: Alignment.center,
+                          textAlign: TextAlign.center,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w500,
+                          textColor: ColorUtils.black48,
+                          text: "Subscribe now to unlock this feature.",
+                        ),
+
+                        SpaceHelperWidget.v(20.h(context)),
+
+                        ButtonHelperWidget.customButtonWidgetAdventPro(
+                          context: context,
+                          onPressed: () async {
+                            Get.off(()=>PlannerProfileSubscriptionView(),preventDuplicates: false);
+                          },
+                          text: "Subscribe Now",
+                        ),
 
 
-                    ],
-                  ),
-
+                      ],
+                    )
+                  ]
 
                 ],
               ),

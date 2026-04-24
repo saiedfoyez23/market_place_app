@@ -36,20 +36,30 @@ class UserHomeDashboardController extends GetxController {
     super.onInit();
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1),() async {
-      await getProfileController(context: context);
-      await getUserHomeController(context: context);
-      await userGetAddressFromLatLng(context: context);
+      await getProfileController(
+        context: context,
+        onComplete: () async {
+          await getUserHomeController(
+            context: context,
+            onComplete: () async {
+              await userGetAddressFromLatLng(context: context);
+            },
+          );
+        },
+      );
     });
   }
 
   Future<void> getProfileController({
     required BuildContext context,
+    required Function() onComplete,
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.userProfileDetails,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         userMyProfileDetailsResponseModel.value = UserMyProfileDetailsResponseModel.fromJson(data);
+        onComplete();
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
@@ -66,12 +76,14 @@ class UserHomeDashboardController extends GetxController {
 
   Future<void> getUserHomeController({
     required BuildContext context,
+    required Function() onComplete,
   }) async {
     BaseApiUtils.get(
       url: ApiUtils.getUserHomeResponse,
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
         clientHomeResponseModel.value = ClientHomeResponseModel.fromJson(data);
+        onComplete();
       },
       onFail: (e,data) {
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);

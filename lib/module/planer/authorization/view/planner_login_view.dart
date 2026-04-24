@@ -148,7 +148,7 @@ class PlannerLoginView extends StatelessWidget {
                               context: context,
                               onPressed: () async {
                                 if(plannerLoginController.isCheck.value == true) {
-                                  await plannerLoginController.plannerRemoveRememberMe();
+                                  await plannerLoginController.clearRememberMe(role: "planer");
                                 } else {
                                   plannerLoginController.isCheck.value = true;
                                 }
@@ -196,17 +196,18 @@ class PlannerLoginView extends StatelessWidget {
                               if(plannerLoginController.isCheck.value == false) {
                                 await plannerLoginController.plannerUserLoginController(
                                   context: context,
+                                  isChecked: plannerLoginController.isCheck.value,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,
-                                  fmcToken: plannerLoginController.fmcToken.value,
+                                  fcmToken: plannerLoginController.fmcToken.value,
                                 );
                               } else {
-                                await plannerLoginController.plannerRememberMe();
                                 await plannerLoginController.plannerUserLoginController(
                                   context: context,
+                                  isChecked: plannerLoginController.isCheck.value,
                                   password: plannerLoginController.passwordController.value.text,
                                   email: plannerLoginController.emailController.value.text,
-                                  fmcToken: plannerLoginController.fmcToken.value,
+                                  fcmToken: plannerLoginController.fmcToken.value,
                                 );
                               }
                             }
