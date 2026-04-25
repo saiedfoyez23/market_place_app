@@ -5,15 +5,12 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class VendorCreateNewServiceView extends StatelessWidget {
-  VendorCreateNewServiceView({super.key,required this.long,required this.lat,required this.address});
-  final double long;
-  final double lat;
-  final String address;
+  VendorCreateNewServiceView({super.key,});
+
 
   @override
   Widget build(BuildContext context) {
-    final VendorCreateNewServiceController vendorCreateNewServiceController = Get.put(VendorCreateNewServiceController(
-        context: context,lat: lat,long: long,address: address));
+    final VendorCreateNewServiceController vendorCreateNewServiceController = Get.put(VendorCreateNewServiceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -61,7 +58,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           text: "Title",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.build(
@@ -81,10 +78,10 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Event Description",
+                          text: "Service Description",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.textFiledWithMaxLineBuild(
@@ -107,7 +104,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           text: "Price Type",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         CustomDropdownHelperClass<PlannerServiceDropdownModel>(
@@ -142,7 +139,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           text: "Price",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.build(
@@ -162,18 +159,94 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Address",
+                          text: "Service Area",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(
+                                  vendorCreateNewServiceController.serviceArea.length,
+                                      (index) {
+                                    return Obx(() {
+                                      final area = vendorCreateNewServiceController.serviceArea[index];
 
-                        TextFormFieldWidget.build(
-                          context: context,
-                          hintText: "Enter Address",
-                          controller: vendorCreateNewServiceController.addressController.value,
-                          keyboardType: TextInputType.emailAddress,
+                                      /// ✅ CHECK SELECTED (FIXED)
+                                      final isSelected = vendorCreateNewServiceController.selectServiceArea
+                                          .any((e) => e['name'] == area);
+
+                                      return IntrinsicWidth(
+                                        child: ButtonHelperWidget.customButtonWidget(
+                                          context: context,
+                                          height: 56.h(context),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.5.hpm(context),
+                                            vertical: 8.5.vpm(context),
+                                          ),
+
+                                          /// ✅ BACKGROUND COLOR
+                                          backgroundColor:
+                                          isSelected ? ColorUtils.orange119 : ColorUtils.white243,
+
+                                          /// ✅ TEXT COLOR
+                                          textColor:
+                                          isSelected ? ColorUtils.white255 : ColorUtils.black89,
+
+                                          fontWeight: FontWeight.w500,
+
+                                          /// ✅ TOGGLE LOGIC (FIXED)
+                                          onPressed: () async {
+                                            if (isSelected) {
+                                              /// REMOVE
+                                              vendorCreateNewServiceController.selectServiceArea
+                                                  .removeWhere((e) => e['name'] == area);
+                                            } else {
+                                              /// ADD
+                                              vendorCreateNewServiceController.selectServiceArea.add({
+                                                "name": area,
+                                              });
+                                            }
+                                          },
+
+                                          text: area,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
                         ),
+
+
+
+                        // TextHelperClass.headingTextWithoutWidth(
+                        //   context: context,
+                        //   alignment: Alignment.centerLeft,
+                        //   fontSize: 18,
+                        //   fontWeight: FontWeight.w500,
+                        //   textColor: ColorUtils.black96,
+                        //   text: "Address",
+                        // ),
+                        //
+                        // SpaceHelperWidget.v(6.h(context)),
+                        //
+                        //
+                        // TextFormFieldWidget.build(
+                        //   context: context,
+                        //   hintText: "Enter Address",
+                        //   controller: vendorCreateNewServiceController.addressController.value,
+                        //   keyboardType: TextInputType.emailAddress,
+                        // ),
 
 
                         vendorCreateNewServiceController.categoryResponseModel.value.data != null ?
@@ -192,7 +265,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
                               text: "Category",
                             ),
 
-                            SpaceHelperWidget.v(6.h(context)),
+                            SpaceHelperWidget.v(10.h(context)),
 
                             Align(
                               alignment: Alignment.centerLeft,
@@ -241,13 +314,12 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           text: " Upload Image",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
+                        vendorCreateNewServiceController.selectedFile.isEmpty == true ?
                         Container(
                           width: 428.w(context),
-                          padding: vendorCreateNewServiceController.uploadFile.value.path == "" ?
-                          EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)) :
-                          EdgeInsets.zero,
+                          padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)),
                           decoration: BoxDecoration(
                             color: ColorUtils.white243,
                             border: Border.all(color: ColorUtils.black128,width: 1),
@@ -255,10 +327,9 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              await vendorCreateNewServiceController.pickUploadFrontSideFile();
+                              await vendorCreateNewServiceController.pickUploadFrontSideFile(context: context);
                             },
-                            child: vendorCreateNewServiceController.uploadFile.value.path == "" ?
-                            Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -296,16 +367,68 @@ class VendorCreateNewServiceView extends StatelessWidget {
                                 ),
 
                               ],
-                            ) :
-                            ImageHelperWidget.styledImage(
-                              context: context,
-                              height: 200,
-                              width: 428,
-                              borderRadius: 10,
-                              fit: BoxFit.fill,
-                              imageFile: vendorCreateNewServiceController.uploadFile.value.path,
-                            ),
+                            )
                           ),
+                        ) :
+                        Column(
+                          children: [
+
+                            vendorCreateNewServiceController.selectedFile.isEmpty == true ?
+                            SizedBox.shrink() :
+                            SizedBox(
+                              height: 200.h(context),
+                              child: PageView(
+                                  controller: vendorCreateNewServiceController.pageController.value,
+                                  scrollDirection: Axis.horizontal,
+                                  onPageChanged: (value) {
+                                    vendorCreateNewServiceController.changeIndex(value);
+                                  },
+                                  children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
+                                    return ImageHelperWidget.styledImage(
+                                      context: context,
+                                      borderRadius: 12,
+                                      height: 172,
+                                      width: 428,
+                                      imageFile: vendorCreateNewServiceController.selectedFile[index].path,
+                                    );
+                                  })
+                              ),
+                            ),
+
+                            SpaceHelperWidget.v(20.h(context)),
+
+
+                            vendorCreateNewServiceController.selectedFile.isEmpty == true ?
+                            SizedBox.shrink() :
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
+                                if(vendorCreateNewServiceController.index.value == index) {
+                                  return Container(
+                                    height: 12.h(context),
+                                    width: 30.w(context),
+                                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                                    decoration: BoxDecoration(
+                                      color: ColorUtils.orange119,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(6.r(context)),
+                                    ),
+                                  );
+                                } else {
+                                  return Container(
+                                    height: 12.h(context),
+                                    width: 12.w(context),
+                                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                                    decoration: BoxDecoration(
+                                      color: ColorUtils.orange213,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  );
+                                }
+                              }),
+                            ),
+                          ],
                         ),
 
 
@@ -317,10 +440,10 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Service Details",
+                          text: "What’s Included",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
                         Container(
                           height: 750.h(context),
@@ -422,8 +545,8 @@ class VendorCreateNewServiceView extends StatelessWidget {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service price");
                                   } else if(vendorCreateNewServiceController.selectCategory.value.title == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select a category");
-                                  } else if(vendorCreateNewServiceController.uploadFile.value.path == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service image");
+                                  } else if(vendorCreateNewServiceController.selectedFile.isEmpty == true) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service images");
                                   } else if(vendorCreateNewServiceController.serviceQuillJson.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service details");
                                   } else {
@@ -431,13 +554,11 @@ class VendorCreateNewServiceView extends StatelessWidget {
                                     Map<String,dynamic> data = {
                                       "category": vendorCreateNewServiceController.selectCategory.value.sId,
                                       "title": vendorCreateNewServiceController.titleController.value.text,
+                                      "price": vendorCreateNewServiceController.priceController.value.text,
+                                      "serviceAreas": vendorCreateNewServiceController.selectServiceArea,
+                                      "priceType": vendorCreateNewServiceController.selectServicePaymentModel.value.value,
                                       "subtitle": vendorCreateNewServiceController.eventDetailsController.value.text,
                                       "description": vendorCreateNewServiceController.serviceQuillJson.value,
-                                      "longitude": vendorCreateNewServiceController.submitLong.value,
-                                      "latitude": vendorCreateNewServiceController.submitLat.value,
-                                      "address": vendorCreateNewServiceController.addressController.value.text,
-                                      "price": vendorCreateNewServiceController.priceController.value.text,
-                                      "priceType": vendorCreateNewServiceController.selectServicePaymentModel.value.value
                                     };
                                     print(data);
                                   }

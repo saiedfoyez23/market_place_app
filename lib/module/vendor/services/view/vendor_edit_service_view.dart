@@ -5,15 +5,11 @@ import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 
 class VendorEditServiceView extends StatelessWidget {
-  const VendorEditServiceView({super.key,required this.serviceId,required this.address,required this.long,required this.lat});
-  final double long;
-  final double lat;
-  final String address;
+  const VendorEditServiceView({super.key,required this.serviceId});
   final String serviceId;
   @override
   Widget build(BuildContext context) {
-    final VendorEditServiceController vendorEditServiceController = Get.put(
-        VendorEditServiceController(context: context, serviceId: serviceId,lat: lat,long: long,address: address));
+    final VendorEditServiceController vendorEditServiceController = Get.put(VendorEditServiceController(context: context, serviceId: serviceId));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -61,7 +57,7 @@ class VendorEditServiceView extends StatelessWidget {
                           text: "Title",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.build(
@@ -81,10 +77,10 @@ class VendorEditServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Event Description",
+                          text: "Service Description",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.textFiledWithMaxLineBuild(
@@ -107,7 +103,7 @@ class VendorEditServiceView extends StatelessWidget {
                           text: "Price Type",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         CustomDropdownHelperClass<PlannerServiceDropdownModel>(
@@ -141,7 +137,7 @@ class VendorEditServiceView extends StatelessWidget {
                           text: "Price",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.build(
@@ -161,17 +157,71 @@ class VendorEditServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Address",
+                          text: "Service Area",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(
+                                  vendorEditServiceController.serviceArea.length, (index) {
+                                    return Obx(() {
+                                      final area = vendorEditServiceController.serviceArea[index];
 
-                        TextFormFieldWidget.build(
-                          context: context,
-                          hintText: "Enter Address",
-                          controller: vendorEditServiceController.addressController.value,
-                          keyboardType: TextInputType.emailAddress,
+                                      /// ✅ CHECK SELECTED (FIXED)
+                                      final isSelected = vendorEditServiceController.selectServiceArea
+                                          .any((e) => e['name'] == area);
+
+                                      return IntrinsicWidth(
+                                        child: ButtonHelperWidget.customButtonWidget(
+                                          context: context,
+                                          height: 56.h(context),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.5.hpm(context),
+                                            vertical: 8.5.vpm(context),
+                                          ),
+
+                                          /// ✅ BACKGROUND COLOR
+                                          backgroundColor:
+                                          isSelected ? ColorUtils.orange119 : ColorUtils.white243,
+
+                                          /// ✅ TEXT COLOR
+                                          textColor:
+                                          isSelected ? ColorUtils.white255 : ColorUtils.black89,
+
+                                          fontWeight: FontWeight.w500,
+
+                                          /// ✅ TOGGLE LOGIC (FIXED)
+                                          onPressed: () async {
+                                            if (isSelected) {
+                                              /// REMOVE
+                                              vendorEditServiceController.selectServiceArea
+                                                  .removeWhere((e) => e['name'] == area);
+                                            } else {
+                                              /// ADD
+                                              vendorEditServiceController.selectServiceArea.add({
+                                                "name": area,
+                                              });
+                                            }
+                                          },
+
+                                          text: area,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
                         ),
 
 
@@ -191,7 +241,7 @@ class VendorEditServiceView extends StatelessWidget {
                               text: "Category",
                             ),
 
-                            SpaceHelperWidget.v(6.h(context)),
+                            SpaceHelperWidget.v(10.h(context)),
 
                             Wrap(
                               runSpacing: 10.h(context),
@@ -235,76 +285,195 @@ class VendorEditServiceView extends StatelessWidget {
                           text: " Upload Image",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
-                        Container(
-                          width: 428.w(context),
-                          padding: vendorEditServiceController.uploadFile.value.path == "" ?
-                          EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)) :
-                          EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            color: ColorUtils.white243,
-                            border: Border.all(color: ColorUtils.black128,width: 1),
-                            borderRadius: BorderRadius.circular(10.r(context)),
-                          ),
-                          child: InkWell(
+                        if(vendorEditServiceController.selectedFile.isEmpty == true && vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.isNotEmpty == true)...[
+                          InkWell(
                             onTap: () async {
-                              await vendorEditServiceController.pickUploadFrontSideFile();
+                              await vendorEditServiceController.pickUploadFrontSideFile(context: context);
                             },
-                            child: vendorEditServiceController.uploadFile.value.path == "" &&
-                                vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: Column(
                               children: [
 
-                                ImageHelperWidget.assetImageWidget(
-                                  context: context,
-                                  height: 24,
-                                  width: 24,
-                                  imageString: ImageUtils.pickFileImage,
+                                vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
+                                SizedBox.shrink() :
+                                SizedBox(
+                                  height: 200.h(context),
+                                  child: PageView(
+                                      controller: vendorEditServiceController.pageController.value,
+                                      scrollDirection: Axis.horizontal,
+                                      onPageChanged: (value) {
+                                        vendorEditServiceController.changeIndex(value);
+                                      },
+                                      children: List.generate(vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data!.images!.length, (index) {
+                                        return ImageHelperWidget.styledImage(
+                                          context: context,
+                                          borderRadius: 12,
+                                          height: 172,
+                                          width: 428,
+                                          imageUrl: vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data!.images![index],
+                                        );
+                                      })
+                                  ),
                                 ),
 
-                                SpaceHelperWidget.v(6.w(context)),
+                                SpaceHelperWidget.v(20.h(context)),
 
 
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.center,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  textColor: ColorUtils.black96,
-                                  text: "Click to upload image",
+                                vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
+                                SizedBox.shrink() :
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: List.generate(vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data!.images!.length, (index) {
+                                    if(vendorEditServiceController.index.value == index) {
+                                      return Container(
+                                        height: 12.h(context),
+                                        width: 30.w(context),
+                                        margin: EdgeInsets.only(right: 6.rpm(context)),
+                                        decoration: BoxDecoration(
+                                          color: ColorUtils.orange119,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.circular(6.r(context)),
+                                        ),
+                                      );
+                                    } else {
+                                      return Container(
+                                        height: 12.h(context),
+                                        width: 12.w(context),
+                                        margin: EdgeInsets.only(right: 6.rpm(context)),
+                                        decoration: BoxDecoration(
+                                          color: ColorUtils.orange213,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      );
+                                    }
+                                  }),
                                 ),
-
-
-                                SpaceHelperWidget.v(6.w(context)),
-
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.center,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  textColor: ColorUtils.black96,
-                                  text: "PNG, JPG up to 10MB",
-                                ),
-
                               ],
-                            ) :
-                            ImageHelperWidget.styledImage(
-                                context: context,
-                                height: 200,
-                                width: 428,
-                                borderRadius: 10,
-                                fit: BoxFit.fill,
-                                imageFile: vendorEditServiceController.uploadFile.value.path == "" ? null : vendorEditServiceController.uploadFile.value.path,
-                                imageUrl: vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ? null :
-                                vendorEditServiceController.vendorGetServiceDetailsResponseModel.value.data?.images?.first
-
                             ),
                           ),
-                        ),
+                        ] else if(vendorEditServiceController.selectedFile.isEmpty == true)...[
+                          Container(
+                            width: 428.w(context),
+                            padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)),
+                            decoration: BoxDecoration(
+                              color: ColorUtils.white243,
+                              border: Border.all(color: ColorUtils.black128,width: 1),
+                              borderRadius: BorderRadius.circular(10.r(context)),
+                            ),
+                            child: InkWell(
+                                onTap: () async {
+                                  await vendorEditServiceController.pickUploadFrontSideFile(context: context);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+
+                                    ImageHelperWidget.assetImageWidget(
+                                      context: context,
+                                      height: 24,
+                                      width: 24,
+                                      imageString: ImageUtils.pickFileImage,
+                                    ),
+
+                                    SpaceHelperWidget.v(6.w(context)),
+
+
+                                    TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.center,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ColorUtils.black96,
+                                      text: "Click to upload image",
+                                    ),
+
+
+                                    SpaceHelperWidget.v(6.w(context)),
+
+
+                                    TextHelperClass.headingTextWithoutWidth(
+                                      context: context,
+                                      alignment: Alignment.center,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ColorUtils.black96,
+                                      text: "PNG, JPG up to 10MB",
+                                    ),
+
+                                  ],
+                                )
+                            ),
+                          )
+                        ] else...[
+                          InkWell(
+                            onTap: () async {
+                              await vendorEditServiceController.pickUploadFrontSideFile(context: context);
+                            },
+                            child: Column(
+                              children: [
+
+                                vendorEditServiceController.selectedFile.isEmpty == true ?
+                                SizedBox.shrink() :
+                                SizedBox(
+                                  height: 200.h(context),
+                                  child: PageView(
+                                      controller: vendorEditServiceController.pageController.value,
+                                      scrollDirection: Axis.horizontal,
+                                      onPageChanged: (value) {
+                                        vendorEditServiceController.changeIndex(value);
+                                      },
+                                      children: List.generate(vendorEditServiceController.selectedFile.length, (index) {
+                                        return ImageHelperWidget.styledImage(
+                                          context: context,
+                                          borderRadius: 12,
+                                          height: 172,
+                                          width: 428,
+                                          imageFile: vendorEditServiceController.selectedFile[index].path,
+                                        );
+                                      })
+                                  ),
+                                ),
+
+                                SpaceHelperWidget.v(20.h(context)),
+
+
+                                vendorEditServiceController.selectedFile.isEmpty == true ?
+                                SizedBox.shrink() :
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: List.generate(vendorEditServiceController.selectedFile.length, (index) {
+                                    if(vendorEditServiceController.index.value == index) {
+                                      return Container(
+                                        height: 12.h(context),
+                                        width: 30.w(context),
+                                        margin: EdgeInsets.only(right: 6.rpm(context)),
+                                        decoration: BoxDecoration(
+                                          color: ColorUtils.orange119,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.circular(6.r(context)),
+                                        ),
+                                      );
+                                    } else {
+                                      return Container(
+                                        height: 12.h(context),
+                                        width: 12.w(context),
+                                        margin: EdgeInsets.only(right: 6.rpm(context)),
+                                        decoration: BoxDecoration(
+                                          color: ColorUtils.orange213,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      );
+                                    }
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
 
 
                         SpaceHelperWidget.v(20.h(context)),
@@ -315,10 +484,10 @@ class VendorEditServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Service Details",
+                          text: "What’s Included",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
                         Container(
                           height: 750.h(context),

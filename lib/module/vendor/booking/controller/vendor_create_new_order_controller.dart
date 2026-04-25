@@ -14,7 +14,7 @@ class VendorCreateNewOrderController extends GetxController {
   Rx<TextEditingController> eventDetailsController = TextEditingController().obs;
   Rx<HtmlEditorController> serviceDetailsController = HtmlEditorController().obs;
   //Rx<TextEditingController> serviceDetailsController = TextEditingController().obs;
-  Rx<TextEditingController> deadlineController = TextEditingController().obs;
+  //Rx<TextEditingController> deadlineController = TextEditingController().obs;
   Rx<TextEditingController> programStartDateController = TextEditingController().obs;
   Rx<TextEditingController> programEndDateController = TextEditingController().obs;
   Rx<TextEditingController> totalPriceController = TextEditingController().obs;
@@ -112,6 +112,64 @@ class VendorCreateNewOrderController extends GetxController {
       programStartDate.value = pick;
       programStartDateController.value.text = DateFormat("yyyy-MM-dd").format(programStartDate.value.toLocal());
     } // user canceled
+  }
+
+
+  Rx<TimeOfDay?> startTime = Rx<TimeOfDay?>(null);
+  Rx<TimeOfDay?> endTime = Rx<TimeOfDay?>(null);
+
+  Rx<TextEditingController> startTimeController = TextEditingController().obs;
+  Rx<TextEditingController> endTimeController = TextEditingController().obs;
+
+
+  Future<void> pickStartTime({required BuildContext context}) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      startTime.value = picked;
+
+      startTimeController.value.text = picked.format(context);
+
+      // Reset end time if it's now invalid
+      if (endTime.value != null) {
+        final startMinutes = picked.hour * 60 + picked.minute;
+        final endMinutes = endTime.value!.hour * 60 + endTime.value!.minute;
+
+        if (endMinutes <= startMinutes) {
+          endTime.value = null;
+          endTimeController.value.clear();
+        }
+      }
+    }
+  }
+
+
+  Future<void> pickEndTime({required BuildContext context}) async {
+    if (startTime.value == null) {
+      MessageSnackBarWidget.errorSnackBarWidget(context: context,message:"Please select start time first");
+      return;
+    }
+
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: startTime.value!,
+    );
+
+    if (picked != null) {
+      final startMinutes =
+          startTime.value!.hour * 60 + startTime.value!.minute;
+      final endMinutes = picked.hour * 60 + picked.minute;
+
+      if (endMinutes > startMinutes) {
+        endTime.value = picked;
+        endTimeController.value.text = picked.format(context);
+      } else {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "End time must be greater than start time");
+      }
+    }
   }
 
 

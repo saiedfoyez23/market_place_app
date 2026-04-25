@@ -52,7 +52,7 @@ class VendorServicesView extends StatelessWidget {
                         textColor: ColorUtils.white255,
                         fontWeight: FontWeight.w700,
                         onPressed: () async {
-                          Get.off(()=>VendorPickLocationPlaceView(),preventDuplicates: false);
+                          Get.off(()=>VendorCreateNewServiceView(),preventDuplicates: false,);
                         },
                         iconPath: ImageUtils.addImage,
                         text: "Add Service",
@@ -338,45 +338,102 @@ class VendorServicesView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     textColor: ColorUtils.black80,
                     text: service.subtitle ?? "",
+                    textOverFlow: TextOverflow.ellipsis,
                   ),
 
 
                   SpaceHelperWidget.v(12.h(context)),
 
-                  InkWell(
-                    onTap: () async {
-                      if (await canLaunchUrl(Uri.parse(service.locationUrl))) {
-                        await launchUrl(Uri.parse(service.locationUrl), mode: LaunchMode.externalApplication);
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        ImageHelperWidget.assetImageWidget(
-                          context: context,
-                          height: 21.h(context),
-                          width: 21.w(context),
-                          imageString: ImageUtils.locationImage,
-                        ),
 
-                        SpaceHelperWidget.h(8.w(context)),
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    textAlign: TextAlign.start,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    textColor: ColorUtils.black48,
+                    text: "Service Area",
+                  ),
 
+                  SpaceHelperWidget.v(10.h(context)),
 
-                        Expanded(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      alignment: WrapAlignment.start,
+                      runAlignment: WrapAlignment.start,
+                      runSpacing: 10.h(context),
+                      spacing: 10.w(context),
+                      children: List.generate(service.serviceAreas!.length, (index) {
+                        return IntrinsicWidth(
                           child: TextHelperClass.headingTextWithoutWidth(
                             context: context,
                             alignment: Alignment.centerLeft,
+                            containerColor: ColorUtils.blue219,
+                            padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
                             textAlign: TextAlign.start,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            textColor: ColorUtils.black94,
-                            text: service.address,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400,
+                            borderRadius: BorderRadius.circular(6.r(context)),
+                            textColor: ColorUtils.blue71,
+                            text: service.serviceAreas?[index].name ?? '',
                           ),
-                        ),
-
-
-                      ],
+                        );
+                      }),
                     ),
                   ),
+
+
+
+
+                  // TextHelperClass.headingTextWithoutWidth(
+                  //   context: context,
+                  //   alignment: Alignment.centerLeft,
+                  //   containerColor: ColorUtils.blue219,
+                  //   padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
+                  //   textAlign: TextAlign.start,
+                  //   fontSize: 17,
+                  //   fontWeight: FontWeight.w400,
+                  //   borderRadius: BorderRadius.circular(6.r(context)),
+                  //   textColor: ColorUtils.blue71,
+                  //   text: data?.category?.title ?? '',
+                  // ),
+                  //
+                  //
+                  // InkWell(
+                  //   onTap: () async {
+                  //     if (await canLaunchUrl(Uri.parse(service.locationUrl))) {
+                  //       await launchUrl(Uri.parse(service.locationUrl), mode: LaunchMode.externalApplication);
+                  //     }
+                  //   },
+                  //   child: Row(
+                  //     children: [
+                  //       ImageHelperWidget.assetImageWidget(
+                  //         context: context,
+                  //         height: 21.h(context),
+                  //         width: 21.w(context),
+                  //         imageString: ImageUtils.locationImage,
+                  //       ),
+                  //
+                  //       SpaceHelperWidget.h(8.w(context)),
+                  //
+                  //
+                  //       Expanded(
+                  //         child: TextHelperClass.headingTextWithoutWidth(
+                  //           context: context,
+                  //           alignment: Alignment.centerLeft,
+                  //           textAlign: TextAlign.start,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w500,
+                  //           textColor: ColorUtils.black94,
+                  //           text: service.address,
+                  //         ),
+                  //       ),
+                  //
+                  //
+                  //     ],
+                  //   ),
+                  // ),
 
 
                   SpaceHelperWidget.v(24.h(context)),
@@ -496,7 +553,7 @@ class VendorServicesView extends StatelessWidget {
                         child: ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            Get.off(()=>VendorEditPickLocationPlaceView(serviceId: service.sId),preventDuplicates: false);
+                            Get.off(()=>VendorEditServiceView(serviceId: service.sId,), preventDuplicates: false,);
                           },
                           text: "Edit",
                           textColor: ColorUtils.blue96,

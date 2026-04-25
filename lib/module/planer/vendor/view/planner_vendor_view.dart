@@ -269,13 +269,11 @@ class PlannerVendorView extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r(context)),
         color: ColorUtils.white243,
-        border: Border.all(
-            color: ColorUtils.white215,
-            width: 1
-        ),
+        border: Border.all(color: ColorUtils.white215, width: 1),
       ),
       child: Column(
         children: [
+
           imageSection(
             plannerVendorController: plannerVendorController,
             img: data!.images!.first,

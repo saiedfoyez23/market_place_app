@@ -88,10 +88,10 @@ class VendorBookingController extends GetxController {
                 sid: value.sId ?? "",
                 plannerName: value.receiver?.name ?? "",
                 serviceName: value.title ?? "",
-                days: "${value.duration} Days",
+                date: value.date == null ? "" : DateFormat("dd MMM yyyy").format(DateTime.parse(value.date)),
                 price: "${value.totalAmount}",
-                startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-                endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+                startTime: value.startTime ?? "",
+                endTime: value.endTime ?? "",
                 status: value.status == "completed" ? VendorBookingStatus.complete :
                 value.status == "pending" ? VendorBookingStatus.pending :
                 value.status == "cancelled" ? VendorBookingStatus.cancelled :
@@ -139,10 +139,10 @@ class VendorBookingModel {
   final String coverImage;
   final String plannerName;
   final String serviceName;
-  final String days;
+  final String date;
   final String price;
-  final String startDate;
-  final String endDate;
+  final String startTime;
+  final String endTime;
   final VendorBookingStatus status;
 
   VendorBookingModel({
@@ -150,10 +150,10 @@ class VendorBookingModel {
     required this.coverImage,
     required this.plannerName,
     required this.serviceName,
-    required this.days,
+    required this.date,
     required this.price,
-    required this.startDate,
-    required this.endDate,
+    required this.startTime,
+    required this.endTime,
     required this.status,
   });
 }

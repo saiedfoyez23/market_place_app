@@ -173,7 +173,7 @@ export 'vendor/analysis/view/vendor_analysis_view.dart';
 export 'vendor/analysis/controller/vendor_analysis_controller.dart';
 export 'vendor/dashboard/controller/vendor_create_account_set_up_profile_controller.dart';
 export 'vendor/dashboard/controller/vendor_create_account_kyc_verification_controller.dart';
-export 'vendor/profile/model/vendor_myprofile_details_response_model.dart';
+export 'vendor/profile/model/vendor_my_profile_details_response_model.dart';
 export 'vendor/profile/controller/vendor_profile_view_controller.dart';
 export 'vendor/profile/model/vendor_FAQ_response_model.dart';
 export 'vendor/profile/model/vendor_user_wise_portfolio_model.dart';

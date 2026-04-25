@@ -49,6 +49,9 @@ class PlannerMyProfileDetailsResponse {
   var createdAt;
   var isActiveSubscription;
   var type;
+  var isPaystackRecipient;
+  var isUnreadMessage;
+  var unreadMessageCount;
 
   PlannerMyProfileDetailsResponse({
     this.sId,
@@ -73,6 +76,9 @@ class PlannerMyProfileDetailsResponse {
     this.createdAt,
     this.isActiveSubscription,
     this.type,
+    this.isPaystackRecipient,
+    this.isUnreadMessage,
+    this.unreadMessageCount,
   });
 
   PlannerMyProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
@@ -104,6 +110,9 @@ class PlannerMyProfileDetailsResponse {
     createdAt = json['createdAt'];
     isActiveSubscription = json['isActiveSubscription'];
     type = json['type'];
+    isPaystackRecipient = json['isPaystackRecipient'];
+    isUnreadMessage = json['isUnreadMessage'];
+    unreadMessageCount = json['unreadMessageCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -136,13 +145,16 @@ class PlannerMyProfileDetailsResponse {
     data['createdAt'] = this.createdAt;
     data['isActiveSubscription'] = this.isActiveSubscription;
     data['type'] = this.type;
+    data['isPaystackRecipient'] = this.isPaystackRecipient;
+    data['isUnreadMessage'] = this.isUnreadMessage;
+    data['unreadMessageCount'] = this.unreadMessageCount;
     return data;
   }
 }
 
 class PlannerMyProfileDetailsResponseLocation {
-  String? type;
-  List<double>? coordinates;
+  var type;
+  List<dynamic>? coordinates;
 
   PlannerMyProfileDetailsResponseLocation({this.type, this.coordinates});
 
@@ -160,9 +172,9 @@ class PlannerMyProfileDetailsResponseLocation {
 }
 
 class PlannerMyProfileDetailsResponseSocialProfiles {
-  String? instagram;
-  String? linkedin;
-  String? website;
+  var instagram;
+  var linkedin;
+  var website;
 
   PlannerMyProfileDetailsResponseSocialProfiles({this.instagram, this.linkedin, this.website});
 

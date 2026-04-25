@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:marketplaceapp/module/module.dart';
@@ -8,7 +10,10 @@ class DashboardUserController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
   int index;
-  DashboardUserController({required this.index});
+  Rx<UserMyProfileDetailsResponseModel> userMyProfileDetailsResponseModel = UserMyProfileDetailsResponseModel().obs;
+  Rx<UserLoginResponseModel> userLoginResponseModel = UserLoginResponseModel.fromJson(jsonDecode(LocalStorageUtils.getString(AppConstantUtils.userLoginResponse)!)).obs;
+  BuildContext context;
+  DashboardUserController({required this.index,required this.context});
 
   @override
   void onInit() {
@@ -16,7 +21,28 @@ class DashboardUserController extends GetxController {
     super.onInit();
     Future.delayed(Duration(milliseconds: 10),() async {
       await changeIndex(index: index);
+      await getProfileController(context: context);
     });
+  }
+
+
+  Future<void> getProfileController({
+    required BuildContext context,
+  }) async {
+    BaseApiUtils.get(
+      url: ApiUtils.userProfileDetails,
+      authorization: userLoginResponseModel.value.data?.accessToken,
+      onSuccess: (e,data) async {
+        userMyProfileDetailsResponseModel.value = UserMyProfileDetailsResponseModel.fromJson(data);
+      },
+      onFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+      },
+      onExceptionFail: (e,data) {
+        MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
+      },
+    );
+
   }
 
 
@@ -27,11 +53,11 @@ class DashboardUserController extends GetxController {
 
 
   RxList<Map<String, dynamic>> items = [
-    {'unselected': ImageUtils.unselectHomeImage, 'select': ImageUtils.selectHomeImage, 'label': 'Home'},
-    {'unselected': ImageUtils.unselectMyBookingImage, 'select': ImageUtils.selectMyBookingImage, 'label': 'My Bookings'},
-    {'unselected': ImageUtils.unselectMessageImage, 'select': ImageUtils.selectMessageImage, 'label': 'Messages'},
-    {'unselected': ImageUtils.unselectWishlistImage, 'select': ImageUtils.selectWishlistImage, 'label': 'wishlist'},
-    {'unselected': ImageUtils.unselectProfileImage, 'select': ImageUtils.selectProfileImage, 'label': 'Profile'},
+    {'unselected': ImageUtils.unselectHomeImage, 'select': ImageUtils.selectHomeImage, 'label': 'Home', "isMessage": false},
+    {'unselected': ImageUtils.unselectMyBookingImage, 'select': ImageUtils.selectMyBookingImage, 'label': 'My Bookings', "isMessage": false},
+    {'unselected': ImageUtils.unselectMessageImage, 'select': ImageUtils.selectMessageImage, 'label': 'Messages', "isMessage": true},
+    {'unselected': ImageUtils.unselectWishlistImage, 'select': ImageUtils.selectWishlistImage, 'label': 'wishlist', "isMessage": false},
+    {'unselected': ImageUtils.unselectProfileImage, 'select': ImageUtils.selectProfileImage, 'label': 'Profile', "isMessage": false},
   ].obs;
 
   RxList<Widget> pages = [

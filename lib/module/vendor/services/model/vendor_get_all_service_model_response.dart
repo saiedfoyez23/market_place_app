@@ -12,7 +12,7 @@ class VendorGetAllServiceModelResponse {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? new  VendorGetAllServiceModelMeta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new VendorGetAllServiceModelMeta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
       data = <VendorGetAllServiceModel>[];
       json['data'].forEach((v) {
@@ -36,7 +36,7 @@ class VendorGetAllServiceModelResponse {
   }
 }
 
-class  VendorGetAllServiceModelMeta {
+class VendorGetAllServiceModelMeta {
   var page;
   var limit;
   var total;
@@ -62,59 +62,53 @@ class  VendorGetAllServiceModelMeta {
 }
 
 class VendorGetAllServiceModel {
-  VendorGetAllServiceModelLocation? location;
   var sId;
   VendorGetAllServiceModelAuthor? author;
   VendorGetAllServiceModelCategory? category;
   var title;
   var subtitle;
   List<String>? images;
-  var address;
-  var locationUrl;
-  var status;
+  List<VendorGetAllServiceModelServiceAreas>? serviceAreas;
   var isFeatured;
+  var status;
   var isFavorite;
 
   VendorGetAllServiceModel({
-    this.location,
     this.sId,
     this.author,
     this.category,
     this.title,
     this.subtitle,
     this.images,
-    this.address,
-    this.locationUrl,
-    this.status,
+    this.serviceAreas,
     this.isFeatured,
+    this.status,
     this.isFavorite,
   });
 
   VendorGetAllServiceModel.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new  VendorGetAllServiceModelLocation.fromJson(json['location'])
-        : null;
     sId = json['_id'];
     author =
-    json['author'] != null ? new  VendorGetAllServiceModelAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new VendorGetAllServiceModelAuthor.fromJson(json['author']) : null;
     category = json['category'] != null
-        ? new  VendorGetAllServiceModelCategory.fromJson(json['category'])
+        ? new VendorGetAllServiceModelCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
     images = json['images'].cast<String>();
-    address = json['address'];
-    locationUrl = json['locationUrl'];
-    status = json['status'];
+    if (json['serviceAreas'] != null) {
+      serviceAreas = <VendorGetAllServiceModelServiceAreas>[];
+      json['serviceAreas'].forEach((v) {
+        serviceAreas!.add(new VendorGetAllServiceModelServiceAreas.fromJson(v));
+      });
+    }
     isFeatured = json['isFeatured'];
+    status = json['status'];
     isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -125,30 +119,12 @@ class VendorGetAllServiceModel {
     data['title'] = this.title;
     data['subtitle'] = this.subtitle;
     data['images'] = this.images;
-    data['address'] = this.address;
-    data['locationUrl'] = this.locationUrl;
-    data['status'] = this.status;
+    if (this.serviceAreas != null) {
+      data['serviceAreas'] = this.serviceAreas!.map((v) => v.toJson()).toList();
+    }
     data['isFeatured'] = this.isFeatured;
+    data['status'] = this.status;
     data['isFavorite'] = this.isFavorite;
-    return data;
-  }
-}
-
-class VendorGetAllServiceModelLocation {
-  var type;
-  List<double>? coordinates;
-
-  VendorGetAllServiceModelLocation({this.type, this.coordinates});
-
-  VendorGetAllServiceModelLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
     return data;
   }
 }
@@ -203,7 +179,7 @@ class VendorGetAllServiceModelAuthor {
   }
 }
 
-class  VendorGetAllServiceModelCategory {
+class VendorGetAllServiceModelCategory {
   var sId;
   var title;
 
@@ -218,6 +194,54 @@ class  VendorGetAllServiceModelCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    return data;
+  }
+}
+
+class VendorGetAllServiceModelServiceAreas {
+  VendorGetAllServiceModelLocation? location;
+  var name;
+  var locationUrl;
+  var sId;
+
+  VendorGetAllServiceModelServiceAreas({this.location, this.name, this.locationUrl, this.sId});
+
+  VendorGetAllServiceModelServiceAreas.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new VendorGetAllServiceModelLocation.fromJson(json['location'])
+        : null;
+    name = json['name'];
+    locationUrl = json['locationUrl'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['name'] = this.name;
+    data['locationUrl'] = this.locationUrl;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class VendorGetAllServiceModelLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  VendorGetAllServiceModelLocation({this.type, this.coordinates});
+
+  VendorGetAllServiceModelLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

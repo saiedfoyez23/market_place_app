@@ -90,6 +90,7 @@ class UserHomeDashboardController extends GetxController {
         isLoading.value = false;
       },
       onExceptionFail: (e,data) {
+        print(data);
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
         isLoading.value = false;
       },

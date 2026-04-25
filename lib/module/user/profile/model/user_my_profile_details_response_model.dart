@@ -27,8 +27,6 @@ class UserMyProfileDetailsResponseModel {
 }
 
 class UserMyProfileDetailsResponse {
-  UserMyProfileDetailsLocation? location;
-  UserMyProfileDetailsNotifySettings? notifySettings;
   var sId;
   var name;
   var email;
@@ -37,20 +35,24 @@ class UserMyProfileDetailsResponse {
   var contractNumber;
   var address;
   var bio;
-  List<String>? categories;
   var locationUrl;
-  UserMyProfileDetailsSocialProfiles? socialProfiles;
+  UserMyProfileDetailsResponseLocation? location;
+  UserMyProfileDetailsResponseSocialProfiles? socialProfiles;
   var role;
   var status;
   var avgRating;
   var ratingCount;
+  UserMyProfileDetailsResponseNotifySettings? notifySettings;
   var isKycVerified;
   var id;
   var createdAt;
+  var isActiveSubscription;
+  var type;
+  var isPaystackRecipient;
+  var isUnreadMessage;
+  var unreadMessageCount;
 
   UserMyProfileDetailsResponse({
-    this.location,
-    this.notifySettings,
     this.sId,
     this.name,
     this.email,
@@ -59,25 +61,25 @@ class UserMyProfileDetailsResponse {
     this.contractNumber,
     this.address,
     this.bio,
-    this.categories,
     this.locationUrl,
+    this.location,
     this.socialProfiles,
     this.role,
     this.status,
     this.avgRating,
     this.ratingCount,
+    this.notifySettings,
     this.isKycVerified,
     this.id,
     this.createdAt,
+    this.isActiveSubscription,
+    this.type,
+    this.isPaystackRecipient,
+    this.isUnreadMessage,
+    this.unreadMessageCount,
   });
 
   UserMyProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new UserMyProfileDetailsLocation.fromJson(json['location'])
-        : null;
-    notifySettings = json['notifySettings'] != null
-        ? new UserMyProfileDetailsNotifySettings.fromJson(json['notifySettings'])
-        : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -86,28 +88,32 @@ class UserMyProfileDetailsResponse {
     contractNumber = json['contractNumber'];
     address = json['address'];
     bio = json['bio'];
-    categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
+    location = json['location'] != null
+        ? new UserMyProfileDetailsResponseLocation.fromJson(json['location'])
+        : null;
     socialProfiles = json['socialProfiles'] != null
-        ? new UserMyProfileDetailsSocialProfiles.fromJson(json['socialProfiles'])
+        ? new UserMyProfileDetailsResponseSocialProfiles.fromJson(json['socialProfiles'])
         : null;
     role = json['role'];
     status = json['status'];
     avgRating = json['avgRating'];
     ratingCount = json['ratingCount'];
+    notifySettings = json['notifySettings'] != null
+        ? new UserMyProfileDetailsResponseNotifySettings.fromJson(json['notifySettings'])
+        : null;
     isKycVerified = json['isKycVerified'];
     id = json['id'];
     createdAt = json['createdAt'];
+    isActiveSubscription = json['isActiveSubscription'];
+    type = json['type'];
+    isPaystackRecipient = json['isPaystackRecipient'];
+    isUnreadMessage = json['isUnreadMessage'];
+    unreadMessageCount = json['unreadMessageCount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
-    if (this.notifySettings != null) {
-      data['notifySettings'] = this.notifySettings!.toJson();
-    }
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -116,8 +122,10 @@ class UserMyProfileDetailsResponse {
     data['contractNumber'] = this.contractNumber;
     data['address'] = this.address;
     data['bio'] = this.bio;
-    data['categories'] = this.categories;
     data['locationUrl'] = this.locationUrl;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
     if (this.socialProfiles != null) {
       data['socialProfiles'] = this.socialProfiles!.toJson();
     }
@@ -125,22 +133,30 @@ class UserMyProfileDetailsResponse {
     data['status'] = this.status;
     data['avgRating'] = this.avgRating;
     data['ratingCount'] = this.ratingCount;
+    if (this.notifySettings != null) {
+      data['notifySettings'] = this.notifySettings!.toJson();
+    }
     data['isKycVerified'] = this.isKycVerified;
     data['id'] = this.id;
     data['createdAt'] = this.createdAt;
+    data['isActiveSubscription'] = this.isActiveSubscription;
+    data['type'] = this.type;
+    data['isPaystackRecipient'] = this.isPaystackRecipient;
+    data['isUnreadMessage'] = this.isUnreadMessage;
+    data['unreadMessageCount'] = this.unreadMessageCount;
     return data;
   }
 }
 
-class UserMyProfileDetailsLocation {
+class UserMyProfileDetailsResponseLocation {
   var type;
-  List<int>? coordinates;
+  List<dynamic>? coordinates;
 
-  UserMyProfileDetailsLocation({this.type, this.coordinates});
+  UserMyProfileDetailsResponseLocation({this.type, this.coordinates});
 
-  UserMyProfileDetailsLocation.fromJson(Map<String, dynamic> json) {
+  UserMyProfileDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<int>();
+    coordinates = json['coordinates'].cast<double>();
   }
 
   Map<String, dynamic> toJson() {
@@ -151,7 +167,29 @@ class UserMyProfileDetailsLocation {
   }
 }
 
-class UserMyProfileDetailsNotifySettings {
+class UserMyProfileDetailsResponseSocialProfiles {
+  var instagram;
+  var linkedin;
+  var website;
+
+  UserMyProfileDetailsResponseSocialProfiles({this.instagram, this.linkedin, this.website});
+
+  UserMyProfileDetailsResponseSocialProfiles.fromJson(Map<String, dynamic> json) {
+    instagram = json['instagram'];
+    linkedin = json['linkedin'];
+    website = json['website'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['instagram'] = this.instagram;
+    data['linkedin'] = this.linkedin;
+    data['website'] = this.website;
+    return data;
+  }
+}
+
+class UserMyProfileDetailsResponseNotifySettings {
   var all;
   var profile;
   var service;
@@ -159,7 +197,7 @@ class UserMyProfileDetailsNotifySettings {
   var subscription;
   var payment;
 
-  UserMyProfileDetailsNotifySettings({
+  UserMyProfileDetailsResponseNotifySettings({
     this.all,
     this.profile,
     this.service,
@@ -168,7 +206,7 @@ class UserMyProfileDetailsNotifySettings {
     this.payment,
   });
 
-  UserMyProfileDetailsNotifySettings.fromJson(Map<String, dynamic> json) {
+  UserMyProfileDetailsResponseNotifySettings.fromJson(Map<String, dynamic> json) {
     all = json['all'];
     profile = json['profile'];
     service = json['service'];
@@ -185,28 +223,6 @@ class UserMyProfileDetailsNotifySettings {
     data['bookings'] = this.bookings;
     data['subscription'] = this.subscription;
     data['payment'] = this.payment;
-    return data;
-  }
-}
-
-class UserMyProfileDetailsSocialProfiles {
-  var instagram;
-  var linkedin;
-  var website;
-
-  UserMyProfileDetailsSocialProfiles({this.instagram, this.linkedin, this.website});
-
-  UserMyProfileDetailsSocialProfiles.fromJson(Map<String, dynamic> json) {
-    instagram = json['instagram'];
-    linkedin = json['linkedin'];
-    website = json['website'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['instagram'] = this.instagram;
-    data['linkedin'] = this.linkedin;
-    data['website'] = this.website;
     return data;
   }
 }

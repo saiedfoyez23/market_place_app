@@ -50,6 +50,8 @@ class VendorMyProfileDetailsResponse {
   var isActiveSubscription;
   var type;
   var isPaystackRecipient;
+  var isUnreadMessage;
+  var unreadMessageCount;
 
   VendorMyProfileDetailsResponse({
     this.sId,
@@ -75,6 +77,8 @@ class VendorMyProfileDetailsResponse {
     this.isActiveSubscription,
     this.type,
     this.isPaystackRecipient,
+    this.isUnreadMessage,
+    this.unreadMessageCount,
   });
 
   VendorMyProfileDetailsResponse.fromJson(Map<String, dynamic> json) {
@@ -107,6 +111,8 @@ class VendorMyProfileDetailsResponse {
     isActiveSubscription = json['isActiveSubscription'];
     type = json['type'];
     isPaystackRecipient = json['isPaystackRecipient'];
+    isUnreadMessage = json['isUnreadMessage'];
+    unreadMessageCount = json['unreadMessageCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -140,6 +146,8 @@ class VendorMyProfileDetailsResponse {
     data['isActiveSubscription'] = this.isActiveSubscription;
     data['type'] = this.type;
     data['isPaystackRecipient'] = this.isPaystackRecipient;
+    data['isUnreadMessage'] = this.isUnreadMessage;
+    data['unreadMessageCount'] = this.unreadMessageCount;
     return data;
   }
 }

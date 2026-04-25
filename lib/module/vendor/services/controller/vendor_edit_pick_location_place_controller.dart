@@ -123,9 +123,9 @@ class VendorEditPickLocationPlaceController extends GetxController {
   /// Get address from latitude & longitude
   Future<void> plannerPickLocationPlaceLatLng({required BuildContext context}) async {
     await getCurrentPosition(context: context).then((position) async {
-      latitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.last ?? 0.0;
-      longitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.first ?? 0.0;
-      searchController.value.text = vendorGetServiceDetailsResponseModel.value.data?.address ?? "";
+      // latitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.last ?? 0.0;
+      // longitude.value = vendorGetServiceDetailsResponseModel.value.data?.location?.coordinates?.first ?? 0.0;
+      // searchController.value.text = vendorGetServiceDetailsResponseModel.value.data?.address ?? "";
       initialPosition.value = LatLng(latitude.value, longitude.value);
       isLoading.value = false;
       mapController?.animateCamera(

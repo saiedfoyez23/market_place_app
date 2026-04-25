@@ -30,20 +30,20 @@ class VendorOrderDetailsResponse {
   VendorOrderDetailsResponseLocation? location;
   var sId;
   VendorOrderDetailsResponseSender? sender;
-  VendorOrderDetailsResponseSender? receiver;
+  VendorOrderDetailsResponseReceiver? receiver;
   var authority;
   var title;
   var type;
   var shortDescription;
   var description;
-  var duration;
+  var date;
   var totalAmount;
   var initialAmount;
   var pendingAmount;
   var finalAmount;
   var refundAmount;
-  var startDate;
-  var endDate;
+  var startTime;
+  var endTime;
   var address;
   var locationUrl;
   var status;
@@ -66,14 +66,14 @@ class VendorOrderDetailsResponse {
     this.type,
     this.shortDescription,
     this.description,
-    this.duration,
+    this.date,
     this.totalAmount,
     this.initialAmount,
     this.pendingAmount,
     this.finalAmount,
     this.refundAmount,
-    this.startDate,
-    this.endDate,
+    this.startTime,
+    this.endTime,
     this.address,
     this.locationUrl,
     this.status,
@@ -94,21 +94,22 @@ class VendorOrderDetailsResponse {
     sId = json['_id'];
     sender =
     json['sender'] != null ? new VendorOrderDetailsResponseSender.fromJson(json['sender']) : null;
-    receiver =
-    json['receiver'] != null ? new VendorOrderDetailsResponseSender.fromJson(json['receiver']) : null;
+    receiver = json['receiver'] != null
+        ? new VendorOrderDetailsResponseReceiver.fromJson(json['receiver'])
+        : null;
     authority = json['authority'];
     title = json['title'];
     type = json['type'];
     shortDescription = json['shortDescription'];
     description = json['description'];
-    duration = json['duration'];
+    date = json['date'];
     totalAmount = json['totalAmount'];
     initialAmount = json['initialAmount'];
     pendingAmount = json['pendingAmount'];
     finalAmount = json['finalAmount'];
     refundAmount = json['refundAmount'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
     address = json['address'];
     locationUrl = json['locationUrl'];
     status = json['status'];
@@ -139,14 +140,14 @@ class VendorOrderDetailsResponse {
     data['type'] = this.type;
     data['shortDescription'] = this.shortDescription;
     data['description'] = this.description;
-    data['duration'] = this.duration;
+    data['date'] = this.date;
     data['totalAmount'] = this.totalAmount;
     data['initialAmount'] = this.initialAmount;
     data['pendingAmount'] = this.pendingAmount;
     data['finalAmount'] = this.finalAmount;
     data['refundAmount'] = this.refundAmount;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     data['status'] = this.status;
@@ -164,7 +165,7 @@ class VendorOrderDetailsResponse {
 
 class VendorOrderDetailsResponseLocation {
   var type;
-  List<double>? coordinates;
+  List<dynamic>? coordinates;
 
   VendorOrderDetailsResponseLocation({this.type, this.coordinates});
 
@@ -189,7 +190,11 @@ class VendorOrderDetailsResponseSender {
   var photoUrl;
   var contractNumber;
   var address;
+  List<String>? categories;
   var locationUrl;
+  var avgRating;
+  var ratingCount;
+  var isKycVerified;
 
   VendorOrderDetailsResponseSender({
     this.location,
@@ -199,7 +204,11 @@ class VendorOrderDetailsResponseSender {
     this.photoUrl,
     this.contractNumber,
     this.address,
+    this.categories,
     this.locationUrl,
+    this.avgRating,
+    this.ratingCount,
+    this.isKycVerified,
   });
 
   VendorOrderDetailsResponseSender.fromJson(Map<String, dynamic> json) {
@@ -212,7 +221,11 @@ class VendorOrderDetailsResponseSender {
     photoUrl = json['photoUrl'];
     contractNumber = json['contractNumber'];
     address = json['address'];
+    categories = json['categories'].cast<String>();
     locationUrl = json['locationUrl'];
+    avgRating = json['avgRating'];
+    ratingCount = json['ratingCount'];
+    isKycVerified = json['isKycVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -226,7 +239,77 @@ class VendorOrderDetailsResponseSender {
     data['photoUrl'] = this.photoUrl;
     data['contractNumber'] = this.contractNumber;
     data['address'] = this.address;
+    data['categories'] = this.categories;
     data['locationUrl'] = this.locationUrl;
+    data['avgRating'] = this.avgRating;
+    data['ratingCount'] = this.ratingCount;
+    data['isKycVerified'] = this.isKycVerified;
+    return data;
+  }
+}
+
+class VendorOrderDetailsResponseReceiver {
+  VendorOrderDetailsResponseLocation? location;
+  var sId;
+  var name;
+  var email;
+  var photoUrl;
+  var contractNumber;
+  var address;
+  List<String>? categories;
+  var locationUrl;
+  var avgRating;
+  var ratingCount;
+  var isKycVerified;
+
+  VendorOrderDetailsResponseReceiver({
+    this.location,
+    this.sId,
+    this.name,
+    this.email,
+    this.photoUrl,
+    this.contractNumber,
+    this.address,
+    this.categories,
+    this.locationUrl,
+    this.avgRating,
+    this.ratingCount,
+    this.isKycVerified,
+  });
+
+  VendorOrderDetailsResponseReceiver.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new VendorOrderDetailsResponseLocation.fromJson(json['location'])
+        : null;
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+    photoUrl = json['photoUrl'];
+    contractNumber = json['contractNumber'];
+    address = json['address'];
+    categories = json['categories'].cast<String>();
+    locationUrl = json['locationUrl'];
+    avgRating = json['avgRating'];
+    ratingCount = json['ratingCount'];
+    isKycVerified = json['isKycVerified'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['photoUrl'] = this.photoUrl;
+    data['contractNumber'] = this.contractNumber;
+    data['address'] = this.address;
+    data['categories'] = this.categories;
+    data['locationUrl'] = this.locationUrl;
+    data['avgRating'] = this.avgRating;
+    data['ratingCount'] = this.ratingCount;
+    data['isKycVerified'] = this.isKycVerified;
     return data;
   }
 }

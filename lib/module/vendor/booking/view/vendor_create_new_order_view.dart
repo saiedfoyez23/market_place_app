@@ -201,29 +201,6 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 text: "Order Information",
                               ),
 
-
-                              SpaceHelperWidget.v(20.h(context)),
-
-
-                              TextHelperClass.headingTextWithoutWidth(
-                                context: context,
-                                alignment: Alignment.centerLeft,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                textColor: ColorUtils.black96,
-                                text: "Order duration",
-                              ),
-
-                              SpaceHelperWidget.v(6.h(context)),
-
-                              TextFormFieldWidget.build(
-                                context: context,
-                                fillColor: ColorUtils.white255,
-                                hintText: "Enter order duration",
-                                controller: vendorCreateNewOrderController.deadlineController.value,
-                                keyboardType: TextInputType.number,
-                              ),
-
                               SpaceHelperWidget.v(20.h(context)),
 
                               TextHelperClass.headingTextWithoutWidth(
@@ -232,7 +209,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "Program Start Date",
+                                text: "Program Date",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -241,7 +218,7 @@ class VendorCreateNewOrderView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Pick program start date",
+                                hintText: "Pick program date",
                                 readOnly: true,
                                 controller: vendorCreateNewOrderController.programStartDateController.value,
                                 onTap: () async {
@@ -250,33 +227,59 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                 keyboardType: TextInputType.emailAddress,
                               ),
 
+                              SpaceHelperWidget.v(20.h(context)),
 
-                              // SpaceHelperWidget.v(20.h(context)),
-                              //
-                              //
-                              // TextHelperClass.headingTextWithoutWidth(
-                              //   context: context,
-                              //   alignment: Alignment.centerLeft,
-                              //   fontSize: 18,
-                              //   fontWeight: FontWeight.w500,
-                              //   textColor: ColorUtils.black96,
-                              //   text: "Program End Date",
-                              // ),
-                              //
-                              // SpaceHelperWidget.v(6.h(context)),
-                              //
-                              //
-                              // TextFormFieldWidget.build(
-                              //   context: context,
-                              //   fillColor: ColorUtils.white255,
-                              //   hintText: "Pick program end date",
-                              //   readOnly: true,
-                              //   controller: vendorCreateNewOrderController.programEndDateController.value,
-                              //   onTap: () async {
-                              //     await vendorCreateNewOrderController.pickProgramEndDate(context: context);
-                              //   },
-                              //   keyboardType: TextInputType.emailAddress,
-                              // ),
+
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                textColor: ColorUtils.black96,
+                                text: "Program Start Time",
+                              ),
+
+                              SpaceHelperWidget.v(6.h(context)),
+
+
+                              TextFormFieldWidget.build(
+                                context: context,
+                                fillColor: ColorUtils.white255,
+                                hintText: "Pick program start time",
+                                readOnly: true,
+                                controller: vendorCreateNewOrderController.startTimeController.value,
+                                onTap: () async {
+                                  await vendorCreateNewOrderController.pickStartTime(context: context);
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+
+                              SpaceHelperWidget.v(20.h(context)),
+
+
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                textColor: ColorUtils.black96,
+                                text: "Program End Time",
+                              ),
+
+                              SpaceHelperWidget.v(6.h(context)),
+
+
+                              TextFormFieldWidget.build(
+                                context: context,
+                                fillColor: ColorUtils.white255,
+                                hintText: "Pick program end time",
+                                readOnly: true,
+                                controller: vendorCreateNewOrderController.endTimeController.value,
+                                onTap: () async {
+                                  await vendorCreateNewOrderController.pickEndTime(context: context);
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                              ),
 
                               SpaceHelperWidget.v(20.h(context)),
 
@@ -481,16 +484,23 @@ class VendorCreateNewOrderView extends StatelessWidget {
                               ButtonHelperWidget.customButtonWidgetAdventPro(
                                 context: context,
                                 onPressed: () async {
+                                  var serviceDetails = await vendorCreateNewOrderController.serviceDetailsController.value.getText();
                                   if(vendorCreateNewOrderController.titleController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
                                   } else if(vendorCreateNewOrderController.selectEventType.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Select Event Type");
                                   } else if(await vendorCreateNewOrderController.serviceDetailsController.value.getText() == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your service details");
+                                  } else if(serviceDetails.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your service details must above 40 words");
                                   } else if(vendorCreateNewOrderController.eventDetailsController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your event details must above 40 words");
+                                  } else if(vendorCreateNewOrderController.eventDetailsController.value.text.length < 40) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your event details");
-                                  } else if(vendorCreateNewOrderController.deadlineController.value.text == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your deadline");
+                                  } else if(vendorCreateNewOrderController.startTimeController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please pick a start time");
+                                  } else if(vendorCreateNewOrderController.endTimeController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please pick a end time");
                                   } else if(vendorCreateNewOrderController.programStartDateController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your program start date");
                                   } else if(vendorCreateNewOrderController.totalPriceController.value.text == "") {
@@ -511,9 +521,10 @@ class VendorCreateNewOrderView extends StatelessWidget {
                                       "type": vendorCreateNewOrderController.selectEventType.value,
                                       "shortDescription": vendorCreateNewOrderController.eventDetailsController.value.text,
                                       "description": await vendorCreateNewOrderController.serviceDetailsController.value.getText(),
-                                      "duration": int.parse(vendorCreateNewOrderController.deadlineController.value.text), // in days
                                       "totalAmount": int.parse(vendorCreateNewOrderController.totalPriceController.value.text),
-                                      "startDate": vendorCreateNewOrderController.programStartDateController.value.text,
+                                      "date": vendorCreateNewOrderController.programStartDateController.value.text,
+                                      "startTime": vendorCreateNewOrderController.startTimeController.value.text,
+                                      "endTime": vendorCreateNewOrderController.endTimeController.value.text,
                                       "longitude": vendorCreateNewOrderController.longitude.value,
                                       "latitude": vendorCreateNewOrderController.latitude.value,
                                       "address": vendorCreateNewOrderController.plannerOrderLocationController.value.text,

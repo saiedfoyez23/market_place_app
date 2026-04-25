@@ -62,7 +62,6 @@ class VendorGetAllOrderResponseMeta {
 }
 
 class VendorGetAllOrderResponse {
-  VendorGetAllOrderResponseLocation? location;
   var sId;
   VendorGetAllOrderResponseSender? sender;
   VendorGetAllOrderResponseSender? receiver;
@@ -71,16 +70,17 @@ class VendorGetAllOrderResponse {
   var type;
   var shortDescription;
   var description;
-  var duration;
+  var date;
   var totalAmount;
   var initialAmount;
   var pendingAmount;
   var finalAmount;
   var refundAmount;
-  var startDate;
-  var endDate;
+  var startTime;
+  var endTime;
   var address;
   var locationUrl;
+  VendorGetAllOrderResponseLocation? location;
   var status;
   var initialPayCompleted;
   var finalPayCompleted;
@@ -89,9 +89,9 @@ class VendorGetAllOrderResponse {
   var isDeleted;
   var createdAt;
   var updatedAt;
+  var isAssigned;
 
   VendorGetAllOrderResponse({
-    this.location,
     this.sId,
     this.sender,
     this.receiver,
@@ -100,16 +100,17 @@ class VendorGetAllOrderResponse {
     this.type,
     this.shortDescription,
     this.description,
-    this.duration,
+    this.date,
     this.totalAmount,
     this.initialAmount,
     this.pendingAmount,
     this.finalAmount,
     this.refundAmount,
-    this.startDate,
-    this.endDate,
+    this.startTime,
+    this.endTime,
     this.address,
     this.locationUrl,
+    this.location,
     this.status,
     this.initialPayCompleted,
     this.finalPayCompleted,
@@ -118,12 +119,10 @@ class VendorGetAllOrderResponse {
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
+    this.isAssigned,
   });
 
   VendorGetAllOrderResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new VendorGetAllOrderResponseLocation.fromJson(json['location'])
-        : null;
     sId = json['_id'];
     sender =
     json['sender'] != null ? new VendorGetAllOrderResponseSender.fromJson(json['sender']) : null;
@@ -134,16 +133,19 @@ class VendorGetAllOrderResponse {
     type = json['type'];
     shortDescription = json['shortDescription'];
     description = json['description'];
-    duration = json['duration'];
+    date = json['date'];
     totalAmount = json['totalAmount'];
     initialAmount = json['initialAmount'];
     pendingAmount = json['pendingAmount'];
     finalAmount = json['finalAmount'];
     refundAmount = json['refundAmount'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
     address = json['address'];
     locationUrl = json['locationUrl'];
+    location = json['location'] != null
+        ? new VendorGetAllOrderResponseLocation.fromJson(json['location'])
+        : null;
     status = json['status'];
     initialPayCompleted = json['initialPayCompleted'];
     finalPayCompleted = json['finalPayCompleted'];
@@ -152,13 +154,11 @@ class VendorGetAllOrderResponse {
     isDeleted = json['isDeleted'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    isAssigned = json['isAssigned'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
     data['_id'] = this.sId;
     if (this.sender != null) {
       data['sender'] = this.sender!.toJson();
@@ -171,16 +171,19 @@ class VendorGetAllOrderResponse {
     data['type'] = this.type;
     data['shortDescription'] = this.shortDescription;
     data['description'] = this.description;
-    data['duration'] = this.duration;
+    data['date'] = this.date;
     data['totalAmount'] = this.totalAmount;
     data['initialAmount'] = this.initialAmount;
     data['pendingAmount'] = this.pendingAmount;
     data['finalAmount'] = this.finalAmount;
     data['refundAmount'] = this.refundAmount;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
     data['status'] = this.status;
     data['initialPayCompleted'] = this.initialPayCompleted;
     data['finalPayCompleted'] = this.finalPayCompleted;
@@ -189,25 +192,7 @@ class VendorGetAllOrderResponse {
     data['isDeleted'] = this.isDeleted;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    return data;
-  }
-}
-
-class VendorGetAllOrderResponseLocation {
-  var type;
-  List<dynamic>? coordinates;
-
-  VendorGetAllOrderResponseLocation({this.type, this.coordinates});
-
-  VendorGetAllOrderResponseLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
+    data['isAssigned'] = this.isAssigned;
     return data;
   }
 }
@@ -233,6 +218,25 @@ class VendorGetAllOrderResponseSender {
     data['name'] = this.name;
     data['photoUrl'] = this.photoUrl;
     data['isKycVerified'] = this.isKycVerified;
+    return data;
+  }
+}
+
+class VendorGetAllOrderResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  VendorGetAllOrderResponseLocation({this.type, this.coordinates});
+
+  VendorGetAllOrderResponseLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }
