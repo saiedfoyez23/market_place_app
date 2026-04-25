@@ -98,26 +98,26 @@ class PlannerPickLocationPlaceView extends StatelessWidget {
                         SpaceHelperWidget.v(12.h(context)),
 
 
-                        ButtonHelperWidget.customButtonWidgetAdventPro(
-                          context: context,
-                          onPressed: () async {
-                            if(plannerPickLocationPlaceController.searchController.value.text == "") {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
-                            } else {
-                              FocusScope.of(context).unfocus();
-                              print(plannerPickLocationPlaceController.longitude.value);
-                              print(plannerPickLocationPlaceController.latitude.value);
-                              print(plannerPickLocationPlaceController.searchController.value.text);
-                              Get.off(()=> PlannerProfileCreateNewServiceView(
-                                long: plannerPickLocationPlaceController.longitude.value,
-                                lat: plannerPickLocationPlaceController.latitude.value,
-                                address: plannerPickLocationPlaceController.searchController.value.text,),
-                                preventDuplicates: false,
-                              );
-                            }
-                          },
-                          text: "Pick Address",
-                        ),
+                        // ButtonHelperWidget.customButtonWidgetAdventPro(
+                        //   context: context,
+                        //   onPressed: () async {
+                        //     if(plannerPickLocationPlaceController.searchController.value.text == "") {
+                        //       MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
+                        //     } else {
+                        //       FocusScope.of(context).unfocus();
+                        //       print(plannerPickLocationPlaceController.longitude.value);
+                        //       print(plannerPickLocationPlaceController.latitude.value);
+                        //       print(plannerPickLocationPlaceController.searchController.value.text);
+                        //       Get.off(()=> PlannerProfileCreateNewServiceView(
+                        //         long: plannerPickLocationPlaceController.longitude.value,
+                        //         lat: plannerPickLocationPlaceController.latitude.value,
+                        //         address: plannerPickLocationPlaceController.searchController.value.text,),
+                        //         preventDuplicates: false,
+                        //       );
+                        //     }
+                        //   },
+                        //   text: "Pick Address",
+                        // ),
 
                         SpaceHelperWidget.v(12.h(context)),
 

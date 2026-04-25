@@ -227,28 +227,6 @@ class VendorCreateNewServiceView extends StatelessWidget {
                           ],
                         ),
 
-
-
-                        // TextHelperClass.headingTextWithoutWidth(
-                        //   context: context,
-                        //   alignment: Alignment.centerLeft,
-                        //   fontSize: 18,
-                        //   fontWeight: FontWeight.w500,
-                        //   textColor: ColorUtils.black96,
-                        //   text: "Address",
-                        // ),
-                        //
-                        // SpaceHelperWidget.v(6.h(context)),
-                        //
-                        //
-                        // TextFormFieldWidget.build(
-                        //   context: context,
-                        //   hintText: "Enter Address",
-                        //   controller: vendorCreateNewServiceController.addressController.value,
-                        //   keyboardType: TextInputType.emailAddress,
-                        // ),
-
-
                         vendorCreateNewServiceController.categoryResponseModel.value.data != null ?
                         Column(
                           children: [
@@ -316,6 +294,7 @@ class VendorCreateNewServiceView extends StatelessWidget {
 
                         SpaceHelperWidget.v(10.h(context)),
 
+
                         vendorCreateNewServiceController.selectedFile.isEmpty == true ?
                         Container(
                           width: 428.w(context),
@@ -370,65 +349,70 @@ class VendorCreateNewServiceView extends StatelessWidget {
                             )
                           ),
                         ) :
-                        Column(
-                          children: [
+                        InkWell(
+                          onTap: () async {
+                            await vendorCreateNewServiceController.pickUploadFrontSideFile(context: context);
+                          },
+                          child: Column(
+                            children: [
 
-                            vendorCreateNewServiceController.selectedFile.isEmpty == true ?
-                            SizedBox.shrink() :
-                            SizedBox(
-                              height: 200.h(context),
-                              child: PageView(
-                                  controller: vendorCreateNewServiceController.pageController.value,
-                                  scrollDirection: Axis.horizontal,
-                                  onPageChanged: (value) {
-                                    vendorCreateNewServiceController.changeIndex(value);
-                                  },
-                                  children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
-                                    return ImageHelperWidget.styledImage(
-                                      context: context,
-                                      borderRadius: 12,
-                                      height: 172,
-                                      width: 428,
-                                      imageFile: vendorCreateNewServiceController.selectedFile[index].path,
-                                    );
-                                  })
+                              vendorCreateNewServiceController.selectedFile.isEmpty == true ?
+                              SizedBox.shrink() :
+                              SizedBox(
+                                height: 200.h(context),
+                                child: PageView(
+                                    controller: vendorCreateNewServiceController.pageController.value,
+                                    scrollDirection: Axis.horizontal,
+                                    onPageChanged: (value) {
+                                      vendorCreateNewServiceController.changeIndex(value);
+                                    },
+                                    children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
+                                      return ImageHelperWidget.styledImage(
+                                        context: context,
+                                        borderRadius: 12,
+                                        height: 172,
+                                        width: 428,
+                                        imageFile: vendorCreateNewServiceController.selectedFile[index].path,
+                                      );
+                                    })
+                                ),
                               ),
-                            ),
 
-                            SpaceHelperWidget.v(20.h(context)),
+                              SpaceHelperWidget.v(20.h(context)),
 
 
-                            vendorCreateNewServiceController.selectedFile.isEmpty == true ?
-                            SizedBox.shrink() :
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
-                                if(vendorCreateNewServiceController.index.value == index) {
-                                  return Container(
-                                    height: 12.h(context),
-                                    width: 30.w(context),
-                                    margin: EdgeInsets.only(right: 6.rpm(context)),
-                                    decoration: BoxDecoration(
-                                      color: ColorUtils.orange119,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(6.r(context)),
-                                    ),
-                                  );
-                                } else {
-                                  return Container(
-                                    height: 12.h(context),
-                                    width: 12.w(context),
-                                    margin: EdgeInsets.only(right: 6.rpm(context)),
-                                    decoration: BoxDecoration(
-                                      color: ColorUtils.orange213,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  );
-                                }
-                              }),
-                            ),
-                          ],
+                              vendorCreateNewServiceController.selectedFile.isEmpty == true ?
+                              SizedBox.shrink() :
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: List.generate(vendorCreateNewServiceController.selectedFile.length, (index) {
+                                  if(vendorCreateNewServiceController.index.value == index) {
+                                    return Container(
+                                      height: 12.h(context),
+                                      width: 30.w(context),
+                                      margin: EdgeInsets.only(right: 6.rpm(context)),
+                                      decoration: BoxDecoration(
+                                        color: ColorUtils.orange119,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(6.r(context)),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      height: 12.h(context),
+                                      width: 12.w(context),
+                                      margin: EdgeInsets.only(right: 6.rpm(context)),
+                                      decoration: BoxDecoration(
+                                        color: ColorUtils.orange213,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    );
+                                  }
+                                }),
+                              ),
+                            ],
+                          ),
                         ),
 
 
@@ -539,6 +523,8 @@ class VendorCreateNewServiceView extends StatelessWidget {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service title");
                                   } else if(vendorCreateNewServiceController.eventDetailsController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your event details");
+                                  } else if(vendorCreateNewServiceController.eventDetailsController.value.text.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Service Description must be above 40 words");
                                   } else if(vendorCreateNewServiceController.selectServicePaymentModel.value.key == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select price type");
                                   } else if(vendorCreateNewServiceController.priceController.value.text == "") {
@@ -549,6 +535,8 @@ class VendorCreateNewServiceView extends StatelessWidget {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service images");
                                   } else if(vendorCreateNewServiceController.serviceQuillJson.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service details");
+                                  } else if(vendorCreateNewServiceController.serviceQuillJson.value.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "What's include must be above 40 words");
                                   } else {
                                     await vendorCreateNewServiceController.createVendorServiceController(context: context);
                                     Map<String,dynamic> data = {

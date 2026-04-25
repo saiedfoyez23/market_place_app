@@ -62,38 +62,31 @@ class PlannerGetAllServiceModelMeta {
 }
 
 class PlannerGetAllServiceModel {
-  PlannerGetAllServiceModelLocation? location;
   var sId;
   PlannerGetAllServiceModelAuthor? author;
   PlannerGetAllServiceModelCategory? category;
   var title;
   var subtitle;
   List<String>? images;
-  var address;
-  var locationUrl;
+  List<PlannerGetAllServiceModelServiceAreas>? serviceAreas;
   var isFeatured;
   var status;
   var isFavorite;
 
   PlannerGetAllServiceModel({
-    this.location,
     this.sId,
     this.author,
     this.category,
     this.title,
     this.subtitle,
     this.images,
-    this.address,
-    this.locationUrl,
+    this.serviceAreas,
     this.isFeatured,
     this.status,
     this.isFavorite,
   });
 
   PlannerGetAllServiceModel.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new PlannerGetAllServiceModelLocation.fromJson(json['location'])
-        : null;
     sId = json['_id'];
     author =
     json['author'] != null ? new PlannerGetAllServiceModelAuthor.fromJson(json['author']) : null;
@@ -103,8 +96,12 @@ class PlannerGetAllServiceModel {
     title = json['title'];
     subtitle = json['subtitle'];
     images = json['images'].cast<String>();
-    address = json['address'];
-    locationUrl = json['locationUrl'];
+    if (json['serviceAreas'] != null) {
+      serviceAreas = <PlannerGetAllServiceModelServiceAreas>[];
+      json['serviceAreas'].forEach((v) {
+        serviceAreas!.add(new PlannerGetAllServiceModelServiceAreas.fromJson(v));
+      });
+    }
     isFeatured = json['isFeatured'];
     status = json['status'];
     isFavorite = json['isFavorite'];
@@ -112,9 +109,6 @@ class PlannerGetAllServiceModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -125,30 +119,12 @@ class PlannerGetAllServiceModel {
     data['title'] = this.title;
     data['subtitle'] = this.subtitle;
     data['images'] = this.images;
-    data['address'] = this.address;
-    data['locationUrl'] = this.locationUrl;
+    if (this.serviceAreas != null) {
+      data['serviceAreas'] = this.serviceAreas!.map((v) => v.toJson()).toList();
+    }
     data['isFeatured'] = this.isFeatured;
     data['status'] = this.status;
     data['isFavorite'] = this.isFavorite;
-    return data;
-  }
-}
-
-class PlannerGetAllServiceModelLocation {
-  var type;
-  List<dynamic>? coordinates;
-
-  PlannerGetAllServiceModelLocation({this.type, this.coordinates});
-
-  PlannerGetAllServiceModelLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
     return data;
   }
 }
@@ -218,6 +194,54 @@ class PlannerGetAllServiceModelCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    return data;
+  }
+}
+
+class PlannerGetAllServiceModelServiceAreas {
+  PlannerGetAllServiceModelLocation? location;
+  var name;
+  var locationUrl;
+  var sId;
+
+  PlannerGetAllServiceModelServiceAreas({this.location, this.name, this.locationUrl, this.sId});
+
+  PlannerGetAllServiceModelServiceAreas.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new PlannerGetAllServiceModelLocation.fromJson(json['location'])
+        : null;
+    name = json['name'];
+    locationUrl = json['locationUrl'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['name'] = this.name;
+    data['locationUrl'] = this.locationUrl;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class PlannerGetAllServiceModelLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  PlannerGetAllServiceModelLocation({this.type, this.coordinates});
+
+  PlannerGetAllServiceModelLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

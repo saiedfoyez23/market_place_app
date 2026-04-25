@@ -13,7 +13,6 @@ class PlannerProfileCreateNewServiceController extends GetxController {
 
   late QuillController serviceQuillController;
   Rx<TextEditingController> titleController = TextEditingController().obs;
-  Rx<TextEditingController> addressController = TextEditingController().obs;
   Rx<TextEditingController> eventDetailsController = TextEditingController().obs;
   Rx<TextEditingController> priceController = TextEditingController().obs;
   Rx<FocusNode> quillFocusNode = FocusNode().obs;
@@ -23,25 +22,35 @@ class PlannerProfileCreateNewServiceController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isSubmit = false.obs;
   BuildContext context;
-  double long;
-  double lat;
-  String address;
-  PlannerProfileCreateNewServiceController({required this.context,required this.long,required this.lat,required this.address});
-  Rx<File> uploadFile = File("").obs;
+  PlannerProfileCreateNewServiceController({required this.context});
   Rx<CategoryResponseData> selectCategory = CategoryResponseData().obs;
   RxDouble submitLong = 0.0.obs;
   RxDouble submitLat = 0.0.obs;
 
 
-  Future<void> pickUploadFrontSideFile() async {
+  RxList<File> selectedFile = <File>[].obs;
+  RxList<dio.MultipartFile> filesList = <dio.MultipartFile>[].obs;
+
+  RxInt index = 0.obs;
+  Rx<PageController> pageController = PageController(initialPage: 0).obs;
+
+  void changeIndex(int changeValue) {
+    index.value = changeValue;
+  }
+
+
+  Future<void> pickUploadFrontSideFile({required BuildContext context}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png'],
       withData: false,
+      allowMultiple: true,
     );
 
-    if (result != null && result.files.single.path != null) {
-      uploadFile.value = File(result.files.single.path!);
+    if (result != null) {
+      result.files.forEach((value) {
+        selectedFile.add(File(value.path!));
+      });
     }
   }
 
@@ -50,24 +59,31 @@ class PlannerProfileCreateNewServiceController extends GetxController {
 
   Rx<PlannerServiceDropdownModel> selectServicePaymentModel = PlannerServiceDropdownModel().obs;
 
+  RxList<String> serviceArea = <String>[
+    "Gauteng",
+    "Western Cape",
+    "KwaZulu-Natal",
+    "Eastern Cape",
+    "Mpumalanga",
+    "Limpopo",
+    "North West",
+    "Free State",
+    "Northern Cape",
+  ].obs;
+
+  RxList<Map<String,dynamic>> selectServiceArea = <Map<String,dynamic>>[].obs;
+
   RxList<PlannerServiceDropdownModel> servicePaymentList = <PlannerServiceDropdownModel>[
     PlannerServiceDropdownModel(key: "Fixed", value: "fixed"),
-    PlannerServiceDropdownModel(key: "Per Person", value: "per_person"),
-    PlannerServiceDropdownModel(key: "Hourly", value: "hourly"),
-    PlannerServiceDropdownModel(key: "Per Day", value: "per_day"),
-    PlannerServiceDropdownModel(key: "Per Event", value: "per_event"),
-    PlannerServiceDropdownModel(key: "Per Unit", value: "per_unit"),
-    PlannerServiceDropdownModel(key: "Package", value: "package"),
-    PlannerServiceDropdownModel(key: "Custom", value: "custom"),
+    PlannerServiceDropdownModel(key: "Starting From", value: "starting_from"),
+    PlannerServiceDropdownModel(key: "Request Quote", value: "request_quote"),
   ].obs;
+
 
   @override
   void onInit() {
     super.onInit();
     isLoading.value = true;
-    addressController.value.text = address;
-    submitLong.value = long;
-    submitLat.value = lat;
     serviceQuillController = QuillController(
       document: Document(),
       selection: const TextSelection.collapsed(offset: 0),
@@ -120,30 +136,42 @@ class PlannerProfileCreateNewServiceController extends GetxController {
   }) async {
     isSubmit.value = true;
 
+    filesList.clear();
+
+    // Convert selected files to MultipartFile list
+    for (final file in selectedFile) {
+      final mimeType = MimeTypeUtils.getMimeType(file.path);
+
+      filesList.add(
+        await dio.MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+          contentType: dio.DioMediaType(
+            mimeType.split('/')[0],
+            mimeType.split('/')[1],
+          ),
+        ),
+      );
+    }
+
+
     Map<String,dynamic> data = {
       "category": selectCategory.value.sId,
       "title": titleController.value.text,
       "subtitle": eventDetailsController.value.text,
       "description": "${serviceQuillJson.value}",
-      "longitude": submitLong.value,
-      "latitude": submitLat.value,
-      "address": addressController.value.text,
+      "serviceAreas": selectServiceArea,
       "price": double.parse(priceController.value.text),
       "priceType": selectServicePaymentModel.value.value
     };
+
     print(jsonEncode(data));
 
     dio.FormData formData = dio.FormData.fromMap({
-      "files": await dio.MultipartFile.fromFile(
-        uploadFile.value.path,
-        filename: uploadFile.value.path.split('/').last,
-        contentType: dio.DioMediaType(
-          MimeTypeUtils.getMimeType(uploadFile.value.path).split('/').first,
-          MimeTypeUtils.getMimeType(uploadFile.value.path).split('/').last,
-        ),
-      ),
+      "files": filesList,
       "data": jsonEncode(data),  // important → JSON encoded string!
     });
+
 
     await BaseApiUtils.post(
       url: ApiUtils.createService,

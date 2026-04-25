@@ -5,15 +5,11 @@ import 'package:marketplaceapp/module/module.dart';
 import 'package:marketplaceapp/utils/utils.dart';
 
 class PlannerProfileCreateNewServiceView extends StatelessWidget {
-  const PlannerProfileCreateNewServiceView({super.key,required this.long,required this.lat,required this.address});
-  final double long;
-  final double lat;
-  final String address;
-  
+  const PlannerProfileCreateNewServiceView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final PlannerProfileCreateNewServiceController plannerProfileCreateNewServiceController = Get.put(
-        PlannerProfileCreateNewServiceController(context: context,long: long,lat: lat,address: address));
+    final PlannerProfileCreateNewServiceController plannerProfileCreateNewServiceController = Get.put(PlannerProfileCreateNewServiceController(context: context));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -61,7 +57,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           text: "Title",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
                         TextFormFieldWidget.build(
                           context: context,
@@ -80,10 +76,10 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Event Description",
+                          text: "Service Description",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.textFiledWithMaxLineBuild(
@@ -106,7 +102,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           text: "Price Type",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         CustomDropdownHelperClass<PlannerServiceDropdownModel>(
@@ -140,7 +136,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           text: "Price",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
 
                         TextFormFieldWidget.build(
@@ -153,24 +149,76 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
 
                         SpaceHelperWidget.v(20.h(context)),
 
-
                         TextHelperClass.headingTextWithoutWidth(
                           context: context,
                           alignment: Alignment.centerLeft,
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Address",
+                          text: "Service Area",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                runSpacing: 10.h(context),
+                                spacing: 10.w(context),
+                                children: List.generate(plannerProfileCreateNewServiceController.serviceArea.length, (index) {
+                                    return Obx(() {
+                                      final area = plannerProfileCreateNewServiceController.serviceArea[index];
 
-                        TextFormFieldWidget.build(
-                          context: context,
-                          hintText: "Enter Address",
-                          controller: plannerProfileCreateNewServiceController.addressController.value,
-                          keyboardType: TextInputType.emailAddress,
+                                      /// ✅ CHECK SELECTED (FIXED)
+                                      final isSelected = plannerProfileCreateNewServiceController.selectServiceArea
+                                          .any((e) => e['name'] == area);
+
+                                      return IntrinsicWidth(
+                                        child: ButtonHelperWidget.customButtonWidget(
+                                          context: context,
+                                          height: 56.h(context),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.5.hpm(context),
+                                            vertical: 8.5.vpm(context),
+                                          ),
+
+                                          /// ✅ BACKGROUND COLOR
+                                          backgroundColor:
+                                          isSelected ? ColorUtils.orange119 : ColorUtils.white243,
+
+                                          /// ✅ TEXT COLOR
+                                          textColor:
+                                          isSelected ? ColorUtils.white255 : ColorUtils.black89,
+
+                                          fontWeight: FontWeight.w500,
+
+                                          /// ✅ TOGGLE LOGIC (FIXED)
+                                          onPressed: () async {
+                                            if (isSelected) {
+                                              /// REMOVE
+                                              plannerProfileCreateNewServiceController.selectServiceArea
+                                                  .removeWhere((e) => e['name'] == area);
+                                            } else {
+                                              /// ADD
+                                              plannerProfileCreateNewServiceController.selectServiceArea.add({
+                                                "name": area,
+                                              });
+                                            }
+                                          },
+
+                                          text: area,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
                         ),
 
 
@@ -190,7 +238,7 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                               text: "Category",
                             ),
 
-                            SpaceHelperWidget.v(6.h(context)),
+                            SpaceHelperWidget.v(10.h(context)),
 
                             Align(
                               alignment: Alignment.centerLeft,
@@ -239,75 +287,131 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           text: " Upload Image",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
+                        plannerProfileCreateNewServiceController.selectedFile.isEmpty == true ?
                         Container(
                           width: 428.w(context),
-                          padding: plannerProfileCreateNewServiceController.uploadFile.value.path == "" ?
-                          EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)) :
-                          EdgeInsets.zero,
+                          padding: EdgeInsets.symmetric(vertical: 12.vpm(context),horizontal: 20.hpm(context)),
                           decoration: BoxDecoration(
                             color: ColorUtils.white243,
                             border: Border.all(color: ColorUtils.black128,width: 1),
                             borderRadius: BorderRadius.circular(10.r(context)),
                           ),
                           child: InkWell(
-                            onTap: () async {
-                              await plannerProfileCreateNewServiceController.pickUploadFrontSideFile();
-                            },
-                            child: plannerProfileCreateNewServiceController.uploadFile.value.path == "" ?
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
+                              onTap: () async {
+                                await plannerProfileCreateNewServiceController.pickUploadFrontSideFile(context: context);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
 
-                                ImageHelperWidget.assetImageWidget(
-                                  context: context,
-                                  height: 24,
-                                  width: 24,
-                                  imageString: ImageUtils.pickFileImage,
+                                  ImageHelperWidget.assetImageWidget(
+                                    context: context,
+                                    height: 24,
+                                    width: 24,
+                                    imageString: ImageUtils.pickFileImage,
+                                  ),
+
+                                  SpaceHelperWidget.v(6.w(context)),
+
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.center,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ColorUtils.black96,
+                                    text: "Click to upload image",
+                                  ),
+
+
+                                  SpaceHelperWidget.v(6.w(context)),
+
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.center,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ColorUtils.black96,
+                                    text: "PNG, JPG up to 10MB",
+                                  ),
+
+                                ],
+                              )
+                          ),
+                        ) :
+                        InkWell(
+                          onTap: () async {
+                            await plannerProfileCreateNewServiceController.pickUploadFrontSideFile(context: context);
+                          },
+                          child: Column(
+                            children: [
+
+                              plannerProfileCreateNewServiceController.selectedFile.isEmpty == true ?
+                              SizedBox.shrink() :
+                              SizedBox(
+                                height: 200.h(context),
+                                child: PageView(
+                                    controller: plannerProfileCreateNewServiceController.pageController.value,
+                                    scrollDirection: Axis.horizontal,
+                                    onPageChanged: (value) {
+                                      plannerProfileCreateNewServiceController.changeIndex(value);
+                                    },
+                                    children: List.generate(plannerProfileCreateNewServiceController.selectedFile.length, (index) {
+                                      return ImageHelperWidget.styledImage(
+                                        context: context,
+                                        borderRadius: 12,
+                                        height: 172,
+                                        width: 428,
+                                        imageFile: plannerProfileCreateNewServiceController.selectedFile[index].path,
+                                      );
+                                    })
                                 ),
+                              ),
 
-                                SpaceHelperWidget.v(6.w(context)),
-
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.center,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  textColor: ColorUtils.black96,
-                                  text: "Click to upload image",
-                                ),
+                              SpaceHelperWidget.v(20.h(context)),
 
 
-                                SpaceHelperWidget.v(6.w(context)),
-
-
-                                TextHelperClass.headingTextWithoutWidth(
-                                  context: context,
-                                  alignment: Alignment.center,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  textColor: ColorUtils.black96,
-                                  text: "PNG, JPG up to 10MB",
-                                ),
-
-                              ],
-                            ) :
-                            ImageHelperWidget.styledImage(
-                              context: context,
-                              height: 200,
-                              width: 428,
-                              borderRadius: 10,
-                              fit: BoxFit.fill,
-                              imageFile: plannerProfileCreateNewServiceController.uploadFile.value.path,
-                            ),
+                              plannerProfileCreateNewServiceController.selectedFile.isEmpty == true ?
+                              SizedBox.shrink() :
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: List.generate(plannerProfileCreateNewServiceController.selectedFile.length, (index) {
+                                  if(plannerProfileCreateNewServiceController.index.value == index) {
+                                    return Container(
+                                      height: 12.h(context),
+                                      width: 30.w(context),
+                                      margin: EdgeInsets.only(right: 6.rpm(context)),
+                                      decoration: BoxDecoration(
+                                        color: ColorUtils.orange119,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(6.r(context)),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      height: 12.h(context),
+                                      width: 12.w(context),
+                                      margin: EdgeInsets.only(right: 6.rpm(context)),
+                                      decoration: BoxDecoration(
+                                        color: ColorUtils.orange213,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    );
+                                  }
+                                }),
+                              ),
+                            ],
                           ),
                         ),
 
 
                         SpaceHelperWidget.v(20.h(context)),
+
 
                         TextHelperClass.headingTextWithoutWidth(
                           context: context,
@@ -315,10 +419,10 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           textColor: ColorUtils.black96,
-                          text: "Service Details",
+                          text: "What’s Included",
                         ),
 
-                        SpaceHelperWidget.v(6.h(context)),
+                        SpaceHelperWidget.v(10.h(context)),
 
                         Container(
                           height: 750.h(context),
@@ -422,29 +526,31 @@ class PlannerProfileCreateNewServiceView extends StatelessWidget {
                                   if(plannerProfileCreateNewServiceController.titleController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service title");
                                   } else if(plannerProfileCreateNewServiceController.eventDetailsController.value.text == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your event details");
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service description");
+                                  } else if(plannerProfileCreateNewServiceController.eventDetailsController.value.text.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Service Description must be above 40 words");
                                   } else if(plannerProfileCreateNewServiceController.selectServicePaymentModel.value.key == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select price type");
                                   } else if(plannerProfileCreateNewServiceController.priceController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service price");
                                   } else if(plannerProfileCreateNewServiceController.selectCategory.value.title == null) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter select a category");
-                                  } else if(plannerProfileCreateNewServiceController.uploadFile.value.path == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service image");
+                                  } else if(plannerProfileCreateNewServiceController.selectedFile.isEmpty == true) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Please upload service images");
                                   } else if(plannerProfileCreateNewServiceController.serviceQuillJson.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "Enter your service details");
+                                  } else if(plannerProfileCreateNewServiceController.serviceQuillJson.value.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context, message: "What's include must be above 40 words");
                                   } else {
                                     await plannerProfileCreateNewServiceController.createPlannerServiceController(context: context);
                                     Map<String,dynamic> data = {
                                       "category": plannerProfileCreateNewServiceController.selectCategory.value.sId,
                                       "title": plannerProfileCreateNewServiceController.titleController.value.text,
+                                      "price": plannerProfileCreateNewServiceController.priceController.value.text,
+                                      "serviceAreas": plannerProfileCreateNewServiceController.selectServiceArea,
+                                      "priceType": plannerProfileCreateNewServiceController.selectServicePaymentModel.value.value,
                                       "subtitle": plannerProfileCreateNewServiceController.eventDetailsController.value.text,
                                       "description": plannerProfileCreateNewServiceController.serviceQuillJson.value,
-                                      "longitude": plannerProfileCreateNewServiceController.submitLong.value,
-                                      "latitude": plannerProfileCreateNewServiceController.submitLat.value,
-                                      "address": plannerProfileCreateNewServiceController.addressController.value.text,
-                                      "price": plannerProfileCreateNewServiceController.priceController.value.text,
-                                      "priceType": plannerProfileCreateNewServiceController.selectServicePaymentModel.value.value
                                     };
                                     print(data);
                                   }
