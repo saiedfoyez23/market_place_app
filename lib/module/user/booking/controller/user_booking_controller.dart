@@ -47,10 +47,10 @@ class UserBookingController extends GetxController {
               plannerSid: value.sender?.sId ?? "",
               plannerName: value.sender?.name ?? "",
               serviceName: value.title ?? "",
-              days: "${value.duration} Days",
+              date: value.date == null ? "" : DateFormat("dd MMM yyyy").format(DateTime.parse(value.date)),
               price: "${value.totalAmount}",
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              startTime: value.startTime ?? "",
+              endTime: value.endTime ?? "",
               status: value.status == "completed" ? UserBookingStatus.complete :
               value.status == "pending" ? UserBookingStatus.pending :
               value.status == "running" ? UserBookingStatus.active :
@@ -163,10 +163,10 @@ class UserBookingModel {
   final String userSid;
   final String plannerName;
   final String serviceName;
-  final String days;
+  final String date;
   final String price;
-  final String startDate;
-  final String endDate;
+  final String startTime;
+  final String endTime;
   final String coverImage;
   final UserBookingStatus status;
 
@@ -176,10 +176,10 @@ class UserBookingModel {
     required this.userSid,
     required this.plannerName,
     required this.serviceName,
-    required this.days,
+    required this.date,
     required this.price,
-    required this.startDate,
-    required this.endDate,
+    required this.startTime,
+    required this.endTime,
     required this.coverImage,
     required this.status,
   });

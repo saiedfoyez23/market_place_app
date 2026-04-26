@@ -62,60 +62,53 @@ class GetAllPlannerWiseServiceResponseMeta {
 }
 
 class GetAllPlannerWiseServiceResponse {
-  GetAllPlannerWiseServiceResponseLocation? location;
-  var isFeatured;
   var sId;
-  GetAllPlannerWiseServiceResponseAuthor? author;
-  GetAllPlannerWiseServiceResponseCategory? category;
+  GetAllPlannerWiseServiceAuthor? author;
+  GetAllPlannerWiseServiceCategory? category;
   var title;
   var subtitle;
   List<String>? images;
-  var address;
-  var locationUrl;
+  List<GetAllPlannerWiseServiceServiceAreas>? serviceAreas;
+  var isFeatured;
   var status;
   var isFavorite;
 
   GetAllPlannerWiseServiceResponse({
-    this.location,
-    this.isFeatured,
     this.sId,
     this.author,
     this.category,
     this.title,
     this.subtitle,
     this.images,
-    this.address,
-    this.locationUrl,
+    this.serviceAreas,
+    this.isFeatured,
     this.status,
     this.isFavorite,
   });
 
   GetAllPlannerWiseServiceResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new GetAllPlannerWiseServiceResponseLocation.fromJson(json['location'])
-        : null;
-    isFeatured = json['isFeatured'];
     sId = json['_id'];
     author =
-    json['author'] != null ? new GetAllPlannerWiseServiceResponseAuthor.fromJson(json['author']) : null;
+    json['author'] != null ? new GetAllPlannerWiseServiceAuthor.fromJson(json['author']) : null;
     category = json['category'] != null
-        ? new GetAllPlannerWiseServiceResponseCategory.fromJson(json['category'])
+        ? new GetAllPlannerWiseServiceCategory.fromJson(json['category'])
         : null;
     title = json['title'];
     subtitle = json['subtitle'];
     images = json['images'].cast<String>();
-    address = json['address'];
-    locationUrl = json['locationUrl'];
+    if (json['serviceAreas'] != null) {
+      serviceAreas = <GetAllPlannerWiseServiceServiceAreas>[];
+      json['serviceAreas'].forEach((v) {
+        serviceAreas!.add(new GetAllPlannerWiseServiceServiceAreas.fromJson(v));
+      });
+    }
+    isFeatured = json['isFeatured'];
     status = json['status'];
     isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
-    data['isFeatured'] = this.isFeatured;
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -126,34 +119,17 @@ class GetAllPlannerWiseServiceResponse {
     data['title'] = this.title;
     data['subtitle'] = this.subtitle;
     data['images'] = this.images;
-    data['address'] = this.address;
-    data['locationUrl'] = this.locationUrl;
+    if (this.serviceAreas != null) {
+      data['serviceAreas'] = this.serviceAreas!.map((v) => v.toJson()).toList();
+    }
+    data['isFeatured'] = this.isFeatured;
     data['status'] = this.status;
     data['isFavorite'] = this.isFavorite;
     return data;
   }
 }
 
-class GetAllPlannerWiseServiceResponseLocation {
-  var type;
-  List<dynamic>? coordinates;
-
-  GetAllPlannerWiseServiceResponseLocation({this.type, this.coordinates});
-
-  GetAllPlannerWiseServiceResponseLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
-    return data;
-  }
-}
-
-class GetAllPlannerWiseServiceResponseAuthor {
+class GetAllPlannerWiseServiceAuthor {
   var sId;
   var name;
   var email;
@@ -164,7 +140,7 @@ class GetAllPlannerWiseServiceResponseAuthor {
   var ratingCount;
   var isKycVerified;
 
-  GetAllPlannerWiseServiceResponseAuthor({
+  GetAllPlannerWiseServiceAuthor({
     this.sId,
     this.name,
     this.email,
@@ -176,8 +152,7 @@ class GetAllPlannerWiseServiceResponseAuthor {
     this.isKycVerified,
   });
 
-
-  GetAllPlannerWiseServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
+  GetAllPlannerWiseServiceAuthor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -204,13 +179,13 @@ class GetAllPlannerWiseServiceResponseAuthor {
   }
 }
 
-class GetAllPlannerWiseServiceResponseCategory {
+class GetAllPlannerWiseServiceCategory {
   var sId;
   var title;
 
-  GetAllPlannerWiseServiceResponseCategory({this.sId, this.title});
+  GetAllPlannerWiseServiceCategory({this.sId, this.title});
 
-  GetAllPlannerWiseServiceResponseCategory.fromJson(Map<String, dynamic> json) {
+  GetAllPlannerWiseServiceCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
   }
@@ -219,6 +194,54 @@ class GetAllPlannerWiseServiceResponseCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    return data;
+  }
+}
+
+class GetAllPlannerWiseServiceServiceAreas {
+  var name;
+  var locationUrl;
+  GetAllPlannerWiseServiceLocation? location;
+  var sId;
+
+  GetAllPlannerWiseServiceServiceAreas({this.name, this.locationUrl, this.location, this.sId});
+
+  GetAllPlannerWiseServiceServiceAreas.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    locationUrl = json['locationUrl'];
+    location = json['location'] != null
+        ? new GetAllPlannerWiseServiceLocation.fromJson(json['location'])
+        : null;
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['locationUrl'] = this.locationUrl;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class GetAllPlannerWiseServiceLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  GetAllPlannerWiseServiceLocation({this.type, this.coordinates});
+
+  GetAllPlannerWiseServiceLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

@@ -27,7 +27,6 @@ class PlannerGetServiceDetailsResponseModel {
 }
 
 class PlannerGetServiceDetailsResponse {
-  PlannerGetServiceDetailsResponseLocation? location;
   var sId;
   PlannerGetServiceDetailsResponseAuthor? author;
   var authority;
@@ -36,8 +35,7 @@ class PlannerGetServiceDetailsResponse {
   var subtitle;
   var description;
   List<String>? images;
-  var address;
-  var locationUrl;
+  List<PlannerGetServiceDetailsResponseServiceAreas>? serviceAreas;
   var price;
   var priceType;
   var isFeatured;
@@ -46,11 +44,9 @@ class PlannerGetServiceDetailsResponse {
   var createdAt;
   var updatedAt;
   var iV;
-  var featuredAt;
   var isFavorite;
 
   PlannerGetServiceDetailsResponse({
-    this.location,
     this.sId,
     this.author,
     this.authority,
@@ -59,8 +55,7 @@ class PlannerGetServiceDetailsResponse {
     this.subtitle,
     this.description,
     this.images,
-    this.address,
-    this.locationUrl,
+    this.serviceAreas,
     this.price,
     this.priceType,
     this.isFeatured,
@@ -69,14 +64,10 @@ class PlannerGetServiceDetailsResponse {
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.featuredAt,
     this.isFavorite,
   });
 
   PlannerGetServiceDetailsResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new PlannerGetServiceDetailsResponseLocation.fromJson(json['location'])
-        : null;
     sId = json['_id'];
     author =
     json['author'] != null ? new PlannerGetServiceDetailsResponseAuthor.fromJson(json['author']) : null;
@@ -88,8 +79,12 @@ class PlannerGetServiceDetailsResponse {
     subtitle = json['subtitle'];
     description = json['description'];
     images = json['images'].cast<String>();
-    address = json['address'];
-    locationUrl = json['locationUrl'];
+    if (json['serviceAreas'] != null) {
+      serviceAreas = <PlannerGetServiceDetailsResponseServiceAreas>[];
+      json['serviceAreas'].forEach((v) {
+        serviceAreas!.add(new PlannerGetServiceDetailsResponseServiceAreas.fromJson(v));
+      });
+    }
     price = json['price'];
     priceType = json['priceType'];
     isFeatured = json['isFeatured'];
@@ -98,15 +93,11 @@ class PlannerGetServiceDetailsResponse {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    featuredAt = json['featuredAt'];
     isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -119,8 +110,9 @@ class PlannerGetServiceDetailsResponse {
     data['subtitle'] = this.subtitle;
     data['description'] = this.description;
     data['images'] = this.images;
-    data['address'] = this.address;
-    data['locationUrl'] = this.locationUrl;
+    if (this.serviceAreas != null) {
+      data['serviceAreas'] = this.serviceAreas!.map((v) => v.toJson()).toList();
+    }
     data['price'] = this.price;
     data['priceType'] = this.priceType;
     data['isFeatured'] = this.isFeatured;
@@ -129,27 +121,7 @@ class PlannerGetServiceDetailsResponse {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
-    data['featuredAt'] = this.featuredAt;
     data['isFavorite'] = this.isFavorite;
-    return data;
-  }
-}
-
-class PlannerGetServiceDetailsResponseLocation {
-  var type;
-  List<dynamic>? coordinates;
-
-  PlannerGetServiceDetailsResponseLocation({this.type, this.coordinates});
-
-  PlannerGetServiceDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
     return data;
   }
 }
@@ -223,6 +195,54 @@ class PlannerGetServiceDetailsResponseCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    return data;
+  }
+}
+
+class PlannerGetServiceDetailsResponseServiceAreas {
+  PlannerGetServiceDetailsResponseLocation? location;
+  var name;
+  var locationUrl;
+  var sId;
+
+  PlannerGetServiceDetailsResponseServiceAreas({this.location, this.name, this.locationUrl, this.sId});
+
+  PlannerGetServiceDetailsResponseServiceAreas.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new PlannerGetServiceDetailsResponseLocation.fromJson(json['location'])
+        : null;
+    name = json['name'];
+    locationUrl = json['locationUrl'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['name'] = this.name;
+    data['locationUrl'] = this.locationUrl;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class PlannerGetServiceDetailsResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  PlannerGetServiceDetailsResponseLocation({this.type, this.coordinates});
+
+  PlannerGetServiceDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

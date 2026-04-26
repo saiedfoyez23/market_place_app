@@ -100,27 +100,27 @@ class PlannerEditPickLocationPlaceView extends StatelessWidget {
                         SpaceHelperWidget.v(12.h(context)),
 
 
-                        ButtonHelperWidget.customButtonWidgetAdventPro(
-                          context: context,
-                          onPressed: () async {
-                            if(plannerEditPickLocationPlaceController.searchController.value.text == "") {
-                              MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
-                            } else {
-                              FocusScope.of(context).unfocus();
-                              print(plannerEditPickLocationPlaceController.longitude.value);
-                              print(plannerEditPickLocationPlaceController.latitude.value);
-                              print(plannerEditPickLocationPlaceController.searchController.value.text);
-                              Get.off(()=> PlannerProfileServiceEditView(
-                                serviceId: serviceId,
-                                long: plannerEditPickLocationPlaceController.longitude.value,
-                                lat: plannerEditPickLocationPlaceController.latitude.value,
-                                address: plannerEditPickLocationPlaceController.searchController.value.text,),
-                                preventDuplicates: false,
-                              );
-                            }
-                          },
-                          text: "Pick Address",
-                        ),
+                        // ButtonHelperWidget.customButtonWidgetAdventPro(
+                        //   context: context,
+                        //   onPressed: () async {
+                        //     if(plannerEditPickLocationPlaceController.searchController.value.text == "") {
+                        //       MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Address is not pick.");
+                        //     } else {
+                        //       FocusScope.of(context).unfocus();
+                        //       print(plannerEditPickLocationPlaceController.longitude.value);
+                        //       print(plannerEditPickLocationPlaceController.latitude.value);
+                        //       print(plannerEditPickLocationPlaceController.searchController.value.text);
+                        //       Get.off(()=> PlannerProfileServiceEditView(
+                        //         serviceId: serviceId,
+                        //         long: plannerEditPickLocationPlaceController.longitude.value,
+                        //         lat: plannerEditPickLocationPlaceController.latitude.value,
+                        //         address: plannerEditPickLocationPlaceController.searchController.value.text,),
+                        //         preventDuplicates: false,
+                        //       );
+                        //     }
+                        //   },
+                        //   text: "Pick Address",
+                        // ),
 
                         SpaceHelperWidget.v(12.h(context)),
 

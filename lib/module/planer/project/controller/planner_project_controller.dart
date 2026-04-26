@@ -45,11 +45,11 @@ class PlannerProjectController extends GetxController {
               sid: value.sId ?? "",
               clientName: value.receiver?.name ?? "",
               serviceName: value.title ?? "",
-              days: int.parse(value.duration.toString()),
+              date: value.date == null ? "" : DateFormat("dd MMM yyyy").format(DateTime.parse(value.date)),
               budgetUsed: value.pendingAmount.toString() == "0" ? double.parse(value.totalAmount.toString()) : double.parse(value.pendingAmount.toString()),
               budgetTotal: double.parse(value.totalAmount.toString()),
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              startTime: value.startTime ?? "",
+              endTime: value.endTime ?? "",
               status: value.status == "completed" ? PlannerProjectStatus.complete :
               value.status == "pending" ? PlannerProjectStatus.pending :
               value.status == "cancelled" ?PlannerProjectStatus.cancelled :
@@ -105,11 +105,11 @@ class ProjectModel {
   final String serviceName;
   final String clientName;
   final PlannerProjectStatus status;
-  final int days;
+  final String date;
   final double budgetUsed;
   final double budgetTotal;
-  final String startDate;
-  final String endDate;
+  final String startTime;
+  final String endTime;
   final String userImage;
   final double totalPayment;
 
@@ -119,11 +119,11 @@ class ProjectModel {
     required this.serviceName,
     required this.clientName,
     required this.status,
-    required this.days,
+    required this.date,
     required this.budgetUsed,
     required this.budgetTotal,
-    required this.startDate,
-    required this.endDate,
+    required this.startTime,
+    required this.endTime,
     required this.userImage,
     required this.totalPayment,
   });

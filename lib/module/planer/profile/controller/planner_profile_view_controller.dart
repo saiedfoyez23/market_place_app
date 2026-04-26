@@ -87,7 +87,6 @@ class PlannerProfileViewController extends GetxController {
       url: ApiUtils.addFeatureController(serviceId),
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isLoading.value = true;
         await getPlannerProfileDetailsController(
             context: context,
             onComplete: (userId) async {

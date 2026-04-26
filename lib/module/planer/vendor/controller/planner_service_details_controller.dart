@@ -32,6 +32,13 @@ class PlannerServiceDetailsController extends GetxController {
     });
   }
 
+  RxInt index = 0.obs;
+  Rx<PageController> pageController = PageController(initialPage: 0).obs;
+
+  void changeIndex(int changeValue) {
+    index.value = changeValue;
+  }
+
 
   Future<void> getAllUserReviewController({
     required BuildContext context,

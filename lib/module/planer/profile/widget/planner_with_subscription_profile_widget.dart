@@ -493,6 +493,7 @@ class PlannerWithSubscriptionProfileWidget {
                               right: 12.w(context),
                               child: InkWell(
                                 onTap: () async {
+                                  plannerProfileViewController.isLoading.value = true;
                                   await plannerProfileViewController.addFeaturedController(
                                     context: context,
                                     serviceId: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].sId,
@@ -574,43 +575,47 @@ class PlannerWithSubscriptionProfileWidget {
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black80,
                                 text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].subtitle ?? "",
+                                textOverFlow: TextOverflow.ellipsis
                               ),
 
 
                               SpaceHelperWidget.v(12.h(context)),
 
-                              InkWell(
-                                onTap: () async {
-                                  if (await canLaunchUrl(Uri.parse(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl))) {
-                                    await launchUrl(Uri.parse(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].locationUrl), mode: LaunchMode.externalApplication);
-                                  }
-                                },
-                                child: Row(
-                                  children: [
-                                    ImageHelperWidget.assetImageWidget(
-                                      context: context,
-                                      height: 21.h(context),
-                                      width: 21.w(context),
-                                      imageString: ImageUtils.locationImage,
-                                    ),
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                textAlign: TextAlign.start,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                textColor: ColorUtils.black48,
+                                text: "Service Area",
+                              ),
 
-                                    SpaceHelperWidget.h(8.w(context)),
+                              SpaceHelperWidget.v(10.h(context)),
 
-
-                                    Expanded(
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Wrap(
+                                  alignment: WrapAlignment.start,
+                                  runAlignment: WrapAlignment.start,
+                                  runSpacing: 10.h(context),
+                                  spacing: 10.w(context),
+                                  children: List.generate(plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data![index].serviceAreas!.length, (Index) {
+                                    return IntrinsicWidth(
                                       child: TextHelperClass.headingTextWithoutWidth(
                                         context: context,
                                         alignment: Alignment.centerLeft,
+                                        containerColor: ColorUtils.blue219,
+                                        padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
                                         textAlign: TextAlign.start,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: ColorUtils.black94,
-                                        text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].address,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w400,
+                                        borderRadius: BorderRadius.circular(6.r(context)),
+                                        textColor: ColorUtils.blue71,
+                                        text: plannerProfileViewController.getAllFeaturedServiceResponseModel.value.data?[index].serviceAreas?[Index].name ?? '',
                                       ),
-                                    ),
-
-
-                                  ],
+                                    );
+                                  }),
                                 ),
                               ),
 

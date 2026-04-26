@@ -96,7 +96,6 @@ class PlannerProfileServiceController extends GetxController {
       url: ApiUtils.addFeatureController(serviceId),
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isLoading.value = true;
         plannerGetAllServiceModelList.clear();
         await getPlannerAllServiceController(context: context);
       },

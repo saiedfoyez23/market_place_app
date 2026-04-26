@@ -241,6 +241,7 @@ class VendorServicesView extends StatelessWidget {
                   right: 12.w(context),
                   child: InkWell(
                     onTap: () async {
+                      vendorServiceController.isLoading.value = true;
                       await vendorServiceController.addFeaturedController(context: context, serviceId: service.sId);
                     },
                     child: Container(
@@ -341,47 +342,50 @@ class VendorServicesView extends StatelessWidget {
                     textOverFlow: TextOverflow.ellipsis,
                   ),
 
+                  if(service.serviceAreas?.isEmpty == true || service.serviceAreas == null)...[
+                    SizedBox.shrink()
+                  ] else...[
+                    SpaceHelperWidget.v(12.h(context)),
 
-                  SpaceHelperWidget.v(12.h(context)),
 
-
-                  TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    textColor: ColorUtils.black48,
-                    text: "Service Area",
-                  ),
-
-                  SpaceHelperWidget.v(10.h(context)),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      runAlignment: WrapAlignment.start,
-                      runSpacing: 10.h(context),
-                      spacing: 10.w(context),
-                      children: List.generate(service.serviceAreas!.length, (index) {
-                        return IntrinsicWidth(
-                          child: TextHelperClass.headingTextWithoutWidth(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            containerColor: ColorUtils.blue219,
-                            padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
-                            textAlign: TextAlign.start,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                            borderRadius: BorderRadius.circular(6.r(context)),
-                            textColor: ColorUtils.blue71,
-                            text: service.serviceAreas?[index].name ?? '',
-                          ),
-                        );
-                      }),
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      textAlign: TextAlign.start,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      textColor: ColorUtils.black48,
+                      text: "Service Area",
                     ),
-                  ),
+
+                    SpaceHelperWidget.v(10.h(context)),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        runAlignment: WrapAlignment.start,
+                        runSpacing: 10.h(context),
+                        spacing: 10.w(context),
+                        children: List.generate(service.serviceAreas!.length, (index) {
+                          return IntrinsicWidth(
+                            child: TextHelperClass.headingTextWithoutWidth(
+                              context: context,
+                              alignment: Alignment.centerLeft,
+                              containerColor: ColorUtils.blue219,
+                              padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
+                              textAlign: TextAlign.start,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              borderRadius: BorderRadius.circular(6.r(context)),
+                              textColor: ColorUtils.blue71,
+                              text: service.serviceAreas?[index].name ?? '',
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
 
 
 

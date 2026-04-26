@@ -300,9 +300,9 @@ class PlannerOfferView extends StatelessWidget {
 
           SpaceHelperWidget.v(24.h(context)),
 
-          rowItem(title: "${booking.days}",value: "From R${booking.price}",context: context),
-          rowItem(title: "Start Date",value: booking.startDate,context: context),
-          rowItem(title: "End Date",value: booking.endDate,context: context),
+          rowItem(title: "Total Price",value: "From R${booking.price}",context: context),
+          rowItem(title: "Date",value: booking.date,context: context),
+          rowItem(title: "Time",value: "${booking.startTime} - ${booking.endTime}",context: context),
 
           SpaceHelperWidget.v(16.h(context)),
 

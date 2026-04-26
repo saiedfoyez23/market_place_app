@@ -239,6 +239,7 @@ class PlannerProfileServiceView extends StatelessWidget {
                   right: 12.w(context),
                   child: InkWell(
                     onTap: () async {
+                      plannerProfileServiceController.isLoading.value = true;
                       await plannerProfileServiceController.addFeaturedController(context: context, serviceId: service.sId);
                     },
                     child: Container(
@@ -339,46 +340,50 @@ class PlannerProfileServiceView extends StatelessWidget {
                     textOverFlow: TextOverflow.ellipsis,
                   ),
 
-
                   SpaceHelperWidget.v(12.h(context)),
 
-                  TextHelperClass.headingTextWithoutWidth(
-                    context: context,
-                    alignment: Alignment.centerLeft,
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    textColor: ColorUtils.black48,
-                    text: "Service Area",
-                  ),
-
-                  SpaceHelperWidget.v(10.h(context)),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      runAlignment: WrapAlignment.start,
-                      runSpacing: 10.h(context),
-                      spacing: 10.w(context),
-                      children: List.generate(service.serviceAreas!.length, (index) {
-                        return IntrinsicWidth(
-                          child: TextHelperClass.headingTextWithoutWidth(
-                            context: context,
-                            alignment: Alignment.centerLeft,
-                            containerColor: ColorUtils.blue219,
-                            padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
-                            textAlign: TextAlign.start,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                            borderRadius: BorderRadius.circular(6.r(context)),
-                            textColor: ColorUtils.blue71,
-                            text: service.serviceAreas?[index].name ?? '',
-                          ),
-                        );
-                      }),
+                  if(service.serviceAreas == null || service.serviceAreas?.isEmpty == true)...[
+                    SizedBox.shrink()
+                  ] else...[
+                    TextHelperClass.headingTextWithoutWidth(
+                      context: context,
+                      alignment: Alignment.centerLeft,
+                      textAlign: TextAlign.start,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      textColor: ColorUtils.black48,
+                      text: "Service Area",
                     ),
-                  ),
+
+                    SpaceHelperWidget.v(10.h(context)),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        runAlignment: WrapAlignment.start,
+                        runSpacing: 10.h(context),
+                        spacing: 10.w(context),
+                        children: List.generate(service.serviceAreas!.length, (index) {
+                          return IntrinsicWidth(
+                            child: TextHelperClass.headingTextWithoutWidth(
+                              context: context,
+                              alignment: Alignment.centerLeft,
+                              containerColor: ColorUtils.blue219,
+                              padding: EdgeInsets.symmetric(vertical: 2.vpm(context),horizontal: 8.h(context)),
+                              textAlign: TextAlign.start,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              borderRadius: BorderRadius.circular(6.r(context)),
+                              textColor: ColorUtils.blue71,
+                              text: service.serviceAreas?[index].name ?? '',
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
+
 
 
                   SpaceHelperWidget.v(24.h(context)),
@@ -498,7 +503,7 @@ class PlannerProfileServiceView extends StatelessWidget {
                         child: ButtonHelperWidget.customButtonWidgetAdventPro(
                           context: context,
                           onPressed: () async {
-                            Get.off(()=>PlannerEditPickLocationPlaceView(serviceId: service.sId),preventDuplicates: false);
+                            Get.off(()=> PlannerProfileServiceEditView(serviceId: service.sId,), preventDuplicates: false,);
                           },
                           text: "Edit",
                           textColor: ColorUtils.blue96,

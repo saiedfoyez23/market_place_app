@@ -125,51 +125,54 @@ class VendorServiceDetailsView extends StatelessWidget {
                         ),
 
 
-                        Container(
-                          margin: EdgeInsets.only(bottom: 20.bpm(context)),
-                          padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
-                          decoration: BoxDecoration(
-                            color: ColorUtils.white249,
-                            border: Border.all(color: ColorUtils.white215,width: .5),
-                            borderRadius: BorderRadius.circular(12.r(context)),
-                          ),
-                          child: Column(
-                            children: [
+                        if(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.serviceAreas == null || vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data?.serviceAreas?.isEmpty == true)...[
+                          SizedBox.shrink(),
+                        ] else...[
+                          Container(
+                            margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                            padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
+                            decoration: BoxDecoration(
+                              color: ColorUtils.white249,
+                              border: Border.all(color: ColorUtils.white215,width: .5),
+                              borderRadius: BorderRadius.circular(12.r(context)),
+                            ),
+                            child: Column(
+                              children: [
 
-                              TextHelperClass.headingTextWithoutWidth(
-                                context: context,
-                                alignment: Alignment.centerLeft,
-                                textAlign: TextAlign.start,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                textColor: ColorUtils.black64,
-                                text: "Services Area ",
-                              ),
-
-
-                              SpaceHelperWidget.v(10.h(context)),
-
-
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Wrap(
-                                  alignment: WrapAlignment.start,
-                                  runAlignment: WrapAlignment.start,
-                                  crossAxisAlignment: WrapCrossAlignment.start,
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: List.generate(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.serviceAreas!.length, (index) {
-                                    return serviceChip(text: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.serviceAreas![index].name, context: context);
-                                  }),
+                                TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.centerLeft,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black64,
+                                  text: "Services Area ",
                                 ),
-                              ),
+
+
+                                SpaceHelperWidget.v(10.h(context)),
+
+
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.start,
+                                    runAlignment: WrapAlignment.start,
+                                    crossAxisAlignment: WrapCrossAlignment.start,
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    children: List.generate(vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.serviceAreas!.length, (index) {
+                                      return serviceChip(text: vendorServiceDetailsController.vendorGetServiceDetailsResponseModel.value.data!.serviceAreas![index].name, context: context);
+                                    }),
+                                  ),
+                                ),
 
 
 
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-
+                        ],
 
 
                         reviews(

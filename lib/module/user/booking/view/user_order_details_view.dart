@@ -295,9 +295,15 @@ class UserOrderDetailsView extends StatelessWidget {
           ),
 
           SpaceHelperWidget.v(16.h(context)),
-          infoRow(title: "Deadline", value: "${userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.duration ?? ""} days", context: context),
-          infoRow(title: "Program Start Date", value: DateFormat("dd MMM yyyy").format(DateTime.parse(userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.startDate)), context: context),
-          infoRow(title: "Program End Date", value: DateFormat("dd MMM yyyy").format(DateTime.parse(userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.endDate)), context: context),
+          infoRow(
+            title: "Date",
+            value: userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.date == null ?
+            "" :
+            DateFormat("dd MMM yyyy").format(DateTime.parse(userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.date)),
+            context: context,
+          ),
+          infoRow(title: "Program Start Date", value: userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.startTime ?? "", context: context),
+          infoRow(title: "Program End Date", value: userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.endTime ?? "", context: context),
           //infoRow(title: "First Payment",value: "\$150", context: context),
           infoRow(title: "Total Price", value: "\$${userBookingDetailsController.getClientOrderDetailsResponseModel.value.data?.totalAmount ?? ""}", context: context),
         ],

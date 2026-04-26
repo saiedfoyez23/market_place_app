@@ -13,8 +13,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PlannerCreateNewProjectController plannerCreateNewProjectController = Get.put(
-        PlannerCreateNewProjectController(context: context,address: address,long: long,lat: lat));
+    final PlannerCreateNewProjectController plannerCreateNewProjectController = Get.put(PlannerCreateNewProjectController(context: context,address: address,long: long,lat: lat));
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop,onPopInvoked) {
@@ -203,14 +202,13 @@ class PlannerCreateNewProjectView extends StatelessWidget {
 
                               SpaceHelperWidget.v(20.h(context)),
 
-
                               TextHelperClass.headingTextWithoutWidth(
                                 context: context,
                                 alignment: Alignment.centerLeft,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 textColor: ColorUtils.black96,
-                                text: "Order duration",
+                                text: "Program Date",
                               ),
 
                               SpaceHelperWidget.v(6.h(context)),
@@ -219,31 +217,7 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                               TextFormFieldWidget.build(
                                 context: context,
                                 fillColor: ColorUtils.white255,
-                                hintText: "Enter order duration",
-                                controller: plannerCreateNewProjectController.deadlineController.value,
-                                keyboardType: TextInputType.number,
-                              ),
-
-
-                              SpaceHelperWidget.v(20.h(context)),
-
-
-                              TextHelperClass.headingTextWithoutWidth(
-                                context: context,
-                                alignment: Alignment.centerLeft,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                textColor: ColorUtils.black96,
-                                text: "Program Start Date",
-                              ),
-
-                              SpaceHelperWidget.v(6.h(context)),
-
-
-                              TextFormFieldWidget.build(
-                                context: context,
-                                fillColor: ColorUtils.white255,
-                                hintText: "Pick program start date",
+                                hintText: "Pick program date",
                                 readOnly: true,
                                 controller: plannerCreateNewProjectController.programStartDateController.value,
                                 onTap: () async {
@@ -252,35 +226,60 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                 keyboardType: TextInputType.emailAddress,
                               ),
 
+                              SpaceHelperWidget.v(20.h(context)),
+
+
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                textColor: ColorUtils.black96,
+                                text: "Program Start Time",
+                              ),
+
+                              SpaceHelperWidget.v(6.h(context)),
+
+
+                              TextFormFieldWidget.build(
+                                context: context,
+                                fillColor: ColorUtils.white255,
+                                hintText: "Pick program start time",
+                                readOnly: true,
+                                controller: plannerCreateNewProjectController.startTimeController.value,
+                                onTap: () async {
+                                  await plannerCreateNewProjectController.pickStartTime(context: context);
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                              ),
 
                               SpaceHelperWidget.v(20.h(context)),
 
 
-                              // TextHelperClass.headingTextWithoutWidth(
-                              //   context: context,
-                              //   alignment: Alignment.centerLeft,
-                              //   fontSize: 18,
-                              //   fontWeight: FontWeight.w500,
-                              //   textColor: ColorUtils.black96,
-                              //   text: "Program End Date",
-                              // ),
-                              //
-                              // SpaceHelperWidget.v(6.h(context)),
-                              //
-                              //
-                              // TextFormFieldWidget.build(
-                              //   context: context,
-                              //   fillColor: ColorUtils.white255,
-                              //   hintText: "Pick program end date",
-                              //   readOnly: true,
-                              //   controller: plannerCreateNewProjectController.programEndDateController.value,
-                              //   onTap: () async {
-                              //     await plannerCreateNewProjectController.pickProgramEndDate(context: context);
-                              //   },
-                              //   keyboardType: TextInputType.emailAddress,
-                              // ),
-                              //
-                              // SpaceHelperWidget.v(20.h(context)),
+                              TextHelperClass.headingTextWithoutWidth(
+                                context: context,
+                                alignment: Alignment.centerLeft,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                textColor: ColorUtils.black96,
+                                text: "Program End Time",
+                              ),
+
+                              SpaceHelperWidget.v(6.h(context)),
+
+
+                              TextFormFieldWidget.build(
+                                context: context,
+                                fillColor: ColorUtils.white255,
+                                hintText: "Pick program end time",
+                                readOnly: true,
+                                controller: plannerCreateNewProjectController.endTimeController.value,
+                                onTap: () async {
+                                  await plannerCreateNewProjectController.pickEndTime(context: context);
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+
 
 
                               TextHelperClass.headingTextWithoutWidth(
@@ -484,16 +483,23 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                               ButtonHelperWidget.customButtonWidgetAdventPro(
                                 context: context,
                                 onPressed: () async {
+                                  var serviceDetails = await plannerCreateNewProjectController.serviceDetailsController.value.getText();
                                   if(plannerCreateNewProjectController.titleController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your email");
                                   } else if(plannerCreateNewProjectController.selectEventType.value == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Select Event Type");
                                   } else if(await plannerCreateNewProjectController.serviceDetailsController.value.getText() == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your service details");
+                                  } else if(serviceDetails.length < 40) {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your service details must above 40 words");
                                   } else if(plannerCreateNewProjectController.eventDetailsController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Your event details must above 40 words");
+                                  } else if(plannerCreateNewProjectController.eventDetailsController.value.text.length < 40) {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your event details");
-                                  } else if(plannerCreateNewProjectController.deadlineController.value.text == "") {
-                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your deadline");
+                                  } else if(plannerCreateNewProjectController.startTimeController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please pick a start time");
+                                  } else if(plannerCreateNewProjectController.endTimeController.value.text == "") {
+                                    MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Please pick a end time");
                                   } else if(plannerCreateNewProjectController.programStartDateController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your program start date");
                                   } else if(plannerCreateNewProjectController.totalPriceController.value.text == "") {
@@ -507,7 +513,6 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                   } else if(plannerCreateNewProjectController.plannerOrderLocationController.value.text == "") {
                                     MessageSnackBarWidget.errorSnackBarWidget(context: context,message: "Enter your planer order location");
                                   } else {
-                                    plannerCreateNewProjectController.isSubmit.value = true;
                                     //String html = await vendorCreateNewOrderController.serviceDetailsController.value.getText();
                                     Map<String,dynamic> data = {
                                       "receiver": plannerCreateNewProjectController.selectUser.value.sId,
@@ -515,13 +520,15 @@ class PlannerCreateNewProjectView extends StatelessWidget {
                                       "type": plannerCreateNewProjectController.selectEventType.value,
                                       "shortDescription": plannerCreateNewProjectController.eventDetailsController.value.text,
                                       "description": await plannerCreateNewProjectController.serviceDetailsController.value.getText(),
-                                      "duration": int.parse(plannerCreateNewProjectController.deadlineController.value.text), // in days
                                       "totalAmount": int.parse(plannerCreateNewProjectController.totalPriceController.value.text),
-                                      "startDate": plannerCreateNewProjectController.programStartDateController.value.text,
+                                      "date": plannerCreateNewProjectController.programStartDateController.value.text,
+                                      "startTime": plannerCreateNewProjectController.startTimeController.value.text,
+                                      "endTime": plannerCreateNewProjectController.endTimeController.value.text,
                                       "longitude": plannerCreateNewProjectController.longitude.value,
                                       "latitude": plannerCreateNewProjectController.latitude.value,
                                       "address": plannerCreateNewProjectController.plannerOrderLocationController.value.text,
                                     };
+                                    print(data);
                                     await plannerCreateNewProjectController.plannerCreateNewOrderController(context: context, data: data);
                                   }
                                 },

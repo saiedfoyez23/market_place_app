@@ -62,38 +62,31 @@ class GetAllFeaturedServiceResponseMeta {
 }
 
 class GetAllFeaturedServiceResponse {
-  GetAllFeaturedServiceResponseLocation? location;
   var sId;
   GetAllFeaturedServiceResponseAuthor? author;
   GetAllFeaturedServiceResponseCategory? category;
   var title;
   var subtitle;
   List<String>? images;
-  var address;
-  var locationUrl;
-  var status;
+  List<GetAllFeaturedServiceResponseServiceAreas>? serviceAreas;
   var isFeatured;
+  var status;
   var isFavorite;
 
   GetAllFeaturedServiceResponse({
-    this.location,
     this.sId,
     this.author,
     this.category,
     this.title,
     this.subtitle,
     this.images,
-    this.address,
-    this.locationUrl,
-    this.status,
+    this.serviceAreas,
     this.isFeatured,
+    this.status,
     this.isFavorite,
   });
 
   GetAllFeaturedServiceResponse.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new GetAllFeaturedServiceResponseLocation.fromJson(json['location'])
-        : null;
     sId = json['_id'];
     author =
     json['author'] != null ? new GetAllFeaturedServiceResponseAuthor.fromJson(json['author']) : null;
@@ -103,18 +96,19 @@ class GetAllFeaturedServiceResponse {
     title = json['title'];
     subtitle = json['subtitle'];
     images = json['images'].cast<String>();
-    address = json['address'];
-    locationUrl = json['locationUrl'];
-    status = json['status'];
+    if (json['serviceAreas'] != null) {
+      serviceAreas = <GetAllFeaturedServiceResponseServiceAreas>[];
+      json['serviceAreas'].forEach((v) {
+        serviceAreas!.add(new GetAllFeaturedServiceResponseServiceAreas.fromJson(v));
+      });
+    }
     isFeatured = json['isFeatured'];
+    status = json['status'];
     isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
     data['_id'] = this.sId;
     if (this.author != null) {
       data['author'] = this.author!.toJson();
@@ -125,30 +119,12 @@ class GetAllFeaturedServiceResponse {
     data['title'] = this.title;
     data['subtitle'] = this.subtitle;
     data['images'] = this.images;
-    data['address'] = this.address;
-    data['locationUrl'] = this.locationUrl;
-    data['status'] = this.status;
+    if (this.serviceAreas != null) {
+      data['serviceAreas'] = this.serviceAreas!.map((v) => v.toJson()).toList();
+    }
     data['isFeatured'] = this.isFeatured;
+    data['status'] = this.status;
     data['isFavorite'] = this.isFavorite;
-    return data;
-  }
-}
-
-class GetAllFeaturedServiceResponseLocation {
-  var type;
-  List<dynamic>? coordinates;
-
-  GetAllFeaturedServiceResponseLocation({this.type, this.coordinates});
-
-  GetAllFeaturedServiceResponseLocation.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<int>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
     return data;
   }
 }
@@ -173,7 +149,7 @@ class GetAllFeaturedServiceResponseAuthor {
     this.role,
     this.avgRating,
     this.ratingCount,
-    this.isKycVerified,
+    this.isKycVerified
   });
 
   GetAllFeaturedServiceResponseAuthor.fromJson(Map<String, dynamic> json) {
@@ -204,8 +180,8 @@ class GetAllFeaturedServiceResponseAuthor {
 }
 
 class GetAllFeaturedServiceResponseCategory {
-  var sId;
-  var title;
+  String? sId;
+  String? title;
 
   GetAllFeaturedServiceResponseCategory({this.sId, this.title});
 
@@ -218,6 +194,54 @@ class GetAllFeaturedServiceResponseCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    return data;
+  }
+}
+
+class GetAllFeaturedServiceResponseServiceAreas {
+  var name;
+  var locationUrl;
+  GetAllFeaturedServiceResponseLocation? location;
+  var sId;
+
+  GetAllFeaturedServiceResponseServiceAreas({this.name, this.locationUrl, this.location, this.sId});
+
+  GetAllFeaturedServiceResponseServiceAreas.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    locationUrl = json['locationUrl'];
+    location = json['location'] != null
+        ? new GetAllFeaturedServiceResponseLocation.fromJson(json['location'])
+        : null;
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['locationUrl'] = this.locationUrl;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class GetAllFeaturedServiceResponseLocation {
+  var type;
+  List<dynamic>? coordinates;
+
+  GetAllFeaturedServiceResponseLocation({this.type, this.coordinates});
+
+  GetAllFeaturedServiceResponseLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

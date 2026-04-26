@@ -37,10 +37,10 @@ class PlannerGetAllVendorOrderResponseModel {
 }
 
 class PlannerGetAllVendorOrderResponseMeta {
-  var page;
-  var limit;
-  var total;
-  var totalPage;
+  int? page;
+  int? limit;
+  int? total;
+  int? totalPage;
 
   PlannerGetAllVendorOrderResponseMeta({this.page, this.limit, this.total, this.totalPage});
 
@@ -70,14 +70,14 @@ class PlannerGetAllVendorOrderResponse {
   var type;
   var shortDescription;
   var description;
-  var duration;
+  var date;
   var totalAmount;
   var initialAmount;
   var pendingAmount;
   var finalAmount;
   var refundAmount;
-  var startDate;
-  var endDate;
+  var startTime;
+  var endTime;
   var address;
   var locationUrl;
   PlannerGetAllVendorOrderResponseLocation? location;
@@ -100,14 +100,14 @@ class PlannerGetAllVendorOrderResponse {
     this.type,
     this.shortDescription,
     this.description,
-    this.duration,
+    this.date,
     this.totalAmount,
     this.initialAmount,
     this.pendingAmount,
     this.finalAmount,
     this.refundAmount,
-    this.startDate,
-    this.endDate,
+    this.startTime,
+    this.endTime,
     this.address,
     this.locationUrl,
     this.location,
@@ -133,14 +133,14 @@ class PlannerGetAllVendorOrderResponse {
     type = json['type'];
     shortDescription = json['shortDescription'];
     description = json['description'];
-    duration = json['duration'];
+    date = json['date'];
     totalAmount = json['totalAmount'];
     initialAmount = json['initialAmount'];
     pendingAmount = json['pendingAmount'];
     finalAmount = json['finalAmount'];
     refundAmount = json['refundAmount'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
     address = json['address'];
     locationUrl = json['locationUrl'];
     location = json['location'] != null
@@ -171,14 +171,14 @@ class PlannerGetAllVendorOrderResponse {
     data['type'] = this.type;
     data['shortDescription'] = this.shortDescription;
     data['description'] = this.description;
-    data['duration'] = this.duration;
+    data['date'] = this.date;
     data['totalAmount'] = this.totalAmount;
     data['initialAmount'] = this.initialAmount;
     data['pendingAmount'] = this.pendingAmount;
     data['finalAmount'] = this.finalAmount;
     data['refundAmount'] = this.refundAmount;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     if (this.location != null) {

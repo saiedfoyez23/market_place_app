@@ -2,7 +2,7 @@ class GetClientOrderDetailsResponseModel {
   var success;
   var statusCode;
   var message;
-  GetClientOrderDetailsResponse? data;
+  GetClientOrderDetailsRespons? data;
 
   GetClientOrderDetailsResponseModel(
       {this.success, this.statusCode, this.message, this.data});
@@ -11,7 +11,7 @@ class GetClientOrderDetailsResponseModel {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    data = json['data'] != null ? new GetClientOrderDetailsResponse.fromJson(json['data']) : null;
+    data = json['data'] != null ? new GetClientOrderDetailsRespons.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,24 +26,24 @@ class GetClientOrderDetailsResponseModel {
   }
 }
 
-class GetClientOrderDetailsResponse {
-  GetClientOrderDetailsResponseLocation? location;
+class GetClientOrderDetailsRespons {
+  GetClientOrderDetailsResponsLocation? location;
   var sId;
-  GetClientOrderDetailsResponseSender? sender;
-  GetClientOrderDetailsResponseReceiver? receiver;
+  GetClientOrderDetailsResponsSender? sender;
+  GetClientOrderDetailsResponsReceiver? receiver;
   var authority;
   var title;
   var type;
   var shortDescription;
   var description;
-  var duration;
+  var date;
   var totalAmount;
   var initialAmount;
   var pendingAmount;
   var finalAmount;
   var refundAmount;
-  var startDate;
-  var endDate;
+  var startTime;
+  var endTime;
   var address;
   var locationUrl;
   var status;
@@ -55,8 +55,11 @@ class GetClientOrderDetailsResponse {
   var createdAt;
   var updatedAt;
   var iV;
+  GetClientOrderDetailsResponsInitialPayment? initialPayment;
+  var actualEndDate;
+  GetClientOrderDetailsResponsInitialPayment? finalPayment;
 
-  GetClientOrderDetailsResponse({
+  GetClientOrderDetailsRespons({
     this.location,
     this.sId,
     this.sender,
@@ -66,14 +69,14 @@ class GetClientOrderDetailsResponse {
     this.type,
     this.shortDescription,
     this.description,
-    this.duration,
+    this.date,
     this.totalAmount,
     this.initialAmount,
     this.pendingAmount,
     this.finalAmount,
     this.refundAmount,
-    this.startDate,
-    this.endDate,
+    this.startTime,
+    this.endTime,
     this.address,
     this.locationUrl,
     this.status,
@@ -85,31 +88,34 @@ class GetClientOrderDetailsResponse {
     this.createdAt,
     this.updatedAt,
     this.iV,
+    this.initialPayment,
+    this.actualEndDate,
+    this.finalPayment,
   });
 
-  GetClientOrderDetailsResponse.fromJson(Map<String, dynamic> json) {
+  GetClientOrderDetailsRespons.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetClientOrderDetailsResponseLocation.fromJson(json['location'])
+        ? new GetClientOrderDetailsResponsLocation.fromJson(json['location'])
         : null;
     sId = json['_id'];
     sender =
-    json['sender'] != null ? new GetClientOrderDetailsResponseSender.fromJson(json['sender']) : null;
+    json['sender'] != null ? new GetClientOrderDetailsResponsSender.fromJson(json['sender']) : null;
     receiver = json['receiver'] != null
-        ? new GetClientOrderDetailsResponseReceiver.fromJson(json['receiver'])
+        ? new GetClientOrderDetailsResponsReceiver.fromJson(json['receiver'])
         : null;
     authority = json['authority'];
     title = json['title'];
     type = json['type'];
     shortDescription = json['shortDescription'];
     description = json['description'];
-    duration = json['duration'];
+    date = json['date'];
     totalAmount = json['totalAmount'];
     initialAmount = json['initialAmount'];
     pendingAmount = json['pendingAmount'];
     finalAmount = json['finalAmount'];
     refundAmount = json['refundAmount'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
     address = json['address'];
     locationUrl = json['locationUrl'];
     status = json['status'];
@@ -121,6 +127,13 @@ class GetClientOrderDetailsResponse {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    initialPayment = json['initialPayment'] != null
+        ? new GetClientOrderDetailsResponsInitialPayment.fromJson(json['initialPayment'])
+        : null;
+    actualEndDate = json['actualEndDate'];
+    finalPayment = json['finalPayment'] != null
+        ? new GetClientOrderDetailsResponsInitialPayment.fromJson(json['finalPayment'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -140,14 +153,14 @@ class GetClientOrderDetailsResponse {
     data['type'] = this.type;
     data['shortDescription'] = this.shortDescription;
     data['description'] = this.description;
-    data['duration'] = this.duration;
+    data['date'] = this.date;
     data['totalAmount'] = this.totalAmount;
     data['initialAmount'] = this.initialAmount;
     data['pendingAmount'] = this.pendingAmount;
     data['finalAmount'] = this.finalAmount;
     data['refundAmount'] = this.refundAmount;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     data['status'] = this.status;
@@ -159,17 +172,24 @@ class GetClientOrderDetailsResponse {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    if (this.initialPayment != null) {
+      data['initialPayment'] = this.initialPayment!.toJson();
+    }
+    data['actualEndDate'] = this.actualEndDate;
+    if (this.finalPayment != null) {
+      data['finalPayment'] = this.finalPayment!.toJson();
+    }
     return data;
   }
 }
 
-class GetClientOrderDetailsResponseLocation {
-  var type;
-  List<dynamic>? coordinates;
+class GetClientOrderDetailsResponsLocation {
+  String? type;
+  List<double>? coordinates;
 
-  GetClientOrderDetailsResponseLocation({this.type, this.coordinates});
+  GetClientOrderDetailsResponsLocation({this.type, this.coordinates});
 
-  GetClientOrderDetailsResponseLocation.fromJson(Map<String, dynamic> json) {
+  GetClientOrderDetailsResponsLocation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }
@@ -182,8 +202,8 @@ class GetClientOrderDetailsResponseLocation {
   }
 }
 
-class GetClientOrderDetailsResponseSender {
-  GetClientOrderDetailsResponseLocation? location;
+class GetClientOrderDetailsResponsSender {
+  GetClientOrderDetailsResponsLocation? location;
   var sId;
   var name;
   var email;
@@ -196,7 +216,7 @@ class GetClientOrderDetailsResponseSender {
   var ratingCount;
   var isKycVerified;
 
-  GetClientOrderDetailsResponseSender({
+  GetClientOrderDetailsResponsSender({
     this.location,
     this.sId,
     this.name,
@@ -211,9 +231,9 @@ class GetClientOrderDetailsResponseSender {
     this.isKycVerified,
   });
 
-  GetClientOrderDetailsResponseSender.fromJson(Map<String, dynamic> json) {
+  GetClientOrderDetailsResponsSender.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetClientOrderDetailsResponseLocation.fromJson(json['location'])
+        ? new GetClientOrderDetailsResponsLocation.fromJson(json['location'])
         : null;
     sId = json['_id'];
     name = json['name'];
@@ -248,8 +268,8 @@ class GetClientOrderDetailsResponseSender {
   }
 }
 
-class GetClientOrderDetailsResponseReceiver {
-  GetClientOrderDetailsResponseLocation? location;
+class GetClientOrderDetailsResponsReceiver {
+  GetClientOrderDetailsResponsLocation? location;
   var sId;
   var name;
   var email;
@@ -262,7 +282,7 @@ class GetClientOrderDetailsResponseReceiver {
   var ratingCount;
   var isKycVerified;
 
-  GetClientOrderDetailsResponseReceiver({
+  GetClientOrderDetailsResponsReceiver({
     this.location,
     this.sId,
     this.name,
@@ -277,9 +297,9 @@ class GetClientOrderDetailsResponseReceiver {
     this.isKycVerified,
   });
 
-  GetClientOrderDetailsResponseReceiver.fromJson(Map<String, dynamic> json) {
+  GetClientOrderDetailsResponsReceiver.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new GetClientOrderDetailsResponseLocation.fromJson(json['location'])
+        ? new GetClientOrderDetailsResponsLocation.fromJson(json['location'])
         : null;
     sId = json['_id'];
     name = json['name'];
@@ -310,6 +330,32 @@ class GetClientOrderDetailsResponseReceiver {
     data['avgRating'] = this.avgRating;
     data['ratingCount'] = this.ratingCount;
     data['isKycVerified'] = this.isKycVerified;
+    return data;
+  }
+}
+
+class GetClientOrderDetailsResponsInitialPayment {
+  var amountPaid;
+  var paidAt;
+  var transactionId;
+  var status;
+
+  GetClientOrderDetailsResponsInitialPayment(
+      {this.amountPaid, this.paidAt, this.transactionId, this.status});
+
+  GetClientOrderDetailsResponsInitialPayment.fromJson(Map<String, dynamic> json) {
+    amountPaid = json['amountPaid'];
+    paidAt = json['paidAt'];
+    transactionId = json['transactionId'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['amountPaid'] = this.amountPaid;
+    data['paidAt'] = this.paidAt;
+    data['transactionId'] = this.transactionId;
+    data['status'] = this.status;
     return data;
   }
 }

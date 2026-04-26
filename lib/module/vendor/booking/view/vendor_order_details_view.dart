@@ -280,9 +280,10 @@ Widget buildInfoCard({required BuildContext context,required VendorOrderDetailsC
         ),
 
         SpaceHelperWidget.v(16.h(context)),
-        infoRow(title: "Date", value: DateFormat("dd MMM yyyy").format(DateTime.parse(vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.date)), context: context),
-        infoRow(title: "Program Start time", value: vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.startTime, context: context),
-        infoRow(title: "Program End time", value: vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.endTime, context: context),
+        infoRow(title: "Date", value: vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.date == null ? "" :
+        DateFormat("dd MMM yyyy").format(DateTime.parse(vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.date)), context: context),
+        infoRow(title: "Program Start time", value: vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.startTime ?? "", context: context),
+        infoRow(title: "Program End time", value: vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.endTime ?? "", context: context),
         //infoRow(title: "First Payment",value: "\$150", context: context),
         infoRow(title: "Total Price", value: "R${vendorOrderDetailsController.vendorOrderDetailsResponseModel.value.data?.totalAmount ?? 0}", context: context),
       ],

@@ -1,7 +1,7 @@
 class PlannerGetAllClientOrderResponseModel {
-  var success;
-  var statusCode;
-  var message;
+  bool? success;
+  int? statusCode;
+  String? message;
   PlannerGetAllClientOrderResponseMeta? meta;
   List<PlannerGetAllClientOrderResponse>? data;
 
@@ -36,11 +36,11 @@ class PlannerGetAllClientOrderResponseModel {
   }
 }
 
-class PlannerGetAllClientOrderResponseMeta {
-  var page;
-  var limit;
-  var total;
-  var totalPage;
+class  PlannerGetAllClientOrderResponseMeta {
+  int? page;
+  int? limit;
+  int? total;
+  int? totalPage;
 
   PlannerGetAllClientOrderResponseMeta({this.page, this.limit, this.total, this.totalPage});
 
@@ -64,20 +64,20 @@ class PlannerGetAllClientOrderResponseMeta {
 class PlannerGetAllClientOrderResponse {
   var sId;
   PlannerGetAllClientOrderResponseSender? sender;
-  PlannerGetAllClientOrderResponseSender? receiver;
+  PlannerGetAllClientOrderResponseReceiver? receiver;
   var authority;
   var title;
   var type;
   var shortDescription;
   var description;
-  var duration;
+  var date;
   var totalAmount;
   var initialAmount;
   var pendingAmount;
   var finalAmount;
   var refundAmount;
-  var startDate;
-  var endDate;
+  var startTime;
+  var endTime;
   var address;
   var locationUrl;
   PlannerGetAllClientOrderResponseLocation? location;
@@ -91,8 +91,11 @@ class PlannerGetAllClientOrderResponse {
   var updatedAt;
   PlannerGetAllClientOrderResponseInitialPayment? initialPayment;
   var actualEndDate;
-  PlannerGetAllClientOrderResponseFinalPayment? finalPayment;
+  PlannerGetAllClientOrderResponseInitialPayment? finalPayment;
   var isAssigned;
+  var duration;
+  var startDate;
+  var endDate;
 
   PlannerGetAllClientOrderResponse({
     this.sId,
@@ -103,14 +106,14 @@ class PlannerGetAllClientOrderResponse {
     this.type,
     this.shortDescription,
     this.description,
-    this.duration,
+    this.date,
     this.totalAmount,
     this.initialAmount,
     this.pendingAmount,
     this.finalAmount,
     this.refundAmount,
-    this.startDate,
-    this.endDate,
+    this.startTime,
+    this.endTime,
     this.address,
     this.locationUrl,
     this.location,
@@ -126,27 +129,31 @@ class PlannerGetAllClientOrderResponse {
     this.actualEndDate,
     this.finalPayment,
     this.isAssigned,
+    this.duration,
+    this.startDate,
+    this.endDate,
   });
 
   PlannerGetAllClientOrderResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     sender =
     json['sender'] != null ? new PlannerGetAllClientOrderResponseSender.fromJson(json['sender']) : null;
-    receiver =
-    json['receiver'] != null ? new PlannerGetAllClientOrderResponseSender.fromJson(json['receiver']) : null;
+    receiver = json['receiver'] != null
+        ? new PlannerGetAllClientOrderResponseReceiver.fromJson(json['receiver'])
+        : null;
     authority = json['authority'];
     title = json['title'];
     type = json['type'];
     shortDescription = json['shortDescription'];
     description = json['description'];
-    duration = json['duration'];
+    date = json['date'];
     totalAmount = json['totalAmount'];
     initialAmount = json['initialAmount'];
     pendingAmount = json['pendingAmount'];
     finalAmount = json['finalAmount'];
     refundAmount = json['refundAmount'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
     address = json['address'];
     locationUrl = json['locationUrl'];
     location = json['location'] != null
@@ -165,9 +172,12 @@ class PlannerGetAllClientOrderResponse {
         : null;
     actualEndDate = json['actualEndDate'];
     finalPayment = json['finalPayment'] != null
-        ? new PlannerGetAllClientOrderResponseFinalPayment.fromJson(json['finalPayment'])
+        ? new PlannerGetAllClientOrderResponseInitialPayment.fromJson(json['finalPayment'])
         : null;
     isAssigned = json['isAssigned'];
+    duration = json['duration'];
+    startDate = json['startDate'];
+    endDate = json['endDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -184,14 +194,14 @@ class PlannerGetAllClientOrderResponse {
     data['type'] = this.type;
     data['shortDescription'] = this.shortDescription;
     data['description'] = this.description;
-    data['duration'] = this.duration;
+    data['date'] = this.date;
     data['totalAmount'] = this.totalAmount;
     data['initialAmount'] = this.initialAmount;
     data['pendingAmount'] = this.pendingAmount;
     data['finalAmount'] = this.finalAmount;
     data['refundAmount'] = this.refundAmount;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
     data['address'] = this.address;
     data['locationUrl'] = this.locationUrl;
     if (this.location != null) {
@@ -213,11 +223,14 @@ class PlannerGetAllClientOrderResponse {
       data['finalPayment'] = this.finalPayment!.toJson();
     }
     data['isAssigned'] = this.isAssigned;
+    data['duration'] = this.duration;
+    data['startDate'] = this.startDate;
+    data['endDate'] = this.endDate;
     return data;
   }
 }
 
-class PlannerGetAllClientOrderResponseSender {
+class  PlannerGetAllClientOrderResponseSender {
   var sId;
   var name;
   var photoUrl;
@@ -226,6 +239,31 @@ class PlannerGetAllClientOrderResponseSender {
   PlannerGetAllClientOrderResponseSender({this.sId, this.name, this.photoUrl, this.isKycVerified});
 
   PlannerGetAllClientOrderResponseSender.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    photoUrl = json['photoUrl'];
+    isKycVerified = json['isKycVerified'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['photoUrl'] = this.photoUrl;
+    data['isKycVerified'] = this.isKycVerified;
+    return data;
+  }
+}
+
+class PlannerGetAllClientOrderResponseReceiver {
+  var sId;
+  var name;
+  var photoUrl;
+  var isKycVerified;
+
+  PlannerGetAllClientOrderResponseReceiver({this.sId, this.name, this.photoUrl, this.isKycVerified});
+
+  PlannerGetAllClientOrderResponseReceiver.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     photoUrl = json['photoUrl'];
@@ -271,31 +309,6 @@ class PlannerGetAllClientOrderResponseInitialPayment {
       {this.amountPaid, this.paidAt, this.transactionId, this.status});
 
   PlannerGetAllClientOrderResponseInitialPayment.fromJson(Map<String, dynamic> json) {
-    amountPaid = json['amountPaid'];
-    paidAt = json['paidAt'];
-    transactionId = json['transactionId'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['amountPaid'] = this.amountPaid;
-    data['paidAt'] = this.paidAt;
-    data['transactionId'] = this.transactionId;
-    data['status'] = this.status;
-    return data;
-  }
-}
-
-class PlannerGetAllClientOrderResponseFinalPayment {
-  var amountPaid;
-  var paidAt;
-  var transactionId;
-  var status;
-
-  PlannerGetAllClientOrderResponseFinalPayment({this.amountPaid, this.paidAt, this.transactionId, this.status});
-
-  PlannerGetAllClientOrderResponseFinalPayment.fromJson(Map<String, dynamic> json) {
     amountPaid = json['amountPaid'];
     paidAt = json['paidAt'];
     transactionId = json['transactionId'];

@@ -117,17 +117,16 @@ class VendorServiceController extends GetxController {
       url: ApiUtils.addFeatureController(serviceId),
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isLoading.value = true;
         vendorGetAllServiceModelList.clear();
         await getVendorAllServiceController(context: context);
       },
       onFail: (e,data) {
+        isLoading.value = false;
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isDelete.value = false;
       },
       onExceptionFail: (e,data) {
+        isLoading.value = false;
         MessageSnackBarWidget.errorSnackBarWidget(context: context, message: e);
-        isDelete.value = false;
       },
     );
   }

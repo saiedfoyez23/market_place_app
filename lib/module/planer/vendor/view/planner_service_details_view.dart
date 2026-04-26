@@ -78,7 +78,12 @@ class PlannerServiceDetailsView extends StatelessWidget {
                             ),
                             child: Column(
                               children: [
-                                header(context: context,imageUrl: plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data!.images!.first),
+                                header(
+                                  plannerServiceDetailsController: plannerServiceDetailsController,
+                                  context: context,
+                                  imageUrl: plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
+                                  [] : plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data?.images,
+                                ),
                                 SpaceHelperWidget.v(12.h(context)),
                                 title(title: plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data!.title,context: context),
                                 SpaceHelperWidget.v(12.h(context)),
@@ -89,6 +94,59 @@ class PlannerServiceDetailsView extends StatelessWidget {
                               ],
                             ),
                           ),
+
+
+                          if(plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data?.serviceAreas?.isEmpty == true || plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data?.serviceAreas == null) ...[
+                            SizedBox.shrink(),
+                          ] else...[
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                              padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
+                              decoration: BoxDecoration(
+                                color: ColorUtils.white249,
+                                border: Border.all(color: ColorUtils.white215,width: .5),
+                                borderRadius: BorderRadius.circular(12.r(context)),
+                              ),
+                              child: Column(
+                                children: [
+
+                                  TextHelperClass.headingTextWithoutWidth(
+                                    context: context,
+                                    alignment: Alignment.centerLeft,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    textColor: ColorUtils.black64,
+                                    text: "Services Area ",
+                                  ),
+
+
+                                  SpaceHelperWidget.v(10.h(context)),
+
+
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Wrap(
+                                      alignment: WrapAlignment.start,
+                                      runAlignment: WrapAlignment.start,
+                                      crossAxisAlignment: WrapCrossAlignment.start,
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: List.generate(plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data!.serviceAreas!.length, (index) {
+                                        return serviceChip(text: plannerServiceDetailsController.getVendorServiceDetailsResponseModel.value.data!.serviceAreas![index].name, context: context);
+                                      }),
+                                    ),
+                                  ),
+
+
+
+                                ],
+                              ),
+                            ),
+                          ],
+
+
+
 
 
                           vendorCard(plannerServiceDetailsController: plannerServiceDetailsController,context: context),
@@ -135,21 +193,90 @@ class PlannerServiceDetailsView extends StatelessWidget {
     );
   }
 
+  Widget serviceChip({required String text,required BuildContext context}) {
+    return IntrinsicWidth(
+      child: TextHelperClass.headingTextWithoutWidth(
+        context: context,
+        alignment: Alignment.centerLeft,
+        containerColor: ColorUtils.blue231,
+        padding: EdgeInsets.symmetric(vertical: 11.vpm(context),horizontal: 11.h(context)),
+        textAlign: TextAlign.start,
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        borderRadius: BorderRadius.circular(6.r(context)),
+        textColor: ColorUtils.blue96,
+        text: text,
+      ),
+    );
+  }
+
   /// HEADER
-  Widget header({required String imageUrl,required BuildContext context}) {
+  Widget header({
+    required PlannerServiceDetailsController plannerServiceDetailsController,
+    required List? imageUrl,
+    required BuildContext context,
+  }) {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12.r(context)),
-            topRight: Radius.circular(12.r(context)),
-          ),
-          child: Image.network(
-            imageUrl,
-            height: 192.h(context),
-            width: 428.w(context),
-            fit: BoxFit.cover,
-          ),
+        Column(
+          children: [
+
+            imageUrl?.isEmpty == true ?
+            SizedBox.shrink() :
+            SizedBox(
+              height: 200.h(context),
+              child: PageView(
+                  controller: plannerServiceDetailsController.pageController.value,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (value) {
+                    plannerServiceDetailsController.changeIndex(value);
+                  },
+                  children: List.generate(imageUrl!.length, (index) {
+                    return ImageHelperWidget.styledImage(
+                      context: context,
+                      borderRadius: 12,
+                      height: 172,
+                      width: 428,
+                      imageUrl: imageUrl[index],
+                    );
+                  })
+              ),
+            ),
+
+            SpaceHelperWidget.v(20.h(context)),
+
+
+            imageUrl?.isEmpty == true ?
+            SizedBox.shrink() :
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: List.generate(imageUrl!.length, (index) {
+                if(plannerServiceDetailsController.index.value == index) {
+                  return Container(
+                    height: 12.h(context),
+                    width: 30.w(context),
+                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                    decoration: BoxDecoration(
+                      color: ColorUtils.orange119,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(6.r(context)),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    height: 12.h(context),
+                    width: 12.w(context),
+                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                    decoration: BoxDecoration(
+                      color: ColorUtils.orange213,
+                      shape: BoxShape.circle,
+                    ),
+                  );
+                }
+              }),
+            ),
+          ],
         ),
       ],
     );

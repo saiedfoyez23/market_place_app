@@ -51,10 +51,10 @@ class PlannerOfferController extends GetxController {
               vendorId: value.sender?.sId ?? "",
               vendorName: value.sender?.name ?? "",
               serviceName: value.title ?? "",
-              days: "${value.duration} Days",
+              date: DateFormat("dd MMM yyyy").format(DateTime.parse(value.date)),
               price: "${value.totalAmount}",
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              startTime: value.startTime,
+              endTime: value.endTime,
               status: value.status == "complete" ? PlannerBookingStatus.complete :
               value.status == "pending" ? PlannerBookingStatus.pending :
               value.status == "running" ? PlannerBookingStatus.active :
@@ -126,10 +126,10 @@ class PlannerOfferController extends GetxController {
               vendorId: value.sender?.sId ?? "",
               vendorName: value.sender?.name ?? "",
               serviceName: value.title ?? "",
-              days: "${value.duration} Days",
+              date: value.date == null ? "" : DateFormat("dd MMM yyyy").format(DateTime.parse(value.date)),
               price: "${value.totalAmount}",
-              startDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.startDate))}",
-              endDate: "${DateFormat("dd MMM yyyy").format(DateTime.parse(value.endDate))}",
+              startTime: value.startTime ?? "",
+              endTime: value.endTime ?? "",
               status: value.status == "complete" ? PlannerBookingStatus.complete :
               value.status == "pending" ? PlannerBookingStatus.pending :
               value.status == "running" ? PlannerBookingStatus.active :
@@ -155,44 +155,7 @@ class PlannerOfferController extends GetxController {
 
 
 
-  RxList<PlannerBookingModel> allBookings = <PlannerBookingModel>[
-    // PlannerBookingModel(
-    //   vendorName: "Party Perfect",
-    //   serviceName: "Kids Birthday Party Extravaganza",
-    //   days: "5 Days",
-    //   price: "300",
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   status: PlannerBookingStatus.complete,
-    // ),
-    // PlannerBookingModel(
-    //   vendorName: "Party Perfect",
-    //   serviceName: "Kids Birthday Party Extravaganza",
-    //   days: "5 Days",
-    //   price: "300",
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   status: PlannerBookingStatus.inProcess,
-    // ),
-    // PlannerBookingModel(
-    //   vendorName: "Party Perfect",
-    //   serviceName: "Kids Birthday Party Extravaganza",
-    //   days: "5 Days",
-    //   price: "300",
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   status: PlannerBookingStatus.pending,
-    // ),
-    // PlannerBookingModel(
-    //   vendorName: "Party Perfect",
-    //   serviceName: "Kids Birthday Party Extravaganza",
-    //   days: "5 Days",
-    //   price: "300",
-    //   startDate: "28 Oct 2025",
-    //   endDate: "02 Nov 2025",
-    //   status: PlannerBookingStatus.inProcess,
-    // ),
-  ].obs;
+  RxList<PlannerBookingModel> allBookings = <PlannerBookingModel>[].obs;
 
   RxList<PlannerBookingModel> get filteredBookings {
     if (selectedTab.value == PlannerBookingStatus.all) {
@@ -221,10 +184,10 @@ class PlannerBookingModel {
   final String coverImage;
   final String vendorName;
   final String serviceName;
-  final String days;
+  final String date;
   final String price;
-  final String startDate;
-  final String endDate;
+  final String startTime;
+  final String endTime;
   final PlannerBookingStatus status;
 
   PlannerBookingModel({
@@ -233,10 +196,10 @@ class PlannerBookingModel {
     required this.coverImage,
     required this.vendorName,
     required this.serviceName,
-    required this.days,
+    required this.date,
     required this.price,
-    required this.startDate,
-    required this.endDate,
+    required this.startTime,
+    required this.endTime,
     required this.status,
   });
 }

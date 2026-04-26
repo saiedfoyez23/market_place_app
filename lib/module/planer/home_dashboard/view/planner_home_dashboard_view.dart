@@ -544,86 +544,91 @@ class PlannerHomeDashboardView extends StatelessWidget {
         border: Border.all(color: ColorUtils.white215,width: .75),
         borderRadius: BorderRadius.circular(12.r(context)),
       ),
-      child: Row(
-        children: [
+      child: InkWell(
+        onTap: partnership.modelType == "Order" ? () async {
+          Get.off(()=>PlannerOrderDetailsView(orderID: partnership.sId ?? "",),preventDuplicates: false);
+        } : null,
+        child: Row(
+          children: [
 
-          Container(
-            height: 50.h(context),
-            width: 50.w(context),
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(243, 243, 245, 1),
-              shape: BoxShape.circle,
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: ClipRRect(
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    partnership.modelType == "Withdraw" ?
-                    ImageUtils.withdrawNotificationImage :
-                    partnership.modelType == "Subscription" ?
-                    ImageUtils.subcriptionNotificationImage :
-                    partnership.modelType == "User" ?
-                    ImageUtils.userNotificationImage :
-                    partnership.modelType == "KYC" ?
-                    ImageUtils.kycNotificationImage :
-                    partnership.modelType == "Order" ?
-                    ImageUtils.orderNotificationImage :
-                    partnership.modelType == "Auth" ?
-                    ImageUtils.verifyKycNotificationImage :
-                    partnership.modelType == "Service" ?
-                    ImageUtils.serviceNotificationImage :
-                    partnership.modelType == "AssignProject" ?
-                    ImageUtils.projectNotificationImage :
-                    partnership.modelType == "Chat" ?
-                    ImageUtils.chatNotificationImage :
-                    partnership.modelType == "Payment" ?
-                    ImageUtils.paymentNotificationImage :
-                    ImageUtils.refundNotificationImage,
-                    height: 25.h(context),
-                    width: 25.w(context),
-                    fit: BoxFit.contain,
-                    color: Color.fromRGBO(252, 119, 87, 1),
-                  )
+            Container(
+              height: 50.h(context),
+              width: 50.w(context),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(243, 243, 245, 1),
+                shape: BoxShape.circle,
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: ClipRRect(
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset(
+                      partnership.modelType == "Withdraw" ?
+                      ImageUtils.withdrawNotificationImage :
+                      partnership.modelType == "Subscription" ?
+                      ImageUtils.subcriptionNotificationImage :
+                      partnership.modelType == "User" ?
+                      ImageUtils.userNotificationImage :
+                      partnership.modelType == "KYC" ?
+                      ImageUtils.kycNotificationImage :
+                      partnership.modelType == "Order" ?
+                      ImageUtils.orderNotificationImage :
+                      partnership.modelType == "Auth" ?
+                      ImageUtils.verifyKycNotificationImage :
+                      partnership.modelType == "Service" ?
+                      ImageUtils.serviceNotificationImage :
+                      partnership.modelType == "AssignProject" ?
+                      ImageUtils.projectNotificationImage :
+                      partnership.modelType == "Chat" ?
+                      ImageUtils.chatNotificationImage :
+                      partnership.modelType == "Payment" ?
+                      ImageUtils.paymentNotificationImage :
+                      ImageUtils.refundNotificationImage,
+                      height: 25.h(context),
+                      width: 25.w(context),
+                      fit: BoxFit.contain,
+                      color: Color.fromRGBO(252, 119, 87, 1),
+                    )
+                ),
               ),
             ),
-          ),
 
 
-          SpaceHelperWidget.h(12.w(context)),
+            SpaceHelperWidget.h(12.w(context)),
 
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  textColor: ColorUtils.black64,
-                  text: partnership.message,
-                ),
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    textColor: ColorUtils.black64,
+                    text: partnership.message,
+                  ),
 
-                SpaceHelperWidget.v(8.h(context)),
+                  SpaceHelperWidget.v(8.h(context)),
 
 
-                TextHelperClass.headingTextWithoutWidth(
-                  context: context,
-                  alignment: Alignment.centerLeft,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  textColor: ColorUtils.black96,
-                  text: plannerHomeDashboardController.getDynamicTime(partnership.createdAt.toString(), DateTime.now().toString()),
-                ),
+                  TextHelperClass.headingTextWithoutWidth(
+                    context: context,
+                    alignment: Alignment.centerLeft,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    textColor: ColorUtils.black96,
+                    text: plannerHomeDashboardController.getDynamicTime(partnership.createdAt.toString(), DateTime.now().toString()),
+                  ),
 
-              ],
+                ],
+              ),
             ),
-          ),
 
-        ],
+          ],
+        ),
       ),
     );
   }

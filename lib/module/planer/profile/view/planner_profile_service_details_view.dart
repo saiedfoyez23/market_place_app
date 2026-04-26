@@ -5,7 +5,6 @@ import 'package:marketplaceapp/utils/utils.dart';
 import 'package:marketplaceapp/module/module.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class PlannerProfileServiceDetailsView extends StatelessWidget {
   PlannerProfileServiceDetailsView({super.key,required this.serviceId,required this.isProfile});
 
@@ -71,7 +70,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                                 plannerProfileServiceDetailsController: plannerProfileServiceDetailsController,
                                 context: context,
                                 imageUrl: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.images?.isEmpty == true ?
-                                "" : plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data!.images!.first,
+                                [] : plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.images,
                               ),
                               SpaceHelperWidget.v(12.h(context)),
                               title(
@@ -127,21 +126,60 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
                                 value: "R${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.price} / ${plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.priceType}" ,
                                 context: context,
                               ),
-                              InkWell(
-                                onTap: () async {
-                                  if (await canLaunchUrl(Uri.parse(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.locationUrl))) {
-                                    await launchUrl(Uri.parse(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.locationUrl), mode: LaunchMode.externalApplication);
-                                  }
-                                },
-                                child: rowItem(
-                                  title: "Location: ",
-                                  value: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.address ?? "",
-                                  context: context,
-                                ),
-                              ),
                             ],
                           ),
                         ),
+
+                        if(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.serviceAreas?.isEmpty == true || plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.serviceAreas == null)...[
+                          SizedBox.shrink()
+                        ] else...[
+                          Container(
+                            margin: EdgeInsets.only(bottom: 20.bpm(context)),
+                            padding: EdgeInsets.symmetric(vertical: 16.vpm(context),horizontal: 12.hpm(context)),
+                            decoration: BoxDecoration(
+                              color: ColorUtils.white249,
+                              border: Border.all(color: ColorUtils.white215,width: .5),
+                              borderRadius: BorderRadius.circular(12.r(context)),
+                            ),
+                            child: Column(
+                              children: [
+
+                                TextHelperClass.headingTextWithoutWidth(
+                                  context: context,
+                                  alignment: Alignment.centerLeft,
+                                  textAlign: TextAlign.start,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  textColor: ColorUtils.black64,
+                                  text: "Services Area ",
+                                ),
+
+
+                                SpaceHelperWidget.v(10.h(context)),
+
+
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.start,
+                                    runAlignment: WrapAlignment.start,
+                                    crossAxisAlignment: WrapCrossAlignment.start,
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    children: List.generate(plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data!.serviceAreas!.length, (index) {
+                                      return serviceChip(text: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data!.serviceAreas![index].name, context: context);
+                                    }),
+                                  ),
+                                ),
+
+
+
+                              ],
+                            ),
+                          )
+                        ],
+
+
 
 
                         reviews(
@@ -166,35 +204,98 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
     );
   }
 
+  Widget serviceChip({required String text,required BuildContext context}) {
+    return IntrinsicWidth(
+      child: TextHelperClass.headingTextWithoutWidth(
+        context: context,
+        alignment: Alignment.centerLeft,
+        containerColor: ColorUtils.blue231,
+        padding: EdgeInsets.symmetric(vertical: 11.vpm(context),horizontal: 11.h(context)),
+        textAlign: TextAlign.start,
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        borderRadius: BorderRadius.circular(6.r(context)),
+        textColor: ColorUtils.blue96,
+        text: text,
+      ),
+    );
+  }
+
   /// HEADER
   Widget header({
     required PlannerProfileServiceDetailsController plannerProfileServiceDetailsController,
-    required String imageUrl,
+    required List? imageUrl,
     required BuildContext context,
   }) {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12.r(context)),
-            topRight: Radius.circular(12.r(context)),
-          ),
-          child: imageUrl == "" ?
-          SpaceHelperWidget.sq(192.h(context), 428.w(context)) :
-          Image.network(
-            imageUrl,
-            height: 192.h(context),
-            width: 428.w(context),
-            fit: BoxFit.cover,
-          ),
+        Column(
+          children: [
+
+            imageUrl?.isEmpty == true ?
+            SizedBox.shrink() :
+            SizedBox(
+              height: 200.h(context),
+              child: PageView(
+                  controller: plannerProfileServiceDetailsController.pageController.value,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (value) {
+                    plannerProfileServiceDetailsController.changeIndex(value);
+                  },
+                  children: List.generate(imageUrl!.length, (index) {
+                    return ImageHelperWidget.styledImage(
+                      context: context,
+                      borderRadius: 12,
+                      height: 172,
+                      width: 428,
+                      imageUrl: imageUrl[index],
+                    );
+                  })
+              ),
+            ),
+
+            SpaceHelperWidget.v(20.h(context)),
+
+
+            imageUrl?.isEmpty == true ?
+            SizedBox.shrink() :
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: List.generate(imageUrl!.length, (index) {
+                if(plannerProfileServiceDetailsController.index.value == index) {
+                  return Container(
+                    height: 12.h(context),
+                    width: 30.w(context),
+                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                    decoration: BoxDecoration(
+                      color: ColorUtils.orange119,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(6.r(context)),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    height: 12.h(context),
+                    width: 12.w(context),
+                    margin: EdgeInsets.only(right: 6.rpm(context)),
+                    decoration: BoxDecoration(
+                      color: ColorUtils.orange213,
+                      shape: BoxShape.circle,
+                    ),
+                  );
+                }
+              }),
+            ),
+          ],
         ),
-        plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type != "null" && plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.status == "active" ?
+        plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.type == "pro" && plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.status == "active" ?
         Positioned(
           top: 12.h(context),
           right: 12.w(context),
           child: InkWell(
             onTap: () async {
-              await  plannerProfileServiceDetailsController.addFeaturedController(context: context, serviceId: plannerProfileServiceDetailsController.plannerGetServiceDetailsResponseModel.value.data?.sId);
+              await plannerProfileServiceDetailsController.addFeaturedController(context: context, serviceId: plannerProfileServiceDetailsController.plannerMyProfileDetailsResponseModel.value.data?.sId);
             },
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -241,7 +342,7 @@ class PlannerProfileServiceDetailsView extends StatelessWidget {
               ),
             ),
           ),
-        ) : SizedBox.shrink(),
+        ) : SizedBox.shrink()
       ],
     );
   }

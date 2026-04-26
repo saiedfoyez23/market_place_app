@@ -84,7 +84,6 @@ class VendorProfileViewController extends GetxController {
       url: ApiUtils.addFeatureController(serviceId),
       authorization: userLoginResponseModel.value.data?.accessToken,
       onSuccess: (e,data) async {
-        isLoading.value = true;
         await getVendorProfileDetailsController(
           context: context,
           onComplete: (userId) async {

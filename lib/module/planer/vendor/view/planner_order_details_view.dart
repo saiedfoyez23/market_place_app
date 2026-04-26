@@ -379,9 +379,10 @@ class PlannerOrderDetailsView extends StatelessWidget {
           ),
 
           SpaceHelperWidget.v(16.h(context)),
-          infoRow(title: "Deadline", value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.duration} days", context: context),
-          infoRow(title: "Program Start Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.startDate))}", context: context),
-          infoRow(title: "Program End Date", value: "${DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.endDate))}", context: context),
+          infoRow(title: "Date", value: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.date == null ? "" :
+          DateFormat("dd MMM yyyy").format(DateTime.parse(plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.date)), context: context),
+          infoRow(title: "Program Start Time", value: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.startTime ?? "", context: context),
+          infoRow(title: "Program End Time", value: plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.endTime ?? "", context: context),
           infoRow(title: "Location",value: "${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.address}", context: context),
           infoRow(title: "Total Price", value: "R${plannerAllVendorOrderDetailsController.plannerAllVendorOrderDetailsResponseModel.value.data?.totalAmount}", context: context),
         ],
